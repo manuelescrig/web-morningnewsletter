@@ -22,29 +22,60 @@
 </head>
 <body class="bg-white">
     <!-- Navigation -->
-    <nav id="main-nav" class="bg-white/80 backdrop-blur-md fixed w-full z-50 transition-all duration-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0">
+    <header class="absolute inset-x-0 top-0 z-50">
+        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <div class="flex lg:flex-1">
+                <a href="#" class="-m-1.5 p-1.5">
+                    <span class="sr-only">MorningNewsletter</span>
                     <h1 class="text-2xl font-bold text-indigo-600">MorningNewsletter</h1>
+                </a>
+            </div>
+            <div class="flex lg:hidden">
+                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-12">
+                <a href="#features" class="text-sm/6 font-semibold text-gray-900">Features</a>
+                <a href="#pricing" class="text-sm/6 font-semibold text-gray-900">Pricing</a>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                <a href="/signin.php" class="text-sm/6 font-semibold text-gray-900">Sign in <span aria-hidden="true">&rarr;</span></a>
+            </div>
+        </nav>
+        <!-- Mobile menu -->
+        <div class="lg:hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-50"></div>
+            <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">MorningNewsletter</span>
+                        <h1 class="text-2xl font-bold text-indigo-600">MorningNewsletter</h1>
+                    </a>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
-                <div class="hidden md:block flex-1">
-                    <div class="flex justify-center">
-                        <div class="flex space-x-8">
-                            <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Features</a>
-                            <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Pricing</a>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#features" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+                            <a href="#pricing" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Pricing</a>
                         </div>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="flex items-center space-x-4">
-                        <a href="/signin.php" class="px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
-                        <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Try for Free</a>
+                        <div class="py-6">
+                            <a href="/signin.php" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Sign in</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
     <script>
         window.addEventListener('scroll', function() {
@@ -58,24 +89,27 @@
     </script>
 
     <!-- Hero Section -->
-    <div class="gradient-bg pt-32 pb-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                    <span class="block">Your Personalized</span>
-                    <span class="block">Morning Brief,</span>
-                    <span class="block">Delivered Daily.</span>
-                </h1>
-                <p class="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
-                    One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.
-                </p>
-                <div class="mt-10">
-                    <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-                        Start Free Trial
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+    <div class="relative isolate px-6 pt-14 lg:px-8">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+            <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+            <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+                <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    New feature: AI-powered content curation. <a href="#" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Learn more <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
+            <div class="text-center">
+                <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Your Personalized Morning Brief, Delivered Daily</h1>
+                <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.</p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="/signup.php" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Start Free Trial</a>
+                    <a href="#features" class="text-sm/6 font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+            <div class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
     </div>
 
