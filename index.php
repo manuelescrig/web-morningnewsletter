@@ -154,6 +154,163 @@
         </div>
     </div>
 
+    <!-- Pricing Section -->
+    <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Pricing</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Simple, transparent pricing
+                </p>
+                <p class="mt-4 text-xl text-gray-500">
+                    Choose the plan that best fits your needs
+                </p>
+            </div>
+
+            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+                <!-- Free Tier -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="px-6 py-8">
+                        <h3 class="text-2xl font-bold text-gray-900">Free</h3>
+                        <p class="mt-4 text-gray-500">Perfect for trying out MorningNewsletter</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-extrabold text-gray-900">$0</span>
+                            <span class="text-base font-medium text-gray-500">/month</span>
+                        </p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Basic KPI tracking</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Weather updates</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Basic news feed</p>
+                            </li>
+                        </ul>
+                        <div class="mt-8">
+                            <a href="/signup.php" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
+                                Get Started
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-indigo-500 relative">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4">
+                        <span class="inline-flex rounded-full bg-indigo-500 px-4 py-1 text-sm font-semibold text-white">
+                            Popular
+                        </span>
+                    </div>
+                    <div class="px-6 py-8">
+                        <h3 class="text-2xl font-bold text-gray-900">Pro</h3>
+                        <p class="mt-4 text-gray-500">For professionals who need more</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-extrabold text-gray-900">$29</span>
+                            <span class="text-base font-medium text-gray-500">/month</span>
+                        </p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Everything in Free</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Advanced KPI tracking</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Crypto & finance updates</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Social media integration</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Priority support</p>
+                            </li>
+                        </ul>
+                        <div class="mt-8">
+                            <a href="/signup.php" class="block w-full bg-indigo-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-indigo-700">
+                                Start Free Trial
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="px-6 py-8">
+                        <h3 class="text-2xl font-bold text-gray-900">Enterprise</h3>
+                        <p class="mt-4 text-gray-500">For teams and organizations</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-extrabold text-gray-900">$99</span>
+                            <span class="text-base font-medium text-gray-500">/month</span>
+                        </p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Everything in Pro</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Team collaboration</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Custom integrations</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Dedicated support</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">SLA guarantee</p>
+                            </li>
+                        </ul>
+                        <div class="mt-8">
+                            <a href="/signup.php" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
+                                Contact Sales
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CTA Section -->
     <div class="gradient-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
