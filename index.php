@@ -24,18 +24,18 @@
                 <div class="flex-shrink-0">
                     <h1 class="text-2xl font-bold text-indigo-600">MorningNewsletter</h1>
                 </div>
+                <div class="hidden md:block flex-1">
+                    <div class="flex justify-center">
+                        <div class="flex space-x-8">
+                            <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Features</a>
+                            <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Pricing</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="hidden md:block">
-                    <div class="flex items-center">
-                        <div class="flex-1 flex justify-center">
-                            <div class="flex space-x-8">
-                                <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Features</a>
-                                <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Pricing</a>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <a href="/signin.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
-                            <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Try for Free</a>
-                        </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="/signin.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
+                        <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Try for Free</a>
                     </div>
                 </div>
             </div>
