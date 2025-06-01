@@ -26,20 +26,20 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0">
-                    <h1 class="text-2xl font-bold text-indigo-600">MorningNewsletter</h1>
+                    <h1 class="text-2xl font-bold text-blue-600">MorningNewsletter</h1>
                 </div>
                 <div class="hidden md:block flex-1">
                     <div class="flex justify-center">
                         <div class="flex space-x-8">
-                            <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Features</a>
-                            <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Pricing</a>
+                            <a href="#features" class="text-gray-700 hover:text-blue-600 px-3 py-2">Features</a>
+                            <a href="#pricing" class="text-gray-700 hover:text-blue-600 px-3 py-2">Pricing</a>
                         </div>
                     </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="flex items-center space-x-4">
-                        <a href="/signin.php" class="px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
-                        <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Try for Free</a>
+                        <a href="/signin.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Sign In</a>
+                        <a href="/signup.php" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Try for Free</a>
                     </div>
                 </div>
             </div>
@@ -60,25 +60,25 @@
     <!-- Hero Section -->
     <div class="relative isolate px-6 pt-14 lg:px-8">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-            <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+            <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-gradient-to-tr from-[#60a5fa] to-[#3b82f6] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
         <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                 <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                    New feature: AI-powered content curation. <a href="#" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Learn more <span aria-hidden="true">&rarr;</span></a>
+                    New feature: AI-powered content curation. <a href="#" class="font-semibold text-blue-600"><span class="absolute inset-0" aria-hidden="true"></span>Learn more <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
             <div class="text-center">
                 <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Your Personalized Morning Brief, Delivered Daily</h1>
                 <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="/signup.php" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Start Free Trial</a>
+                    <a href="/signup.php" class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Start Free Trial</a>
                     <a href="#features" class="text-sm/6 font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-            <div class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+            <div class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-gradient-to-tr from-[#60a5fa] to-[#3b82f6] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
     </div>
 
@@ -186,7 +186,7 @@
     <div id="features" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Features</h2>
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Everything you need to start your day
                 </p>
@@ -198,7 +198,7 @@
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                     <i class="fas fa-chart-line text-xl"></i>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                     <i class="fas fa-coins text-xl"></i>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                     <i class="fas fa-cloud-sun text-xl"></i>
                                 </div>
                             </div>
@@ -249,7 +249,7 @@
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                                     <i class="fas fa-comments text-xl"></i>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
     <div id="pricing" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Pricing</h2>
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Pricing</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Simple, transparent pricing
                 </p>
@@ -318,9 +318,9 @@
                 </div>
 
                 <!-- Pro Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-indigo-500 relative">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-blue-500 relative">
                     <div class="absolute top-0 right-0 -mt-4 -mr-4">
-                        <span class="inline-flex rounded-full bg-indigo-500 px-4 py-1 text-sm font-semibold text-white">
+                        <span class="inline-flex rounded-full bg-blue-500 px-4 py-1 text-sm font-semibold text-white">
                             Popular
                         </span>
                     </div>
@@ -364,7 +364,7 @@
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/signup.php" class="block w-full bg-indigo-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-indigo-700">
+                            <a href="/signup.php" class="block w-full bg-blue-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-blue-700">
                                 Start Free Trial
                             </a>
                         </div>
@@ -427,7 +427,7 @@
     <div id="testimonials" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Testimonials</h2>
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Testimonials</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Loved by professionals worldwide
                 </p>
@@ -479,7 +479,7 @@
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">FAQ</h2>
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">FAQ</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Frequently Asked Questions
                 </p>
@@ -518,7 +518,7 @@
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
             <div class="mt-8">
-                <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
                     Start Free Trial
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
