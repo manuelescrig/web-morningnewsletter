@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
         }
         .trusted-by-logos {
             filter: grayscale(100%);
@@ -61,16 +61,16 @@
     <div class="gradient-bg pt-32 pb-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                     <span class="block">Your Personalized</span>
                     <span class="block">Morning Brief,</span>
                     <span class="block">Delivered Daily.</span>
                 </h1>
-                <p class="mt-6 text-xl text-indigo-100 max-w-3xl mx-auto">
+                <p class="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
                     One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.
                 </p>
                 <div class="mt-10">
-                    <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
+                    <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
                         Start Free Trial
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
@@ -508,14 +508,14 @@
     <!-- Final CTA Section -->
     <div class="gradient-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
                 Ready to transform your morning routine?
             </h2>
-            <p class="mt-4 text-xl text-indigo-100">
+            <p class="mt-4 text-xl text-gray-600">
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
             <div class="mt-8">
-                <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
+                <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
                     Start Free Trial
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
