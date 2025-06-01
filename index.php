@@ -34,7 +34,7 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="flex items-center space-x-4">
-                        <a href="/signin.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
+                        <a href="/signin.php" class="px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a>
                         <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Try for Free</a>
                     </div>
                 </div>
