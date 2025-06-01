@@ -6,10 +6,19 @@
     <title>MorningNewsletter.com - Your Personalized Morning Brief</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        .trusted-by-logos {
+            filter: grayscale(100%);
+            opacity: 0.5;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white/80 backdrop-blur-md fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0">
@@ -27,85 +36,117 @@
     </nav>
 
     <!-- Hero Section -->
-    <div class="relative bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto">
-            <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                    <div class="sm:text-center lg:text-left">
-                        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                            <span class="block">Your Personalized</span>
-                            <span class="block text-indigo-600">Morning Brief,</span>
-                            <span class="block">Delivered Daily.</span>
-                        </h1>
-                        <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.
-                        </p>
-                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                            <div class="rounded-md shadow">
-                                <a href="/signup.php" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-                                    Start Free Trial
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+    <div class="gradient-bg pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                    <span class="block">Your Personalized</span>
+                    <span class="block">Morning Brief,</span>
+                    <span class="block">Delivered Daily.</span>
+                </h1>
+                <p class="mt-6 text-xl text-indigo-100 max-w-3xl mx-auto">
+                    One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.
+                </p>
+                <div class="mt-10">
+                    <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
+                        Start Free Trial
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trusted By Section -->
+    <div class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 mb-8">Trusted by 9000+ professionals worldwide</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+                <img src="https://via.placeholder.com/150x50?text=Company+1" alt="Company 1" class="trusted-by-logos h-8">
+                <img src="https://via.placeholder.com/150x50?text=Company+2" alt="Company 2" class="trusted-by-logos h-8">
+                <img src="https://via.placeholder.com/150x50?text=Company+3" alt="Company 3" class="trusted-by-logos h-8">
+                <img src="https://via.placeholder.com/150x50?text=Company+4" alt="Company 4" class="trusted-by-logos h-8">
             </div>
         </div>
     </div>
 
     <!-- Features Section -->
-    <div id="features" class="py-12 bg-white">
+    <div id="features" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center">
+            <div class="text-center">
                 <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Features</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Everything you need to start your day
                 </p>
             </div>
 
-            <div class="mt-10">
-                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+            <div class="mt-20">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                     <!-- Feature 1 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                            <i class="fas fa-chart-line"></i>
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <i class="fas fa-chart-line text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-gray-900">Custom KPIs</h3>
+                            </div>
                         </div>
-                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Custom KPIs</p>
-                        <p class="mt-2 ml-16 text-base text-gray-500">
-                            Track your business metrics and KPIs with customizable dashboards and alerts.
+                        <p class="mt-4 text-gray-600">
+                            Track your business metrics and KPIs with customizable dashboards and alerts. Get instant insights into your business performance.
                         </p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                            <i class="fas fa-coins"></i>
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <i class="fas fa-coins text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-gray-900">Finance & Crypto Markets</h3>
+                            </div>
                         </div>
-                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Finance & Crypto Markets</p>
-                        <p class="mt-2 ml-16 text-base text-gray-500">
-                            Stay updated with market movements, crypto prices, and financial news.
+                        <p class="mt-4 text-gray-600">
+                            Stay updated with market movements, crypto prices, and financial news. Make informed decisions with real-time market data.
                         </p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                            <i class="fas fa-cloud-sun"></i>
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <i class="fas fa-cloud-sun text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-gray-900">Weather & Local News</h3>
+                            </div>
                         </div>
-                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Weather & Local News</p>
-                        <p class="mt-2 ml-16 text-base text-gray-500">
-                            Get your local weather forecast and breaking news updates.
+                        <p class="mt-4 text-gray-600">
+                            Get your local weather forecast and breaking news updates. Stay informed about what matters in your area.
                         </p>
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                            <i class="fas fa-comments"></i>
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <i class="fas fa-comments text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-bold text-gray-900">Social Media DMs</h3>
+                            </div>
                         </div>
-                        <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Social Media DMs</p>
-                        <p class="mt-2 ml-16 text-base text-gray-500">
-                            Never miss important messages from Twitter, Slack, and Discord.
+                        <p class="mt-4 text-gray-600">
+                            Never miss important messages from Twitter, Slack, and Discord. Stay connected with your team and community.
                         </p>
                     </div>
                 </div>
@@ -113,20 +154,38 @@
         </div>
     </div>
 
+    <!-- CTA Section -->
+    <div class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                Ready to transform your morning routine?
+            </h2>
+            <p class="mt-4 text-xl text-indigo-100">
+                Join thousands of professionals who start their day with MorningNewsletter.
+            </p>
+            <div class="mt-8">
+                <a href="/signup.php" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10">
+                    Start Free Trial
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Testimonials Section -->
-    <div id="testimonials" class="bg-gray-50 py-12">
+    <div id="testimonials" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center">
+            <div class="text-center">
                 <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Testimonials</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Loved by professionals worldwide
                 </p>
             </div>
 
-            <div class="mt-10">
+            <div class="mt-20">
                 <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     <!-- Testimonial 1 -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="bg-gray-50 rounded-2xl p-8">
                         <div class="flex items-center mb-4">
                             <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="John Doe">
                             <div class="ml-4">
@@ -138,7 +197,7 @@
                     </div>
 
                     <!-- Testimonial 2 -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="bg-gray-50 rounded-2xl p-8">
                         <div class="flex items-center mb-4">
                             <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" alt="Jane Smith">
                             <div class="ml-4">
@@ -150,7 +209,7 @@
                     </div>
 
                     <!-- Testimonial 3 -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="bg-gray-50 rounded-2xl p-8">
                         <div class="flex items-center mb-4">
                             <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson">
                             <div class="ml-4">
@@ -166,11 +225,11 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white">
+    <footer class="bg-gray-50">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="border-t border-gray-200 pt-8">
-                <div class="flex justify-between items-center">
-                    <div class="flex space-x-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex space-x-6 mb-4 md:mb-0">
                         <a href="#" class="text-gray-400 hover:text-gray-500">Privacy</a>
                         <a href="#" class="text-gray-400 hover:text-gray-500">Terms</a>
                         <a href="#" class="text-gray-400 hover:text-gray-500">Support</a>
