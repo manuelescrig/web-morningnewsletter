@@ -27,7 +27,7 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-center space-x-4">
                         <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Features</a>
-                        <a href="#testimonials" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Testimonials</a>
+                        <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Pricing</a>
                         <a href="/signup.php" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Start Free Trial</a>
                     </div>
                 </div>
@@ -57,7 +57,94 @@
         </div>
     </div>
 
-    <!-- Trusted By Section -->
+    <!-- Problem Agitation Section -->
+    <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Tired of Information Overload?
+                </h2>
+                <p class="mt-4 text-xl text-gray-500">
+                    Every morning, you're drowning in a sea of notifications, emails, and updates.
+                </p>
+            </div>
+            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Wasting Precious Time</h3>
+                    <p class="text-gray-600">Spending 30+ minutes every morning checking multiple apps and platforms for updates.</p>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Missing Important Updates</h3>
+                    <p class="text-gray-600">Critical information gets lost in the noise of countless notifications and messages.</p>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                        <i class="fas fa-bolt text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Starting Your Day Stressed</h3>
+                    <p class="text-gray-600">Feeling overwhelmed before your day even begins, affecting your productivity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transformation Section -->
+    <div class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Transform Your Morning Routine
+                </h2>
+                <p class="mt-4 text-xl text-gray-500">
+                    Start your day with clarity and confidence
+                </p>
+            </div>
+            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Before MorningNewsletter</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">Scattered information across multiple platforms</p>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">Missed important updates and messages</p>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">Wasted time checking different apps</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">After MorningNewsletter</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">One concise email with everything you need</p>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">Never miss important updates</p>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <p class="text-gray-600">Start your day focused and productive</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Proof Section -->
     <div class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <p class="text-center text-gray-500 mb-8">Trusted by 9000+ professionals worldwide</p>
@@ -155,7 +242,7 @@
     </div>
 
     <!-- Pricing Section -->
-    <div class="py-20 bg-white">
+    <div id="pricing" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Pricing</h2>
@@ -311,7 +398,92 @@
         </div>
     </div>
 
-    <!-- CTA Section -->
+    <!-- Testimonials Section -->
+    <div id="testimonials" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Testimonials</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Loved by professionals worldwide
+                </p>
+            </div>
+
+            <div class="mt-20">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white rounded-2xl p-8">
+                        <div class="flex items-center mb-4">
+                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="John Doe">
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">John Doe</h4>
+                                <p class="text-gray-600">CEO, TechCorp</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"MorningNewsletter has transformed how I start my day. Having all my important updates in one place saves me countless hours."</p>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white rounded-2xl p-8">
+                        <div class="flex items-center mb-4">
+                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" alt="Jane Smith">
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">Jane Smith</h4>
+                                <p class="text-gray-600">Product Manager</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"The KPI tracking feature is a game-changer. I can now monitor all my business metrics without logging into multiple platforms."</p>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white rounded-2xl p-8">
+                        <div class="flex items-center mb-4">
+                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson">
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold">Mike Johnson</h4>
+                                <p class="text-gray-600">Crypto Trader</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"As a crypto trader, having market updates and news in my morning brief helps me make better trading decisions."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">FAQ</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Frequently Asked Questions
+                </p>
+            </div>
+
+            <div class="mt-16 max-w-3xl mx-auto">
+                <dl class="space-y-8">
+                    <div>
+                        <dt class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</dt>
+                        <dd class="mt-2 text-gray-600">The newsletter is delivered to your inbox every morning at 6 AM in your local timezone.</dd>
+                    </div>
+                    <div>
+                        <dt class="text-lg font-medium text-gray-900">Can I customize what information I receive?</dt>
+                        <dd class="mt-2 text-gray-600">Yes! You can customize your preferences in your dashboard to receive exactly the information that matters to you.</dd>
+                    </div>
+                    <div>
+                        <dt class="text-lg font-medium text-gray-900">How do you handle my data?</dt>
+                        <dd class="mt-2 text-gray-600">We take data security seriously. All your data is encrypted and we never share it with third parties. Read our privacy policy for more details.</dd>
+                    </div>
+                    <div>
+                        <dt class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</dt>
+                        <dd class="mt-2 text-gray-600">Yes, you can cancel your subscription at any time. There are no long-term commitments required.</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final CTA Section -->
     <div class="gradient-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
@@ -325,58 +497,6 @@
                     Start Free Trial
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonials Section -->
-    <div id="testimonials" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Testimonials</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Loved by professionals worldwide
-                </p>
-            </div>
-
-            <div class="mt-20">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <!-- Testimonial 1 -->
-                    <div class="bg-gray-50 rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="John Doe">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">John Doe</h4>
-                                <p class="text-gray-600">CEO, TechCorp</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600">"MorningNewsletter has transformed how I start my day. Having all my important updates in one place saves me countless hours."</p>
-                    </div>
-
-                    <!-- Testimonial 2 -->
-                    <div class="bg-gray-50 rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" alt="Jane Smith">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">Jane Smith</h4>
-                                <p class="text-gray-600">Product Manager</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600">"The KPI tracking feature is a game-changer. I can now monitor all my business metrics without logging into multiple platforms."</p>
-                    </div>
-
-                    <!-- Testimonial 3 -->
-                    <div class="bg-gray-50 rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">Mike Johnson</h4>
-                                <p class="text-gray-600">Crypto Trader</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600">"As a crypto trader, having market updates and news in my morning brief helps me make better trading decisions."</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
