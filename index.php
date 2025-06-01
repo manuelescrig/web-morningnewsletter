@@ -14,11 +14,15 @@
             filter: grayscale(100%);
             opacity: 0.5;
         }
+        .nav-scrolled {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 <body class="bg-white">
     <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md fixed w-full z-50">
+    <nav id="main-nav" class="bg-white/80 backdrop-blur-md fixed w-full z-50 transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0">
@@ -41,6 +45,17 @@
             </div>
         </div>
     </nav>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 0) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+    </script>
 
     <!-- Hero Section -->
     <div class="gradient-bg pt-32 pb-20">
