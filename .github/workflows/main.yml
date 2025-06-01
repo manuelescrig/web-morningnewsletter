@@ -1,0 +1,25 @@
+on: push
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+
+    - name: 📂 Sync files to morningnewsletter.com
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4          
+      with:
+        server: ftp.escrig.net
+        username: github@morningnewsletter.com
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        port: 21
+        dry-run: false
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/press*/**
+          .gitignore
+          README.md
