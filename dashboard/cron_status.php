@@ -188,7 +188,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <div class="text-sm text-gray-600">
                             <p class="mb-2"><strong>Manual Crontab Entry:</strong></p>
                             <code class="bg-gray-100 px-2 py-1 rounded text-xs block">
-                                */15 * * * * php <?php echo __DIR__ . '/../cron/send_emails.php'; ?>
+                                */15 * * * * php <?php echo dirname(__DIR__) . '/cron/send_emails.php'; ?> >> <?php echo dirname(__DIR__) . '/logs/cron.log'; ?> 2>&1
                             </code>
                         </div>
                     </div>
