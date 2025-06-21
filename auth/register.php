@@ -25,6 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result['success']) {
             $success = $result['message'];
+            
+            // If email sending failed, provide manual verification link
+            if (!$result['email_sent'] && isset($result['verification_token'])) {
+                $manualVerificationUrl = "/auth/verify_email.php?token=" . $result['verification_token'];
+                $success .= "<br><br><strong>Manual Verification:</strong> <a href='$manualVerificationUrl' class='text-blue-600 hover:text-blue-500'>Click here to verify your email manually</a>";
+            }
         } else {
             $error = $result['message'];
         }
@@ -68,7 +74,7 @@ $userTimezone = date_default_timezone_get();
         <?php if ($success): ?>
         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
             <i class="fas fa-check-circle mr-2"></i>
-            <?php echo htmlspecialchars($success); ?>
+            <?php echo $success; ?>
             <div class="mt-2">
                 <a href="/auth/login.php" class="font-medium text-green-600 hover:text-green-500">
                     Click here to sign in

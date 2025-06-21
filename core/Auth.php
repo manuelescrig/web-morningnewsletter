@@ -71,12 +71,21 @@ class Auth {
             $verificationToken = $user->create($email, $password, $timezone);
             
             // Send verification email
-            $this->sendVerificationEmail($email, $verificationToken);
+            $emailSent = $this->sendVerificationEmail($email, $verificationToken);
+            
+            $message = 'Account created successfully. ';
+            if ($emailSent) {
+                $message .= 'Please check your email to verify your account.';
+            } else {
+                $message .= 'However, we couldn\'t send the verification email. Please contact support or try the manual verification link.';
+            }
             
             return [
                 'success' => true, 
-                'message' => 'Account created successfully. Please check your email to verify your account.',
-                'user_id' => $user->getId()
+                'message' => $message,
+                'user_id' => $user->getId(),
+                'email_sent' => $emailSent,
+                'verification_token' => $verificationToken // For manual verification if needed
             ];
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
@@ -130,26 +139,16 @@ class Auth {
     }
     
     private function sendVerificationEmail($email, $token) {
-        $verificationUrl = "http://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $token;
-        $subject = "Verify your MorningNewsletter account";
-        $message = "
-            <h2>Welcome to MorningNewsletter!</h2>
-            <p>Please click the link below to verify your email address:</p>
-            <p><a href='$verificationUrl'>Verify Email Address</a></p>
-            <p>If you didn't create an account with us, please ignore this email.</p>
-        ";
+        require_once __DIR__ . '/EmailSender.php';
         
-        $headers = [
-            'MIME-Version: 1.0',
-            'Content-type: text/html; charset=UTF-8',
-            'From: noreply@morningnewsletter.com'
-        ];
+        $emailSender = new EmailSender();
         
-        // For now, just log the email (replace with actual email sending later)
-        error_log("Verification email for $email: $verificationUrl");
-        
-        // TODO: Implement actual email sending with PHPMailer
-        return true;
+        try {
+            return $emailSender->sendVerificationEmail($email, $token);
+        } catch (Exception $e) {
+            error_log("Failed to send verification email to $email: " . $e->getMessage());
+            return false;
+        }
     }
     
     public function generateCSRFToken() {
