@@ -7,7 +7,28 @@ $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 
+// Add debug mode
+$debug = isset($_GET['debug']) && $_GET['debug'] === '1';
+
 try {
+    if ($debug) {
+        echo "<h2>Debug Information:</h2>";
+        echo "<p><strong>User:</strong> " . htmlspecialchars($user->getEmail()) . "</p>";
+        echo "<p><strong>Sources:</strong> " . $user->getSourceCount() . "</p>";
+        
+        $sources = $user->getSources();
+        echo "<h3>Source Details:</h3>";
+        foreach ($sources as $source) {
+            echo "<div style='margin: 10px 0; padding: 10px; border: 1px solid #ccc;'>";
+            echo "<strong>Type:</strong> " . htmlspecialchars($source['type']) . "<br>";
+            echo "<strong>Config:</strong> " . htmlspecialchars($source['config']) . "<br>";
+            echo "<strong>Active:</strong> " . ($source['is_active'] ? 'Yes' : 'No') . "<br>";
+            echo "<strong>Last Updated:</strong> " . ($source['last_updated'] ?: 'Never') . "<br>";
+            echo "</div>";
+        }
+        echo "<hr style='margin: 20px 0;'>";
+    }
+    
     $builder = new NewsletterBuilder($user);
     $newsletterHtml = $builder->build();
     

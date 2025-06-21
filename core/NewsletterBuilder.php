@@ -2,6 +2,14 @@
 require_once __DIR__ . '/User.php';
 require_once __DIR__ . '/SourceModule.php';
 
+// Include all source modules
+require_once __DIR__ . '/../modules/bitcoin.php';
+require_once __DIR__ . '/../modules/sp500.php';
+require_once __DIR__ . '/../modules/weather.php';
+require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/appstore.php';
+require_once __DIR__ . '/../modules/stripe.php';
+
 class NewsletterBuilder {
     private $user;
     private $sources;
@@ -19,23 +27,42 @@ class NewsletterBuilder {
                 $moduleClass = $this->getModuleClass($source['type']);
                 $config = json_decode($source['config'], true) ?: [];
                 
-                if (class_exists($moduleClass)) {
-                    $module = new $moduleClass($config);
-                    $data = $module->getData();
-                    
-                    $sourceData[] = [
-                        'title' => $module->getTitle(),
-                        'type' => $source['type'],
-                        'data' => $data,
-                        'last_updated' => $source['last_updated']
-                    ];
-                    
-                    // Update last_result in database
-                    $this->updateSourceResult($source['id'], $data);
+                if (!$moduleClass) {
+                    throw new Exception("Unknown source type: {$source['type']}");
                 }
+                
+                if (!class_exists($moduleClass)) {
+                    throw new Exception("Module class not found: $moduleClass");
+                }
+                
+                $module = new $moduleClass($config);
+                $data = $module->getData();
+                
+                $sourceData[] = [
+                    'title' => $module->getTitle(),
+                    'type' => $source['type'],
+                    'data' => $data,
+                    'last_updated' => $source['last_updated']
+                ];
+                
+                // Update last_result in database
+                $this->updateSourceResult($source['id'], $data);
             } catch (Exception $e) {
                 error_log("Error fetching data for source {$source['type']}: " . $e->getMessage());
-                // Continue with other sources even if one fails
+                
+                // Add a placeholder for failed sources so users know something went wrong
+                $sourceData[] = [
+                    'title' => ucfirst($source['type']) . ' (Error)',
+                    'type' => $source['type'],
+                    'data' => [
+                        [
+                            'label' => 'Status',
+                            'value' => 'Failed to load data: ' . $e->getMessage(),
+                            'delta' => null
+                        ]
+                    ],
+                    'last_updated' => $source['last_updated']
+                ];
             }
         }
         
