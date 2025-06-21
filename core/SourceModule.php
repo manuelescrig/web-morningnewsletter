@@ -14,18 +14,68 @@ abstract class BaseSourceModule implements SourceModule {
     }
     
     protected function makeHttpRequest($url, $headers = []) {
+        // Try cURL first (more reliable for HTTPS)
+        if (extension_loaded('curl')) {
+            return $this->makeHttpRequestWithCurl($url, $headers);
+        }
+        
+        // Fallback to file_get_contents
+        return $this->makeHttpRequestWithFileGetContents($url, $headers);
+    }
+    
+    private function makeHttpRequestWithCurl($url, $headers = []) {
+        $ch = curl_init();
+        
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_USERAGENT => 'MorningNewsletter/1.0',
+            CURLOPT_HTTPHEADER => $headers
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        
+        curl_close($ch);
+        
+        if ($response === false) {
+            throw new Exception("cURL error: $error");
+        }
+        
+        if ($httpCode !== 200) {
+            throw new Exception("HTTP error: $httpCode");
+        }
+        
+        return $response;
+    }
+    
+    private function makeHttpRequestWithFileGetContents($url, $headers = []) {
         $context = stream_context_create([
             'http' => [
                 'method' => 'GET',
                 'header' => implode("\r\n", $headers),
-                'timeout' => 10
+                'timeout' => 10,
+                'user_agent' => 'MorningNewsletter/1.0'
+            ],
+            'ssl' => [
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => false
             ]
         ]);
         
         $response = @file_get_contents($url, false, $context);
         
         if ($response === FALSE) {
-            throw new Exception("Failed to fetch data from: $url");
+            $error = error_get_last();
+            throw new Exception("Failed to fetch data from: $url" . ($error ? " - " . $error['message'] : ""));
         }
         
         return $response;

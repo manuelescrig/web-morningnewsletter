@@ -8,27 +8,38 @@ class BitcoinModule extends BaseSourceModule {
     
     public function getData(): array {
         try {
-            $apiUrl = 'https://api.coindesk.com/v1/bpi/currentprice.json';
+            // Using CoinGecko API - more reliable and no rate limits for basic usage
+            $apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true';
             $response = $this->makeHttpRequest($apiUrl);
             $data = json_decode($response, true);
             
-            if (!$data || !isset($data['bpi']['USD']['rate_float'])) {
-                throw new Exception('Invalid API response');
+            if (!$data || !isset($data['bitcoin']['usd'])) {
+                throw new Exception('Invalid API response from CoinGecko');
             }
             
-            $currentPrice = $data['bpi']['USD']['rate_float'];
+            $currentPrice = $data['bitcoin']['usd'];
+            $change24h = $data['bitcoin']['usd_24h_change'] ?? null;
+            
             $formattedPrice = '$' . $this->formatNumber($currentPrice, 0);
             
-            // Get previous price for delta calculation (simplified - would need database storage)
-            $previousPrice = $currentPrice; // Placeholder - implement proper tracking
-            $delta = $this->formatDelta($currentPrice, $previousPrice);
+            // Calculate delta from 24h change
+            $delta = null;
+            if ($change24h !== null) {
+                $symbol = $change24h >= 0 ? '↑' : '↓';
+                $color = $change24h >= 0 ? 'green' : 'red';
+                $delta = [
+                    'value' => $symbol . ' ' . number_format(abs($change24h), 2) . '%',
+                    'color' => $color,
+                    'raw_delta' => $change24h
+                ];
+            }
             
             return [
                 [
                     'label' => 'Current Price',
                     'value' => $formattedPrice,
                     'delta' => $delta,
-                    'timestamp' => $data['time']['updated']
+                    'timestamp' => date('Y-m-d H:i:s')
                 ]
             ];
             

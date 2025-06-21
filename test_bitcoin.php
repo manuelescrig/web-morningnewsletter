@@ -62,36 +62,107 @@ header('Content-Type: text/html; charset=UTF-8');
         }
         
         // Test the raw API directly
-        echo "<h2 class='text-lg font-semibold mb-4 mt-8'>Direct API Test:</h2>";
+        echo "<h2 class='text-lg font-semibold mb-4 mt-8'>Direct API Tests:</h2>";
         
+        $apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true';
+        echo "<p class='mb-4'><strong>Testing URL:</strong> <a href='$apiUrl' target='_blank' class='text-blue-600'>$apiUrl</a></p>";
+        
+        // Test with cURL
+        if (extension_loaded('curl')) {
+            try {
+                echo "<div class='bg-white p-4 rounded-lg shadow mb-4'>";
+                echo "<h3 class='font-medium mb-2'>Testing with cURL:</h3>";
+                
+                $ch = curl_init();
+                curl_setopt_array($ch, [
+                    CURLOPT_URL => $apiUrl,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT => 10,
+                    CURLOPT_CONNECTTIMEOUT => 5,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_MAXREDIRS => 3,
+                    CURLOPT_SSL_VERIFYPEER => true,
+                    CURLOPT_SSL_VERIFYHOST => 2,
+                    CURLOPT_USERAGENT => 'MorningNewsletter/1.0'
+                ]);
+                
+                $startTime = microtime(true);
+                $response = curl_exec($ch);
+                $endTime = microtime(true);
+                $duration = round(($endTime - $startTime) * 1000, 2);
+                
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $error = curl_error($ch);
+                
+                curl_close($ch);
+                
+                if ($response === false) {
+                    echo "<p class='text-red-600'><strong>cURL Error:</strong> $error</p>";
+                } elseif ($httpCode !== 200) {
+                    echo "<p class='text-red-600'><strong>HTTP Error:</strong> $httpCode</p>";
+                } else {
+                    echo "<p class='text-green-600'><strong>Success!</strong></p>";
+                    echo "<p><strong>Response time:</strong> {$duration}ms</p>";
+                    echo "<p><strong>Response size:</strong> " . strlen($response) . " bytes</p>";
+                    echo "<p><strong>HTTP Code:</strong> $httpCode</p>";
+                    
+                    $data = json_decode($response, true);
+                    if ($data) {
+                        echo "<h4 class='font-medium mt-4 mb-2'>Parsed JSON:</h4>";
+                        echo "<pre class='bg-gray-100 p-2 rounded text-sm overflow-x-auto'>" . htmlspecialchars(json_encode($data, JSON_PRETTY_PRINT)) . "</pre>";
+                    } else {
+                        echo "<p class='text-red-600'><strong>Failed to parse JSON response</strong></p>";
+                    }
+                }
+                echo "</div>";
+                
+            } catch (Exception $e) {
+                echo "<div class='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4'>";
+                echo "<p><strong>cURL Test Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+                echo "</div>";
+            }
+        } else {
+            echo "<div class='bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded mb-4'>";
+            echo "<p><strong>cURL extension not available</strong></p>";
+            echo "</div>";
+        }
+        
+        // Test with file_get_contents
         try {
             echo "<div class='bg-white p-4 rounded-lg shadow mb-4'>";
-            echo "<h3 class='font-medium mb-2'>Testing CoinDesk API directly:</h3>";
-            
-            $apiUrl = 'https://api.coindesk.com/v1/bpi/currentprice.json';
-            echo "<p><strong>URL:</strong> <a href='$apiUrl' target='_blank' class='text-blue-600'>$apiUrl</a></p>";
+            echo "<h3 class='font-medium mb-2'>Testing with file_get_contents:</h3>";
             
             $context = stream_context_create([
                 'http' => [
                     'method' => 'GET',
                     'timeout' => 10,
                     'user_agent' => 'MorningNewsletter/1.0'
+                ],
+                'ssl' => [
+                    'verify_peer' => true,
+                    'verify_peer_name' => true,
+                    'allow_self_signed' => false
                 ]
             ]);
             
             $startTime = microtime(true);
-            $response = file_get_contents($apiUrl, false, $context);
+            $response = @file_get_contents($apiUrl, false, $context);
             $endTime = microtime(true);
             $duration = round(($endTime - $startTime) * 1000, 2);
             
             if ($response === FALSE) {
+                $error = error_get_last();
                 echo "<p class='text-red-600'><strong>Failed to fetch data from API</strong></p>";
+                if ($error) {
+                    echo "<p class='text-red-600'><strong>Error:</strong> " . htmlspecialchars($error['message']) . "</p>";
+                }
                 
                 // Check if allow_url_fopen is enabled
                 if (!ini_get('allow_url_fopen')) {
                     echo "<p class='text-red-600'><strong>Issue:</strong> allow_url_fopen is disabled in PHP configuration</p>";
                 }
             } else {
+                echo "<p class='text-green-600'><strong>Success!</strong></p>";
                 echo "<p><strong>Response time:</strong> {$duration}ms</p>";
                 echo "<p><strong>Response size:</strong> " . strlen($response) . " bytes</p>";
                 
@@ -108,8 +179,8 @@ header('Content-Type: text/html; charset=UTF-8');
             echo "</div>";
             
         } catch (Exception $e) {
-            echo "<div class='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded'>";
-            echo "<p><strong>API Test Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "<div class='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4'>";
+            echo "<p><strong>file_get_contents Test Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
             echo "</div>";
         }
         
