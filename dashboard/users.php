@@ -59,6 +59,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                         break;
                         
+                    case 'delete':
+                        if ($targetUser->getId() === $user->getId()) {
+                            $error = 'You cannot delete yourself.';
+                        } else {
+                            try {
+                                $email = $targetUser->getEmail();
+                                $success = $targetUser->delete();
+                                if ($success) {
+                                    $success = "Successfully deleted user {$email} and all associated data.";
+                                } else {
+                                    $error = 'Failed to delete user.';
+                                }
+                            } catch (Exception $e) {
+                                $error = 'Error deleting user: ' . $e->getMessage();
+                            }
+                        }
+                        break;
+                        
                     default:
                         $error = 'Invalid action.';
                         break;
@@ -103,14 +121,63 @@ $csrfToken = $auth->generateCSRFToken();
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="px-4 py-6 sm:px-0">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-900">User Management</h1>
-                    <p class="mt-2 text-gray-600">Manage user accounts and admin permissions</p>
+            <h1 class="text-3xl font-bold text-gray-900">User Management</h1>
+            <p class="mt-2 text-gray-600">Manage user accounts and admin permissions</p>
+        </div>
+
+        <!-- Admin Statistics -->
+        <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500">Total Users</div>
+                        <div class="text-2xl font-bold text-gray-900"><?php echo count($users); ?></div>
+                    </div>
                 </div>
-                <div class="text-sm text-gray-500">
-                    <i class="fas fa-users mr-2"></i>
-                    <?php echo count($users); ?> total users
+            </div>
+            
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-crown text-red-600 text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500">Admin Users</div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            <?php echo count(array_filter($users, function($u) { return $u['is_admin']; })); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500">Verified Users</div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            <?php echo count(array_filter($users, function($u) { return $u['email_verified']; })); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-star text-purple-600 text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-500">Premium Users</div>
+                        <div class="text-2xl font-bold text-gray-900">
+                            <?php echo count(array_filter($users, function($u) { return $u['plan'] === 'premium'; })); ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,27 +277,41 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <?php if ($userData['id'] != $user->getId()): ?>
-                                            <?php if ($userData['is_admin']): ?>
-                                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove admin access from <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                            <div class="flex space-x-2">
+                                                <?php if ($userData['is_admin']): ?>
+                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove admin access from <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                        <input type="hidden" name="action" value="demote">
+                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                        <button type="submit" class="text-orange-600 hover:text-orange-900">
+                                                            <i class="fas fa-user-minus mr-1"></i>
+                                                            Demote
+                                                        </button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to promote <?php echo htmlspecialchars($userData['email']); ?> to admin?');">
+                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                        <input type="hidden" name="action" value="promote">
+                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                        <button type="submit" class="text-blue-600 hover:text-blue-900">
+                                                            <i class="fas fa-user-plus mr-1"></i>
+                                                            Promote
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
+                                                
+                                                <span class="text-gray-300">|</span>
+                                                
+                                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently DELETE <?php echo htmlspecialchars($userData['email']); ?>? This will remove all their data including sources and email logs. This action cannot be undone!');">
                                                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                    <input type="hidden" name="action" value="demote">
+                                                    <input type="hidden" name="action" value="delete">
                                                     <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                     <button type="submit" class="text-red-600 hover:text-red-900">
-                                                        <i class="fas fa-user-minus mr-1"></i>
-                                                        Demote
+                                                        <i class="fas fa-trash mr-1"></i>
+                                                        Delete
                                                     </button>
                                                 </form>
-                                            <?php else: ?>
-                                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to promote <?php echo htmlspecialchars($userData['email']); ?> to admin?');">
-                                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                    <input type="hidden" name="action" value="promote">
-                                                    <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                    <button type="submit" class="text-blue-600 hover:text-blue-900">
-                                                        <i class="fas fa-user-plus mr-1"></i>
-                                                        Promote
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
+                                            </div>
                                         <?php else: ?>
                                             <span class="text-gray-400">Current User</span>
                                         <?php endif; ?>
@@ -241,63 +322,6 @@ $csrfToken = $auth->generateCSRFToken();
                         </table>
                     </div>
                 <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Admin Statistics -->
-        <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-users text-blue-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Total Users</div>
-                        <div class="text-2xl font-bold text-gray-900"><?php echo count($users); ?></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-crown text-red-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Admin Users</div>
-                        <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['is_admin']; })); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Verified Users</div>
-                        <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['email_verified']; })); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-star text-purple-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Premium Users</div>
-                        <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['plan'] === 'premium'; })); ?>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -207,6 +207,37 @@ class User {
         return $success;
     }
     
+    public function delete() {
+        try {
+            // Start transaction for data consistency
+            $this->db->beginTransaction();
+            
+            // Delete related data first (sources and email_logs have CASCADE DELETE in schema)
+            // But we'll explicitly delete them to be safe
+            $stmt = $this->db->prepare("DELETE FROM sources WHERE user_id = ?");
+            $stmt->execute([$this->id]);
+            
+            $stmt = $this->db->prepare("DELETE FROM email_logs WHERE user_id = ?");
+            $stmt->execute([$this->id]);
+            
+            // Delete the user
+            $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+            $success = $stmt->execute([$this->id]);
+            
+            if ($success) {
+                $this->db->commit();
+                return true;
+            } else {
+                $this->db->rollback();
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            throw new Exception("Failed to delete user: " . $e->getMessage());
+        }
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
