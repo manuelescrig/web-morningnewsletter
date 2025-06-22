@@ -77,6 +77,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                         break;
                         
+                    case 'resend_verification':
+                        try {
+                            $success = $targetUser->resendVerificationEmail();
+                            if ($success) {
+                                $success = "Verification email resent to {$targetUser->getEmail()}.";
+                            } else {
+                                $error = 'Failed to send verification email.';
+                            }
+                        } catch (Exception $e) {
+                            $error = 'Error sending verification email: ' . $e->getMessage();
+                        }
+                        break;
+                        
                     default:
                         $error = 'Invalid action.';
                         break;
@@ -296,6 +309,20 @@ $csrfToken = $auth->generateCSRFToken();
                                                         <button type="submit" class="text-blue-600 hover:text-blue-900">
                                                             <i class="fas fa-crown mr-1"></i>
                                                             Make Admin
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
+                                                
+                                                <?php if (!$userData['email_verified']): ?>
+                                                    <span class="text-gray-300">|</span>
+                                                    
+                                                    <form method="POST" class="inline" onsubmit="return confirm('Resend verification email to <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                        <input type="hidden" name="action" value="resend_verification">
+                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                        <button type="submit" class="text-green-600 hover:text-green-900">
+                                                            <i class="fas fa-envelope mr-1"></i>
+                                                            Resend Verify
                                                         </button>
                                                     </form>
                                                 <?php endif; ?>
