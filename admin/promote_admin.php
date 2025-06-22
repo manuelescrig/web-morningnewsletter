@@ -34,8 +34,11 @@ if (empty($email)) {
     die('Error: Email parameter is required.');
 }
 
+// URL decode the email and trim whitespace
+$email = urldecode(trim($email));
+
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die('Error: Invalid email format.');
+    die('Error: Invalid email format. Received: ' . htmlspecialchars($email));
 }
 
 try {
