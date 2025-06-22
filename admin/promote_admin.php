@@ -34,8 +34,10 @@ if (empty($email)) {
     die('Error: Email parameter is required.');
 }
 
-// URL decode the email and trim whitespace
+// URL decode the email and fix space-to-plus conversion
 $email = urldecode(trim($email));
+// Convert spaces back to plus signs (common URL encoding issue)
+$email = str_replace(' ', '+', $email);
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     die('Error: Invalid email format. Received: ' . htmlspecialchars($email));
