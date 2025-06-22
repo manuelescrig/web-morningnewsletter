@@ -257,25 +257,36 @@ class User {
         $success = $stmt->execute([$verificationToken, $this->id]);
         
         if ($success) {
-            // Send verification email
-            require_once __DIR__ . '/EmailSender.php';
-            $emailSender = new EmailSender();
-            
-            $subject = "Verify Your Email - MorningNewsletter";
-            $verificationUrl = "http" . (isset($_SERVER['HTTPS']) ? 's' : '') . "://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $verificationToken;
-            
-            $message = "
-            <h2>Verify Your Email Address</h2>
-            <p>Hello,</p>
-            <p>Please click the link below to verify your email address:</p>
-            <p><a href='{$verificationUrl}' style='background-color: #3B82F6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Verify Email</a></p>
-            <p>Or copy and paste this URL into your browser:</p>
-            <p>{$verificationUrl}</p>
-            <p>If you didn't create an account with us, please ignore this email.</p>
-            <p>Best regards,<br>MorningNewsletter Team</p>
-            ";
-            
-            return $emailSender->sendEmail($this->email, $subject, $message);
+            try {
+                // Send verification email
+                require_once __DIR__ . '/EmailSender.php';
+                $emailSender = new EmailSender();
+                
+                $subject = "Verify Your Email - MorningNewsletter";
+                
+                // Build verification URL more safely
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $verificationToken;
+                
+                $message = "
+                <h2>Verify Your Email Address</h2>
+                <p>Hello,</p>
+                <p>Please click the link below to verify your email address:</p>
+                <p><a href='{$verificationUrl}' style='background-color: #3B82F6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Verify Email</a></p>
+                <p>Or copy and paste this URL into your browser:</p>
+                <p>{$verificationUrl}</p>
+                <p>If you didn't create an account with us, please ignore this email.</p>
+                <p>Best regards,<br>MorningNewsletter Team</p>
+                ";
+                
+                return $emailSender->sendEmail($this->email, $subject, $message);
+                
+            } catch (Exception $e) {
+                // Log the error but don't break the operation
+                error_log("Failed to send verification email to {$this->email}: " . $e->getMessage());
+                throw new Exception("Failed to send verification email: " . $e->getMessage());
+            }
         }
         
         return false;

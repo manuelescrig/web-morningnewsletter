@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/User.php';
 
@@ -78,15 +82,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                         
                     case 'resend_verification':
-                        try {
-                            $success = $targetUser->resendVerificationEmail();
-                            if ($success) {
-                                $success = "Verification email resent to {$targetUser->getEmail()}.";
-                            } else {
-                                $error = 'Failed to send verification email.';
+                        if ($targetUser->isEmailVerified()) {
+                            $error = 'User is already verified.';
+                        } else {
+                            try {
+                                $success = $targetUser->resendVerificationEmail();
+                                if ($success) {
+                                    $success = "Verification email resent to {$targetUser->getEmail()}.";
+                                } else {
+                                    $error = 'Failed to send verification email.';
+                                }
+                            } catch (Exception $e) {
+                                $error = 'Error sending verification email: ' . $e->getMessage();
+                                error_log("Resend verification error for user {$targetUser->getId()}: " . $e->getMessage());
                             }
-                        } catch (Exception $e) {
-                            $error = 'Error sending verification email: ' . $e->getMessage();
                         }
                         break;
                         
