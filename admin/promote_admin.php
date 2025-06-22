@@ -8,7 +8,15 @@
  * For security, this should only be used during initial setup or by existing admins.
  */
 
-require_once __DIR__ . '/../core/User.php';
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+try {
+    require_once __DIR__ . '/../core/User.php';
+} catch (Exception $e) {
+    die("Error loading User class: " . $e->getMessage());
+}
 
 // Simple security check - require a secret key for promotion
 $secret = $_GET['secret'] ?? '';
@@ -30,9 +38,13 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     die('Error: Invalid email format.');
 }
 
-$user = User::findByEmail($email);
-if (!$user) {
-    die('Error: User not found with email: ' . htmlspecialchars($email));
+try {
+    $user = User::findByEmail($email);
+    if (!$user) {
+        die('Error: User not found with email: ' . htmlspecialchars($email));
+    }
+} catch (Exception $e) {
+    die('Database error: ' . $e->getMessage());
 }
 
 switch ($action) {

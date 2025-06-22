@@ -3,7 +3,15 @@
  * User List Script - for debugging admin setup
  */
 
-require_once __DIR__ . '/../config/database.php';
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+try {
+    require_once __DIR__ . '/../config/database.php';
+} catch (Exception $e) {
+    die("Error loading database: " . $e->getMessage());
+}
 
 // Simple security check
 $secret = $_GET['secret'] ?? '';
@@ -14,9 +22,13 @@ if ($secret !== $requiredSecret) {
     die('Access denied. Invalid secret key.');
 }
 
-$db = Database::getInstance()->getConnection();
-$stmt = $db->query("SELECT id, email, is_admin, email_verified, created_at FROM users ORDER BY created_at DESC");
-$users = $stmt->fetchAll();
+try {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->query("SELECT id, email, is_admin, email_verified, created_at FROM users ORDER BY created_at DESC");
+    $users = $stmt->fetchAll();
+} catch (Exception $e) {
+    die("Database error: " . $e->getMessage());
+}
 
 echo "<h2>All Users in System</h2>\n";
 echo "<table border='1' cellpadding='5'>\n";
