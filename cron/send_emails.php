@@ -1,18 +1,42 @@
 <?php
-#!/usr/bin/env php
-<?php
 /**
- * Email sending cron job
+ * Web-based email sending cron job
  * 
- * This script should be run every 15 minutes via cron:
- * */15 * * * * php /path/to/morningnewsletter/cron/send_emails.php
+ * Usage:
+ * 1. Normal operation: https://domain.com/cron/send_emails.php
+ * 2. Health check: https://domain.com/cron/send_emails.php?mode=health-check
+ * 3. Dry run: https://domain.com/cron/send_emails.php?mode=dry-run
+ * 4. Force send: https://domain.com/cron/send_emails.php?mode=force-send&user_id=123
  * 
  * It will find all users whose send time falls within the current 15-minute window
  * and send them their personalized newsletter.
  */
 
-require_once __DIR__ . '/../core/Scheduler.php';
-require_once __DIR__ . '/../core/EmailSender.php';
+// Set headers for web output
+header('Content-Type: text/plain');
+
+// Basic security logging (but allow all access for web cron)
+if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+    error_log("Web cron accessed from: " . $_SERVER['HTTP_USER_AGENT']);
+}
+
+// Set error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Change to script directory to ensure relative paths work
+chdir(__DIR__);
+
+try {
+    require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/../core/User.php';
+    require_once __DIR__ . '/../core/NewsletterBuilder.php';
+    require_once __DIR__ . '/../core/Scheduler.php';
+    require_once __DIR__ . '/../core/EmailSender.php';
+} catch (Exception $e) {
+    echo "Error loading required files: " . $e->getMessage() . "\n";
+    exit(1);
+}
 
 // Set up error logging
 ini_set('log_errors', 1);
@@ -31,10 +55,8 @@ function logMessage($message, $level = 'INFO') {
     // Log to file
     file_put_contents(__DIR__ . '/../logs/cron.log', $logMessage, FILE_APPEND | LOCK_EX);
     
-    // Also output to console if running in CLI
-    if (php_sapi_name() === 'cli') {
-        echo $logMessage;
-    }
+    // Output to browser (already set Content-Type to text/plain)
+    echo $logMessage;
 }
 
 function main() {
@@ -71,7 +93,7 @@ function main() {
 }
 
 // Health check mode - just verify the system is working
-if (isset($argv[1]) && $argv[1] === '--health-check') {
+if (isset($_GET['mode']) && $_GET['mode'] === 'health-check') {
     try {
         // Test database connection
         $db = Database::getInstance()->getConnection();
@@ -96,7 +118,7 @@ if (isset($argv[1]) && $argv[1] === '--health-check') {
 }
 
 // Dry run mode - show what would be sent without actually sending
-if (isset($argv[1]) && $argv[1] === '--dry-run') {
+if (isset($_GET['mode']) && $_GET['mode'] === 'dry-run') {
     try {
         $scheduler = new Scheduler();
         $users = $scheduler->getUsersToSend(15);
@@ -119,9 +141,9 @@ if (isset($argv[1]) && $argv[1] === '--dry-run') {
 }
 
 // Force send mode - send to a specific user (for testing)
-if (isset($argv[1]) && $argv[1] === '--force-send' && isset($argv[2])) {
+if (isset($_GET['mode']) && $_GET['mode'] === 'force-send' && isset($_GET['user_id'])) {
     try {
-        $userId = (int)$argv[2];
+        $userId = (int)$_GET['user_id'];
         $user = User::findById($userId);
         
         if (!$user) {
@@ -155,13 +177,9 @@ if (isset($argv[1]) && $argv[1] === '--force-send' && isset($argv[2])) {
     exit(0);
 }
 
-// Show usage if invalid arguments
-if (isset($argv[1])) {
-    echo "Usage: php send_emails.php [--health-check|--dry-run|--force-send USER_ID]\n";
-    echo "  --health-check    Check if the system is working properly\n";
-    echo "  --dry-run        Show what would be sent without sending\n";
-    echo "  --force-send ID  Force send newsletter to specific user ID\n";
-    echo "  (no args)        Normal operation - send scheduled newsletters\n";
+// Show usage if invalid parameters for web requests
+if (isset($_GET['mode']) && !in_array($_GET['mode'], ['health-check', 'dry-run', 'force-send'])) {
+    echo "Invalid mode. Valid modes: health-check, dry-run, force-send\n";
     exit(1);
 }
 

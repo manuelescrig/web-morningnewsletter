@@ -180,16 +180,35 @@ $csrfToken = $auth->generateCSRFToken();
                         </form>
                         
                         <div class="text-sm text-gray-600">
-                            <p class="mb-2"><strong>Setup Commands:</strong></p>
-                            <code class="bg-gray-100 px-2 py-1 rounded text-xs">./setup-cron.sh</code>
-                            <p class="mt-2 text-xs">Run this in your project directory to set up the cron job automatically.</p>
+                            <p class="mb-2"><strong>Cron Job URL:</strong></p>
+                            <code class="bg-gray-100 px-2 py-1 rounded text-xs block break-all">
+                                <?php echo 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>
+                            </code>
+                            <p class="mt-2 text-xs">Use this URL in your hosting provider's cron job settings. Set to run every 15 minutes.</p>
                         </div>
                         
                         <div class="text-sm text-gray-600">
-                            <p class="mb-2"><strong>Manual Crontab Entry:</strong></p>
+                            <p class="mb-2"><strong>Cron Schedule:</strong></p>
                             <code class="bg-gray-100 px-2 py-1 rounded text-xs block">
-                                */15 * * * * php <?php echo dirname(__DIR__) . '/cron/send_emails.php'; ?> >> <?php echo dirname(__DIR__) . '/logs/cron.log'; ?> 2>&1
+                                */15 * * * * (Every 15 minutes)
                             </code>
+                            <p class="mt-2 text-xs">This will check for users whose send time falls within each 15-minute window.</p>
+                        </div>
+                        
+                        <div class="text-sm text-gray-600">
+                            <p class="mb-2"><strong>Test Links:</strong></p>
+                            <div class="space-y-1">
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=health-check" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                    <i class="fas fa-heart mr-1"></i>Health Check
+                                </a><br>
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=dry-run" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                    <i class="fas fa-eye mr-1"></i>Dry Run (Preview)
+                                </a><br>
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                    <i class="fas fa-play mr-1"></i>Manual Run
+                                </a>
+                            </div>
+                            <p class="mt-2 text-xs text-gray-500">Click these links to test the cron script manually.</p>
                         </div>
                     </div>
                 </div>
