@@ -42,6 +42,9 @@ function getNavClass($page, $currentPage) {
                         Settings
                     </a>
                     <?php if ($user->isAdmin()): ?>
+                    <a href="/dashboard/users.php" class="<?php echo getNavClass('users', $currentPage); ?>">
+                        Users
+                    </a>
                     <a href="/dashboard/cron_status.php" class="<?php echo getNavClass('cron_status', $currentPage); ?>">
                         Cron Status
                     </a>
