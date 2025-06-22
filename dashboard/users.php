@@ -289,13 +289,13 @@ $csrfToken = $auth->generateCSRFToken();
                                                         </button>
                                                     </form>
                                                 <?php else: ?>
-                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to promote <?php echo htmlspecialchars($userData['email']); ?> to admin?');">
+                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to grant admin access to <?php echo htmlspecialchars($userData['email']); ?>?');">
                                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                                                         <input type="hidden" name="action" value="promote">
                                                         <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                         <button type="submit" class="text-blue-600 hover:text-blue-900">
-                                                            <i class="fas fa-user-plus mr-1"></i>
-                                                            Promote
+                                                            <i class="fas fa-crown mr-1"></i>
+                                                            Make Admin
                                                         </button>
                                                     </form>
                                                 <?php endif; ?>
