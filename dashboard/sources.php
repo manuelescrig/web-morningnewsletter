@@ -18,6 +18,8 @@ $sources = $user->getSources();
 $error = '';
 $success = '';
 
+$currentPage = 'sources';
+
 // Available source types
 $availableModules = [
     'bitcoin' => ['class' => 'BitcoinModule', 'name' => 'Bitcoin Price', 'description' => 'Track Bitcoin price and changes'],
@@ -103,41 +105,7 @@ $csrfToken = $auth->generateCSRFToken();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="/" class="text-2xl font-bold text-blue-600">MorningNewsletter</a>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/dashboard/" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Dashboard
-                        </a>
-                        <a href="/dashboard/sources.php" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Sources
-                        </a>
-                        <a href="/dashboard/schedule.php" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Schedule
-                        </a>
-                        <a href="/dashboard/settings.php" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Settings
-                        </a>
-                        <?php if ($user->isAdmin()): ?>
-                        <a href="/dashboard/cron_status.php" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Cron Status
-                        </a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-700">Welcome, <?php echo htmlspecialchars($user->getEmail()); ?></span>
-                    <a href="/auth/logout.php" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
