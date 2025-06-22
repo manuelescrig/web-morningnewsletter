@@ -9,6 +9,7 @@ class User {
     private $timezone;
     private $send_time;
     private $email_verified;
+    private $is_admin;
     
     public function __construct($userData = null) {
         $this->db = Database::getInstance()->getConnection();
@@ -20,6 +21,7 @@ class User {
             $this->timezone = $userData['timezone'];
             $this->send_time = $userData['send_time'];
             $this->email_verified = $userData['email_verified'];
+            $this->is_admin = $userData['is_admin'] ?? 0;
         }
     }
     
@@ -40,6 +42,7 @@ class User {
             $this->timezone = $timezone;
             $this->send_time = '06:00';
             $this->email_verified = 0;
+            $this->is_admin = 0;
             
             return $verificationToken;
         } catch (PDOException $e) {
@@ -176,6 +179,34 @@ class User {
         return $stmt->execute([$sourceId, $this->id]);
     }
     
+    public function promoteToAdmin() {
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET is_admin = 1, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        $success = $stmt->execute([$this->id]);
+        if ($success) {
+            $this->is_admin = 1;
+        }
+        return $success;
+    }
+    
+    public function demoteFromAdmin() {
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET is_admin = 0, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        $success = $stmt->execute([$this->id]);
+        if ($success) {
+            $this->is_admin = 0;
+        }
+        return $success;
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
@@ -183,4 +214,5 @@ class User {
     public function getTimezone() { return $this->timezone; }
     public function getSendTime() { return $this->send_time; }
     public function isEmailVerified() { return (bool)$this->email_verified; }
+    public function isAdmin() { return (bool)$this->is_admin; }
 }

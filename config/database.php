@@ -43,6 +43,7 @@ class Database {
                 email_verified INTEGER DEFAULT 0,
                 send_time TEXT DEFAULT '06:00',
                 verification_token TEXT,
+                is_admin INTEGER DEFAULT 0,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",

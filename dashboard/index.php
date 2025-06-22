@@ -39,6 +39,11 @@ $sources = $user->getSources();
                         <a href="/dashboard/settings.php" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Settings
                         </a>
+                        <?php if ($user->isAdmin()): ?>
+                        <a href="/dashboard/cron_status.php" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Cron Status
+                        </a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">

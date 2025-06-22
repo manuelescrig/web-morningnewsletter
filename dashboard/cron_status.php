@@ -7,8 +7,11 @@ $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 
-// Only allow admin or for development purposes, allow any user
-// In production, you might want to restrict this to admin users
+// Restrict access to admin users only
+if (!$user->isAdmin()) {
+    header('Location: /dashboard/');
+    exit();
+}
 
 $scheduler = new Scheduler();
 $logFile = __DIR__ . '/../logs/cron.log';
