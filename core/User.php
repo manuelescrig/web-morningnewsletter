@@ -241,55 +241,47 @@ class User {
     public function resendVerificationEmail() {
         // Only resend if user is not already verified
         if ($this->email_verified) {
-            throw new Exception("User is already verified");
+            return ['success' => false, 'message' => 'User is already verified'];
         }
         
-        // Generate new verification token
-        $verificationToken = bin2hex(random_bytes(32));
-        
-        // Update the verification token in database
-        $stmt = $this->db->prepare("
-            UPDATE users 
-            SET verification_token = ?, updated_at = CURRENT_TIMESTAMP 
-            WHERE id = ?
-        ");
-        
-        $success = $stmt->execute([$verificationToken, $this->id]);
-        
-        if ($success) {
-            try {
-                // Send verification email
-                require_once __DIR__ . '/EmailSender.php';
-                $emailSender = new EmailSender();
-                
-                $subject = "Verify Your Email - MorningNewsletter";
-                
-                // Build verification URL more safely
-                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-                $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $verificationToken;
-                
-                $message = "
-                <h2>Verify Your Email Address</h2>
-                <p>Hello,</p>
-                <p>Please click the link below to verify your email address:</p>
-                <p><a href='{$verificationUrl}' style='background-color: #3B82F6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Verify Email</a></p>
-                <p>Or copy and paste this URL into your browser:</p>
-                <p>{$verificationUrl}</p>
-                <p>If you didn't create an account with us, please ignore this email.</p>
-                <p>Best regards,<br>MorningNewsletter Team</p>
-                ";
-                
-                return $emailSender->sendEmail($this->email, $subject, $message);
-                
-            } catch (Exception $e) {
-                // Log the error but don't break the operation
-                error_log("Failed to send verification email to {$this->email}: " . $e->getMessage());
-                throw new Exception("Failed to send verification email: " . $e->getMessage());
+        try {
+            // Generate new verification token
+            $verificationToken = bin2hex(random_bytes(32));
+            
+            // Update the verification token in database
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET verification_token = ?, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            $success = $stmt->execute([$verificationToken, $this->id]);
+            
+            if (!$success) {
+                return ['success' => false, 'message' => 'Failed to update verification token'];
             }
+            
+            // Send verification email using the public method
+            require_once __DIR__ . '/EmailSender.php';
+            
+            $emailSender = new EmailSender();
+            $emailResult = $emailSender->sendVerificationEmail($this->email, $verificationToken);
+            
+            if ($emailResult) {
+                return ['success' => true, 'message' => 'Verification email sent successfully'];
+            } else {
+                // Email failed but token was updated - log for manual verification if needed
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+                $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $verificationToken;
+                error_log("Email sending failed for user {$this->id} but token updated. Manual verification URL: {$verificationUrl}");
+                return ['success' => false, 'message' => 'Failed to send email, but verification token was updated'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Resend verification error for user {$this->id}: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
         }
-        
-        return false;
     }
     
     // Getters

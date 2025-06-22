@@ -82,20 +82,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                         
                     case 'resend_verification':
-                        if ($targetUser->isEmailVerified()) {
-                            $error = 'User is already verified.';
-                        } else {
-                            try {
-                                $success = $targetUser->resendVerificationEmail();
-                                if ($success) {
-                                    $success = "Verification email resent to {$targetUser->getEmail()}.";
-                                } else {
-                                    $error = 'Failed to send verification email.';
-                                }
-                            } catch (Exception $e) {
-                                $error = 'Error sending verification email: ' . $e->getMessage();
-                                error_log("Resend verification error for user {$targetUser->getId()}: " . $e->getMessage());
+                        try {
+                            $result = $targetUser->resendVerificationEmail();
+                            if ($result['success']) {
+                                $success = "Verification email resent to {$targetUser->getEmail()}.";
+                            } else {
+                                $error = $result['message'];
                             }
+                        } catch (Exception $e) {
+                            $error = 'Error sending verification email: ' . $e->getMessage();
+                            error_log("Resend verification error for user {$targetUser->getId()}: " . $e->getMessage());
                         }
                         break;
                         
