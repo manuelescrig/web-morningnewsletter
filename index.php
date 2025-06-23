@@ -25,12 +25,11 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
-        .mesh-gradient {
-            background-color: #f3f4f6; /* Base background color */
-            background-image: radial-gradient(at 0% 0%, hsla(217,100%,50%,0.1) 0, transparent 50%),
-                              radial-gradient(at 100% 0%, hsla(322,100%,50%,0.1) 0, transparent 50%),
-                              radial-gradient(at 0% 100%, hsla(271,100%,50%,0.1) 0, transparent 50%),
-                              radial-gradient(at 100% 100%, hsla(178,100%,50%,0.1) 0, transparent 50%);
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
 </head>
@@ -49,7 +48,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 </div>
                 <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
                     Your Personalized 
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                    <span class="gradient-text">
                         Morning Brief
                     </span>
                 </h1>
