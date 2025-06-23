@@ -583,7 +583,8 @@ try {
         async function subscribeToPlan(plan) {
             // Check if user is logged in
             <?php if (!$isLoggedIn): ?>
-                alert('Please login or register to subscribe to a plan.');
+                // Store the selected plan in session storage for after login
+                sessionStorage.setItem('selectedPlan', plan);
                 window.location.href = '/login';
                 return;
             <?php endif; ?>
