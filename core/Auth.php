@@ -138,6 +138,22 @@ class Auth {
         return ['success' => false, 'message' => 'Failed to verify email'];
     }
     
+    public function verifyEmailChange($token) {
+        $user = User::findByEmailChangeToken($token);
+        if (!$user) {
+            return ['success' => false, 'message' => 'Invalid or expired email change verification token'];
+        }
+        
+        $result = $user->verifyEmailChange($token);
+        
+        // If successful and the user is currently logged in, update the session email
+        if ($result['success'] && $this->isLoggedIn() && $this->getCurrentUser()->getId() === $user->getId()) {
+            $_SESSION['user_email'] = $user->getEmail();
+        }
+        
+        return $result;
+    }
+    
     private function sendVerificationEmail($email, $token) {
         require_once __DIR__ . '/EmailSender.php';
         

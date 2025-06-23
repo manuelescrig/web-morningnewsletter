@@ -574,6 +574,68 @@ class User {
         return null;
     }
     
+    public function getPendingEmailChange() {
+        try {
+            $stmt = $this->db->prepare("SELECT verification_token FROM users WHERE id = ?");
+            $stmt->execute([$this->id]);
+            $result = $stmt->fetch();
+            
+            if (!$result || !$result['verification_token']) {
+                return null;
+            }
+            
+            $tokenData = json_decode($result['verification_token'], true);
+            
+            if (!$tokenData || $tokenData['type'] !== 'email_change') {
+                return null;
+            }
+            
+            // Check if token has expired
+            if (strtotime($tokenData['expires_at']) < time()) {
+                return null;
+            }
+            
+            return [
+                'new_email' => $tokenData['new_email'],
+                'expires_at' => $tokenData['expires_at']
+            ];
+            
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+    
+    public function cancelEmailChange() {
+        try {
+            $stmt = $this->db->prepare("SELECT verification_token FROM users WHERE id = ?");
+            $stmt->execute([$this->id]);
+            $result = $stmt->fetch();
+            
+            if (!$result || !$result['verification_token']) {
+                return false;
+            }
+            
+            $tokenData = json_decode($result['verification_token'], true);
+            
+            if (!$tokenData || $tokenData['type'] !== 'email_change') {
+                return false;
+            }
+            
+            // Clear the verification token
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET verification_token = NULL, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            return $stmt->execute([$this->id]);
+            
+        } catch (Exception $e) {
+            error_log("Cancel email change error for user {$this->id}: " . $e->getMessage());
+            return false;
+        }
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }

@@ -62,6 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
+            case 'cancel_email_change':
+                if ($user->cancelEmailChange()) {
+                    $success = 'Email change request cancelled successfully.';
+                } else {
+                    $error = 'No pending email change request found.';
+                }
+                break;
+                
             case 'change_password':
                 $currentPassword = $_POST['current_password'] ?? '';
                 $newPassword = $_POST['new_password'] ?? '';
@@ -179,6 +187,40 @@ $csrfToken = $auth->generateCSRFToken();
                 <p class="text-sm text-gray-600 mb-6">
                     Current email: <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
                 </p>
+                
+                <?php 
+                $pendingEmailChange = $user->getPendingEmailChange();
+                if ($pendingEmailChange): 
+                ?>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-clock text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <h4 class="text-sm font-medium text-yellow-800">Pending Email Change</h4>
+                            <p class="text-sm text-yellow-700 mt-1">
+                                You have a pending email change to <strong><?php echo htmlspecialchars($pendingEmailChange['new_email']); ?></strong>. 
+                                Please check your new email inbox for the verification link.
+                            </p>
+                            <p class="text-xs text-yellow-600 mt-2">
+                                Expires: <?php echo date('M j, Y g:i A', strtotime($pendingEmailChange['expires_at'])); ?>
+                            </p>
+                        </div>
+                        <div class="ml-4 flex-shrink-0">
+                            <form method="POST" class="inline">
+                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                <input type="hidden" name="action" value="cancel_email_change">
+                                <button type="submit" 
+                                        onclick="return confirm('Are you sure you want to cancel the email change request?')"
+                                        class="text-sm text-yellow-800 hover:text-yellow-900 font-medium">
+                                    Cancel
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
                 
                 <form method="POST" class="space-y-6">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">

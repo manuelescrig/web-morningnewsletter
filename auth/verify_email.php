@@ -15,14 +15,9 @@ if (empty($token)) {
 } else {
     if ($type === 'email_change') {
         // Handle email change verification
-        $user = User::findByEmailChangeToken($token);
-        if ($user) {
-            $result = $user->verifyEmailChange($token);
-            $success = $result['success'];
-            $message = $result['message'];
-        } else {
-            $message = 'Invalid or expired email change verification token.';
-        }
+        $result = $auth->verifyEmailChange($token);
+        $success = $result['success'];
+        $message = $result['message'];
     } else {
         // Handle regular email verification
         $result = $auth->verifyEmail($token);
@@ -36,7 +31,7 @@ if (empty($token)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification - MorningNewsletter</title>
+    <title><?php echo $type === 'email_change' ? 'Email Change Verification' : 'Email Verification'; ?> - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -44,7 +39,9 @@ if (empty($token)) {
     <div class="max-w-md w-full space-y-8 p-8">
         <div class="text-center">
             <?php renderLogo('lg'); ?>
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Email Verification</h2>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                <?php echo $type === 'email_change' ? 'Email Change Verification' : 'Email Verification'; ?>
+            </h2>
         </div>
 
         <div class="text-center">
