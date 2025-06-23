@@ -35,47 +35,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     </style>
 </head>
 <body class="bg-white">
-    <!-- Navigation -->
-    <nav id="main-nav" class="bg-white/80 backdrop-blur-md fixed w-full z-50 transition-all duration-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0">
-                    <h1 class="text-2xl font-bold text-blue-600">MorningNewsletter</h1>
-                </div>
-                <div class="hidden md:block flex-1">
-                    <div class="flex justify-center">
-                        <div class="flex space-x-8">
-                            <a href="#features" class="text-gray-700 hover:text-blue-600 px-3 py-2">Features</a>
-                            <a href="#pricing" class="text-gray-700 hover:text-blue-600 px-3 py-2">Pricing</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <div class="flex items-center space-x-4">
-                        <?php if ($isLoggedIn): ?>
-                            <a href="/dashboard/" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Go to Dashboard
-                            </a>
-                        <?php else: ?>
-                            <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Log In</a>
-                            <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign Up</a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 0) {
-                nav.classList.add('nav-scrolled');
-            } else {
-                nav.classList.remove('nav-scrolled');
-            }
-        });
-    </script>
+    <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
     <div class="relative isolate px-6 pt-14 lg:px-8 mesh-gradient">
@@ -543,61 +503,6 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
-                <div class="col-span-1 md:col-span-2">
-                    <h1 class="text-2xl font-bold text-blue-600">MorningNewsletter</h1>
-                    <p class="mt-4 text-gray-500 text-sm">Your personalized morning brief, delivered daily.</p>
-                    <div class="mt-6 flex space-x-6">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Solutions</h3>
-                    <ul class="mt-4 space-y-4">
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">KPI Tracking</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Finance & Crypto</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Weather & News</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Social Media DMs</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Custom Integrations</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Support</h3>
-                    <ul class="mt-4 space-y-4">
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Submit Ticket</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Documentation</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Guides</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
-                    <ul class="mt-4 space-y-4">
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Blog</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Jobs</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
-                    <ul class="mt-4 space-y-4">
-                        <li><a href="/legal/terms.php" class="text-base text-gray-500 hover:text-gray-300">Terms of Service</a></li>
-                        <li><a href="/legal/privacy.php" class="text-base text-gray-500 hover:text-gray-300">Privacy Policy</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">License</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-8 border-t border-gray-700 pt-8 flex justify-center">
-                <p class="text-gray-500 text-sm">&copy; 2025 MorningNewsletter.com. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html> 

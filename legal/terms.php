@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../core/Auth.php';
+
+$auth = Auth::getInstance();
+$isLoggedIn = $auth->isLoggedIn();
+$user = $isLoggedIn ? $auth->getCurrentUser() : null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,25 +13,18 @@
     <title>Terms of Service - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .nav-scrolled {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0">
-                    <a href="/" class="text-2xl font-bold text-blue-600">MorningNewsletter</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Log In</a>
-                    <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php include __DIR__ . '/../includes/navigation.php'; ?>
 
     <!-- Content -->
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-24">
         <div class="bg-white rounded-lg shadow-lg p-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-8">Terms of Service</h1>
             <p class="text-gray-600 mb-8">Last updated: June 23, 2025</p>
@@ -128,16 +128,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="/legal/terms.php" class="hover:text-white">Terms of Service</a>
-                <a href="/legal/privacy.php" class="hover:text-white">Privacy Policy</a>
-                <a href="/" class="hover:text-white">Home</a>
-            </div>
-            <p class="text-gray-500 text-sm">&copy; 2025 MorningNewsletter.com. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include __DIR__ . '/../includes/footer.php'; ?>
 </body>
 </html>
