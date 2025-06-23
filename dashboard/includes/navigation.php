@@ -50,7 +50,7 @@ function getNavClass($page, $currentPage) {
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="relative">
+            <div class="relative flex items-center">
                 <!-- Profile dropdown -->
                 <div class="relative ml-3">
                     <div>
@@ -63,11 +63,11 @@ function getNavClass($page, $currentPage) {
                                     </span>
                                 </div>
                                 <!-- User info (hidden on mobile, shown on desktop) -->
-                                <div class="hidden lg:ml-3 lg:block">
-                                    <div class="text-sm font-medium text-gray-900">
+                                <div class="hidden lg:ml-3 lg:block text-left">
+                                    <div class="text-sm font-medium text-gray-900 text-left">
                                         <?php echo $user->getEmail(); ?>
                                     </div>
-                                    <div class="text-xs text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
+                                    <div class="text-xs text-gray-500 capitalize text-left"><?php echo $user->getPlan(); ?> Plan</div>
                                 </div>
                                 <!-- Dropdown arrow -->
                                 <div class="hidden lg:ml-2 lg:flex-shrink-0 lg:block">
