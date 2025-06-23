@@ -29,10 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $user = User::findByEmail($email);
                 if ($user) {
+                    error_log("Password reset requested for user: {$email} (ID: {$user->getId()})");
                     $result = $user->sendPasswordResetEmail();
+                    error_log("Password reset result for {$email}: " . json_encode($result));
                     if (!$result['success']) {
                         error_log("Failed to send password reset email to {$email}: " . $result['message']);
                     }
+                } else {
+                    error_log("Password reset requested for non-existent email: {$email}");
                 }
             } catch (Exception $e) {
                 error_log("Error in password reset for {$email}: " . $e->getMessage());
