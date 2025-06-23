@@ -5,9 +5,33 @@ $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
-// Temporary fallback for user stats
+// Get user statistics for social proof
 $displayCount = '9000+';
 $todayCount = 0;
+
+try {
+    require_once __DIR__ . '/core/Database.php';
+    $db = Database::getInstance()->getConnection();
+    
+    // Get total users
+    $stmt = $db->query("SELECT COUNT(*) as user_count FROM users");
+    if ($stmt && ($result = $stmt->fetch())) {
+        $userCount = (int)$result['user_count'];
+        if ($userCount > 0) {
+            $displayCount = $userCount . '+';
+        }
+    }
+    
+    // Get today's signups
+    $stmt = $db->query("SELECT COUNT(*) as today_count FROM users WHERE DATE(created_at) = DATE('now')");
+    if ($stmt && ($result = $stmt->fetch())) {
+        $todayCount = (int)$result['today_count'];
+    }
+    
+} catch (Exception $e) {
+    // Silently fail and use fallback values
+    error_log("Error getting user stats: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
