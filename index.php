@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/core/Auth.php';
+
+$auth = Auth::getInstance();
+$isLoggedIn = $auth->isLoggedIn();
+$user = $isLoggedIn ? $auth->getCurrentUser() : null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +52,20 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="flex items-center space-x-4">
-                        <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Sign In</a>
-                        <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Try for Free</a>
+                        <?php if ($isLoggedIn): ?>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-gray-600 text-sm">Welcome back, <?php echo htmlspecialchars($user->getEmail()); ?></span>
+                                <a href="/dashboard/" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                                </a>
+                                <a href="/auth/logout.php" class="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-sign-out-alt mr-1"></i>Sign Out
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Sign In</a>
+                            <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Try for Free</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -79,7 +98,13 @@
                 <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Your Personalized Morning Brief, Delivered Daily</h1>
                 <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">One email. Everything you care about—KPI trends, finance, crypto, weather, news, and messages—in one place.</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="/auth/register.php" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">Start Free Trial<i class="fas fa-arrow-right ml-2"></i></a>
+                    <?php if ($isLoggedIn): ?>
+                        <a href="/dashboard/" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+                        </a>
+                    <?php else: ?>
+                        <a href="/auth/register.php" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">Start Free Trial<i class="fas fa-arrow-right ml-2"></i></a>
+                    <?php endif; ?>
                     <a href="#features" class="text-sm/6 font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
                 </div>
             </div>
