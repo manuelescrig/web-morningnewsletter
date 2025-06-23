@@ -21,24 +21,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($action) {
             case 'update_profile':
                 $name = trim($_POST['name'] ?? '');
-                $email = trim($_POST['email'] ?? '');
                 
-                if (empty($email)) {
-                    $error = 'Email is required.';
-                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $error = 'Please enter a valid email address.';
-                } else {
-                    $updateData = ['email' => $email];
-                    if (!empty($name)) {
-                        $updateData['name'] = $name;
-                    }
-                    
+                $updateData = [];
+                if (!empty($name)) {
+                    $updateData['name'] = $name;
+                }
+                
+                if (!empty($updateData)) {
                     if ($user->updateProfile($updateData)) {
                         $success = 'Profile updated successfully!';
                         // Refresh user data
                         $user = $auth->getCurrentUser();
                     } else {
                         $error = 'Failed to update profile.';
+                    }
+                } else {
+                    $error = 'Please provide a name to update.';
+                }
+                break;
+                
+            case 'change_email':
+                $email = trim($_POST['email'] ?? '');
+                $password = $_POST['email_password'] ?? '';
+                
+                if (empty($email)) {
+                    $error = 'Email is required.';
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $error = 'Please enter a valid email address.';
+                } elseif (empty($password)) {
+                    $error = 'Password is required to change email.';
+                } else {
+                    // Verify password first
+                    $stmt = $user->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+                    $stmt->execute([$user->getId()]);
+                    $userData = $stmt->fetch();
+                    
+                    if (!$userData || !password_verify($password, $userData['password_hash'])) {
+                        $error = 'Incorrect password.';
+                    } else {
+                        if ($user->updateProfile(['email' => $email])) {
+                            $success = 'Email address updated successfully!';
+                            // Refresh user data
+                            $user = $auth->getCurrentUser();
+                        } else {
+                            $error = 'Failed to update email address. This email may already be in use.';
+                        }
                     }
                 }
                 break;
