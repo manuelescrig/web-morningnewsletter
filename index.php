@@ -38,8 +38,11 @@ try {
             background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
         }
         .trusted-by-logos {
-            filter: grayscale(100%);
-            opacity: 0.5;
+            filter: grayscale(100%) brightness(0.3);
+            transition: filter 0.3s ease;
+        }
+        .trusted-by-logos:hover {
+            filter: grayscale(100%) brightness(0.5);
         }
         .nav-scrolled {
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -204,6 +207,7 @@ try {
     <div class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
+                <p class="text-gray-600 font-medium mb-4">Featured in</p>
                 <p class="text-gray-500 mb-2">Trusted by <?php echo $displayCount; ?> professionals worldwide</p>
                 <?php if ($todayCount > 0): ?>
                     <p class="text-sm text-blue-600 font-medium">
@@ -212,11 +216,10 @@ try {
                     </p>
                 <?php endif; ?>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
-                <img src="https://via.placeholder.com/150x50?text=Company+1" alt="Company 1" class="trusted-by-logos h-8">
-                <img src="https://via.placeholder.com/150x50?text=Company+2" alt="Company 2" class="trusted-by-logos h-8">
-                <img src="https://via.placeholder.com/150x50?text=Company+3" alt="Company 3" class="trusted-by-logos h-8">
-                <img src="https://via.placeholder.com/150x50?text=Company+4" alt="Company 4" class="trusted-by-logos h-8">
+            <div class="grid grid-cols-3 gap-8 items-center justify-items-center max-w-2xl mx-auto">
+                <img src="/assets/companies/Logo=google.svg" alt="Google" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Logo=microsoft.svg" alt="Microsoft" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Logo=instagram_word.svg" alt="Instagram" class="trusted-by-logos h-8 opacity-60">
             </div>
         </div>
     </div>
