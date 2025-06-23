@@ -106,9 +106,12 @@ function getNavClass($page, $currentPage) {
                         </a>
                         <?php endif; ?>
                         
+                        <!-- Divider -->
+                        <div class="border-t border-gray-200 my-1"></div>
+                        
                         <!-- Logout option -->
-                        <a href="/auth/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i>
+                        <a href="/auth/logout.php" class="block px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900" role="menuitem" tabindex="-1">
+                            <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>
                             Sign out
                         </a>
                     </div>
