@@ -49,9 +49,6 @@ function getNavClass($page, $currentPage) {
                         Billing
                     </a>
                     <?php endif; ?>
-                    <a href="/dashboard/settings.php" class="<?php echo getNavClass('settings', $currentPage); ?>">
-                        Settings
-                    </a>
                     <?php if ($user->isAdmin()): ?>
                     <a href="/dashboard/users.php" class="<?php echo getNavClass('users', $currentPage); ?>">
                         Users

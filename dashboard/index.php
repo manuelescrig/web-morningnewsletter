@@ -132,10 +132,6 @@ $currentPage = 'dashboard';
                         Billing
                     </a>
                     <?php endif; ?>
-                    <a href="/dashboard/settings.php" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <i class="fas fa-cog mr-2"></i>
-                        Settings
-                    </a>
                     <a href="/preview.php" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
