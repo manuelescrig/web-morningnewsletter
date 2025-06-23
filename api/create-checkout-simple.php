@@ -3,16 +3,31 @@
 // Simple version to test step by step
 header('Content-Type: application/json');
 
+// Check request method first
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Only POST method allowed, got: ' . $_SERVER['REQUEST_METHOD']]);
+    exit;
+}
+
 try {
-    // Step 1: Test basic response
-    if (!isset($_POST) && !isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
-        $input = json_decode(file_get_contents('php://input'), true);
-    } else {
-        $input = $_POST;
+    // Step 1: Get POST data properly
+    $rawInput = file_get_contents('php://input');
+    error_log('Raw input: ' . $rawInput);
+    
+    if (empty($rawInput)) {
+        throw new Exception('No raw input data received');
+    }
+    
+    $input = json_decode($rawInput, true);
+    error_log('Decoded input: ' . print_r($input, true));
+    
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception('Invalid JSON: ' . json_last_error_msg());
     }
     
     if (empty($input)) {
-        throw new Exception('No input data received');
+        throw new Exception('Empty input data after JSON decode');
     }
     
     // Step 2: Test Auth
