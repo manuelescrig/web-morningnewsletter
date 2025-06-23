@@ -112,6 +112,55 @@ class EmailSender {
         return $this->sendEmail($email, $subject, $htmlBody);
     }
     
+    public function sendPasswordResetEmail($email, $token) {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+        $resetUrl = $protocol . "://" . $host . "/auth/reset_password.php?token=" . $token;
+        $subject = "Reset your MorningNewsletter password";
+        
+        $htmlBody = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Reset Your Password</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='text-align: center; margin-bottom: 30px;'>
+                <h1 style='color: #2563eb;'>Password Reset Request</h1>
+            </div>
+            
+            <div style='background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
+                <p>You have requested to reset your password for your MorningNewsletter account.</p>
+                
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='$resetUrl' 
+                       style='background-color: #dc2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                        Reset Password
+                    </a>
+                </div>
+                
+                <p style='font-size: 14px; color: #666;'>
+                    If the button doesn't work, copy and paste this link into your browser:<br>
+                    <a href='$resetUrl'>$resetUrl</a>
+                </p>
+                
+                <p style='font-size: 14px; color: #666; margin-top: 20px;'>
+                    <strong>This link will expire in 1 hour.</strong>
+                </p>
+            </div>
+            
+            <div style='font-size: 12px; color: #666; text-align: center;'>
+                <p>If you didn't request a password reset, please ignore this email. Your password will remain unchanged.</p>
+            </div>
+        </body>
+        </html>
+        ";
+        
+        return $this->sendEmail($email, $subject, $htmlBody);
+    }
+    
     public function getEmailStats($userId, $days = 30) {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("

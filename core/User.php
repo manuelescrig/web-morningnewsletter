@@ -284,6 +284,97 @@ class User {
         }
     }
     
+    public function sendPasswordResetEmail() {
+        try {
+            // Generate password reset token
+            $resetToken = bin2hex(random_bytes(32));
+            $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token expires in 1 hour
+            
+            // Update the reset token in database
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET verification_token = ?, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            $success = $stmt->execute([$resetToken, $this->id]);
+            
+            if (!$success) {
+                return ['success' => false, 'message' => 'Failed to update reset token'];
+            }
+            
+            // Send password reset email
+            require_once __DIR__ . '/EmailSender.php';
+            
+            $emailSender = new EmailSender();
+            $emailResult = $emailSender->sendPasswordResetEmail($this->email, $resetToken);
+            
+            if ($emailResult) {
+                return ['success' => true, 'message' => 'Password reset email sent successfully'];
+            } else {
+                // Email failed but token was updated - log for manual reset if needed
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+                $resetUrl = $protocol . "://" . $host . "/auth/reset_password.php?token=" . $resetToken;
+                error_log("Password reset email failed for user {$this->id} but token updated. Manual reset URL: {$resetUrl}");
+                return ['success' => false, 'message' => 'Failed to send email, but reset token was updated'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Password reset error for user {$this->id}: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public function resetPassword($token, $newPassword) {
+        try {
+            // Verify token and get user
+            $stmt = $this->db->prepare("
+                SELECT id FROM users 
+                WHERE verification_token = ? AND id = ?
+            ");
+            $stmt->execute([$token, $this->id]);
+            
+            if (!$stmt->fetch()) {
+                return ['success' => false, 'message' => 'Invalid or expired reset token'];
+            }
+            
+            // Hash new password
+            $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+            
+            // Update password and clear reset token
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET password_hash = ?, verification_token = NULL, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            $success = $stmt->execute([$passwordHash, $this->id]);
+            
+            if ($success) {
+                return ['success' => true, 'message' => 'Password reset successfully'];
+            } else {
+                return ['success' => false, 'message' => 'Failed to update password'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Password reset error for user {$this->id}: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public static function findByResetToken($token) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM users WHERE verification_token = ?");
+        $stmt->execute([$token]);
+        $userData = $stmt->fetch();
+        
+        if ($userData) {
+            return new self($userData);
+        }
+        return null;
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
