@@ -56,15 +56,15 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                             <div class="flex items-center space-x-4">
                                 <span class="text-gray-600 text-sm">Welcome back, <?php echo htmlspecialchars($user->getEmail()); ?></span>
                                 <a href="/dashboard/" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                                    <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
                                 </a>
                                 <a href="/auth/logout.php" class="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-sign-out-alt mr-1"></i>Sign Out
                                 </a>
                             </div>
                         <?php else: ?>
-                            <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Sign In</a>
-                            <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Try for Free</a>
+                            <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Log In</a>
+                            <a href="/auth/register.php" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign Up</a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -100,7 +100,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 <div class="mt-10 flex items-center justify-center gap-x-6">
                     <?php if ($isLoggedIn): ?>
                         <a href="/dashboard/" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                            <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+                            <i class="fas fa-tachometer-alt mr-2"></i>Open Dashboard
                         </a>
                     <?php else: ?>
                         <a href="/auth/register.php" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">Start Free Trial<i class="fas fa-arrow-right ml-2"></i></a>
