@@ -1,5 +1,8 @@
 <?php
 
+// START SESSION FIRST
+session_start();
+
 header('Content-Type: application/json');
 
 // Only allow POST requests

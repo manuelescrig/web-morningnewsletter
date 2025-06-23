@@ -577,49 +577,10 @@ try {
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
-                console.log('Subscribing to plan:', plan);
+                console.log('Creating checkout session for plan:', plan);
 
-                // Test each component step by step
-                console.log('Testing components step by step...');
-                
-                for (let step = 1; step <= 5; step++) {
-                    try {
-                        const stepTest = await fetch(`/api/step-by-step.php?step=${step}`);
-                        const stepData = await stepTest.json();
-                        console.log(`Step ${step}:`, stepData);
-                        
-                        if (!stepData.success) {
-                            throw new Error(`Step ${step} failed: ${stepData.error || stepData.fatal_error}`);
-                        }
-                    } catch (stepError) {
-                        console.error(`Step ${step} error:`, stepError);
-                        throw new Error(`Component test failed at step ${step}: ${stepError.message}`);
-                    }
-                }
-                
-                console.log('All components working! Now testing with full error reporting...');
-                
-                // Test with full error display
-                const debugResponse = await fetch('/api/debug-with-errors.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ plan: plan })
-                });
-                
-                const debugText = await debugResponse.text();
-                console.log('Debug response:', debugText);
-                
-                if (debugResponse.ok && debugText.includes('SUCCESS')) {
-                    alert('Debug test successful! Check console for details.');
-                    return;
-                } else {
-                    throw new Error('Debug test failed. Check console for error details.');
-                }
-                
                 // Create checkout session
-                const response = await fetch('/api/create-checkout-simple.php', {
+                const response = await fetch('/api/fixed-checkout.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -628,7 +589,6 @@ try {
                 });
 
                 console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
 
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -639,14 +599,13 @@ try {
                 const data = await response.json();
                 console.log('Response data:', data);
 
-                if (data.success) {
-                    alert('API test successful! Plan: ' + data.plan + ', User: ' + data.user_email);
-                } else if (data.checkout_url) {
-                    // Redirect to Stripe Checkout
-                    window.location.href = data.checkout_url;
-                } else {
-                    throw new Error('Unexpected response format');
+                if (!data.checkout_url) {
+                    throw new Error('No checkout URL received');
                 }
+
+                // Redirect to Stripe Checkout
+                console.log('Redirecting to Stripe checkout...');
+                window.location.href = data.checkout_url;
 
             } catch (error) {
                 // Restore button state

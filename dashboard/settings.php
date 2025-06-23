@@ -353,7 +353,7 @@ $csrfToken = $auth->generateCSRFToken();
                 button.disabled = true;
 
                 // Create checkout session
-                const response = await fetch('/api/create-checkout-session.php', {
+                const response = await fetch('/api/fixed-checkout.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

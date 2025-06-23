@@ -1,9 +1,9 @@
 <?php
 
-// Capture any output and convert to JSON error
-ob_start();
+// START SESSION FIRST - before any output!
+session_start();
 
-// Enable error reporting but don't display errors (we'll handle them)
+// Enable error reporting but don't display errors
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
