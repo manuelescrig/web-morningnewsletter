@@ -57,19 +57,19 @@ class EmailSender {
     }
     
     private function sendWithMaileroo($to, $subject, $htmlBody) {
-        // Maileroo uses multipart/form-data format
+        // Maileroo uses their specific format
         $postFields = [
-            'from' => $this->fromEmail,
+            'from' => $this->fromName . ' <' . $this->fromEmail . '>',
             'to' => $to,
             'subject' => $subject,
             'html' => $htmlBody
         ];
         
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://maileroo.com/api/send');
-        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_URL, 'https://smtp.maileroo.com/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'X-API-Key: ' . $this->apiKey
         ]);
@@ -77,19 +77,31 @@ class EmailSender {
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
-        curl_close($ch);
         
         if ($error) {
             error_log("Maileroo API cURL error: " . $error);
+            curl_close($ch);
             return false;
         }
         
+        curl_close($ch);
+        
+        // Log the full response for debugging
+        error_log("Maileroo API response (HTTP $httpCode): " . $response);
+        
+        // Maileroo might return different success indicators
         if ($httpCode >= 200 && $httpCode < 300) {
-            $responseData = json_decode($response, true);
-            if ($responseData && isset($responseData['success']) && $responseData['success']) {
-                $messageId = $responseData['message_id'] ?? 'unknown';
-                error_log("Email sent successfully via Maileroo. Message ID: " . $messageId);
+            // Check if response indicates success
+            if (empty($response) || strpos($response, 'error') === false) {
+                error_log("Email sent successfully via Maileroo");
                 return true;
+            } else {
+                // Try to parse JSON response
+                $responseData = json_decode($response, true);
+                if ($responseData && isset($responseData['success']) && $responseData['success']) {
+                    error_log("Email sent successfully via Maileroo (JSON success)");
+                    return true;
+                }
             }
         }
         

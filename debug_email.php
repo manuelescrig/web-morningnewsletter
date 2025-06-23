@@ -61,13 +61,9 @@ $postFields = [
     'html' => '<h2>Debug Test</h2><p>This is a direct API test at ' . date('Y-m-d H:i:s') . '</p>'
 ];
 
-// Test multiple possible endpoints
+// Test the corrected endpoint with proper multipart handling
 $endpoints = [
-    'https://maileroo.com/api/send',
-    'https://api.maileroo.com/send',
-    'https://api.maileroo.com/v1/send',
-    'https://api.maileroo.com/email',
-    'https://app.maileroo.com/api/send'
+    'https://maileroo.com/api/send'
 ];
 
 foreach ($endpoints as $endpoint) {
@@ -81,7 +77,9 @@ foreach ($endpoints as $endpoint) {
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'X-API-Key: ' . $testApiKey
     ]);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'MorningNewsletter/1.0');
     
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
