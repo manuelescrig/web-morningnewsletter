@@ -17,7 +17,7 @@ if ($auth->isLoggedIn()) {
     if ($planInfo['plan'] !== 'free') {
         header('Location: /dashboard/billing.php');
     } else {
-        header('Location: /dashboard/pricing.php');
+        header('Location: /pricing');
     }
     exit;
 }
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($planInfo['plan'] !== 'free') {
                 header('Location: /dashboard/billing.php');
             } else {
-                header('Location: /dashboard/pricing.php');
+                header('Location: /pricing');
             }
             exit;
         } else {
