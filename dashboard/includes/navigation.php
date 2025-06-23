@@ -40,15 +40,6 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
                         Schedule
                     </a>
-                    <?php if ($user->getPlan() === 'free'): ?>
-                    <a href="/upgrade" class="<?php echo getNavClass('upgrade', $currentPage); ?>">
-                        Upgrade
-                    </a>
-                    <?php else: ?>
-                    <a href="/billing" class="<?php echo getNavClass('billing', $currentPage); ?>">
-                        Billing
-                    </a>
-                    <?php endif; ?>
                     <?php if ($user->isAdmin()): ?>
                     <a href="/dashboard/users.php" class="<?php echo getNavClass('users', $currentPage); ?>">
                         Users
