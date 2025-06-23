@@ -597,10 +597,10 @@ try {
                     }
                 }
                 
-                console.log('All components working! Now testing minimal API...');
+                console.log('All components working! Now testing with full error reporting...');
                 
-                // Test minimal checkout first
-                const minimalResponse = await fetch('/api/minimal-checkout.php', {
+                // Test with full error display
+                const debugResponse = await fetch('/api/debug-with-errors.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -608,13 +608,14 @@ try {
                     body: JSON.stringify({ plan: plan })
                 });
                 
-                console.log('Minimal API status:', minimalResponse.status);
+                const debugText = await debugResponse.text();
+                console.log('Debug response:', debugText);
                 
-                if (minimalResponse.ok) {
-                    const minimalData = await minimalResponse.json();
-                    console.log('Minimal API success:', minimalData);
-                    alert('Test successful! Plan: ' + minimalData.plan + ', User: ' + minimalData.user_email);
-                    return; // Stop here for now
+                if (debugResponse.ok && debugText.includes('SUCCESS')) {
+                    alert('Debug test successful! Check console for details.');
+                    return;
+                } else {
+                    throw new Error('Debug test failed. Check console for error details.');
                 }
                 
                 // Create checkout session
