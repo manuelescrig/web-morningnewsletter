@@ -588,14 +588,14 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 <div>
                     <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
                     <ul class="mt-4 space-y-4">
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Terms of Service</a></li>
-                        <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Privacy Policy</a></li>
+                        <li><a href="/legal/terms.php" class="text-base text-gray-500 hover:text-gray-300">Terms of Service</a></li>
+                        <li><a href="/legal/privacy.php" class="text-base text-gray-500 hover:text-gray-300">Privacy Policy</a></li>
                         <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">License</a></li>
                     </ul>
                 </div>
             </div>
             <div class="mt-8 border-t border-gray-700 pt-8 flex justify-center">
-                <p class="text-gray-500 text-sm">&copy; 2024 MorningNewsletter.com. All rights reserved.</p>
+                <p class="text-gray-500 text-sm">&copy; 2025 MorningNewsletter.com. All rights reserved.</p>
             </div>
         </div>
     </footer>
