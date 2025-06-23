@@ -31,6 +31,9 @@ try {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         .gradient-bg {
             background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
         }
@@ -317,7 +320,7 @@ try {
 
             <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
                 <!-- Starter Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full flex flex-col">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full flex flex-col mt-6">
                     <div class="px-6 py-8 flex-1 flex flex-col">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Starter</h3>
                         <p class="mt-4 text-gray-500">Ideal for personal use or trying out the service</p>
@@ -354,13 +357,13 @@ try {
                 </div>
 
                 <!-- Pro Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-purple-400 relative h-full flex flex-col">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-purple-400 relative h-full flex flex-col mt-6">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
                         <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                             Popular
                         </span>
                     </div>
-                    <div class="px-6 py-8 pt-12 flex-1 flex flex-col">
+                    <div class="px-6 py-8 pt-10 flex-1 flex flex-col">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Pro</h3>
                         <p class="mt-4 text-gray-500">Great for professionals who want more control</p>
                         <p class="mt-8">
@@ -402,7 +405,7 @@ try {
                 </div>
 
                 <!-- Unlimited Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full flex flex-col">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full flex flex-col mt-6">
                     <div class="px-6 py-8 flex-1 flex flex-col">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Unlimited</h3>
                         <p class="mt-4 text-gray-500">Perfect for power users, teams, or content curators</p>
