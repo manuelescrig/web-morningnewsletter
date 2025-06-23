@@ -288,7 +288,7 @@ $currentPage = 'billing';
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
-                const response = await fetch('/api/fixed-checkout.php', {
+                const response = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -323,7 +323,7 @@ $currentPage = 'billing';
 
         async function manageBilling() {
             try {
-                const response = await fetch('/api/billing-portal.php', {
+                const response = await fetch('/api/billing-portal', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -354,7 +354,7 @@ $currentPage = 'billing';
             }
 
             try {
-                const response = await fetch('/api/cancel-subscription.php', {
+                const response = await fetch('/api/cancel-subscription', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

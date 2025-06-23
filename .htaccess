@@ -1,7 +1,7 @@
 RewriteEngine On
 
 # API endpoints
-RewriteRule ^api/create-checkout-session/?$ api/create-checkout-session.php [L]
+RewriteRule ^api/checkout/?$ api/fixed-checkout.php [L]
 RewriteRule ^api/stripe-webhook/?$ api/stripe-webhook.php [L]
 RewriteRule ^api/cancel-subscription/?$ api/cancel-subscription.php [L]
 RewriteRule ^api/billing-portal/?$ api/billing-portal.php [L]

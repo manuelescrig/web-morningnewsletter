@@ -584,7 +584,7 @@ try {
             // Check if user is logged in
             <?php if (!$isLoggedIn): ?>
                 alert('Please login or register to subscribe to a plan.');
-                window.location.href = '/auth/login.php';
+                window.location.href = '/login';
                 return;
             <?php endif; ?>
 
@@ -596,7 +596,7 @@ try {
                 button.disabled = true;
 
                 // Create Stripe checkout session
-                const response = await fetch('/api/fixed-checkout.php', {
+                const response = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
