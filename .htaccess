@@ -6,6 +6,8 @@ RewriteRule ^privacy/?$ legal/privacy.php [L]
 RewriteRule ^login/?$ auth/login.php [L]
 RewriteRule ^register/?$ auth/register.php [L]
 RewriteRule ^payment-success/?$ payment-success.php [L]
+RewriteRule ^jobs/?$ jobs.php [L]
+RewriteRule ^careers/?$ jobs.php [L]
 
 # Prevent access to sensitive files
 <Files ~ "^\.">
