@@ -577,38 +577,35 @@ try {
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
-                console.log('Testing each component step by step...');
+                console.log('Creating checkout session for plan:', plan);
 
-                // Test each step individually
-                for (let step = 1; step <= 5; step++) {
-                    try {
-                        const response = await fetch(`/api/step-test.php?step=${step}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ plan: plan })
-                        });
+                // Create Stripe checkout session
+                const response = await fetch('/api/fixed-checkout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plan: plan })
+                });
 
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`Step ${step} HTTP ${response.status}: ${errorText}`);
-                        }
+                console.log('Response status:', response.status);
 
-                        const data = await response.json();
-                        console.log(`Step ${step}:`, data);
-
-                        if (data.error || data.fatal_error) {
-                            throw new Error(`Step ${step} failed: ${data.error || data.fatal_error}`);
-                        }
-                        
-                    } catch (stepError) {
-                        console.error(`Step ${step} failed:`, stepError);
-                        throw new Error(`Component test failed at step ${step}: ${stepError.message}`);
-                    }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Response error:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
                 }
 
-                alert('All components working! Ready to create actual Stripe checkout.');
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (!data.checkout_url) {
+                    throw new Error('No checkout URL received');
+                }
+
+                // Redirect to Stripe Checkout
+                console.log('Redirecting to Stripe checkout...');
+                window.location.href = data.checkout_url;
 
             } catch (error) {
                 // Restore button state
