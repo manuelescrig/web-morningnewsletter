@@ -74,7 +74,7 @@ function getNavClass($page, $currentPage) {
                         <!-- User info (shown on mobile) -->
                         <div class="block lg:hidden px-4 py-2 border-b border-gray-200">
                             <div class="text-sm font-medium text-gray-900">
-                                <?php echo $user->getEmail(); ?>
+                                <?php echo htmlspecialchars($user->getName() ?: $user->getEmail()); ?>
                             </div>
                             <div class="text-xs text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
                         </div>
