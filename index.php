@@ -579,11 +579,22 @@ try {
 
                 console.log('Subscribing to plan:', plan);
 
-                // Test basic API first
-                console.log('Testing basic API...');
-                const testResponse = await fetch('/api/debug.php');
-                const testData = await testResponse.text();
-                console.log('Basic API test:', testData);
+                // Test POST data first
+                console.log('Testing POST data...');
+                const postTest = await fetch('/api/test-post.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plan: plan })
+                });
+                const postData = await postTest.json();
+                console.log('POST test result:', postData);
+                
+                // If POST test failed, stop here
+                if (!postData.success) {
+                    throw new Error('POST test failed: ' + JSON.stringify(postData));
+                }
                 
                 // Create checkout session
                 const response = await fetch('/api/create-checkout-simple.php', {

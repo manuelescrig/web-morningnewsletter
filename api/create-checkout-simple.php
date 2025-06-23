@@ -1,7 +1,11 @@
 <?php
-
-// Simple version to test step by step
+// Headers first, before any output
 header('Content-Type: application/json');
+
+// Turn off error display to prevent HTML output
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 // Check request method first
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -13,14 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     // Step 1: Get POST data properly
     $rawInput = file_get_contents('php://input');
-    error_log('Raw input: ' . $rawInput);
     
     if (empty($rawInput)) {
         throw new Exception('No raw input data received');
     }
     
     $input = json_decode($rawInput, true);
-    error_log('Decoded input: ' . print_r($input, true));
     
     if (json_last_error() !== JSON_ERROR_NONE) {
         throw new Exception('Invalid JSON: ' . json_last_error_msg());
