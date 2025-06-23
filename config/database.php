@@ -113,5 +113,32 @@ class Database {
         foreach ($queries as $query) {
             $this->pdo->exec($query);
         }
+        
+        // Add missing columns to existing tables (migrations)
+        $this->runMigrations();
+    }
+    
+    private function runMigrations() {
+        try {
+            // Check if name column exists in users table, if not add it
+            $stmt = $this->pdo->query("PRAGMA table_info(users)");
+            $columns = $stmt->fetchAll();
+            
+            $hasNameColumn = false;
+            foreach ($columns as $column) {
+                if ($column['name'] === 'name') {
+                    $hasNameColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasNameColumn) {
+                $this->pdo->exec("ALTER TABLE users ADD COLUMN name TEXT");
+                error_log("Database migration: Added 'name' column to users table");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database migration error: " . $e->getMessage());
+        }
     }
 }
