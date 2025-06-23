@@ -216,10 +216,14 @@ try {
                     </p>
                 <?php endif; ?>
             </div>
-            <div class="grid grid-cols-3 gap-8 items-center justify-items-center max-w-2xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6 items-center justify-items-center max-w-5xl mx-auto">
                 <img src="/assets/companies/Logo=google.svg" alt="Google" class="trusted-by-logos h-8 opacity-60">
                 <img src="/assets/companies/Logo=microsoft.svg" alt="Microsoft" class="trusted-by-logos h-8 opacity-60">
                 <img src="/assets/companies/Logo=instagram_word.svg" alt="Instagram" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Press logo=Bloomberg.svg" alt="Bloomberg" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Press logo=Business Insider.svg" alt="Business Insider" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Press logo=The Guardian.svg" alt="The Guardian" class="trusted-by-logos h-8 opacity-60">
+                <img src="/assets/companies/Press logo=The New York Times (TNYT).svg" alt="The New York Times" class="trusted-by-logos h-8 opacity-60">
             </div>
         </div>
     </div>
