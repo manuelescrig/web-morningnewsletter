@@ -1,8 +1,12 @@
 <?php
 
-// Enable error reporting for debugging
+// Capture any output and convert to JSON error
+ob_start();
+
+// Enable error reporting but don't display errors (we'll handle them)
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -116,9 +120,29 @@ try {
 } catch (Exception $e) {
     error_log('Checkout session creation error: ' . $e->getMessage());
     
+    // Clean any output buffer
+    ob_clean();
+    
     http_response_code(500);
     echo json_encode([
         'error' => 'Failed to create checkout session',
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine()
     ]);
 }
+
+// Check for any unexpected output
+$output = ob_get_contents();
+if (!empty($output)) {
+    ob_clean();
+    error_log('Unexpected output in API: ' . $output);
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'Unexpected output detected',
+        'output' => $output
+    ]);
+    exit;
+}
+
+ob_end_clean();
