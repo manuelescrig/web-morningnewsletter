@@ -2,21 +2,23 @@
 require_once __DIR__ . '/User.php';
 
 class EmailSender {
-    private $smtpHost;
-    private $smtpPort;
-    private $smtpUsername;
-    private $smtpPassword;
+    private $provider;
+    private $apiKey;
     private $fromEmail;
     private $fromName;
     
     public function __construct() {
-        // TODO: Move to config file
-        $this->smtpHost = $_ENV['SMTP_HOST'] ?? 'localhost';
-        $this->smtpPort = $_ENV['SMTP_PORT'] ?? 587;
-        $this->smtpUsername = $_ENV['SMTP_USERNAME'] ?? '';
-        $this->smtpPassword = $_ENV['SMTP_PASSWORD'] ?? '';
-        $this->fromEmail = $_ENV['FROM_EMAIL'] ?? 'noreply@morningnewsletter.com';
-        $this->fromName = $_ENV['FROM_NAME'] ?? 'MorningNewsletter';
+        // Load email configuration
+        $config = require __DIR__ . '/../config/email.php';
+        
+        $this->provider = $_ENV['EMAIL_PROVIDER'] ?? $config['provider'];
+        
+        // Get provider-specific configuration
+        $providerConfig = $config[$this->provider] ?? $config['resend'];
+        
+        $this->apiKey = $_ENV['EMAIL_API_KEY'] ?? $providerConfig['api_key'];
+        $this->fromEmail = $_ENV['FROM_EMAIL'] ?? $providerConfig['from_email'];
+        $this->fromName = $_ENV['FROM_NAME'] ?? $providerConfig['from_name'];
     }
     
     public function sendNewsletter(User $user, $htmlContent, $subject = null) {
@@ -41,9 +43,59 @@ class EmailSender {
     }
     
     private function sendEmail($to, $subject, $htmlBody) {
-        // For MVP, use basic PHP mail() function
-        // TODO: Implement PHPMailer for production
+        switch ($this->provider) {
+            case 'resend':
+                return $this->sendWithResend($to, $subject, $htmlBody);
+            case 'smtp':
+                return $this->sendWithSMTP($to, $subject, $htmlBody);
+            default:
+                error_log("Unknown email provider: {$this->provider}");
+                return false;
+        }
+    }
+    
+    private function sendWithResend($to, $subject, $htmlBody) {
+        $data = [
+            'from' => $this->fromEmail,
+            'to' => [$to],
+            'subject' => $subject,
+            'html' => $htmlBody
+        ];
         
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.resend.com/emails');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Bearer ' . $this->apiKey,
+            'Content-Type: application/json'
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+        
+        if ($error) {
+            error_log("Resend API cURL error: " . $error);
+            return false;
+        }
+        
+        if ($httpCode >= 200 && $httpCode < 300) {
+            $responseData = json_decode($response, true);
+            if ($responseData && isset($responseData['id'])) {
+                error_log("Email sent successfully via Resend. ID: " . $responseData['id']);
+                return true;
+            }
+        }
+        
+        error_log("Resend API error (HTTP $httpCode): " . $response);
+        return false;
+    }
+    
+    private function sendWithSMTP($to, $subject, $htmlBody) {
+        // Fallback to basic PHP mail() function
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',
