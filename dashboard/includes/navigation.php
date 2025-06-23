@@ -59,12 +59,107 @@ function getNavClass($page, $currentPage) {
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <span class="text-sm text-gray-700">Welcome, <?php echo htmlspecialchars($user->getEmail()); ?></span>
-                <a href="/auth/logout.php" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-sign-out-alt"></i>
-                </a>
+            <div class="relative">
+                <!-- Profile dropdown -->
+                <div class="relative ml-3">
+                    <div>
+                        <button type="button" onclick="toggleDropdown()" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:p-2 lg:rounded-md lg:hover:bg-gray-50" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                            <div class="flex items-center">
+                                <!-- Avatar circle with initial -->
+                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-green-800">
+                                        <?php echo strtoupper(substr($user->getEmail(), 0, 1)); ?>
+                                    </span>
+                                </div>
+                                <!-- User info (hidden on mobile, shown on desktop) -->
+                                <div class="hidden lg:ml-3 lg:block">
+                                    <div class="text-base font-medium text-gray-900">
+                                        <?php 
+                                        $emailParts = explode('@', $user->getEmail());
+                                        echo ucfirst($emailParts[0]);
+                                        ?>
+                                    </div>
+                                    <div class="text-sm text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
+                                </div>
+                                <!-- Dropdown arrow -->
+                                <div class="hidden lg:ml-2 lg:flex-shrink-0 lg:block">
+                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdown-menu" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                        <!-- User info (shown on mobile) -->
+                        <div class="block lg:hidden px-4 py-2 border-b border-gray-200">
+                            <div class="text-base font-medium text-gray-900">
+                                <?php 
+                                $emailParts = explode('@', $user->getEmail());
+                                echo ucfirst($emailParts[0]);
+                                ?>
+                            </div>
+                            <div class="text-sm text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
+                        </div>
+                        
+                        <!-- Billing/Upgrade option -->
+                        <?php if ($user->getPlan() === 'free'): ?>
+                        <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-arrow-up mr-2 text-blue-500"></i>
+                            Upgrade Plan
+                        </a>
+                        <?php else: ?>
+                        <a href="/billing" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-credit-card mr-2 text-blue-500"></i>
+                            Billing
+                        </a>
+                        <?php endif; ?>
+                        
+                        <!-- Logout option -->
+                        <a href="/auth/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i>
+                            Sign out
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </nav>
+
+<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('user-menu-button');
+    
+    if (dropdown.classList.contains('hidden')) {
+        dropdown.classList.remove('hidden');
+        button.setAttribute('aria-expanded', 'true');
+    } else {
+        dropdown.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+    }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('user-menu-button');
+    
+    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+    }
+});
+
+// Close dropdown when pressing escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const dropdown = document.getElementById('dropdown-menu');
+        const button = document.getElementById('user-menu-button');
+        
+        dropdown.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+    }
+});
+</script>
