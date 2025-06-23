@@ -295,57 +295,61 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <?php if ($userData['id'] != $user->getId()): ?>
-                                            <div class="flex space-x-2">
-                                                <?php if ($userData['is_admin']): ?>
-                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to remove admin access from <?php echo htmlspecialchars($userData['email']); ?>?');">
-                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                        <input type="hidden" name="action" value="demote">
-                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                        <button type="submit" class="text-orange-600 hover:text-orange-900">
-                                                            <i class="fas fa-user-minus mr-1"></i>
-                                                            Demote
-                                                        </button>
-                                                    </form>
-                                                <?php else: ?>
-                                                    <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to grant admin access to <?php echo htmlspecialchars($userData['email']); ?>?');">
-                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                        <input type="hidden" name="action" value="promote">
-                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                        <button type="submit" class="text-blue-600 hover:text-blue-900">
-                                                            <i class="fas fa-crown mr-1"></i>
-                                                            Make Admin
-                                                        </button>
-                                                    </form>
-                                                <?php endif; ?>
-                                                
-                                                <?php if (!$userData['email_verified']): ?>
-                                                    <span class="text-gray-300">|</span>
-                                                    
-                                                    <form method="POST" class="inline" onsubmit="return confirm('Resend verification email to <?php echo htmlspecialchars($userData['email']); ?>?');">
-                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                        <input type="hidden" name="action" value="resend_verification">
-                                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                        <button type="submit" class="text-green-600 hover:text-green-900">
-                                                            <i class="fas fa-envelope mr-1"></i>
-                                                            Resend Verify
-                                                        </button>
-                                                    </form>
-                                                <?php endif; ?>
-                                                
-                                                <span class="text-gray-300">|</span>
-                                                
-                                                <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to permanently DELETE <?php echo htmlspecialchars($userData['email']); ?>? This will remove all their data including sources and email logs. This action cannot be undone!');">
-                                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                    <button type="submit" class="text-red-600 hover:text-red-900">
-                                                        <i class="fas fa-trash mr-1"></i>
-                                                        Delete
-                                                    </button>
-                                                </form>
+                                            <div class="relative inline-block text-left">
+                                                <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleDropdown(<?php echo $userData['id']; ?>)">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                                                    <div class="py-1">
+                                                        <?php if ($userData['is_admin']): ?>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to remove admin access from <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="demote">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-orange-700 hover:bg-orange-50 flex items-center">
+                                                                    <i class="fas fa-user-minus mr-2"></i>
+                                                                    Remove Admin
+                                                                </button>
+                                                            </form>
+                                                        <?php else: ?>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to grant admin access to <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="promote">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 flex items-center">
+                                                                    <i class="fas fa-crown mr-2"></i>
+                                                                    Make Admin
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if (!$userData['email_verified']): ?>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Resend verification email to <?php echo htmlspecialchars($userData['email']); ?>?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="resend_verification">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center">
+                                                                    <i class="fas fa-envelope mr-2"></i>
+                                                                    Resend Verification
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                        
+                                                        <div class="border-t border-gray-100"></div>
+                                                        <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to permanently DELETE <?php echo htmlspecialchars($userData['email']); ?>? This will remove all their data including sources and email logs. This action cannot be undone!');">
+                                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                            <input type="hidden" name="action" value="delete">
+                                                            <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 flex items-center">
+                                                                <i class="fas fa-trash mr-2"></i>
+                                                                Delete User
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         <?php else: ?>
-                                            <span class="text-gray-400">Current User</span>
+                                            <span class="text-gray-400 text-sm">Current User</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -357,5 +361,31 @@ $csrfToken = $auth->generateCSRFToken();
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleDropdown(userId) {
+            const dropdown = document.getElementById('dropdown-' + userId);
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.add('hidden');
+                }
+            });
+            
+            // Toggle current dropdown
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                    d.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
