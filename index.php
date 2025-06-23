@@ -584,7 +584,7 @@ try {
             // Check if user is logged in
             <?php if (!$isLoggedIn): ?>
                 alert('Please login or register to subscribe to a plan.');
-                window.location.href = '/login.php';
+                window.location.href = '/auth/login.php';
                 return;
             <?php endif; ?>
 
