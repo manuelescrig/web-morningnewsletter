@@ -1,7 +1,7 @@
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-2">
                 <h1 class="text-2xl font-bold text-blue-600">MorningNewsletter</h1>
                 <p class="mt-4 text-gray-500 text-sm">Your personalized morning brief, delivered daily.</p>
@@ -40,16 +40,13 @@
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
                 </ul>
             </div>
-            <div>
-                <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
-                <ul class="mt-4 space-y-4">
-                    <li><a href="/legal/terms.php" class="text-base text-gray-500 hover:text-gray-300">Terms of Service</a></li>
-                    <li><a href="/legal/privacy.php" class="text-base text-gray-500 hover:text-gray-300">Privacy Policy</a></li>
-                </ul>
-            </div>
         </div>
-        <div class="mt-8 border-t border-gray-700 pt-8 flex justify-center">
+        <div class="mt-8 border-t border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between">
             <p class="text-gray-500 text-sm">&copy; 2025 MorningNewsletter.com. All rights reserved.</p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="/legal/terms.php" class="text-gray-500 hover:text-gray-300 text-sm">Terms of Service</a>
+                <a href="/legal/privacy.php" class="text-gray-500 hover:text-gray-300 text-sm">Privacy Policy</a>
+            </div>
         </div>
     </div>
 </footer>
