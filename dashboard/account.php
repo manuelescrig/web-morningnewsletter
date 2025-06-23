@@ -161,7 +161,7 @@ $csrfToken = $auth->generateCSRFToken();
                                name="name" 
                                id="name" 
                                value="<?php echo htmlspecialchars($user->getName() ?? ''); ?>"
-                               class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
                                placeholder="Enter your full name">
                     </div>
                     
@@ -228,7 +228,7 @@ $csrfToken = $auth->generateCSRFToken();
                                name="email" 
                                id="email" 
                                required
-                               class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
                                placeholder="Enter new email address">
                     </div>
                     
@@ -271,7 +271,7 @@ $csrfToken = $auth->generateCSRFToken();
                                name="current_password" 
                                id="current_password" 
                                required
-                               class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
                     </div>
                     
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -282,7 +282,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    id="new_password" 
                                    required
                                    minlength="8"
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
                             <p class="mt-1 text-sm text-gray-500">Minimum 8 characters</p>
                         </div>
                         
@@ -293,7 +293,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    id="confirm_password" 
                                    required
                                    minlength="8"
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
                         </div>
                     </div>
                     
@@ -328,7 +328,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    name="delete_password" 
                                    id="delete_password" 
                                    required
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm px-3 py-2">
                         </div>
                         
                         <div>
@@ -338,7 +338,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    id="delete_confirmation" 
                                    required
                                    placeholder="DELETE"
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm px-3 py-2">
                         </div>
                     </div>
                     
