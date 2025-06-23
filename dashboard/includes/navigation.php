@@ -57,8 +57,8 @@ function getNavClass($page, $currentPage) {
                         <button type="button" onclick="toggleDropdown()" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:p-2 lg:rounded-md lg:hover:bg-gray-50" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <div class="flex items-center">
                                 <!-- Avatar circle with initial -->
-                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                                    <span class="text-sm font-medium text-green-800">
+                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <span class="text-sm font-medium text-blue-800">
                                         <?php echo strtoupper(substr($user->getEmail(), 0, 1)); ?>
                                     </span>
                                 </div>
