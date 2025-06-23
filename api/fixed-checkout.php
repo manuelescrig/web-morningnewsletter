@@ -59,7 +59,7 @@ try {
     
     // Create the actual Stripe checkout session
     $session = $stripeHelper->createCheckoutSession(
-        $user['id'],
+        $user->getId(),
         $plan,
         $successUrl,
         $cancelUrl

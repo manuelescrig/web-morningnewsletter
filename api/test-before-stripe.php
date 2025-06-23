@@ -47,15 +47,15 @@ try {
     // Test subscription manager
     require_once __DIR__ . '/../core/SubscriptionManager.php';
     $subscriptionManager = new SubscriptionManager();
-    $currentPlan = $subscriptionManager->getUserPlanInfo($user['id']);
+    $currentPlan = $subscriptionManager->getUserPlanInfo($user->getId());
     
     // Return test data (don't create actual Stripe session yet)
     echo json_encode([
         'success' => true,
         'plan' => $plan,
         'price_id' => $priceId,
-        'user_id' => $user['id'],
-        'user_email' => $user['email'],
+        'user_id' => $user->getId(),
+        'user_email' => $user->getEmail(),
         'current_subscription' => $currentPlan,
         'test_mode' => true,
         'message' => 'Ready to create Stripe session'

@@ -23,7 +23,7 @@ try {
             require_once __DIR__ . '/../core/Auth.php';
             $auth = Auth::getInstance();
             $user = $auth->getCurrentUser();
-            echo json_encode(['step' => 2, 'success' => true, 'logged_in' => $auth->isLoggedIn(), 'user_id' => $user['id'] ?? null]);
+            echo json_encode(['step' => 2, 'success' => true, 'logged_in' => $auth->isLoggedIn(), 'user_id' => $user ? $user->getId() : null]);
             break;
             
         case '3':
@@ -47,7 +47,7 @@ try {
             $auth = Auth::getInstance();
             $user = $auth->getCurrentUser();
             $subscriptionManager = new SubscriptionManager();
-            $currentPlan = $subscriptionManager->getUserPlanInfo($user['id']);
+            $currentPlan = $subscriptionManager->getUserPlanInfo($user->getId());
             echo json_encode(['step' => 5, 'success' => true, 'plan_info' => $currentPlan]);
             break;
             
