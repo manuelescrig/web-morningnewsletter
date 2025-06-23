@@ -43,7 +43,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     Press & <span class="gradient-text">Media</span>
                 </h1>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Press resources, company information, and media kit for journalists and content creators covering MorningNewsletter.
+                    Hi, I'm Manuel Escrig, the solo developer behind MorningNewsletter. Here's everything you need if you're covering the project.
                 </p>
             </div>
         </div>
@@ -60,32 +60,32 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
                 <div class="bg-blue-50 rounded-2xl p-6 text-center">
                     <div class="text-3xl font-bold text-blue-600 mb-2">2024</div>
-                    <div class="text-gray-600">Founded</div>
+                    <div class="text-gray-600">Started</div>
                 </div>
                 <div class="bg-purple-50 rounded-2xl p-6 text-center">
-                    <div class="text-3xl font-bold text-purple-600 mb-2">10K+</div>
-                    <div class="text-gray-600">Active Users</div>
+                    <div class="text-3xl font-bold text-purple-600 mb-2">Solo</div>
+                    <div class="text-gray-600">Developer</div>
                 </div>
                 <div class="bg-green-50 rounded-2xl p-6 text-center">
-                    <div class="text-3xl font-bold text-green-600 mb-2">50K+</div>
-                    <div class="text-gray-600">Newsletters Sent</div>
+                    <div class="text-3xl font-bold text-green-600 mb-2">Growing</div>
+                    <div class="text-gray-600">User Base</div>
                 </div>
                 <div class="bg-orange-50 rounded-2xl p-6 text-center">
-                    <div class="text-3xl font-bold text-orange-600 mb-2">Remote</div>
-                    <div class="text-gray-600">Distributed Team</div>
+                    <div class="text-3xl font-bold text-orange-600 mb-2">Spain</div>
+                    <div class="text-gray-600">Based</div>
                 </div>
             </div>
             
             <div class="bg-gray-50 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6">Company Description</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">About the Project</h3>
                 <p class="text-lg text-gray-600 mb-4">
-                    MorningNewsletter is a personalized morning briefing platform that helps professionals start their day with clarity and focus. 
-                    Our AI-powered service aggregates information from multiple sources—including KPIs, market data, weather, news, and social media—into 
-                    one beautiful, customizable email delivered every morning.
+                    MorningNewsletter is a personal project I built to solve my own problem: spending too much time every morning 
+                    checking emails, GitHub notifications, tech news, weather, and crypto prices across different apps. 
+                    It aggregates the information I care about from multiple sources into one clean email delivered every morning.
                 </p>
                 <p class="text-lg text-gray-600">
-                    Founded in 2024, MorningNewsletter serves thousands of professionals worldwide who want to streamline their morning routine 
-                    and stay informed without the overwhelm of checking multiple apps and platforms.
+                    Started in 2024 as a side project, it turns out other professionals had the same problem. Now I'm helping 
+                    them streamline their mornings too. It's still a solo operation, built with care and continuously improved based on user feedback.
                 </p>
             </div>
         </div>
@@ -202,8 +202,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             <div class="bg-white rounded-2xl p-8 text-center">
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">Coverage Coming Soon</h3>
                 <p class="text-lg text-gray-600 mb-6">
-                    We're working with leading publications to share our story and the impact we're making 
-                    on professionals' morning routines worldwide.
+                    I'm working with publications to share the story of how a simple side project is helping 
+                    professionals worldwide start their mornings with less chaos and more clarity.
                 </p>
                 <p class="text-gray-500">
                     For interview requests or story pitches, contact us at 
@@ -217,12 +217,12 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <div class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <blockquote class="text-2xl font-medium text-gray-900 mb-8">
-                "We built MorningNewsletter to solve our own problem—turning information overload into clarity. 
-                Every day, we help thousands of professionals start their morning with purpose instead of chaos."
+                "I built MorningNewsletter to solve my own problem—turning information overload into clarity. 
+                Every day, it helps professionals start their morning with purpose instead of chaos."
             </blockquote>
             <div class="text-lg text-gray-600">
-                <strong>Founder & CEO</strong><br>
-                MorningNewsletter
+                <strong>Manuel Escrig</strong><br>
+                Creator of MorningNewsletter
             </div>
         </div>
     </div>
@@ -234,7 +234,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 Ready to Cover Our Story?
             </h2>
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                We're always happy to provide quotes, data, or interviews for stories about productivity, 
+                I'm always happy to provide quotes, data, or interviews for stories about productivity, 
                 morning routines, and the future of personalized information.
             </p>
             <a href="mailto:press@morningnewsletter.com" 

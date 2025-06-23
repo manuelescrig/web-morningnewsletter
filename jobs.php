@@ -40,10 +40,11 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                    Join Our <span class="gradient-text">Team</span>
+                    Work With <span class="gradient-text">Us</span>
                 </h1>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Help us build the future of personalized morning briefings. We're passionate about creating tools that help professionals start their day with clarity and purpose.
+                    Hi, I'm Manuel Escrig, creator of MorningNewsletter. While I'm currently running this as a solo operation, 
+                    I'm always open to connecting with talented people who share the vision of helping professionals start their day with clarity.
                 </p>
             </div>
         </div>
@@ -53,8 +54,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Work With Us?</h2>
-                <p class="text-xl text-gray-600">We're building something meaningful together</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Work With Me?</h2>
+                <p class="text-xl text-gray-600">Building something meaningful, one day at a time</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -100,8 +101,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">No Current Openings</h3>
                 <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                    We don't have any open positions at the moment, but we're always looking for exceptional talent. 
-                    If you're passionate about our mission, we'd love to hear from you.
+                    I don't have any open positions at the moment since this is currently a solo operation. 
+                    But if you're passionate about the mission and want to connect, I'd love to hear from you.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -187,7 +188,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 Ready to Make an Impact?
             </h2>
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Even if we don't have current openings, we're always interested in connecting with talented individuals who share our vision.
+                Even if there aren't current openings, I'm always interested in connecting with talented individuals who share the vision.
             </p>
             <a href="mailto:careers@morningnewsletter.com" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">

@@ -43,7 +43,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     About <span class="gradient-text">MorningNewsletter</span>
                 </h1>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    We're on a mission to help professionals start their day with clarity, focus, and all the information they need to succeed.
+                    Hi, I'm Manuel Escrig, and I built MorningNewsletter to help professionals start their day with clarity and focus.
                 </p>
             </div>
         </div>
@@ -54,38 +54,38 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">My Story</h2>
                     <p class="text-lg text-gray-600 mb-6">
-                        Every morning, millions of professionals wake up to information overload. Multiple apps, countless notifications, 
-                        scattered updates across platforms—it's overwhelming and inefficient.
+                        As a developer, I was spending way too much time every morning checking emails, 
+                        GitHub notifications, tech news, weather, and crypto prices across different apps. It was chaotic and exhausting.
                     </p>
                     <p class="text-lg text-gray-600 mb-6">
-                        MorningNewsletter changes that. We believe your morning routine should energize you, not exhaust you. 
-                        That's why we've created a personalized morning brief that brings together everything you need to know in one beautiful, 
-                        easy-to-digest email.
+                        So I built MorningNewsletter to solve my own problem. I wanted one simple email that gives me everything 
+                        I need to know to start my day productively. No more app hopping, no more information overload.
                     </p>
                     <p class="text-lg text-gray-600">
-                        Our goal is simple: help you start each day informed, focused, and ready to tackle what matters most.
+                        Turns out, I wasn't the only one with this problem. Now I'm helping other professionals 
+                        streamline their mornings too.
                     </p>
                 </div>
                 <div class="lg:text-center">
                     <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-blue-600 mb-2">10K+</div>
-                                <div class="text-sm text-gray-600">Active Users</div>
+                                <div class="text-3xl font-bold text-blue-600 mb-2">2024</div>
+                                <div class="text-sm text-gray-600">Started</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-purple-600 mb-2">50K+</div>
-                                <div class="text-sm text-gray-600">Emails Delivered</div>
+                                <div class="text-3xl font-bold text-purple-600 mb-2">Solo</div>
+                                <div class="text-sm text-gray-600">Developer</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-green-600 mb-2">99.9%</div>
-                                <div class="text-sm text-gray-600">Uptime</div>
+                                <div class="text-3xl font-bold text-green-600 mb-2">Growing</div>
+                                <div class="text-sm text-gray-600">User Base</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-orange-600 mb-2">4.8★</div>
-                                <div class="text-sm text-gray-600">User Rating</div>
+                                <div class="text-3xl font-bold text-orange-600 mb-2">Open</div>
+                                <div class="text-sm text-gray-600">Source Plan</div>
                             </div>
                         </div>
                     </div>
@@ -98,8 +98,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <div class="py-20 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
-                <p class="text-xl text-gray-600">How MorningNewsletter came to life</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Started</h2>
+                <p class="text-xl text-gray-600">The honest story behind MorningNewsletter</p>
             </div>
             
             <div class="space-y-12">
@@ -113,9 +113,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <div class="ml-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">The Problem</h3>
                             <p class="text-gray-600">
-                                As busy professionals ourselves, we were spending 30+ minutes every morning checking emails, 
-                                social media, news apps, weather, market updates, and project management tools. It was chaotic, 
-                                time-consuming, and often left us feeling overwhelmed before the day even began.
+                                I was spending 30+ minutes every morning checking emails, GitHub, Hacker News, weather, 
+                                crypto prices, and my analytics dashboards. It was chaotic and eating into my productive hours.
                             </p>
                         </div>
                     </div>
@@ -131,9 +130,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <div class="ml-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">The Solution</h3>
                             <p class="text-gray-600">
-                                We built MorningNewsletter to solve our own problem—and realized thousands of other professionals 
-                                had the same struggle. Our platform aggregates all the information you need from multiple sources 
-                                and delivers it as one beautiful, personalized email that takes just 5 minutes to read.
+                                So I built MorningNewsletter as a side project to solve my own problem. It aggregates the info I care about 
+                                from different sources and sends me one clean email every morning. Turns out other people had the same problem.
                             </p>
                         </div>
                     </div>
@@ -149,9 +147,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <div class="ml-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">The Future</h3>
                             <p class="text-gray-600">
-                                We're just getting started. Our vision is to become the definitive morning routine platform for 
-                                professionals worldwide, using AI and machine learning to make each morning brief more personalized, 
-                                relevant, and valuable than the last.
+                                I'm continuously improving MorningNewsletter based on user feedback. The goal is simple: make your mornings 
+                                less chaotic and more productive. No grand corporate vision, just a useful tool that keeps getting better.
                             </p>
                         </div>
                     </div>
@@ -164,8 +161,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Values</h2>
-                <p class="text-xl text-gray-600">The principles that guide everything we do</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">My Values</h2>
+                <p class="text-xl text-gray-600">The principles that guide everything I build</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -175,7 +172,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Respect Your Time</h3>
                     <p class="text-gray-600">
-                        We believe your time is precious. Every feature we build is designed to save you time and 
+                        I believe your time is precious. Every feature I build is designed to save you time and 
                         make your morning routine more efficient.
                     </p>
                 </div>
@@ -186,7 +183,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Privacy First</h3>
                     <p class="text-gray-600">
-                        Your data is yours. We use industry-leading security practices and never share your 
+                        Your data is yours. I use industry-leading security practices and never share your 
                         personal information with third parties.
                     </p>
                 </div>
@@ -197,7 +194,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Human-Centered</h3>
                     <p class="text-gray-600">
-                        Technology should serve people, not the other way around. We build tools that feel natural, 
+                        Technology should serve people, not the other way around. I build tools that feel natural, 
                         intuitive, and genuinely helpful.
                     </p>
                 </div>
@@ -212,7 +209,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 Ready to Transform Your Morning?
             </h2>
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Join thousands of professionals who have already streamlined their morning routine with MorningNewsletter.
+                Join the professionals who have already streamlined their morning routine with MorningNewsletter.
             </p>
             <a href="#pricing" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
