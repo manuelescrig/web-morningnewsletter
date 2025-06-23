@@ -40,6 +40,9 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
                         Schedule
                     </a>
+                    <a href="/dashboard/billing.php" class="<?php echo getNavClass('billing', $currentPage); ?>">
+                        Billing
+                    </a>
                     <a href="/dashboard/settings.php" class="<?php echo getNavClass('settings', $currentPage); ?>">
                         Settings
                     </a>

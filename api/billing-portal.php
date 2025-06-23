@@ -26,7 +26,7 @@ try {
     }
     
     $user = $auth->getCurrentUser();
-    $userId = $user['id'];
+    $userId = $user->getId();
     
     // Get user's subscription info
     $subscriptionManager = new SubscriptionManager();
@@ -41,7 +41,7 @@ try {
     // Get base URL for return
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
-    $returnUrl = "$protocol://$host/dashboard/settings.php";
+    $returnUrl = "$protocol://$host/dashboard/billing.php";
     
     // Create billing portal session
     $stripeHelper = new StripeHelper();
@@ -51,7 +51,7 @@ try {
     );
     
     echo json_encode([
-        'url' => $session['url']
+        'portal_url' => $session['url']
     ]);
     
 } catch (Exception $e) {

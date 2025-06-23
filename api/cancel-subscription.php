@@ -26,7 +26,7 @@ try {
     }
     
     $user = $auth->getCurrentUser();
-    $userId = $user['id'];
+    $userId = $user->getId();
     
     // Get user's active subscription
     $subscriptionManager = new SubscriptionManager();
