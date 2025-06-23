@@ -31,17 +31,24 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        .mesh-bg {
+            background: radial-gradient(circle at 25% 25%, #e0e7ff 0%, transparent 50%),
+                        radial-gradient(circle at 75% 25%, #f3e8ff 0%, transparent 50%),
+                        radial-gradient(circle at 25% 75%, #dbeafe 0%, transparent 50%),
+                        radial-gradient(circle at 75% 75%, #fce7f3 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, #f8fafc 0%, transparent 50%);
+        }
     </style>
 </head>
 <body class="bg-white">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-gray-50 via-white to-blue-50 py-24 sm:py-32 lg:py-40">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="relative mesh-bg py-24 sm:py-32 lg:py-40 overflow-hidden">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <div class="mb-8">
-                    <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                    <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
                         <i class="fas fa-sparkles mr-2"></i>
                         AI-Powered Content Curation
                     </span>
@@ -52,7 +59,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         Morning Brief
                     </span>
                 </h1>
-                <p class="mt-6 text-lg leading-8 text-gray-600 sm:text-xl max-w-3xl mx-auto">
+                <p class="mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
                     Start your day with clarity. Get everything that matters—KPIs, market updates, weather, news, and messages—delivered in one beautiful email.
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
@@ -65,7 +72,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <i class="fas fa-play-circle ml-2"></i>
                     </a>
                 </div>
-                <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-500">
+                <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
                         Free 14-day trial
@@ -82,12 +89,11 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             </div>
         </div>
         
-        <!-- Subtle background elements -->
-        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-        </div>
-        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#60a5fa] to-[#3b82f6] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        <!-- Mesh overlay elements -->
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/40 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-purple-200/40 to-pink-200/40 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-gradient-to-br from-blue-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
         </div>
     </div>
 

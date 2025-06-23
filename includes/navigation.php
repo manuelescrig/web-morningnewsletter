@@ -8,6 +8,8 @@ if (!isset($isLoggedIn)) {
     $isLoggedIn = $auth->isLoggedIn();
     $user = $isLoggedIn ? $auth->getCurrentUser() : null;
 }
+
+require_once __DIR__ . '/logo.php';
 ?>
 
 <!-- Navigation -->
@@ -15,7 +17,7 @@ if (!isset($isLoggedIn)) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
             <div class="flex-shrink-0">
-                <a href="/" class="text-2xl font-bold text-blue-600">MorningNewsletter</a>
+                <?php renderLogo('md'); ?>
             </div>
             <div class="hidden md:block flex-1">
                 <div class="flex justify-center">

@@ -1,9 +1,11 @@
+<?php require_once __DIR__ . '/logo.php'; ?>
+
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <h1 class="text-2xl font-bold text-blue-600">MorningNewsletter</h1>
+                <?php renderLogo('md', '/', 'block'); ?>
                 <p class="mt-4 text-gray-500 text-sm">Your personalized morning brief, delivered daily.</p>
                 <div class="mt-6 flex space-x-6">
                     <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>

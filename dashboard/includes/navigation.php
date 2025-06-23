@@ -15,6 +15,8 @@ if (!isset($currentPage)) {
     $currentPage = 'dashboard';
 }
 
+require_once __DIR__ . '/../../includes/logo.php';
+
 function getNavClass($page, $currentPage) {
     if ($page === $currentPage) {
         return 'border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
@@ -27,7 +29,7 @@ function getNavClass($page, $currentPage) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
-                <a href="/" class="text-2xl font-bold text-blue-600">MorningNewsletter</a>
+<?php renderLogo('md'); ?>
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
                         Dashboard
