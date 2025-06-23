@@ -335,6 +335,12 @@ try {
                             <span class="text-4xl font-extrabold text-gray-900">$5</span>
                             <span class="text-base font-medium text-gray-500">/month</span>
                         </p>
+                        <div class="mt-3 mb-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <i class="fas fa-gift mr-1"></i>
+                                7-day free trial
+                            </span>
+                        </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
@@ -377,6 +383,12 @@ try {
                             <span class="text-4xl font-extrabold text-gray-900">$15</span>
                             <span class="text-base font-medium text-gray-500">/month</span>
                         </p>
+                        <div class="mt-3 mb-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <i class="fas fa-gift mr-1"></i>
+                                7-day free trial
+                            </span>
+                        </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
@@ -420,6 +432,12 @@ try {
                             <span class="text-4xl font-extrabold text-gray-900">$19</span>
                             <span class="text-base font-medium text-gray-500">/month</span>
                         </p>
+                        <div class="mt-3 mb-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <i class="fas fa-gift mr-1"></i>
+                                7-day free trial
+                            </span>
+                        </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">

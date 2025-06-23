@@ -66,7 +66,7 @@ class SubscriptionManager {
     }
     
     /**
-     * Get active subscription for user
+     * Get active subscription for user (including trials)
      */
     public function getUserActiveSubscription(int $userId): ?array {
         $sql = "SELECT * FROM subscriptions 
