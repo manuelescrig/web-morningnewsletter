@@ -17,10 +17,10 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     ];
     
     $sunSizeClasses = [
-        'sm' => 'h-4 w-4',
-        'md' => 'h-6 w-6',
-        'lg' => 'h-8 w-8',
-        'xl' => 'h-10 w-10'
+        'sm' => 'h-3 w-3',
+        'md' => 'h-4 w-4',
+        'lg' => 'h-5 w-5',
+        'xl' => 'h-6 w-6'
     ];
     
     $sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
@@ -28,8 +28,8 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     $baseClasses = "$sizeClass font-bold text-blue-600 hover:text-blue-700 transition-colors duration-200";
     $allClasses = trim("$baseClasses $classes");
     
-    echo "<a href=\"$href\" class=\"$allClasses flex items-center gap-2\">";
-    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass logo-sun-rotated\">";
+    echo "<a href=\"$href\" class=\"$allClasses flex items-center gap-1\">";
+    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass logo-sun-rotated self-center\">";
     echo "<span><span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span></span>";
     echo "</a>";
 }
