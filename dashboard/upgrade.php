@@ -9,7 +9,7 @@ $user = $auth->getCurrentUser();
 $subscriptionManager = new SubscriptionManager();
 $planInfo = $subscriptionManager->getUserPlanInfo($user->getId());
 
-$currentPage = 'pricing';
+$currentPage = 'upgrade';
 ?>
 <!DOCTYPE html>
 <html lang="en">

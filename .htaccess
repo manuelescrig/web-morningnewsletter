@@ -17,7 +17,8 @@ RewriteRule ^careers/?$ jobs.php [L]
 RewriteRule ^support/?$ support.php [L]
 RewriteRule ^about/?$ about.php [L]
 RewriteRule ^press/?$ press.php [L]
-RewriteRule ^pricing/?$ dashboard/pricing.php [L]
+RewriteRule ^upgrade/?$ dashboard/upgrade.php [L]
+RewriteRule ^billing/?$ dashboard/billing.php [L]
 
 # Prevent access to sensitive files
 <Files ~ "^\.">

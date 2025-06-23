@@ -41,11 +41,11 @@ function getNavClass($page, $currentPage) {
                         Schedule
                     </a>
                     <?php if ($user->getPlan() === 'free'): ?>
-                    <a href="/pricing" class="<?php echo getNavClass('pricing', $currentPage); ?>">
+                    <a href="/upgrade" class="<?php echo getNavClass('upgrade', $currentPage); ?>">
                         Upgrade
                     </a>
                     <?php else: ?>
-                    <a href="/dashboard/billing.php" class="<?php echo getNavClass('billing', $currentPage); ?>">
+                    <a href="/billing" class="<?php echo getNavClass('billing', $currentPage); ?>">
                         Billing
                     </a>
                     <?php endif; ?>

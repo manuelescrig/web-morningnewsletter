@@ -55,7 +55,9 @@ try {
     $baseUrl = "$protocol://$host";
     
     $successUrl = $baseUrl . '/payment-success.php?session_id={CHECKOUT_SESSION_ID}';
-    $cancelUrl = $baseUrl . '/payment-cancel.php';
+    
+    // Use the referer (previous page) as cancel URL, fallback to upgrade page
+    $cancelUrl = $_SERVER['HTTP_REFERER'] ?? $baseUrl . '/upgrade';
     
     // Create the actual Stripe checkout session
     $session = $stripeHelper->createCheckoutSession(

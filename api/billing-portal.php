@@ -41,7 +41,7 @@ try {
     // Get base URL for return
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
-    $returnUrl = "$protocol://$host/dashboard/billing.php";
+    $returnUrl = "$protocol://$host/billing";
     
     // Create billing portal session
     $stripeHelper = new StripeHelper();

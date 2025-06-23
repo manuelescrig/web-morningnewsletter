@@ -15,9 +15,9 @@ if ($auth->isLoggedIn()) {
     $planInfo = $subscriptionManager->getUserPlanInfo($user->getId());
     
     if ($planInfo['plan'] !== 'free') {
-        header('Location: /dashboard/billing.php');
+        header('Location: /billing');
     } else {
-        header('Location: /pricing');
+        header('Location: /upgrade');
     }
     exit;
 }
@@ -39,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $planInfo = $subscriptionManager->getUserPlanInfo($user->getId());
             
             if ($planInfo['plan'] !== 'free') {
-                header('Location: /dashboard/billing.php');
+                header('Location: /billing');
             } else {
-                header('Location: /pricing');
+                header('Location: /upgrade');
             }
             exit;
         } else {
