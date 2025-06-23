@@ -316,13 +316,13 @@ try {
             </div>
 
             <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-                <!-- Free Tier -->
+                <!-- Starter Tier -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div class="px-6 py-8">
-                        <h3 class="text-2xl font-bold text-gray-900">Free</h3>
-                        <p class="mt-4 text-gray-500">Perfect for trying out MorningNewsletter</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Starter</h3>
+                        <p class="mt-4 text-gray-500">Ideal for personal use or trying out the service</p>
                         <p class="mt-8">
-                            <span class="text-4xl font-extrabold text-gray-900">$0</span>
+                            <span class="text-4xl font-extrabold text-gray-900">$5</span>
                             <span class="text-base font-medium text-gray-500">/month</span>
                         </p>
                         <ul class="mt-6 space-y-4">
@@ -330,41 +330,41 @@ try {
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Basic KPI tracking</p>
+                                <p class="ml-3 text-base text-gray-500">Up to 5 sources</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Weather updates</p>
+                                <p class="ml-3 text-base text-gray-500">Basic scheduling & customization</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Basic news feed</p>
+                                <p class="ml-3 text-base text-gray-500">Daily newsletter delivery</p>
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/auth/register.php" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
-                                Get Started
+                            <a href="https://buy.stripe.com/9B6aEX00yg9lgwEfiG0Ba00" class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
+                                Subscribe Now
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Pro Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-blue-500 relative">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-yellow-400 relative">
                     <div class="absolute top-0 right-0 -mt-4 -mr-4">
-                        <span class="inline-flex rounded-full bg-blue-500 px-4 py-1 text-sm font-semibold text-white">
+                        <span class="inline-flex rounded-full bg-yellow-400 px-4 py-1 text-sm font-semibold text-gray-900">
                             Popular
                         </span>
                     </div>
                     <div class="px-6 py-8">
-                        <h3 class="text-2xl font-bold text-gray-900">Pro</h3>
-                        <p class="mt-4 text-gray-500">For professionals who need more</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Pro</h3>
+                        <p class="mt-4 text-gray-500">Great for professionals who want more control</p>
                         <p class="mt-8">
-                            <span class="text-4xl font-extrabold text-gray-900">$29</span>
+                            <span class="text-4xl font-extrabold text-gray-900">$15</span>
                             <span class="text-base font-medium text-gray-500">/month</span>
                         </p>
                         <ul class="mt-6 space-y-4">
@@ -372,25 +372,59 @@ try {
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Everything in Free</p>
+                                <p class="ml-3 text-base text-gray-500">Up to 15 sources</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Advanced KPI tracking</p>
+                                <p class="ml-3 text-base text-gray-500">Advanced scheduling</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Crypto & finance updates</p>
+                                <p class="ml-3 text-base text-gray-500">Custom layouts</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
-                                <p class="ml-3 text-base text-gray-500">Social media integration</p>
+                                <p class="ml-3 text-base text-gray-500">Priority email support</p>
+                            </li>
+                        </ul>
+                        <div class="mt-8">
+                            <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="block w-full text-white bg-gradient-to-br from-yellow-400 to-orange-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all">
+                                Subscribe Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unlimited Tier -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="px-6 py-8">
+                        <div class="flex items-center mb-4">
+                            <div class="w-4 h-4 bg-green-500 rounded-sm mr-3"></div>
+                            <h3 class="text-2xl font-bold text-gray-900">Unlimited</h3>
+                        </div>
+                        <p class="mt-4 text-gray-500">Perfect for power users, teams, or content curators</p>
+                        <p class="mt-8">
+                            <span class="text-4xl font-extrabold text-gray-900">$19</span>
+                            <span class="text-base font-medium text-gray-500">/month</span>
+                        </p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">Unlimited sources</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-check text-green-500"></i>
+                                </div>
+                                <p class="ml-3 text-base text-gray-500">All features included</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
@@ -398,58 +432,15 @@ try {
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Priority support</p>
                             </li>
-                        </ul>
-                        <div class="mt-8">
-                            <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="block w-full text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Subscribe Now
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Enterprise Tier -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="px-6 py-8">
-                        <h3 class="text-2xl font-bold text-gray-900">Enterprise</h3>
-                        <p class="mt-4 text-gray-500">For teams and organizations</p>
-                        <p class="mt-8">
-                            <span class="text-4xl font-extrabold text-gray-900">$99</span>
-                            <span class="text-base font-medium text-gray-500">/month</span>
-                        </p>
-                        <ul class="mt-6 space-y-4">
-                            <li class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-green-500"></i>
-                                </div>
-                                <p class="ml-3 text-base text-gray-500">Everything in Pro</p>
-                            </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-check text-green-500"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Team collaboration</p>
                             </li>
-                            <li class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-green-500"></i>
-                                </div>
-                                <p class="ml-3 text-base text-gray-500">Custom integrations</p>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-green-500"></i>
-                                </div>
-                                <p class="ml-3 text-base text-gray-500">Dedicated support</p>
-                            </li>
-                            <li class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-green-500"></i>
-                                </div>
-                                <p class="ml-3 text-base text-gray-500">SLA guarantee</p>
-                            </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="https://buy.stripe.com/aFa00jfZw6yLdks9Ym0Ba02" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
+                            <a href="https://buy.stripe.com/aFa00jfZw6yLdks9Ym0Ba02" class="block w-full bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
                                 Subscribe Now
                             </a>
                         </div>
@@ -555,10 +546,10 @@ try {
             </p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="/register/" class="inline-flex items-center text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    <i class="fas fa-user-plus mr-2"></i>Start Free
+                    <i class="fas fa-user-plus mr-2"></i>Try Free
                 </a>
-                <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    Subscribe Now<i class="fas fa-arrow-right ml-2"></i>
+                <a href="https://buy.stripe.com/9B6aEX00yg9lgwEfiG0Ba00" class="inline-flex items-center text-white bg-gradient-to-br from-blue-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                    Start with Starter $5/mo<i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
