@@ -208,63 +208,6 @@ $currentPage = 'pricing';
             </div>
         </div>
 
-        <!-- Features Comparison -->
-        <div class="mt-16 bg-white shadow rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Feature Comparison</h3>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feature</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Free</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Starter</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pro</th>
-                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unlimited</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Number of Sources</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">2</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">5</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">15</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Unlimited</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Daily Newsletter</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Custom Scheduling</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Priority Support</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Team Features</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-times text-red-500"></i></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><i class="fas fa-check text-green-500"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
