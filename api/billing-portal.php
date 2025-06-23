@@ -28,13 +28,22 @@ try {
     $user = $auth->getCurrentUser();
     $userId = $user->getId();
     
+    error_log("Billing portal request for user ID: $userId");
+    
     // Get user's subscription info
     $subscriptionManager = new SubscriptionManager();
     $subscriptionInfo = $subscriptionManager->getUserPlanInfo($userId);
     
+    error_log("User plan info: " . json_encode($subscriptionInfo));
+    
     if (!$subscriptionInfo['stripe_customer_id']) {
+        error_log("No stripe_customer_id found for user $userId");
         http_response_code(400);
-        echo json_encode(['error' => 'No customer record found']);
+        echo json_encode([
+            'error' => 'No customer record found', 
+            'debug' => 'You need to have an active subscription to access billing portal',
+            'plan_info' => $subscriptionInfo
+        ]);
         exit;
     }
     
@@ -43,6 +52,8 @@ try {
     $host = $_SERVER['HTTP_HOST'];
     $returnUrl = "$protocol://$host/dashboard/billing.php";
     
+    error_log("Creating billing portal for customer: " . $subscriptionInfo['stripe_customer_id']);
+    
     // Create billing portal session
     $stripeHelper = new StripeHelper();
     $session = $stripeHelper->createCustomerPortalSession(
@@ -50,16 +61,21 @@ try {
         $returnUrl
     );
     
+    error_log("Billing portal session created successfully");
+    
     echo json_encode([
+        'success' => true,
         'portal_url' => $session['url']
     ]);
     
 } catch (Exception $e) {
     error_log('Billing portal error: ' . $e->getMessage());
+    error_log('Billing portal stack trace: ' . $e->getTraceAsString());
     
     http_response_code(500);
     echo json_encode([
         'error' => 'Failed to access billing portal',
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'debug' => 'Check server logs for details'
     ]);
 }

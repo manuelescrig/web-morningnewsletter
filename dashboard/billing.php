@@ -323,6 +323,8 @@ $currentPage = 'billing';
 
         async function manageBilling() {
             try {
+                console.log('Requesting billing portal...');
+                
                 const response = await fetch('/api/billing-portal.php', {
                     method: 'POST',
                     headers: {
@@ -330,13 +332,17 @@ $currentPage = 'billing';
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                console.log('Response status:', response.status);
 
                 const data = await response.json();
+                console.log('Response data:', data);
+
+                if (!response.ok) {
+                    throw new Error(data.message || data.error || `HTTP ${response.status}`);
+                }
 
                 if (data.portal_url) {
+                    console.log('Redirecting to billing portal...');
                     window.location.href = data.portal_url;
                 } else {
                     throw new Error('No portal URL received');
@@ -344,7 +350,7 @@ $currentPage = 'billing';
 
             } catch (error) {
                 console.error('Error opening billing portal:', error);
-                alert('Error opening billing portal. Please try again.');
+                alert('Error opening billing portal: ' + error.message);
             }
         }
 
