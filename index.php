@@ -577,38 +577,38 @@ try {
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
-                console.log('Creating checkout session for plan:', plan);
+                console.log('Testing each component step by step...');
 
-                // Test everything before Stripe API call
-                const response = await fetch('/api/test-before-stripe.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ plan: plan })
-                });
+                // Test each step individually
+                for (let step = 1; step <= 5; step++) {
+                    try {
+                        const response = await fetch(`/api/step-test.php?step=${step}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ plan: plan })
+                        });
 
-                console.log('Response status:', response.status);
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            throw new Error(`Step ${step} HTTP ${response.status}: ${errorText}`);
+                        }
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Response error:', errorText);
-                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                        const data = await response.json();
+                        console.log(`Step ${step}:`, data);
+
+                        if (data.error || data.fatal_error) {
+                            throw new Error(`Step ${step} failed: ${data.error || data.fatal_error}`);
+                        }
+                        
+                    } catch (stepError) {
+                        console.error(`Step ${step} failed:`, stepError);
+                        throw new Error(`Component test failed at step ${step}: ${stepError.message}`);
+                    }
                 }
 
-                const data = await response.json();
-                console.log('Response data:', data);
-
-                if (data.success && data.test_mode) {
-                    alert('Pre-Stripe test successful! Ready to integrate with Stripe API. Plan: ' + data.plan + ', User: ' + data.user_email);
-                    return;
-                } else if (data.checkout_url) {
-                    // Redirect to Stripe Checkout
-                    console.log('Redirecting to Stripe checkout...');
-                    window.location.href = data.checkout_url;
-                } else {
-                    throw new Error('Unexpected response format');
-                }
+                alert('All components working! Ready to create actual Stripe checkout.');
 
             } catch (error) {
                 // Restore button state
