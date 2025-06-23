@@ -61,10 +61,6 @@ try {
                         radial-gradient(circle at 75% 75%, #fce7f3 0%, transparent 50%),
                         radial-gradient(circle at 50% 50%, #f8fafc 0%, transparent 50%);
         }
-        .logo-sun-rotated {
-            transform: rotate(90deg);
-            display: inline-block;
-        }
     </style>
 </head>
 <body class="bg-white">
