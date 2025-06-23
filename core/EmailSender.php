@@ -44,6 +44,8 @@ class EmailSender {
     
     private function sendEmail($to, $subject, $htmlBody) {
         switch ($this->provider) {
+            case 'maileroo':
+                return $this->sendWithMaileroo($to, $subject, $htmlBody);
             case 'resend':
                 return $this->sendWithResend($to, $subject, $htmlBody);
             case 'smtp':
@@ -52,6 +54,47 @@ class EmailSender {
                 error_log("Unknown email provider: {$this->provider}");
                 return false;
         }
+    }
+    
+    private function sendWithMaileroo($to, $subject, $htmlBody) {
+        // Maileroo uses multipart/form-data format
+        $postFields = [
+            'from' => $this->fromEmail,
+            'to' => $to,
+            'subject' => $subject,
+            'html' => $htmlBody
+        ];
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.maileroo.com/v1/email');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'X-API-Key: ' . $this->apiKey
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+        
+        if ($error) {
+            error_log("Maileroo API cURL error: " . $error);
+            return false;
+        }
+        
+        if ($httpCode >= 200 && $httpCode < 300) {
+            $responseData = json_decode($response, true);
+            if ($responseData && isset($responseData['success']) && $responseData['success']) {
+                $messageId = $responseData['message_id'] ?? 'unknown';
+                error_log("Email sent successfully via Maileroo. Message ID: " . $messageId);
+                return true;
+            }
+        }
+        
+        error_log("Maileroo API error (HTTP $httpCode): " . $response);
+        return false;
     }
     
     private function sendWithResend($to, $subject, $htmlBody) {

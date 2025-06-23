@@ -8,10 +8,17 @@
 
 // Current email provider configuration
 return [
-    // Email provider: 'resend', 'smtp', 'sendgrid', etc.
-    'provider' => 'resend',
+    // Email provider: 'maileroo', 'resend', 'smtp', 'sendgrid', etc.
+    'provider' => 'maileroo',
     
-    // Resend.com configuration
+    // Maileroo.com configuration
+    'maileroo' => [
+        'api_key' => 'c3bcabc939c5c043963c8530a373f848d522ef20f97b2a364ec5095b2a422857',
+        'from_email' => 'noreply@morningnewsletter.com',
+        'from_name' => 'MorningNewsletter'
+    ],
+    
+    // Resend.com configuration (backup)
     'resend' => [
         'api_key' => 're_Hwa9Ryf4_KnbL2HKhE8ZcDkgnrs7RycZa',
         'from_email' => 'onboarding@resend.dev',
