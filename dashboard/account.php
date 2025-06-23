@@ -51,8 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif (empty($password)) {
                     $error = 'Password is required to change email.';
                 } else {
-                    // Verify password first
-                    $stmt = $user->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+                    // Verify password using the changePassword method (which already verifies password)
+                    $db = Database::getInstance()->getConnection();
+                    $stmt = $db->prepare("SELECT password_hash FROM users WHERE id = ?");
                     $stmt->execute([$user->getId()]);
                     $userData = $stmt->fetch();
                     
@@ -158,35 +159,69 @@ $csrfToken = $auth->generateCSRFToken();
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                     <input type="hidden" name="action" value="update_profile">
                     
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                            <input type="text" 
-                                   name="name" 
-                                   id="name" 
-                                   value="<?php echo htmlspecialchars($user->getName() ?? ''); ?>"
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                   placeholder="Enter your full name">
-                            <p class="mt-1 text-sm text-gray-500">Optional - helps personalize your experience</p>
-                        </div>
-                        
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   required
-                                   value="<?php echo htmlspecialchars($user->getEmail()); ?>"
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <p class="mt-1 text-sm text-gray-500">Your newsletters will be sent to this email</p>
-                        </div>
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" 
+                               name="name" 
+                               id="name" 
+                               value="<?php echo htmlspecialchars($user->getName() ?? ''); ?>"
+                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               placeholder="Enter your full name">
+                        <p class="mt-1 text-sm text-gray-500">Optional - helps personalize your experience</p>
                     </div>
                     
                     <div class="flex justify-end">
                         <button type="submit" 
                                 class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-save mr-2"></i>
-                            Update Profile
+                            Update Name
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Email Address -->
+        <div class="bg-white shadow rounded-lg mb-8">
+            <div class="px-4 py-5 sm:p-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Email Address</h3>
+                <p class="text-sm text-gray-600 mb-6">
+                    Current email: <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
+                </p>
+                
+                <form method="POST" class="space-y-6">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                    <input type="hidden" name="action" value="change_email">
+                    
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">New Email Address</label>
+                            <input type="email" 
+                                   name="email" 
+                                   id="email" 
+                                   required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                   placeholder="Enter new email address">
+                            <p class="mt-1 text-sm text-gray-500">Your newsletters will be sent to this email</p>
+                        </div>
+                        
+                        <div>
+                            <label for="email_password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <input type="password" 
+                                   name="email_password" 
+                                   id="email_password" 
+                                   required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                   placeholder="Enter your current password">
+                            <p class="mt-1 text-sm text-gray-500">Required to verify your identity</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-envelope mr-2"></i>
+                            Update Email
                         </button>
                     </div>
                 </form>
