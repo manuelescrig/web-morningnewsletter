@@ -8,12 +8,12 @@
 
 // Current email provider configuration
 return [
-    // Email provider: 'maileroo', 'resend', 'smtp', 'sendgrid', etc.
-    'provider' => 'maileroo',
+    // Email provider: 'plunk', 'resend', 'smtp', 'sendgrid', etc.
+    'provider' => 'plunk',
     
-    // Maileroo.com configuration
-    'maileroo' => [
-        'api_key' => 'c3bcabc939c5c043963c8530a373f848d522ef20f97b2a364ec5095b2a422857',
+    // Plunk.com configuration
+    'plunk' => [
+        'api_key' => 'sk_446ac82b1605277904ca083f458daf08d85868108044d555',
         'from_email' => 'noreply@morningnewsletter.com',
         'from_name' => 'MorningNewsletter'
     ],

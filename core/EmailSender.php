@@ -14,7 +14,7 @@ class EmailSender {
         $this->provider = $_ENV['EMAIL_PROVIDER'] ?? $config['provider'];
         
         // Get provider-specific configuration
-        $providerConfig = $config[$this->provider] ?? $config['resend'];
+        $providerConfig = $config[$this->provider] ?? $config['plunk'];
         
         $this->apiKey = $_ENV['EMAIL_API_KEY'] ?? $providerConfig['api_key'];
         $this->fromEmail = $_ENV['FROM_EMAIL'] ?? $providerConfig['from_email'];
@@ -44,8 +44,8 @@ class EmailSender {
     
     private function sendEmail($to, $subject, $htmlBody) {
         switch ($this->provider) {
-            case 'maileroo':
-                return $this->sendWithMaileroo($to, $subject, $htmlBody);
+            case 'plunk':
+                return $this->sendWithPlunk($to, $subject, $htmlBody);
             case 'resend':
                 return $this->sendWithResend($to, $subject, $htmlBody);
             case 'smtp':
@@ -56,56 +56,52 @@ class EmailSender {
         }
     }
     
-    private function sendWithMaileroo($to, $subject, $htmlBody) {
-        // Maileroo uses their specific format
-        $postFields = [
-            'from' => $this->fromName . ' <' . $this->fromEmail . '>',
+    private function sendWithPlunk($to, $subject, $htmlBody) {
+        // Plunk uses JSON format
+        $data = [
             'to' => $to,
             'subject' => $subject,
-            'html' => $htmlBody
+            'body' => $htmlBody,
+            'subscribed' => true,
+            'from' => $this->fromEmail,
+            'name' => $this->fromName
         ];
         
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://smtp.maileroo.com/send');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+        curl_setopt($ch, CURLOPT_URL, 'https://api.useplunk.com/v1/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'X-API-Key: ' . $this->apiKey
+            'Authorization: Bearer ' . $this->apiKey,
+            'Content-Type: application/json'
         ]);
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
+        curl_close($ch);
         
         if ($error) {
-            error_log("Maileroo API cURL error: " . $error);
-            curl_close($ch);
+            error_log("Plunk API cURL error: " . $error);
             return false;
         }
         
-        curl_close($ch);
-        
         // Log the full response for debugging
-        error_log("Maileroo API response (HTTP $httpCode): " . $response);
+        error_log("Plunk API response (HTTP $httpCode): " . $response);
         
-        // Maileroo might return different success indicators
         if ($httpCode >= 200 && $httpCode < 300) {
-            // Check if response indicates success
-            if (empty($response) || strpos($response, 'error') === false) {
-                error_log("Email sent successfully via Maileroo");
+            $responseData = json_decode($response, true);
+            if ($responseData && isset($responseData['success']) && $responseData['success']) {
+                error_log("Email sent successfully via Plunk");
                 return true;
             } else {
-                // Try to parse JSON response
-                $responseData = json_decode($response, true);
-                if ($responseData && isset($responseData['success']) && $responseData['success']) {
-                    error_log("Email sent successfully via Maileroo (JSON success)");
-                    return true;
-                }
+                error_log("Email sent successfully via Plunk (HTTP 2xx)");
+                return true;
             }
         }
         
-        error_log("Maileroo API error (HTTP $httpCode): " . $response);
+        error_log("Plunk API error (HTTP $httpCode): " . $response);
         return false;
     }
     
