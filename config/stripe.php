@@ -1,16 +1,16 @@
 <?php
 
 class StripeConfig {
-    // Stripe API Keys - These should be set in environment variables or config file
-    private const STRIPE_PUBLISHABLE_KEY = 'pk_test_your_publishable_key_here';
-    private const STRIPE_SECRET_KEY = 'sk_test_your_secret_key_here';
-    private const STRIPE_WEBHOOK_SECRET = 'whsec_your_webhook_secret_here';
+    // Stripe API Keys - Live production keys
+    private const STRIPE_PUBLISHABLE_KEY = 'pk_live_CeQVTQG01tinRkrG9vIF9b8Z00pDGDGfMZ';
+    private const STRIPE_SECRET_KEY = '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';
+    private const STRIPE_WEBHOOK_SECRET = 'whsec_0JmnWw5xhqBpQBuEQHiNUGzHtH6q9Jlc';
     
     // Product/Price IDs from your Stripe Dashboard
     private const PRICE_IDS = [
-        'starter' => 'price_starter_monthly',  // $5/month
-        'pro' => 'price_pro_monthly',         // $15/month  
-        'unlimited' => 'price_unlimited_monthly' // $19/month
+        'starter' => 'price_1RdAhVDbdxPu8ZNTyhmCNb2U',    // $5/month
+        'pro' => 'price_1RdAjGDbdxPu8ZNTHXQkWv48',        // $15/month  
+        'unlimited' => 'price_1RdAkjDbdxPu8ZNToJlos1Xr'   // $19/month
     ];
     
     public static function getPublishableKey(): string {
