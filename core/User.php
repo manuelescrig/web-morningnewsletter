@@ -342,10 +342,10 @@ class User {
             // Hash new password
             $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
             
-            // Update password and clear reset token
+            // Update password, clear reset token, and mark as verified
             $stmt = $this->db->prepare("
                 UPDATE users 
-                SET password_hash = ?, verification_token = NULL, updated_at = CURRENT_TIMESTAMP 
+                SET password_hash = ?, verification_token = NULL, is_verified = 1, updated_at = CURRENT_TIMESTAMP 
                 WHERE id = ?
             ");
             
