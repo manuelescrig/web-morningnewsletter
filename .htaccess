@@ -9,6 +9,8 @@ RewriteRule ^payment-success/?$ payment-success.php [L]
 RewriteRule ^jobs/?$ jobs.php [L]
 RewriteRule ^careers/?$ jobs.php [L]
 RewriteRule ^support/?$ support.php [L]
+RewriteRule ^about/?$ about.php [L]
+RewriteRule ^press/?$ press.php [L]
 
 # Prevent access to sensitive files
 <Files ~ "^\.">
