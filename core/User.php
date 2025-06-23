@@ -5,6 +5,7 @@ class User {
     private $db;
     private $id;
     private $email;
+    private $name;
     private $plan;
     private $timezone;
     private $send_time;
@@ -17,6 +18,7 @@ class User {
         if ($userData) {
             $this->id = $userData['id'];
             $this->email = $userData['email'];
+            $this->name = $userData['name'];
             $this->plan = $userData['plan'];
             $this->timezone = $userData['timezone'];
             $this->send_time = $userData['send_time'];
@@ -90,7 +92,7 @@ class User {
     }
     
     public function updateProfile($data) {
-        $allowedFields = ['timezone', 'send_time', 'plan'];
+        $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email'];
         $updates = [];
         $values = [];
         
@@ -112,7 +114,77 @@ class User {
             WHERE id = ?
         ");
         
-        return $stmt->execute($values);
+        $success = $stmt->execute($values);
+        
+        // Update local properties if successful
+        if ($success) {
+            foreach ($data as $field => $value) {
+                if (in_array($field, $allowedFields)) {
+                    $this->$field = $value;
+                }
+            }
+        }
+        
+        return $success;
+    }
+    
+    public function changePassword($currentPassword, $newPassword) {
+        // First verify current password
+        $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+        $stmt->execute([$this->id]);
+        $user = $stmt->fetch();
+        
+        if (!$user || !password_verify($currentPassword, $user['password_hash'])) {
+            return false;
+        }
+        
+        // Update to new password
+        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET password_hash = ?, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        return $stmt->execute([$newPasswordHash, $this->id]);
+    }
+    
+    public function deleteAccount($password) {
+        // First verify password
+        $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+        $stmt->execute([$this->id]);
+        $user = $stmt->fetch();
+        
+        if (!$user || !password_verify($password, $user['password_hash'])) {
+            return false;
+        }
+        
+        try {
+            $this->db->beginTransaction();
+            
+            // Delete user's sources
+            $stmt = $this->db->prepare("DELETE FROM sources WHERE user_id = ?");
+            $stmt->execute([$this->id]);
+            
+            // Delete user's subscriptions  
+            $stmt = $this->db->prepare("DELETE FROM subscriptions WHERE user_id = ?");
+            $stmt->execute([$this->id]);
+            
+            // Delete user's payments
+            $stmt = $this->db->prepare("DELETE FROM payments WHERE user_id = ?");
+            $stmt->execute([$this->id]);
+            
+            // Delete the user
+            $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+            $stmt->execute([$this->id]);
+            
+            $this->db->commit();
+            return true;
+            
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
     
     public function getSources() {
@@ -378,6 +450,7 @@ class User {
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
+    public function getName() { return $this->name; }
     public function getPlan() { return $this->plan; }
     public function getTimezone() { return $this->timezone; }
     public function getSendTime() { return $this->send_time; }

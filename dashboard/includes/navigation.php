@@ -79,6 +79,12 @@ function getNavClass($page, $currentPage) {
                             <div class="text-xs text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
                         </div>
                         
+                        <!-- Account option -->
+                        <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-user mr-2 text-gray-500"></i>
+                            Account
+                        </a>
+                        
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
                         <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">

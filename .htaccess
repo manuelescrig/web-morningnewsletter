@@ -19,6 +19,7 @@ RewriteRule ^about/?$ about.php [L]
 RewriteRule ^press/?$ press.php [L]
 RewriteRule ^upgrade/?$ dashboard/upgrade.php [L]
 RewriteRule ^billing/?$ dashboard/billing.php [L]
+RewriteRule ^account/?$ dashboard/account.php [L]
 
 # Prevent access to sensitive files
 <Files ~ "^\.">

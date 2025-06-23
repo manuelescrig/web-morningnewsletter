@@ -37,6 +37,7 @@ class Database {
             "CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
+                name TEXT,
                 password_hash TEXT NOT NULL,
                 plan TEXT DEFAULT 'free',
                 timezone TEXT DEFAULT 'UTC',
