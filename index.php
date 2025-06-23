@@ -595,8 +595,6 @@ try {
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
-                console.log('Creating checkout session for plan:', plan);
-
                 // Create Stripe checkout session
                 const response = await fetch('/api/fixed-checkout.php', {
                     method: 'POST',
@@ -606,23 +604,18 @@ try {
                     body: JSON.stringify({ plan: plan })
                 });
 
-                console.log('Response status:', response.status);
-
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Response error:', errorText);
                     throw new Error(`HTTP ${response.status}: ${errorText}`);
                 }
 
                 const data = await response.json();
-                console.log('Response data:', data);
 
                 if (!data.checkout_url) {
                     throw new Error('No checkout URL received');
                 }
 
                 // Redirect to Stripe Checkout
-                console.log('Redirecting to Stripe checkout...');
                 window.location.href = data.checkout_url;
 
             } catch (error) {

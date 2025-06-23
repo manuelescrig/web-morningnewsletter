@@ -323,8 +323,6 @@ $currentPage = 'billing';
 
         async function manageBilling() {
             try {
-                console.log('Requesting billing portal...');
-                
                 const response = await fetch('/api/billing-portal.php', {
                     method: 'POST',
                     headers: {
@@ -332,17 +330,13 @@ $currentPage = 'billing';
                     }
                 });
 
-                console.log('Response status:', response.status);
-
                 const data = await response.json();
-                console.log('Response data:', data);
 
                 if (!response.ok) {
                     throw new Error(data.message || data.error || `HTTP ${response.status}`);
                 }
 
                 if (data.portal_url) {
-                    console.log('Redirecting to billing portal...');
                     window.location.href = data.portal_url;
                 } else {
                     throw new Error('No portal URL received');
