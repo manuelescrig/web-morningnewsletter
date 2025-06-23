@@ -63,7 +63,7 @@ $postFields = [
 
 // Test the corrected endpoint with proper multipart handling
 $endpoints = [
-    'https://maileroo.com/api/send'
+    'https://smtp.maileroo.com/send'
 ];
 
 foreach ($endpoints as $endpoint) {
