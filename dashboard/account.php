@@ -50,23 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = 'Please enter a valid email address.';
                 } elseif (empty($password)) {
                     $error = 'Password is required to change email.';
+                } elseif ($email === $user->getEmail()) {
+                    $error = 'The new email address is the same as your current email address.';
                 } else {
-                    // Verify password using the changePassword method (which already verifies password)
-                    $db = Database::getInstance()->getConnection();
-                    $stmt = $db->prepare("SELECT password_hash FROM users WHERE id = ?");
-                    $stmt->execute([$user->getId()]);
-                    $userData = $stmt->fetch();
-                    
-                    if (!$userData || !password_verify($password, $userData['password_hash'])) {
-                        $error = 'Incorrect password.';
+                    $result = $user->requestEmailChange($email, $password);
+                    if ($result['success']) {
+                        $success = $result['message'];
                     } else {
-                        if ($user->updateProfile(['email' => $email])) {
-                            $success = 'Email address updated successfully!';
-                            // Refresh user data
-                            $user = $auth->getCurrentUser();
-                        } else {
-                            $error = 'Failed to update email address. This email may already be in use.';
-                        }
+                        $error = $result['message'];
                     }
                 }
                 break;
@@ -202,7 +193,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    required
                                    class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
                                    placeholder="Enter new email address">
-                            <p class="mt-1 text-sm text-gray-500">Your newsletters will be sent to this email</p>
+                            <p class="mt-1 text-sm text-gray-500">A verification email will be sent to this address</p>
                         </div>
                         
                         <div>
@@ -217,11 +208,24 @@ $csrfToken = $auth->generateCSRFToken();
                         </div>
                     </div>
                     
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-blue-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-700">
+                                    We'll send a verification email to your new address. You'll need to click the link in that email to complete the change.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="flex justify-end">
                         <button type="submit" 
                                 class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-envelope mr-2"></i>
-                            Update Email
+                            Send Verification Email
                         </button>
                     </div>
                 </form>

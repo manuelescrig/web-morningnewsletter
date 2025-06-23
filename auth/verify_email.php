@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../core/Auth.php';
+require_once __DIR__ . '/../core/User.php';
 require_once __DIR__ . '/../includes/logo.php';
 
 $auth = Auth::getInstance();
@@ -7,13 +8,27 @@ $message = '';
 $success = false;
 
 $token = $_GET['token'] ?? '';
+$type = $_GET['type'] ?? 'regular';
 
 if (empty($token)) {
     $message = 'Invalid verification link.';
 } else {
-    $result = $auth->verifyEmail($token);
-    $success = $result['success'];
-    $message = $result['message'];
+    if ($type === 'email_change') {
+        // Handle email change verification
+        $user = User::findByEmailChangeToken($token);
+        if ($user) {
+            $result = $user->verifyEmailChange($token);
+            $success = $result['success'];
+            $message = $result['message'];
+        } else {
+            $message = 'Invalid or expired email change verification token.';
+        }
+    } else {
+        // Handle regular email verification
+        $result = $auth->verifyEmail($token);
+        $success = $result['success'];
+        $message = $result['message'];
+    }
 }
 ?>
 <!DOCTYPE html>

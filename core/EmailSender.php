@@ -264,6 +264,57 @@ class EmailSender {
         return $this->sendEmail($email, $subject, $htmlBody);
     }
     
+    public function sendEmailChangeVerification($newEmail, $token, $currentEmail) {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+        $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $token . "&type=email_change";
+        $subject = "Verify your new email address - MorningNewsletter";
+        
+        $htmlBody = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Verify Your New Email Address</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='text-align: center; margin-bottom: 30px;'>
+                <h1 style='color: #2563eb;'>Email Address Change Request</h1>
+            </div>
+            
+            <div style='background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
+                <p>You have requested to change your email address from <strong>" . htmlspecialchars($currentEmail) . "</strong> to <strong>" . htmlspecialchars($newEmail) . "</strong>.</p>
+                
+                <p>To complete this change, please click the button below to verify your new email address:</p>
+                
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='$verificationUrl' 
+                       style='background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                        Verify New Email Address
+                    </a>
+                </div>
+                
+                <p style='font-size: 14px; color: #666;'>
+                    If the button doesn't work, copy and paste this link into your browser:<br>
+                    <a href='$verificationUrl'>$verificationUrl</a>
+                </p>
+                
+                <p style='font-size: 14px; color: #666; margin-top: 20px;'>
+                    <strong>This verification link will expire in 1 hour.</strong>
+                </p>
+            </div>
+            
+            <div style='font-size: 12px; color: #666; text-align: center;'>
+                <p>If you didn't request this email change, please ignore this email or contact support if you're concerned about your account security.</p>
+            </div>
+        </body>
+        </html>
+        ";
+        
+        return $this->sendEmail($newEmail, $subject, $htmlBody);
+    }
+    
     public function getEmailStats($userId, $days = 30) {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("

@@ -447,6 +447,133 @@ class User {
         return null;
     }
     
+    public function requestEmailChange($newEmail, $password) {
+        // Verify password first
+        $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+        $stmt->execute([$this->id]);
+        $userData = $stmt->fetch();
+        
+        if (!$userData || !password_verify($password, $userData['password_hash'])) {
+            return ['success' => false, 'message' => 'Incorrect password'];
+        }
+        
+        // Check if new email is already in use
+        if (User::findByEmail($newEmail)) {
+            return ['success' => false, 'message' => 'This email address is already in use'];
+        }
+        
+        try {
+            // Generate verification token
+            $verificationToken = bin2hex(random_bytes(32));
+            
+            // Store the new email temporarily in verification_token field as JSON
+            $tokenData = json_encode([
+                'type' => 'email_change',
+                'new_email' => $newEmail,
+                'token' => $verificationToken,
+                'expires_at' => date('Y-m-d H:i:s', strtotime('+1 hour'))
+            ]);
+            
+            // Update the verification token in database
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET verification_token = ?, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            $success = $stmt->execute([$tokenData, $this->id]);
+            
+            if (!$success) {
+                return ['success' => false, 'message' => 'Failed to update verification token'];
+            }
+            
+            // Send verification email to the NEW email address
+            require_once __DIR__ . '/EmailSender.php';
+            
+            $emailSender = new EmailSender();
+            $emailResult = $emailSender->sendEmailChangeVerification($newEmail, $verificationToken, $this->email);
+            
+            if ($emailResult) {
+                return ['success' => true, 'message' => 'Verification email sent to your new email address. Please check your inbox to confirm the change.'];
+            } else {
+                return ['success' => false, 'message' => 'Failed to send verification email. Please try again.'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Email change request error for user {$this->id}: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public function verifyEmailChange($token) {
+        try {
+            // Get the current verification token data
+            $stmt = $this->db->prepare("SELECT verification_token FROM users WHERE id = ?");
+            $stmt->execute([$this->id]);
+            $result = $stmt->fetch();
+            
+            if (!$result || !$result['verification_token']) {
+                return ['success' => false, 'message' => 'No pending email change request found'];
+            }
+            
+            $tokenData = json_decode($result['verification_token'], true);
+            
+            if (!$tokenData || $tokenData['type'] !== 'email_change' || $tokenData['token'] !== $token) {
+                return ['success' => false, 'message' => 'Invalid verification token'];
+            }
+            
+            // Check if token has expired
+            if (strtotime($tokenData['expires_at']) < time()) {
+                return ['success' => false, 'message' => 'Verification token has expired. Please request a new email change.'];
+            }
+            
+            $newEmail = $tokenData['new_email'];
+            
+            // Double-check that the new email is still available
+            if (User::findByEmail($newEmail)) {
+                return ['success' => false, 'message' => 'This email address is already in use'];
+            }
+            
+            // Update the email address and clear the verification token
+            $stmt = $this->db->prepare("
+                UPDATE users 
+                SET email = ?, verification_token = NULL, updated_at = CURRENT_TIMESTAMP 
+                WHERE id = ?
+            ");
+            
+            $success = $stmt->execute([$newEmail, $this->id]);
+            
+            if ($success) {
+                $this->email = $newEmail;
+                return ['success' => true, 'message' => 'Email address updated successfully!'];
+            } else {
+                return ['success' => false, 'message' => 'Failed to update email address'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Email change verification error for user {$this->id}: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+    
+    public static function findByEmailChangeToken($token) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM users WHERE verification_token IS NOT NULL");
+        $stmt->execute();
+        $users = $stmt->fetchAll();
+        
+        foreach ($users as $userData) {
+            $tokenData = json_decode($userData['verification_token'], true);
+            if ($tokenData && 
+                $tokenData['type'] === 'email_change' && 
+                $tokenData['token'] === $token) {
+                return new self($userData);
+            }
+        }
+        
+        return null;
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
