@@ -1,16 +1,13 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
-require_once __DIR__ . '/core/UserStats.php';
 
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
-// Get user statistics for social proof
-$userStats = new UserStats();
-$socialProof = $userStats->getSocialProofData();
-$displayCount = $socialProof['display_count'];
-$todayCount = $socialProof['today_signups'];
+// Temporary fallback for user stats
+$displayCount = '9000+';
+$todayCount = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
