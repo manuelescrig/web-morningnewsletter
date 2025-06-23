@@ -345,7 +345,7 @@ class User {
             // Update password, clear reset token, and mark as verified
             $stmt = $this->db->prepare("
                 UPDATE users 
-                SET password_hash = ?, verification_token = NULL, is_verified = 1, updated_at = CURRENT_TIMESTAMP 
+                SET password_hash = ?, verification_token = NULL, email_verified = 1, updated_at = CURRENT_TIMESTAMP 
                 WHERE id = ?
             ");
             
