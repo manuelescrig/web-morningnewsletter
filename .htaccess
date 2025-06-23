@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# Clean URLs for main pages
+RewriteRule ^terms/?$ legal/terms.php [L]
+RewriteRule ^privacy/?$ legal/privacy.php [L]
+RewriteRule ^login/?$ auth/login.php [L]
+RewriteRule ^register/?$ auth/register.php [L]
+RewriteRule ^payment-success/?$ payment-success.php [L]
+
+# Prevent access to sensitive files
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent access to config files
+<Files "*.db">
+    Order allow,deny
+    Deny from all
+</Files>
