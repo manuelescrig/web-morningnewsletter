@@ -1,30 +1,17 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Database.php';
+require_once __DIR__ . '/core/UserStats.php';
 
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
 // Get user statistics for social proof
-try {
-    $db = Database::getInstance()->getConnection();
-    
-    // Total users
-    $stmt = $db->query("SELECT COUNT(*) as user_count FROM users");
-    $result = $stmt->fetch();
-    $userCount = $result['user_count'] ?? 0;
-    $displayCount = $userCount > 0 ? $userCount . '+' : '9000+';
-    
-    // Users signed up today
-    $stmt = $db->query("SELECT COUNT(*) as today_count FROM users WHERE DATE(created_at) = DATE('now')");
-    $result = $stmt->fetch();
-    $todayCount = $result['today_count'] ?? 0;
-    
-} catch (Exception $e) {
-    $displayCount = '9000+'; // Fallback if database error
-    $todayCount = 0;
-}
+$userStats = new UserStats();
+$socialProof = $userStats->getSocialProofData();
+$displayCount = $socialProof['display_count'];
+$todayCount = $socialProof['today_signups'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
