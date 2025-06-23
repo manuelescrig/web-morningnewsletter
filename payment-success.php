@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/config/stripe.php';
+require_once __DIR__ . '/core/SubscriptionManager.php';
 
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
@@ -7,8 +9,37 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
 // Redirect to login if not authenticated
 if (!$isLoggedIn) {
-    header('Location: /auth/login.php');
+    header('Location: /login.php');
     exit;
+}
+
+// Get session information
+$sessionId = $_GET['session_id'] ?? null;
+$subscriptionInfo = null;
+$plan = null;
+
+if ($sessionId) {
+    try {
+        $stripeHelper = new StripeHelper();
+        $session = $stripeHelper->makeStripeRequest('GET', 'checkout/sessions/' . $sessionId);
+        
+        if ($session && isset($session['metadata']['plan'])) {
+            $plan = $session['metadata']['plan'];
+            
+            // Get user's current subscription info
+            $subscriptionManager = new SubscriptionManager();
+            $subscriptionInfo = $subscriptionManager->getUserPlanInfo($user['id']);
+        }
+    } catch (Exception $e) {
+        error_log('Error fetching session: ' . $e->getMessage());
+    }
+}
+
+// Get plan details
+$planDetails = [];
+if ($plan) {
+    $allPlans = StripeConfig::getAllPlans();
+    $planDetails = $allPlans[$plan] ?? [];
 }
 ?>
 <!DOCTYPE html>
@@ -82,7 +113,11 @@ if (!$isLoggedIn) {
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto">
                     <p class="text-white/80 text-lg">
                         <i class="fas fa-credit-card mr-2"></i>
-                        Premium subscription activated for <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
+                        <?php if ($plan && $planDetails): ?>
+                            <?php echo ucfirst($planDetails['name']); ?> subscription activated for <strong><?php echo htmlspecialchars($user['email']); ?></strong>
+                        <?php else: ?>
+                            Premium subscription activated for <strong><?php echo htmlspecialchars($user['email']); ?></strong>
+                        <?php endif; ?>
                     </p>
                 </div>
             </div>

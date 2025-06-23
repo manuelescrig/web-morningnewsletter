@@ -1,16 +1,23 @@
 <?php
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/EmailSender.php';
+require_once __DIR__ . '/../core/SubscriptionManager.php';
+require_once __DIR__ . '/../config/stripe.php';
 
 $auth = Auth::getInstance();
 $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 $emailSender = new EmailSender();
+$subscriptionManager = new SubscriptionManager();
 $error = '';
 $success = '';
 
 $currentPage = 'settings';
+
+// Get subscription information
+$subscriptionInfo = $subscriptionManager->getUserPlanInfo($user['id']);
+$payments = $subscriptionManager->getUserPayments($user['id'], 5);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -96,12 +103,21 @@ $csrfToken = $auth->generateCSRFToken();
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Current Plan</label>
-                            <p class="mt-1 text-sm text-gray-900 capitalize"><?php echo htmlspecialchars($user->getPlan()); ?></p>
+                            <p class="mt-1 text-sm text-gray-900 capitalize"><?php echo htmlspecialchars($subscriptionInfo['plan']); ?></p>
                             <p class="mt-1 text-xs text-gray-500">
-                                <?php 
-                                $sourceLimit = $user->getSourceLimit();
-                                echo $sourceLimit === PHP_INT_MAX ? 'Unlimited sources' : "$sourceLimit source" . ($sourceLimit !== 1 ? 's' : '') . ' allowed';
-                                ?>
+                                <?php if ($subscriptionInfo['subscription_status']): ?>
+                                    <i class="fas fa-circle text-green-400 mr-1"></i>Active subscription
+                                    <?php if ($subscriptionInfo['cancel_at_period_end']): ?>
+                                        <span class="text-yellow-600">(Cancels <?php echo date('M j, Y', strtotime($subscriptionInfo['current_period_end'])); ?>)</span>
+                                    <?php elseif ($subscriptionInfo['current_period_end']): ?>
+                                        <span class="text-gray-500">(Renews <?php echo date('M j, Y', strtotime($subscriptionInfo['current_period_end'])); ?>)</span>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <?php 
+                                    $sourceLimit = $user->getSourceLimit();
+                                    echo $sourceLimit === PHP_INT_MAX ? 'Unlimited sources' : "$sourceLimit source" . ($sourceLimit !== 1 ? 's' : '') . ' allowed';
+                                    ?>
+                                <?php endif; ?>
                             </p>
                         </div>
                         
@@ -120,78 +136,157 @@ $csrfToken = $auth->generateCSRFToken();
                 </div>
             </div>
 
-            <!-- Subscription Plan -->
+            <!-- Subscription Management -->
             <div class="bg-white shadow rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Subscription Plan</h3>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Subscription Management</h3>
                     
-                    <form method="POST" class="space-y-4">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                        <input type="hidden" name="action" value="update_plan">
+                    <?php if ($subscriptionInfo['subscription_status'] === 'active'): ?>
+                        <!-- Active Subscription -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <div>
+                                    <h4 class="text-lg font-medium text-green-900">Active <?php echo ucfirst($subscriptionInfo['plan']); ?> Subscription</h4>
+                                    <p class="text-green-700">
+                                        <?php if ($subscriptionInfo['cancel_at_period_end']): ?>
+                                            Your subscription will end on <?php echo date('F j, Y', strtotime($subscriptionInfo['current_period_end'])); ?>
+                                        <?php else: ?>
+                                            Next billing date: <?php echo date('F j, Y', strtotime($subscriptionInfo['current_period_end'])); ?>
+                                        <?php endif; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Free Plan -->
-                            <div class="border border-gray-200 rounded-lg p-4 <?php echo $user->getPlan() === 'free' ? 'ring-2 ring-blue-500 bg-blue-50' : ''; ?>">
-                                <div class="flex items-center mb-2">
-                                    <input type="radio" id="plan_free" name="plan" value="free" 
-                                           <?php echo $user->getPlan() === 'free' ? 'checked' : ''; ?>
-                                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <label for="plan_free" class="ml-2 text-sm font-medium text-gray-900">Free</label>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <?php if (!$subscriptionInfo['cancel_at_period_end']): ?>
+                                <button onclick="cancelSubscription()" 
+                                        class="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    <i class="fas fa-times mr-2"></i>
+                                    Cancel Subscription
+                                </button>
+                            <?php endif; ?>
+                            
+                            <?php if ($subscriptionInfo['stripe_customer_id']): ?>
+                                <button onclick="manageBilling()" 
+                                        class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    Manage Billing
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                        
+                    <?php else: ?>
+                        <!-- No Active Subscription -->
+                        <div class="text-center py-8">
+                            <i class="fas fa-crown text-4xl text-gray-300 mb-4"></i>
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">Upgrade Your Plan</h4>
+                            <p class="text-gray-600 mb-6">Get access to more features with a premium subscription</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <!-- Starter Plan -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <h5 class="font-medium text-gray-900 mb-2">Starter</h5>
+                                    <p class="text-2xl font-bold text-gray-900 mb-2">$5<span class="text-sm font-normal">/month</span></p>
+                                    <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Up to 5 sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Basic scheduling</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Daily delivery</li>
+                                    </ul>
+                                    <button onclick="subscribeToPlan('starter')" 
+                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                        Choose Starter
+                                    </button>
                                 </div>
-                                <p class="text-2xl font-bold text-gray-900 mb-2">$0<span class="text-sm font-normal">/month</span></p>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>1 data source</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Daily newsletters</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Basic support</li>
-                                </ul>
-                            </div>
 
-                            <!-- Medium Plan -->
-                            <div class="border border-gray-200 rounded-lg p-4 <?php echo $user->getPlan() === 'medium' ? 'ring-2 ring-blue-500 bg-blue-50' : ''; ?>">
-                                <div class="flex items-center mb-2">
-                                    <input type="radio" id="plan_medium" name="plan" value="medium"
-                                           <?php echo $user->getPlan() === 'medium' ? 'checked' : ''; ?>
-                                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <label for="plan_medium" class="ml-2 text-sm font-medium text-gray-900">Medium</label>
+                                <!-- Pro Plan -->
+                                <div class="border-2 border-blue-500 rounded-lg p-4 relative">
+                                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                        <span class="bg-blue-500 text-white px-3 py-1 text-sm font-medium rounded-full">Popular</span>
+                                    </div>
+                                    <h5 class="font-medium text-gray-900 mb-2">Pro</h5>
+                                    <p class="text-2xl font-bold text-gray-900 mb-2">$15<span class="text-sm font-normal">/month</span></p>
+                                    <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Up to 15 sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Advanced scheduling</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Custom layouts</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
+                                    </ul>
+                                    <button onclick="subscribeToPlan('pro')" 
+                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                        Choose Pro
+                                    </button>
                                 </div>
-                                <p class="text-2xl font-bold text-gray-900 mb-2">$5<span class="text-sm font-normal">/month</span></p>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>5 data sources</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Daily newsletters</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Custom integrations</li>
-                                </ul>
-                            </div>
 
-                            <!-- Premium Plan -->
-                            <div class="border border-gray-200 rounded-lg p-4 <?php echo $user->getPlan() === 'premium' ? 'ring-2 ring-blue-500 bg-blue-50' : ''; ?>">
-                                <div class="flex items-center mb-2">
-                                    <input type="radio" id="plan_premium" name="plan" value="premium"
-                                           <?php echo $user->getPlan() === 'premium' ? 'checked' : ''; ?>
-                                           class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                    <label for="plan_premium" class="ml-2 text-sm font-medium text-gray-900">Premium</label>
+                                <!-- Unlimited Plan -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <h5 class="font-medium text-gray-900 mb-2">Unlimited</h5>
+                                    <p class="text-2xl font-bold text-gray-900 mb-2">$19<span class="text-sm font-normal">/month</span></p>
+                                    <ul class="text-sm text-gray-600 space-y-1 mb-4">
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Unlimited sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>All features</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Team collaboration</li>
+                                    </ul>
+                                    <button onclick="subscribeToPlan('unlimited')" 
+                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                        Choose Unlimited
+                                    </button>
                                 </div>
-                                <p class="text-2xl font-bold text-gray-900 mb-2">$10<span class="text-sm font-normal">/month</span></p>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Unlimited sources</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Daily newsletters</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>24/7 support</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>All integrations</li>
-                                    <li><i class="fas fa-check text-green-500 mr-2"></i>No branding</li>
-                                </ul>
                             </div>
                         </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit"
-                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                <i class="fas fa-save mr-2"></i>
-                                Update Plan
-                            </button>
-                        </div>
-                    </form>
+                    <?php endif; ?>
                 </div>
             </div>
+
+            <?php if (!empty($payments)): ?>
+            <!-- Billing History -->
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Recent Payments</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <?php foreach ($payments as $payment): ?>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <?php echo date('M j, Y', strtotime($payment['created_at'])); ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        $<?php echo number_format($payment['amount'] / 100, 2); ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
+                                        <?php echo $payment['plan'] ?? 'N/A'; ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <?php if ($payment['status'] === 'succeeded'): ?>
+                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                Paid
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                                <?php echo ucfirst($payment['status']); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <!-- Email Statistics -->
             <div class="bg-white shadow rounded-lg">
@@ -247,5 +342,94 @@ $csrfToken = $auth->generateCSRFToken();
             </div>
         </div>
     </div>
+
+    <script>
+        async function subscribeToPlan(plan) {
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Loading...';
+                button.disabled = true;
+
+                // Create checkout session
+                const response = await fetch('/api/create-checkout-session.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plan: plan })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create checkout session');
+                }
+
+                // Redirect to Stripe Checkout
+                window.location.href = data.checkout_url;
+
+            } catch (error) {
+                // Restore button state
+                const button = event.target;
+                button.textContent = button.textContent.replace('Loading...', 'Choose ' + plan.charAt(0).toUpperCase() + plan.slice(1));
+                button.disabled = false;
+                
+                console.error('Error creating checkout session:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function cancelSubscription() {
+            if (!confirm('Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/cancel-subscription.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to cancel subscription');
+                }
+
+                location.reload();
+
+            } catch (error) {
+                console.error('Error cancelling subscription:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function manageBilling() {
+            try {
+                const response = await fetch('/api/billing-portal.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to access billing portal');
+                }
+
+                window.location.href = data.url;
+
+            } catch (error) {
+                console.error('Error accessing billing portal:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
 </body>
 </html>

@@ -69,10 +69,44 @@ class Database {
                 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             )",
             
+            "CREATE TABLE IF NOT EXISTS subscriptions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                stripe_subscription_id TEXT UNIQUE,
+                stripe_customer_id TEXT,
+                plan TEXT NOT NULL,
+                status TEXT NOT NULL,
+                current_period_start DATETIME,
+                current_period_end DATETIME,
+                cancel_at_period_end INTEGER DEFAULT 0,
+                canceled_at DATETIME,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS payments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                stripe_payment_intent_id TEXT UNIQUE,
+                subscription_id INTEGER,
+                amount INTEGER NOT NULL,
+                currency TEXT DEFAULT 'usd',
+                status TEXT NOT NULL,
+                description TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+                FOREIGN KEY (subscription_id) REFERENCES subscriptions (id) ON DELETE SET NULL
+            )",
+            
             "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
             "CREATE INDEX IF NOT EXISTS idx_sources_user_id ON sources(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_user_id ON email_logs(user_id)",
-            "CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at)"
+            "CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at)",
+            "CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_subscriptions_stripe_id ON subscriptions(stripe_subscription_id)",
+            "CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_payments_stripe_id ON payments(stripe_payment_intent_id)"
         ];
         
         foreach ($queries as $query) {

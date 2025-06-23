@@ -356,9 +356,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="https://buy.stripe.com/9B6aEX00yg9lgwEfiG0Ba00" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <button onclick="subscribeToPlan('starter')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Subscribe Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -404,9 +404,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <button onclick="subscribeToPlan('pro')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Subscribe Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -447,9 +447,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="https://buy.stripe.com/aFa00jfZw6yLdks9Ym0Ba02" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <button onclick="subscribeToPlan('unlimited')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Subscribe Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -560,5 +560,50 @@ try {
     </div>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
+
+    <script>
+        async function subscribeToPlan(plan) {
+            // Check if user is logged in
+            <?php if (!$isLoggedIn): ?>
+                alert('Please login or register to subscribe to a plan.');
+                window.location.href = '/login.php';
+                return;
+            <?php endif; ?>
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Loading...';
+                button.disabled = true;
+
+                // Create checkout session
+                const response = await fetch('/api/create-checkout-session.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plan: plan })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create checkout session');
+                }
+
+                // Redirect to Stripe Checkout
+                window.location.href = data.checkout_url;
+
+            } catch (error) {
+                // Restore button state
+                button.textContent = originalText;
+                button.disabled = false;
+                
+                console.error('Error creating checkout session:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
 </body>
 </html> 
