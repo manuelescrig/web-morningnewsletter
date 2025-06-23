@@ -1,5 +1,9 @@
 <?php
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -18,17 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-require_once __DIR__ . '/../core/Auth.php';
-require_once __DIR__ . '/../config/stripe.php';
+// Test file paths
+$authPath = __DIR__ . '/../core/Auth.php';
+$stripePath = __DIR__ . '/../config/stripe.php';
+
+if (!file_exists($authPath)) {
+    error_log('API: Auth.php not found at: ' . $authPath);
+    http_response_code(500);
+    echo json_encode(['error' => 'Auth.php file not found']);
+    exit;
+}
+
+if (!file_exists($stripePath)) {
+    error_log('API: stripe.php not found at: ' . $stripePath);
+    http_response_code(500);
+    echo json_encode(['error' => 'stripe.php file not found']);
+    exit;
+}
+
+require_once $authPath;
+require_once $stripePath;
 
 try {
+    error_log('API: Starting checkout session creation');
+    
     // Check if user is authenticated
     $auth = Auth::getInstance();
     if (!$auth->isLoggedIn()) {
+        error_log('API: User not logged in');
         http_response_code(401);
         echo json_encode(['error' => 'Authentication required']);
         exit;
     }
+    
+    error_log('API: User authenticated');
     
     $user = $auth->getCurrentUser();
     $userId = $user['id'];

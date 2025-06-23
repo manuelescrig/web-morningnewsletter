@@ -609,9 +609,11 @@ try {
 
             } catch (error) {
                 // Restore button state
-                const button = event.target;
-                button.textContent = originalText;
-                button.disabled = false;
+                if (typeof event !== 'undefined' && event.target) {
+                    const button = event.target;
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }
                 
                 console.error('Error creating checkout session:', error);
                 alert('Error: ' + error.message);
