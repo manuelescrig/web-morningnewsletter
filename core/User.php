@@ -447,16 +447,7 @@ class User {
         return null;
     }
     
-    public function requestEmailChange($newEmail, $password) {
-        // Verify password first
-        $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE id = ?");
-        $stmt->execute([$this->id]);
-        $userData = $stmt->fetch();
-        
-        if (!$userData || !password_verify($password, $userData['password_hash'])) {
-            return ['success' => false, 'message' => 'Incorrect password'];
-        }
-        
+    public function requestEmailChange($newEmail) {
         // Check if new email is already in use
         if (User::findByEmail($newEmail)) {
             return ['success' => false, 'message' => 'This email address is already in use'];

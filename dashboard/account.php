@@ -42,18 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'change_email':
                 $email = trim($_POST['email'] ?? '');
-                $password = $_POST['email_password'] ?? '';
                 
                 if (empty($email)) {
                     $error = 'Email is required.';
                 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $error = 'Please enter a valid email address.';
-                } elseif (empty($password)) {
-                    $error = 'Password is required to change email.';
                 } elseif ($email === $user->getEmail()) {
                     $error = 'The new email address is the same as your current email address.';
                 } else {
-                    $result = $user->requestEmailChange($email, $password);
+                    $result = $user->requestEmailChange($email);
                     if ($result['success']) {
                         $success = $result['message'];
                     } else {
@@ -226,28 +223,15 @@ $csrfToken = $auth->generateCSRFToken();
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                     <input type="hidden" name="action" value="change_email">
                     
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">New Email Address</label>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   required
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
-                                   placeholder="Enter new email address">
-                            <p class="mt-1 text-sm text-gray-500">A verification email will be sent to this address</p>
-                        </div>
-                        
-                        <div>
-                            <label for="email_password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" 
-                                   name="email_password" 
-                                   id="email_password" 
-                                   required
-                                   class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
-                                   placeholder="Enter your current password">
-                            <p class="mt-1 text-sm text-gray-500">Required to verify your identity</p>
-                        </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">New Email Address</label>
+                        <input type="email" 
+                               name="email" 
+                               id="email" 
+                               required
+                               class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
+                               placeholder="Enter new email address">
+                        <p class="mt-1 text-sm text-gray-500">A verification email will be sent to this address</p>
                     </div>
                     
                     <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
@@ -257,7 +241,7 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-blue-700">
-                                    We'll send a verification email to your new address. You'll need to click the link in that email to complete the change.
+                                    We'll send a verification email to your new address. Click the link in that email to complete the change.
                                 </p>
                             </div>
                         </div>
