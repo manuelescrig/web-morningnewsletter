@@ -83,7 +83,7 @@ $csrfToken = $auth->generateCSRFToken();
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-50 to-purple-50 py-20">
+    <div class="bg-gradient-to-r from-blue-50 to-purple-50 py-20 pt-32">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
