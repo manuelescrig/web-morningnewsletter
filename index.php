@@ -579,8 +579,8 @@ try {
 
                 console.log('Creating checkout session for plan:', plan);
 
-                // Create checkout session
-                const response = await fetch('/api/fixed-checkout.php', {
+                // Test everything before Stripe API call
+                const response = await fetch('/api/test-before-stripe.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -599,13 +599,16 @@ try {
                 const data = await response.json();
                 console.log('Response data:', data);
 
-                if (!data.checkout_url) {
-                    throw new Error('No checkout URL received');
+                if (data.success && data.test_mode) {
+                    alert('Pre-Stripe test successful! Ready to integrate with Stripe API. Plan: ' + data.plan + ', User: ' + data.user_email);
+                    return;
+                } else if (data.checkout_url) {
+                    // Redirect to Stripe Checkout
+                    console.log('Redirecting to Stripe checkout...');
+                    window.location.href = data.checkout_url;
+                } else {
+                    throw new Error('Unexpected response format');
                 }
-
-                // Redirect to Stripe Checkout
-                console.log('Redirecting to Stripe checkout...');
-                window.location.href = data.checkout_url;
 
             } catch (error) {
                 // Restore button state
