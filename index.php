@@ -577,6 +577,8 @@ try {
                 button.textContent = 'Loading...';
                 button.disabled = true;
 
+                console.log('Subscribing to plan:', plan);
+
                 // Create checkout session
                 const response = await fetch('/api/create-checkout-session.php', {
                     method: 'POST',
@@ -586,10 +588,20 @@ try {
                     body: JSON.stringify({ plan: plan })
                 });
 
-                const data = await response.json();
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Failed to create checkout session');
+                    const errorText = await response.text();
+                    console.error('Response error:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (!data.checkout_url) {
+                    throw new Error('No checkout URL received');
                 }
 
                 // Redirect to Stripe Checkout
@@ -597,6 +609,7 @@ try {
 
             } catch (error) {
                 // Restore button state
+                const button = event.target;
                 button.textContent = originalText;
                 button.disabled = false;
                 
