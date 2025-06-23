@@ -80,8 +80,8 @@ try {
                     Start your day with clarity. Get everything that matters—KPIs, market updates, weather, news, and messages—delivered in one beautiful email.
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="/register/" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-                        Start Free Today
+                    <a href="#pricing" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                        See Pricing
                         <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
                     </a>
                     <a href="#features" class="inline-flex items-center text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
@@ -92,7 +92,7 @@ try {
                 <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        No credit card required
+                        Plans starting at $5/mo
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
@@ -355,8 +355,8 @@ try {
 
                 <!-- Pro Tier -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-purple-400 relative h-full flex flex-col">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-1 text-sm font-semibold text-white shadow-lg">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                        <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                             Popular
                         </span>
                     </div>
@@ -541,12 +541,9 @@ try {
             <p class="mt-4 text-xl text-gray-600">
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
-            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/register/" class="inline-flex items-center text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    <i class="fas fa-user-plus mr-2"></i>Try Free
-                </a>
-                <a href="https://buy.stripe.com/9B6aEX00yg9lgwEfiG0Ba00" class="inline-flex items-center text-white bg-gradient-to-br from-blue-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    Start with Starter $5/mo<i class="fas fa-arrow-right ml-2"></i>
+            <div class="mt-8">
+                <a href="#pricing" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                    Choose Your Plan<i class="fas fa-arrow-up ml-2"></i>
                 </a>
             </div>
         </div>
