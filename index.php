@@ -579,22 +579,25 @@ try {
 
                 console.log('Subscribing to plan:', plan);
 
-                // Test POST data first
-                console.log('Testing POST data...');
-                const postTest = await fetch('/api/test-post.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ plan: plan })
-                });
-                const postData = await postTest.json();
-                console.log('POST test result:', postData);
+                // Test each component step by step
+                console.log('Testing components step by step...');
                 
-                // If POST test failed, stop here
-                if (!postData.success) {
-                    throw new Error('POST test failed: ' + JSON.stringify(postData));
+                for (let step = 1; step <= 5; step++) {
+                    try {
+                        const stepTest = await fetch(`/api/step-by-step.php?step=${step}`);
+                        const stepData = await stepTest.json();
+                        console.log(`Step ${step}:`, stepData);
+                        
+                        if (!stepData.success) {
+                            throw new Error(`Step ${step} failed: ${stepData.error || stepData.fatal_error}`);
+                        }
+                    } catch (stepError) {
+                        console.error(`Step ${step} error:`, stepError);
+                        throw new Error(`Component test failed at step ${step}: ${stepError.message}`);
+                    }
                 }
+                
+                console.log('All components working! Now testing full API...');
                 
                 // Create checkout session
                 const response = await fetch('/api/create-checkout-simple.php', {
