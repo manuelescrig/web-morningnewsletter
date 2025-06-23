@@ -29,8 +29,8 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     $allClasses = trim("$baseClasses $classes");
     
     echo "<a href=\"$href\" class=\"$allClasses flex items-center gap-2\">";
-    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass transform rotate-90 text-blue-600\">";
-    echo "<span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span>";
+    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass\" style=\"transform: rotate(90deg);\">";
+    echo "<span><span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span></span>";
     echo "</a>";
 }
 ?>
