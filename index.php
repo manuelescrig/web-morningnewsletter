@@ -1,9 +1,30 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Database.php';
 
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
+
+// Get user statistics for social proof
+try {
+    $db = Database::getInstance()->getConnection();
+    
+    // Total users
+    $stmt = $db->query("SELECT COUNT(*) as user_count FROM users");
+    $result = $stmt->fetch();
+    $userCount = $result['user_count'] ?? 0;
+    $displayCount = $userCount > 0 ? $userCount . '+' : '9000+';
+    
+    // Users signed up today
+    $stmt = $db->query("SELECT COUNT(*) as today_count FROM users WHERE DATE(created_at) = DATE('now')");
+    $result = $stmt->fetch();
+    $todayCount = $result['today_count'] ?? 0;
+    
+} catch (Exception $e) {
+    $displayCount = '9000+'; // Fallback if database error
+    $todayCount = 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,10 +96,6 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        Free 14-day trial
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
                         No credit card required
                     </div>
                     <div class="flex items-center">
@@ -110,21 +127,21 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             </div>
             <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-clock text-xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Wasting Precious Time</h3>
                     <p class="text-gray-600">Spending 30+ minutes every morning checking multiple apps and platforms for updates.</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-exclamation-triangle text-xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Missing Important Updates</h3>
                     <p class="text-gray-600">Critical information gets lost in the noise of countless notifications and messages.</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-100 text-red-600 mb-4">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-bolt text-xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Starting Your Day Stressed</h3>
@@ -187,7 +204,15 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <!-- Social Proof Section -->
     <div class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-gray-500 mb-8">Trusted by 9000+ professionals worldwide</p>
+            <div class="text-center mb-8">
+                <p class="text-gray-500 mb-2">Trusted by <?php echo $displayCount; ?> professionals worldwide</p>
+                <?php if ($todayCount > 0): ?>
+                    <p class="text-sm text-blue-600 font-medium">
+                        <i class="fas fa-user-plus mr-1"></i>
+                        <?php echo $todayCount; ?> <?php echo $todayCount === 1 ? 'professional joined' : 'professionals joined'; ?> today
+                    </p>
+                <?php endif; ?>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
                 <img src="https://via.placeholder.com/150x50?text=Company+1" alt="Company 1" class="trusted-by-logos h-8">
                 <img src="https://via.placeholder.com/150x50?text=Company+2" alt="Company 2" class="trusted-by-logos h-8">
