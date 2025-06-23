@@ -404,10 +404,7 @@ try {
                 <!-- Unlimited Tier -->
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div class="px-6 py-8">
-                        <div class="flex items-center mb-4">
-                            <div class="w-4 h-4 bg-green-500 rounded-sm mr-3"></div>
-                            <h3 class="text-2xl font-bold text-gray-900">Unlimited</h3>
-                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Unlimited</h3>
                         <p class="mt-4 text-gray-500">Perfect for power users, teams, or content curators</p>
                         <p class="mt-8">
                             <span class="text-4xl font-extrabold text-gray-900">$19</span>
