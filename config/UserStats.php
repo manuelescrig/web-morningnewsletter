@@ -4,7 +4,7 @@
  * Handles user statistics and metrics
  */
 
-require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/database.php';
 
 class UserStats {
     private $db;

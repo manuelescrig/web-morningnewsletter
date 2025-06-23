@@ -10,23 +10,12 @@ $displayCount = '9000+';
 $todayCount = 0;
 
 try {
-    require_once __DIR__ . '/config/database.php';
-    $db = Database::getInstance()->getConnection();
+    require_once __DIR__ . '/config/UserStats.php';
+    $userStats = new UserStats();
+    $socialProofData = $userStats->getSocialProofData();
     
-    // Get total users
-    $stmt = $db->query("SELECT COUNT(*) as user_count FROM users");
-    if ($stmt && ($result = $stmt->fetch())) {
-        $userCount = (int)$result['user_count'];
-        if ($userCount > 0) {
-            $displayCount = $userCount . '+';
-        }
-    }
-    
-    // Get today's signups
-    $stmt = $db->query("SELECT COUNT(*) as today_count FROM users WHERE DATE(created_at) = DATE('now')");
-    if ($stmt && ($result = $stmt->fetch())) {
-        $todayCount = (int)$result['today_count'];
-    }
+    $displayCount = $socialProofData['display_count'];
+    $todayCount = $socialProofData['today_signups'];
     
 } catch (Exception $e) {
     // Silently fail and use fallback values
