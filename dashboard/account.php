@@ -12,6 +12,24 @@ $success = '';
 $currentPage = 'account';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("POST data received: " . json_encode($_POST));
+    
+    // Check database connection
+    try {
+        require_once __DIR__ . '/../config/database.php';
+        $db = Database::getInstance()->getConnection();
+        error_log("Database connection successful");
+    } catch (Exception $e) {
+        error_log("Database connection failed: " . $e->getMessage());
+    }
+    
+    // Check user object
+    if ($user) {
+        error_log("User object exists - ID: " . $user->getId() . ", Email: " . $user->getEmail());
+    } else {
+        error_log("User object is null");
+    }
+    
     $action = $_POST['action'] ?? '';
     $csrfToken = $_POST['csrf_token'] ?? '';
     
@@ -20,23 +38,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         switch ($action) {
             case 'update_profile':
-                $name = trim($_POST['name'] ?? '');
-                
-                $updateData = [];
-                if (!empty($name)) {
-                    $updateData['name'] = $name;
-                }
-                
-                if (!empty($updateData)) {
-                    if ($user->updateProfile($updateData)) {
-                        $success = 'Profile updated successfully!';
-                        // Refresh user data
-                        $user = $auth->getCurrentUser();
-                    } else {
-                        $error = 'Failed to update profile.';
+                try {
+                    error_log("Processing update_profile action");
+                    $name = trim($_POST['name'] ?? '');
+                    error_log("Name received: " . $name);
+                    
+                    $updateData = [];
+                    if (!empty($name)) {
+                        $updateData['name'] = $name;
                     }
-                } else {
-                    $error = 'Please provide a name to update.';
+                    
+                    if (!empty($updateData)) {
+                        error_log("Attempting to update profile with data: " . json_encode($updateData));
+                        
+                        // Check if user object exists and has the method
+                        if (!$user) {
+                            throw new Exception("User object is null");
+                        }
+                        
+                        if (!method_exists($user, 'updateProfile')) {
+                            throw new Exception("updateProfile method does not exist on User class");
+                        }
+                        
+                        $result = $user->updateProfile($updateData);
+                        error_log("updateProfile returned: " . ($result ? 'true' : 'false'));
+                        
+                        if ($result) {
+                            $success = 'Profile updated successfully!';
+                            error_log("Profile update successful");
+                            // Refresh user data
+                            $user = $auth->getCurrentUser();
+                        } else {
+                            $error = 'Failed to update profile.';
+                            error_log("Profile update failed - updateProfile returned false");
+                        }
+                    } else {
+                        $error = 'Please provide a name to update.';
+                        error_log("No name provided for update");
+                    }
+                } catch (Exception $e) {
+                    $error = 'An error occurred while updating your profile. Please try again.';
+                    error_log("Exception in update_profile: " . $e->getMessage());
+                    error_log("Stack trace: " . $e->getTraceAsString());
                 }
                 break;
                 

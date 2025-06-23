@@ -92,40 +92,57 @@ class User {
     }
     
     public function updateProfile($data) {
-        $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email'];
-        $updates = [];
-        $values = [];
-        
-        foreach ($data as $field => $value) {
-            if (in_array($field, $allowedFields)) {
-                $updates[] = "$field = ?";
-                $values[] = $value;
-            }
-        }
-        
-        if (empty($updates)) {
-            return false;
-        }
-        
-        $values[] = $this->id;
-        $stmt = $this->db->prepare("
-            UPDATE users 
-            SET " . implode(', ', $updates) . ", updated_at = CURRENT_TIMESTAMP 
-            WHERE id = ?
-        ");
-        
-        $success = $stmt->execute($values);
-        
-        // Update local properties if successful
-        if ($success) {
+        try {
+            error_log("User::updateProfile called with data: " . json_encode($data));
+            
+            $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email'];
+            $updates = [];
+            $values = [];
+            
             foreach ($data as $field => $value) {
                 if (in_array($field, $allowedFields)) {
-                    $this->$field = $value;
+                    $updates[] = "$field = ?";
+                    $values[] = $value;
                 }
             }
+            
+            if (empty($updates)) {
+                error_log("User::updateProfile - No valid fields to update");
+                return false;
+            }
+            
+            $values[] = $this->id;
+            $sql = "UPDATE users SET " . implode(', ', $updates) . ", updated_at = CURRENT_TIMESTAMP WHERE id = ?";
+            error_log("User::updateProfile - SQL: " . $sql);
+            error_log("User::updateProfile - Values: " . json_encode($values));
+            
+            $stmt = $this->db->prepare($sql);
+            $success = $stmt->execute($values);
+            
+            error_log("User::updateProfile - Execute result: " . ($success ? 'true' : 'false'));
+            
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                error_log("User::updateProfile - Database error: " . json_encode($errorInfo));
+            }
+            
+            // Update local properties if successful
+            if ($success) {
+                foreach ($data as $field => $value) {
+                    if (in_array($field, $allowedFields)) {
+                        $this->$field = $value;
+                        error_log("User::updateProfile - Updated local property $field to: " . $value);
+                    }
+                }
+            }
+            
+            return $success;
+            
+        } catch (Exception $e) {
+            error_log("User::updateProfile - Exception: " . $e->getMessage());
+            error_log("User::updateProfile - Stack trace: " . $e->getTraceAsString());
+            return false;
         }
-        
-        return $success;
     }
     
     public function changePassword($currentPassword, $newPassword) {
