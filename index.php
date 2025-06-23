@@ -400,8 +400,8 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/auth/register.php" class="block w-full text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Start Free Trial
+                            <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="block w-full text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Subscribe Now
                             </a>
                         </div>
                     </div>
@@ -449,8 +449,8 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/auth/register.php" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
-                                Contact Sales
+                            <a href="https://buy.stripe.com/aFa00jfZw6yLdks9Ym0Ba02" class="block w-full bg-gray-50 border border-gray-300 rounded-md py-2 text-sm font-semibold text-gray-700 text-center hover:bg-gray-100">
+                                Subscribe Now
                             </a>
                         </div>
                     </div>
@@ -553,8 +553,13 @@ try {
             <p class="mt-4 text-xl text-gray-600">
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
-            <div class="mt-8">
-                <a href="/auth/register.php" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">Start Free Trial<i class="fas fa-arrow-right ml-2"></i></a>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/register/" class="inline-flex items-center text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                    <i class="fas fa-user-plus mr-2"></i>Start Free
+                </a>
+                <a href="https://buy.stripe.com/bJe7sLdRoaP1gwE0nM0Ba01" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                    Subscribe Now<i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </div>
