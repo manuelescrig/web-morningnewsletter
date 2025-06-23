@@ -40,14 +40,6 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
                         Schedule
                     </a>
-                    <?php if ($user->isAdmin()): ?>
-                    <a href="/dashboard/users.php" class="<?php echo getNavClass('users', $currentPage); ?>">
-                        Users
-                    </a>
-                    <a href="/dashboard/cron_status.php" class="<?php echo getNavClass('cron_status', $currentPage); ?>">
-                        Cron Status
-                    </a>
-                    <?php endif; ?>
                 </div>
             </div>
             <div class="relative flex items-center">
@@ -90,13 +82,28 @@ function getNavClass($page, $currentPage) {
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
                         <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="fas fa-arrow-up mr-2 text-blue-500"></i>
+                            <i class="fas fa-crown mr-2 text-blue-500"></i>
                             Upgrade Plan
                         </a>
                         <?php else: ?>
                         <a href="/billing" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
                             <i class="fas fa-credit-card mr-2 text-blue-500"></i>
                             Billing
+                        </a>
+                        <?php endif; ?>
+                        
+                        <!-- Admin options -->
+                        <?php if ($user->isAdmin()): ?>
+                        <!-- Divider for admin section -->
+                        <div class="border-t border-gray-200 my-1"></div>
+                        
+                        <a href="/dashboard/users.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-users mr-2 text-purple-500"></i>
+                            Users
+                        </a>
+                        <a href="/dashboard/cron_status.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-server mr-2 text-purple-500"></i>
+                            Cron Status
                         </a>
                         <?php endif; ?>
                         
