@@ -28,17 +28,17 @@
             <div>
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Support</h3>
                 <ul class="mt-4 space-y-4">
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Submit Ticket</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Documentation</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Guides</a></li>
+                    <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Contact Support</a></li>
+                    <li><a href="/#faq" class="text-base text-gray-500 hover:text-gray-300">FAQ</a></li>
+                    <li><a href="mailto:hello@morningnewsletter.com" class="text-base text-gray-500 hover:text-gray-300">Email Us</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
                 <ul class="mt-4 space-y-4">
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Blog</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Jobs</a></li>
+                    <li><a href="/jobs/" class="text-base text-gray-500 hover:text-gray-300">Careers</a></li>
+                    <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Support</a></li>
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
                 </ul>
             </div>
