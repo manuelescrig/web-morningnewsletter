@@ -34,7 +34,7 @@ require_once __DIR__ . '/logo.php';
                             Go to Dashboard
                         </a>
                     <?php else: ?>
-                        <a href="/auth/login.php" class="px-4 py-2 rounded-md hover:bg-blue-700">Log In</a>
+                        <a href="/auth/login.php" class="px-4 py-2 rounded-md text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-200">Log In</a>
                         <a href="#pricing" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get Started</a>
                     <?php endif; ?>
                 </div>
