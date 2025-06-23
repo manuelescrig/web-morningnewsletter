@@ -64,10 +64,10 @@ function getNavClass($page, $currentPage) {
                                 </div>
                                 <!-- User info (hidden on mobile, shown on desktop) -->
                                 <div class="hidden lg:ml-3 lg:block">
-                                    <div class="text-base font-medium text-gray-900">
+                                    <div class="text-sm font-medium text-gray-900">
                                         <?php echo $user->getEmail(); ?>
                                     </div>
-                                    <div class="text-sm text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
+                                    <div class="text-xs text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
                                 </div>
                                 <!-- Dropdown arrow -->
                                 <div class="hidden lg:ml-2 lg:flex-shrink-0 lg:block">
@@ -81,13 +81,10 @@ function getNavClass($page, $currentPage) {
                     <div id="dropdown-menu" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- User info (shown on mobile) -->
                         <div class="block lg:hidden px-4 py-2 border-b border-gray-200">
-                            <div class="text-base font-medium text-gray-900">
-                                <?php 
-                                $emailParts = explode('@', $user->getEmail());
-                                echo ucfirst($emailParts[0]);
-                                ?>
+                            <div class="text-sm font-medium text-gray-900">
+                                <?php echo $user->getEmail(); ?>
                             </div>
-                            <div class="text-sm text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
+                            <div class="text-xs text-gray-500 capitalize"><?php echo $user->getPlan(); ?> Plan</div>
                         </div>
                         
                         <!-- Billing/Upgrade option -->
