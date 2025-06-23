@@ -597,7 +597,25 @@ try {
                     }
                 }
                 
-                console.log('All components working! Now testing full API...');
+                console.log('All components working! Now testing minimal API...');
+                
+                // Test minimal checkout first
+                const minimalResponse = await fetch('/api/minimal-checkout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plan: plan })
+                });
+                
+                console.log('Minimal API status:', minimalResponse.status);
+                
+                if (minimalResponse.ok) {
+                    const minimalData = await minimalResponse.json();
+                    console.log('Minimal API success:', minimalData);
+                    alert('Test successful! Plan: ' + minimalData.plan + ', User: ' + minimalData.user_email);
+                    return; // Stop here for now
+                }
                 
                 // Create checkout session
                 const response = await fetch('/api/create-checkout-simple.php', {
