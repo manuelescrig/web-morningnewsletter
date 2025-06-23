@@ -54,11 +54,19 @@ if (empty($token)) {
                     <p class="font-medium"><?php echo htmlspecialchars($message); ?></p>
                 </div>
                 
-                <a href="/auth/login.php" 
-                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <i class="fas fa-sign-in-alt mr-2"></i>
-                    Sign In Now
-                </a>
+                <?php if ($type === 'email_change'): ?>
+                    <a href="/dashboard/account.php" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-user-cog mr-2"></i>
+                        Go to Account Settings
+                    </a>
+                <?php else: ?>
+                    <a href="/auth/login.php" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign In Now
+                    </a>
+                <?php endif; ?>
             <?php else: ?>
                 <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
                     <i class="fas fa-exclamation-triangle text-2xl mb-2"></i>
