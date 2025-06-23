@@ -48,8 +48,8 @@ try {
     exit;
 }
 
-// 3. Test direct Maileroo API call
-echo "<h3>3. Direct Maileroo API Test</h3>";
+// 3. Test multiple Maileroo API endpoints
+echo "<h3>3. Maileroo API Endpoint Discovery</h3>";
 $testApiKey = $config['maileroo']['api_key'];
 $testFrom = $config['maileroo']['from_email'];
 $testTo = $_GET['to'] ?? 'test@example.com';
@@ -61,40 +61,57 @@ $postFields = [
     'html' => '<h2>Debug Test</h2><p>This is a direct API test at ' . date('Y-m-d H:i:s') . '</p>'
 ];
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'https://api.maileroo.com/v1/email');
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'X-API-Key: ' . $testApiKey
-]);
+// Test multiple possible endpoints
+$endpoints = [
+    'https://maileroo.com/api/send',
+    'https://api.maileroo.com/send',
+    'https://api.maileroo.com/v1/send',
+    'https://api.maileroo.com/email',
+    'https://app.maileroo.com/api/send'
+];
 
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$error = curl_error($ch);
-curl_close($ch);
-
-echo "<div style='background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
-echo "<strong>API Call Details:</strong><br>";
-echo "Endpoint: https://api.maileroo.com/v1/email<br>";
-echo "From: " . $testFrom . "<br>";
-echo "To: " . $testTo . "<br>";
-echo "HTTP Code: " . $httpCode . "<br>";
-if ($error) {
-    echo "cURL Error: " . $error . "<br>";
-}
-echo "Response: " . htmlspecialchars($response) . "<br>";
-echo "</div>";
-
-if ($httpCode >= 200 && $httpCode < 300) {
-    echo "<div style='background: #e8f5e8; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
-    echo "<strong>✓ API call successful!</strong>";
+foreach ($endpoints as $endpoint) {
+    echo "<h4>Testing: " . $endpoint . "</h4>";
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $endpoint);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'X-API-Key: ' . $testApiKey
+    ]);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
+    
+    echo "<div style='background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
+    echo "<strong>HTTP Code:</strong> " . $httpCode . "<br>";
+    if ($error) {
+        echo "<strong>cURL Error:</strong> " . $error . "<br>";
+    }
+    echo "<strong>Response:</strong> " . htmlspecialchars(substr($response, 0, 200)) . "<br>";
     echo "</div>";
-} else {
-    echo "<div style='background: #ffe8e8; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
-    echo "<strong>✗ API call failed</strong>";
-    echo "</div>";
+    
+    if ($httpCode >= 200 && $httpCode < 300) {
+        echo "<div style='background: #e8f5e8; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
+        echo "<strong>✓ Found working endpoint: " . $endpoint . "</strong>";
+        echo "</div>";
+        break;
+    } elseif ($httpCode == 404) {
+        echo "<div style='background: #ffe8e8; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
+        echo "<strong>✗ Endpoint not found</strong>";
+        echo "</div>";
+    } else {
+        echo "<div style='background: #fff8dc; padding: 10px; margin: 10px 0; border-radius: 5px;'>";
+        echo "<strong>? Different response (might be working)</strong>";
+        echo "</div>";
+    }
+    
+    echo "<br>";
 }
 
 // 4. Test password reset functionality

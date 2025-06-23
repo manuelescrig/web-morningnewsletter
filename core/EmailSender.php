@@ -66,7 +66,7 @@ class EmailSender {
         ];
         
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.maileroo.com/v1/email');
+        curl_setopt($ch, CURLOPT_URL, 'https://maileroo.com/api/send');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
