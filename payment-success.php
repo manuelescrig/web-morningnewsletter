@@ -28,7 +28,7 @@ if ($sessionId) {
             
             // Get user's current subscription info
             $subscriptionManager = new SubscriptionManager();
-            $subscriptionInfo = $subscriptionManager->getUserPlanInfo($user['id']);
+            $subscriptionInfo = $subscriptionManager->getUserPlanInfo($user->getId());
         }
     } catch (Exception $e) {
         error_log('Error fetching session: ' . $e->getMessage());
@@ -114,9 +114,9 @@ if ($plan) {
                     <p class="text-white/80 text-lg">
                         <i class="fas fa-credit-card mr-2"></i>
                         <?php if ($plan && $planDetails): ?>
-                            <?php echo ucfirst($planDetails['name']); ?> subscription activated for <strong><?php echo htmlspecialchars($user['email']); ?></strong>
+                            <?php echo ucfirst($planDetails['name']); ?> subscription activated for <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
                         <?php else: ?>
-                            Premium subscription activated for <strong><?php echo htmlspecialchars($user['email']); ?></strong>
+                            Premium subscription activated for <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
                         <?php endif; ?>
                     </p>
                 </div>
