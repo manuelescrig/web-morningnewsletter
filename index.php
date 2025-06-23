@@ -579,6 +579,12 @@ try {
 
                 console.log('Subscribing to plan:', plan);
 
+                // Test basic API first
+                console.log('Testing basic API...');
+                const testResponse = await fetch('/api/debug.php');
+                const testData = await testResponse.text();
+                console.log('Basic API test:', testData);
+                
                 // Create checkout session
                 const response = await fetch('/api/create-checkout-simple.php', {
                     method: 'POST',
