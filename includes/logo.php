@@ -16,12 +16,21 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
         'xl' => 'text-4xl'
     ];
     
+    $sunSizeClasses = [
+        'sm' => 'h-4 w-4',
+        'md' => 'h-6 w-6',
+        'lg' => 'h-8 w-8',
+        'xl' => 'h-10 w-10'
+    ];
+    
     $sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
+    $sunSizeClass = $sunSizeClasses[$size] ?? $sunSizeClasses['md'];
     $baseClasses = "$sizeClass font-bold text-blue-600 hover:text-blue-700 transition-colors duration-200";
     $allClasses = trim("$baseClasses $classes");
     
-    echo "<a href=\"$href\" class=\"$allClasses\">";
+    echo "<a href=\"$href\" class=\"$allClasses flex items-center gap-2\">";
     echo "<span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span>";
+    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass transform rotate-90 text-blue-600\">";
     echo "</a>";
 }
 ?>
