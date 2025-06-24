@@ -7,9 +7,6 @@ $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 
-// Add debug mode
-$debug = isset($_GET['debug']) && $_GET['debug'] === '1';
-
 try {
     $builder = new NewsletterBuilder($user);
     $newsletterHtml = $builder->build();
@@ -63,47 +60,8 @@ try {
         <div class="max-w-4xl mx-auto px-4">
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <div class="newsletter-preview">
-                    <?php 
-                    if ($debug) {
-                        echo "<div style='background: #f0f8ff; padding: 15px; margin-bottom: 20px; border-radius: 5px; border-left: 4px solid #2563eb;'>";
-                        echo "<h3 style='margin-top: 0; color: #2563eb;'>Debug Information:</h3>";
-                        echo "<p><strong>User:</strong> " . htmlspecialchars($user->getEmail()) . "</p>";
-                        echo "<p><strong>Sources:</strong> " . $user->getSourceCount() . "</p>";
-                        
-                        $sources = $user->getSources();
-                        if (!empty($sources)) {
-                            echo "<h4>Source Details:</h4>";
-                            foreach ($sources as $source) {
-                                echo "<div style='margin: 10px 0; padding: 10px; background: white; border-radius: 3px;'>";
-                                echo "<strong>Type:</strong> " . htmlspecialchars($source['type']) . "<br>";
-                                echo "<strong>Active:</strong> " . ($source['is_active'] ? 'Yes' : 'No') . "<br>";
-                                echo "<strong>Last Updated:</strong> " . ($source['last_updated'] ?: 'Never') . "<br>";
-                                echo "</div>";
-                            }
-                        }
-                        echo "</div>";
-                    }
-                    
-                    echo $newsletterContent;
-                    ?>
+                    <?php echo $newsletterContent; ?>
                 </div>
-            </div>
-        </div>
-
-        <!-- Footer with debug link -->
-        <div class="max-w-4xl mx-auto px-4 mt-6 text-center">
-            <div class="text-sm text-gray-500">
-                <?php if (!$debug): ?>
-                    <a href="?debug=1" class="text-blue-600 hover:text-blue-500">
-                        <i class="fas fa-bug mr-1"></i>
-                        Enable Debug Mode
-                    </a>
-                <?php else: ?>
-                    <a href="?" class="text-blue-600 hover:text-blue-500">
-                        <i class="fas fa-eye mr-1"></i>
-                        Disable Debug Mode
-                    </a>
-                <?php endif; ?>
             </div>
         </div>
     </body>
