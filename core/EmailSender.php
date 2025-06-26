@@ -174,7 +174,8 @@ class EmailSender {
     }
     
     public function sendVerificationEmail($email, $token) {
-        $verificationUrl = "http://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $token;
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $verificationUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $token;
         $subject = "Verify your MorningNewsletter account";
         
         $htmlBody = "
