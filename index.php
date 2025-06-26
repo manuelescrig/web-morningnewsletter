@@ -98,6 +98,10 @@ try {
                 <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        7-day free trial
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
                         Plans starting at $5/mo
                     </div>
                     <div class="flex items-center">
