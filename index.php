@@ -86,8 +86,8 @@ try {
                     Start your day with clarity. Get everything that matters—KPIs, market updates, weather, news, and messages—delivered in one beautiful email.
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#pricing" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-                        See Pricing
+                    <a href="/register" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                        Start for Free
                         <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
                     </a>
                     <a href="#features" class="inline-flex items-center text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
@@ -366,9 +366,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <button onclick="subscribeToPlan('starter')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
-                                Subscribe Now
-                            </button>
+                            <a href="/register" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                                Start for Free
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -420,9 +420,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <button onclick="subscribeToPlan('pro')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
-                                Subscribe Now
-                            </button>
+                            <a href="/register" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                                Start for Free
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -469,9 +469,9 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <button onclick="subscribeToPlan('unlimited')" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
-                                Subscribe Now
-                            </button>
+                            <a href="/register" class="block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300">
+                                Start for Free
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -574,8 +574,8 @@ try {
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
             <div class="mt-8">
-                <a href="#pricing" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    Choose Your Plan<i class="fas fa-arrow-up ml-2"></i>
+                <a href="/register" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                    Start for Free<i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
