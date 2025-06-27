@@ -24,6 +24,7 @@ require_once __DIR__ . '/logo.php';
                     <div class="flex space-x-8">
                         <a href="/#features" class="text-gray-700 hover:text-blue-600 px-3 py-2">Features</a>
                         <a href="/#pricing" class="text-gray-700 hover:text-blue-600 px-3 py-2">Pricing</a>
+                        <a href="/blog" class="text-gray-700 hover:text-blue-600 px-3 py-2">Blog</a>
                     </div>
                 </div>
             </div>

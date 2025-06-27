@@ -21,6 +21,10 @@ RewriteRule ^upgrade/?$ dashboard/upgrade.php [L]
 RewriteRule ^billing/?$ dashboard/billing.php [L]
 RewriteRule ^account/?$ dashboard/account.php [L]
 
+# Blog URLs
+RewriteRule ^blog/?$ blog/index.php [L]
+RewriteRule ^blog/([a-zA-Z0-9\-]+)/?$ blog/post.php?slug=$1 [L]
+
 # Prevent access to sensitive files
 <Files ~ "^\.">
     Order allow,deny
