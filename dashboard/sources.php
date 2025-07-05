@@ -58,7 +58,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             // Refresh sources
                             $sources = $user->getSources();
                         } else {
-                            $error = 'Invalid configuration for this source type';
+                            // Provide specific error message for weather module
+                            if ($type === 'weather') {
+                                $errors = [];
+                                if (empty($config['api_key'])) {
+                                    $errors[] = 'OpenWeatherMap API key is required';
+                                }
+                                if (empty($config['city'])) {
+                                    $errors[] = 'City name is required';
+                                }
+                                $error = 'Please fix the following: ' . implode(', ', $errors);
+                            } else {
+                                $error = 'Invalid configuration for this source type. Please ensure all required fields are filled.';
+                            }
                         }
                     } catch (Exception $e) {
                         $error = $e->getMessage();

@@ -175,7 +175,11 @@ class WeatherModule extends BaseSourceModule {
     }
     
     public function validateConfig(array $config): bool {
-        return !empty($config['api_key']) && !empty($config['city']);
+        // Check if required fields are present and not empty
+        $hasApiKey = isset($config['api_key']) && trim($config['api_key']) !== '';
+        $hasCity = isset($config['city']) && trim($config['city']) !== '';
+        
+        return $hasApiKey && $hasCity;
     }
     
     private function getWeatherEmoji(string $condition): string {
