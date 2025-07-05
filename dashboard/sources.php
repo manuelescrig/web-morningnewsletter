@@ -262,59 +262,101 @@ $csrfToken = $auth->generateCSRFToken();
     </div>
 
     <script>
-        const moduleConfigs = <?php echo json_encode(array_map(function($type, $info) use ($availableModules) {
-            $moduleClass = $info['class'];
-            $module = new $moduleClass();
-            return $module->getConfigFields();
-        }, array_keys($availableModules), $availableModules)); ?>;
+        const moduleConfigs = <?php 
+        try {
+            $configs = array_map(function($type, $info) use ($availableModules) {
+                $moduleClass = $info['class'];
+                $module = new $moduleClass();
+                return $module->getConfigFields();
+            }, array_keys($availableModules), $availableModules);
+            echo json_encode($configs);
+        } catch (Exception $e) {
+            error_log("Error generating module configs: " . $e->getMessage());
+            echo '{}';
+        }
+        ?>;
 
         function showConfigFields(sourceType) {
             const configContainer = document.getElementById('config-fields');
             configContainer.innerHTML = '';
 
-            if (!sourceType || !moduleConfigs[sourceType]) {
+            if (!sourceType) {
+                return;
+            }
+
+            // Hardcode weather fields as fallback if needed
+            if (sourceType === 'weather') {
+                const weatherFields = [
+                    {
+                        name: 'api_key',
+                        type: 'text',
+                        label: 'OpenWeatherMap API Key',
+                        required: true,
+                        description: 'Get your free API key from openweathermap.org'
+                    },
+                    {
+                        name: 'city',
+                        type: 'text',
+                        label: 'City',
+                        required: true,
+                        description: 'City name (e.g., "New York", "London", "Tokyo")',
+                        default: 'New York'
+                    }
+                ];
+                
+                weatherFields.forEach(field => {
+                    createConfigField(field, configContainer);
+                });
+                return;
+            }
+
+            if (!moduleConfigs[sourceType]) {
                 return;
             }
 
             const fields = moduleConfigs[sourceType];
             
             fields.forEach(field => {
-                const fieldDiv = document.createElement('div');
-                fieldDiv.className = 'mb-4';
-                
-                let fieldHtml = `
-                    <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-2">
-                        ${field.label}${field.required ? ' *' : ''}
-                    </label>
-                `;
-
-                if (field.type === 'select') {
-                    fieldHtml += `<select id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
-                                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
-                    Object.entries(field.options).forEach(([value, label]) => {
-                        const selected = field.default === value ? 'selected' : '';
-                        fieldHtml += `<option value="${value}" ${selected}>${label}</option>`;
-                    });
-                    fieldHtml += '</select>';
-                } else if (field.type === 'textarea') {
-                    fieldHtml += `<textarea id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
-                                    rows="3" placeholder="${field.description || ''}"
-                                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${field.default || ''}</textarea>`;
-                } else {
-                    const inputType = field.type === 'password' ? 'password' : (field.type === 'number' ? 'number' : 'text');
-                    fieldHtml += `<input type="${inputType}" id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
-                                    value="${field.default || ''}" placeholder="${field.description || ''}"
-                                    ${field.min ? `min="${field.min}"` : ''} ${field.max ? `max="${field.max}"` : ''}
-                                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
-                }
-
-                if (field.description) {
-                    fieldHtml += `<p class="mt-1 text-xs text-gray-500">${field.description}</p>`;
-                }
-
-                fieldDiv.innerHTML = fieldHtml;
-                configContainer.appendChild(fieldDiv);
+                createConfigField(field, configContainer);
             });
+        }
+
+        function createConfigField(field, container) {
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'mb-4';
+            
+            let fieldHtml = `
+                <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-2">
+                    ${field.label}${field.required ? ' *' : ''}
+                </label>
+            `;
+
+            if (field.type === 'select') {
+                fieldHtml += `<select id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
+                Object.entries(field.options).forEach(([value, label]) => {
+                    const selected = field.default === value ? 'selected' : '';
+                    fieldHtml += `<option value="${value}" ${selected}>${label}</option>`;
+                });
+                fieldHtml += '</select>';
+            } else if (field.type === 'textarea') {
+                fieldHtml += `<textarea id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
+                                rows="3" placeholder="${field.description || ''}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${field.default || ''}</textarea>`;
+            } else {
+                const inputType = field.type === 'password' ? 'password' : (field.type === 'number' ? 'number' : 'text');
+                fieldHtml += `<input type="${inputType}" id="config_${field.name}" name="config[${field.name}]" ${field.required ? 'required' : ''} 
+                                value="${field.default || ''}" placeholder="${field.description || ''}"
+                                ${field.min ? `min="${field.min}"` : ''} ${field.max ? `max="${field.max}"` : ''}
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
+            }
+
+            if (field.description) {
+                fieldHtml += `<p class="mt-1 text-xs text-gray-500">${field.description}</p>`;
+            }
+
+            fieldDiv.innerHTML = fieldHtml;
+            container.appendChild(fieldDiv);
         }
     </script>
 </body>
