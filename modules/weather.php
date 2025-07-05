@@ -35,11 +35,16 @@ class WeatherModule extends BaseSourceModule {
             $description = ucfirst($currentData['weather'][0]['description']);
             $humidity = $currentData['main']['humidity'];
             $windSpeed = round($currentData['wind']['speed'] * 3.6, 1); // Convert m/s to km/h
+            $pressure = $currentData['main']['pressure'] ?? null;
+            $visibility = isset($currentData['visibility']) ? round($currentData['visibility'] / 1000, 1) : null;
+            $sunrise = isset($currentData['sys']['sunrise']) ? date('H:i', $currentData['sys']['sunrise']) : null;
+            $sunset = isset($currentData['sys']['sunset']) ? date('H:i', $currentData['sys']['sunset']) : null;
+            $weatherIcon = $this->getWeatherEmoji($currentData['weather'][0]['main'] ?? '');
             
             $result = [
                 [
                     'label' => 'Current Temperature',
-                    'value' => "{$temp}°C",
+                    'value' => "{$weatherIcon} {$temp}°C",
                     'delta' => null
                 ],
                 [
@@ -54,34 +59,82 @@ class WeatherModule extends BaseSourceModule {
                 ],
                 [
                     'label' => 'Humidity',
-                    'value' => "{$humidity}%",
+                    'value' => "💧 {$humidity}%",
                     'delta' => null
                 ],
                 [
                     'label' => 'Wind Speed',
-                    'value' => "{$windSpeed} km/h",
+                    'value' => "💨 {$windSpeed} km/h",
                     'delta' => null
                 ]
             ];
             
-            // Add today's high/low from forecast
+            // Add pressure if available
+            if ($pressure) {
+                $result[] = [
+                    'label' => 'Pressure',
+                    'value' => "🌡️ {$pressure} hPa",
+                    'delta' => null
+                ];
+            }
+            
+            // Add visibility if available
+            if ($visibility) {
+                $result[] = [
+                    'label' => 'Visibility',
+                    'value' => "👁️ {$visibility} km",
+                    'delta' => null
+                ];
+            }
+            
+            // Add sunrise/sunset if available
+            if ($sunrise && $sunset) {
+                $result[] = [
+                    'label' => 'Sun Times',
+                    'value' => "🌅 {$sunrise} | 🌇 {$sunset}",
+                    'delta' => null
+                ];
+            }
+            
+            // Add today's high/low and tomorrow's forecast
             if ($forecastData && isset($forecastData['list'])) {
                 $todayTemps = [];
+                $tomorrowTemps = [];
                 $today = date('Y-m-d');
+                $tomorrow = date('Y-m-d', strtotime('+1 day'));
+                $tomorrowCondition = null;
                 
                 foreach ($forecastData['list'] as $item) {
                     $itemDate = date('Y-m-d', $item['dt']);
                     if ($itemDate === $today) {
                         $todayTemps[] = $item['main']['temp'];
+                    } elseif ($itemDate === $tomorrow) {
+                        $tomorrowTemps[] = $item['main']['temp'];
+                        if (!$tomorrowCondition && isset($item['weather'][0]['main'])) {
+                            $tomorrowCondition = $item['weather'][0]['main'];
+                        }
                     }
                 }
                 
+                // Today's range
                 if (!empty($todayTemps)) {
                     $high = round(max($todayTemps));
                     $low = round(min($todayTemps));
                     $result[] = [
                         'label' => 'Today\'s Range',
-                        'value' => "{$low}°C - {$high}°C",
+                        'value' => "📊 {$low}°C - {$high}°C",
+                        'delta' => null
+                    ];
+                }
+                
+                // Tomorrow's preview
+                if (!empty($tomorrowTemps) && $tomorrowCondition) {
+                    $tomorrowHigh = round(max($tomorrowTemps));
+                    $tomorrowLow = round(min($tomorrowTemps));
+                    $tomorrowEmoji = $this->getWeatherEmoji($tomorrowCondition);
+                    $result[] = [
+                        'label' => 'Tomorrow',
+                        'value' => "{$tomorrowEmoji} {$tomorrowLow}°C - {$tomorrowHigh}°C",
                         'delta' => null
                     ];
                 }
@@ -123,5 +176,32 @@ class WeatherModule extends BaseSourceModule {
     
     public function validateConfig(array $config): bool {
         return !empty($config['api_key']) && !empty($config['city']);
+    }
+    
+    private function getWeatherEmoji(string $condition): string {
+        $condition = strtolower($condition);
+        
+        switch ($condition) {
+            case 'clear':
+                return '☀️';
+            case 'clouds':
+                return '☁️';
+            case 'rain':
+            case 'drizzle':
+                return '🌧️';
+            case 'thunderstorm':
+                return '⛈️';
+            case 'snow':
+                return '❄️';
+            case 'mist':
+            case 'fog':
+            case 'haze':
+                return '🌫️';
+            case 'dust':
+            case 'sand':
+                return '🌪️';
+            default:
+                return '🌤️';
+        }
     }
 }
