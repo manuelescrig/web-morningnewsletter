@@ -644,6 +644,94 @@ class User {
         }
     }
     
+    public function promotePlan() {
+        $planHierarchy = ['free', 'medium', 'premium'];
+        $currentIndex = array_search($this->plan, $planHierarchy);
+        
+        if ($currentIndex === false || $currentIndex >= count($planHierarchy) - 1) {
+            return false; // Already at highest plan or invalid plan
+        }
+        
+        $newPlan = $planHierarchy[$currentIndex + 1];
+        
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET plan = ?, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        $success = $stmt->execute([$newPlan, $this->id]);
+        if ($success) {
+            $this->plan = $newPlan;
+        }
+        return $success;
+    }
+    
+    public function demotePlan() {
+        $planHierarchy = ['free', 'medium', 'premium'];
+        $currentIndex = array_search($this->plan, $planHierarchy);
+        
+        if ($currentIndex === false || $currentIndex <= 0) {
+            return false; // Already at lowest plan or invalid plan
+        }
+        
+        $newPlan = $planHierarchy[$currentIndex - 1];
+        
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET plan = ?, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        $success = $stmt->execute([$newPlan, $this->id]);
+        if ($success) {
+            $this->plan = $newPlan;
+        }
+        return $success;
+    }
+    
+    public function changePlan($newPlan) {
+        $validPlans = ['free', 'medium', 'premium'];
+        
+        if (!in_array($newPlan, $validPlans)) {
+            return false;
+        }
+        
+        $stmt = $this->db->prepare("
+            UPDATE users 
+            SET plan = ?, updated_at = CURRENT_TIMESTAMP 
+            WHERE id = ?
+        ");
+        
+        $success = $stmt->execute([$newPlan, $this->id]);
+        if ($success) {
+            $this->plan = $newPlan;
+        }
+        return $success;
+    }
+    
+    public function getNextPlan() {
+        $planHierarchy = ['free', 'medium', 'premium'];
+        $currentIndex = array_search($this->plan, $planHierarchy);
+        
+        if ($currentIndex === false || $currentIndex >= count($planHierarchy) - 1) {
+            return null;
+        }
+        
+        return $planHierarchy[$currentIndex + 1];
+    }
+    
+    public function getPreviousPlan() {
+        $planHierarchy = ['free', 'medium', 'premium'];
+        $currentIndex = array_search($this->plan, $planHierarchy);
+        
+        if ($currentIndex === false || $currentIndex <= 0) {
+            return null;
+        }
+        
+        return $planHierarchy[$currentIndex - 1];
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }

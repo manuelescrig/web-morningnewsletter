@@ -63,6 +63,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                         break;
                         
+                    case 'promote_plan':
+                        $nextPlan = $targetUser->getNextPlan();
+                        if (!$nextPlan) {
+                            $error = 'User is already on the highest plan.';
+                        } else {
+                            $success = $targetUser->promotePlan();
+                            if ($success) {
+                                $success = "Successfully promoted {$targetUser->getEmail()} from {$targetUser->getPreviousPlan()} to {$targetUser->getPlan()}.";
+                            } else {
+                                $error = 'Failed to promote user plan.';
+                            }
+                        }
+                        break;
+                        
+                    case 'demote_plan':
+                        $previousPlan = $targetUser->getPreviousPlan();
+                        if (!$previousPlan) {
+                            $error = 'User is already on the lowest plan.';
+                        } else {
+                            $success = $targetUser->demotePlan();
+                            if ($success) {
+                                $success = "Successfully demoted {$targetUser->getEmail()} from {$targetUser->getNextPlan()} to {$targetUser->getPlan()}.";
+                            } else {
+                                $error = 'Failed to demote user plan.';
+                            }
+                        }
+                        break;
+                        
+                    case 'change_plan':
+                        $newPlan = $_POST['new_plan'] ?? '';
+                        $validPlans = ['free', 'medium', 'premium'];
+                        if (!in_array($newPlan, $validPlans)) {
+                            $error = 'Invalid plan selected.';
+                        } elseif ($newPlan === $targetUser->getPlan()) {
+                            $error = 'User is already on this plan.';
+                        } else {
+                            $oldPlan = $targetUser->getPlan();
+                            $success = $targetUser->changePlan($newPlan);
+                            if ($success) {
+                                $success = "Successfully changed {$targetUser->getEmail()}'s plan from {$oldPlan} to {$newPlan}.";
+                            } else {
+                                $error = 'Failed to change user plan.';
+                            }
+                        }
+                        break;
+                        
                     case 'delete':
                         if ($targetUser->getId() === $user->getId()) {
                             $error = 'You cannot delete yourself.';
@@ -199,6 +245,50 @@ $csrfToken = $auth->generateCSRFToken();
                 </div>
             </div>
         </div>
+        
+        <!-- Plan Distribution -->
+        <div class="mb-6 bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Plan Distribution</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <?php
+                $planCounts = [
+                    'free' => count(array_filter($users, function($u) { return $u['plan'] === 'free'; })),
+                    'medium' => count(array_filter($users, function($u) { return $u['plan'] === 'medium'; })),
+                    'premium' => count(array_filter($users, function($u) { return $u['plan'] === 'premium'; }))
+                ];
+                $totalUsers = count($users);
+                ?>
+                
+                <?php foreach ($planCounts as $plan => $count): ?>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm font-medium text-gray-500"><?php echo ucfirst($plan); ?> Plan</div>
+                            <div class="text-2xl font-bold text-gray-900"><?php echo $count; ?></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold 
+                                <?php 
+                                switch($plan) {
+                                    case 'premium': echo 'text-purple-600'; break;
+                                    case 'medium': echo 'text-blue-600'; break;
+                                    default: echo 'text-gray-600';
+                                }
+                                ?>">
+                                <?php echo $totalUsers > 0 ? round(($count / $totalUsers) * 100) : 0; ?>%
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                <?php 
+                                $limits = ['free' => '1 source', 'medium' => '5 sources', 'premium' => 'Unlimited'];
+                                echo $limits[$plan];
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
@@ -271,7 +361,18 @@ $csrfToken = $auth->generateCSRFToken();
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <?php echo $userData['source_count']; ?>
+                                        <?php 
+                                        $limits = ['free' => 1, 'medium' => 5, 'premium' => PHP_INT_MAX];
+                                        $limit = $limits[$userData['plan']] ?? 1;
+                                        $limitText = $limit === PHP_INT_MAX ? '∞' : $limit;
+                                        $isAtLimit = $userData['source_count'] >= $limit && $limit !== PHP_INT_MAX;
+                                        ?>
+                                        <span class="<?php echo $isAtLimit ? 'text-red-600 font-semibold' : 'text-gray-900'; ?>">
+                                            <?php echo $userData['source_count']; ?>/<?php echo $limitText; ?>
+                                        </span>
+                                        <?php if ($isAtLimit): ?>
+                                            <i class="fas fa-exclamation-triangle text-red-500 ml-1" title="Source limit reached"></i>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $userData['email_verified'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
@@ -299,8 +400,62 @@ $csrfToken = $auth->generateCSRFToken();
                                                 <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleDropdown(<?php echo $userData['id']; ?>)">
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                                                <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                                                     <div class="py-1">
+                                                        <!-- Plan Management Section -->
+                                                        <?php 
+                                                        $currentPlan = $userData['plan'];
+                                                        $planHierarchy = ['free', 'medium', 'premium'];
+                                                        $currentIndex = array_search($currentPlan, $planHierarchy);
+                                                        ?>
+                                                        
+                                                        <?php if ($currentIndex < count($planHierarchy) - 1): ?>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Promote <?php echo htmlspecialchars($userData['email']); ?> to <?php echo $planHierarchy[$currentIndex + 1]; ?> plan?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="promote_plan">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center">
+                                                                    <i class="fas fa-arrow-up mr-2"></i>
+                                                                    Promote to <?php echo ucfirst($planHierarchy[$currentIndex + 1]); ?>
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                        
+                                                        <?php if ($currentIndex > 0): ?>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Demote <?php echo htmlspecialchars($userData['email']); ?> to <?php echo $planHierarchy[$currentIndex - 1]; ?> plan?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="demote_plan">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-orange-700 hover:bg-orange-50 flex items-center">
+                                                                    <i class="fas fa-arrow-down mr-2"></i>
+                                                                    Demote to <?php echo ucfirst($planHierarchy[$currentIndex - 1]); ?>
+                                                                </button>
+                                                            </form>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Quick Plan Selector -->
+                                                        <div class="px-4 py-2">
+                                                            <label class="block text-xs font-medium text-gray-700 mb-1">Quick Plan Change:</label>
+                                                            <form method="POST" class="flex items-center space-x-1" onsubmit="return confirm('Change <?php echo htmlspecialchars($userData['email']); ?>\'s plan?');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="change_plan">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <select name="new_plan" class="text-xs border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 flex-1" onchange="this.form.submit()">
+                                                                    <option value="">Select...</option>
+                                                                    <?php foreach ($planHierarchy as $plan): ?>
+                                                                        <?php if ($plan !== $currentPlan): ?>
+                                                                            <option value="<?php echo $plan; ?>"><?php echo ucfirst($plan); ?></option>
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </form>
+                                                        </div>
+                                                        
+                                                        <?php if (($currentIndex < count($planHierarchy) - 1) || ($currentIndex > 0)): ?>
+                                                            <div class="border-t border-gray-100"></div>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Admin Management Section -->
                                                         <?php if ($userData['is_admin']): ?>
                                                             <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to remove admin access from <?php echo htmlspecialchars($userData['email']); ?>?');">
                                                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
