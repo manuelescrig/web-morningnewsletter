@@ -395,11 +395,10 @@ $csrfToken = $auth->generateCSRFToken();
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <?php if ($userData['id'] != $user->getId()): ?>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleDropdown(<?php echo $userData['id']; ?>)">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleDropdown(<?php echo $userData['id']; ?>)">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                                                     <div class="py-1">
                                                         <!-- Plan Management Section -->
@@ -490,22 +489,31 @@ $csrfToken = $auth->generateCSRFToken();
                                                             </form>
                                                         <?php endif; ?>
                                                         
-                                                        <div class="border-t border-gray-100"></div>
-                                                        <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to permanently DELETE <?php echo htmlspecialchars($userData['email']); ?>? This will remove all their data including sources and email logs. This action cannot be undone!');">
-                                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                            <input type="hidden" name="action" value="delete">
-                                                            <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 flex items-center">
-                                                                <i class="fas fa-trash mr-2"></i>
-                                                                Delete User
-                                                            </button>
-                                                        </form>
+                                                        <?php if ($userData['id'] != $user->getId()): ?>
+                                                            <div class="border-t border-gray-100"></div>
+                                                            <form method="POST" class="block" onsubmit="return confirm('Are you sure you want to permanently DELETE <?php echo htmlspecialchars($userData['email']); ?>? This will remove all their data including sources and email logs. This action cannot be undone!');">
+                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                                <input type="hidden" name="action" value="delete">
+                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 flex items-center">
+                                                                    <i class="fas fa-trash mr-2"></i>
+                                                                    Delete User
+                                                                </button>
+                                                            </form>
+                                                        <?php else: ?>
+                                                            <div class="border-t border-gray-100"></div>
+                                                            <div class="px-4 py-2 text-xs text-blue-600 bg-blue-50">
+                                                                <i class="fas fa-info-circle mr-1"></i>
+                                                                This is your account
+                                                            </div>
+                                                            <a href="/dashboard/settings.php" class="w-full text-left px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 flex items-center">
+                                                                <i class="fas fa-cog mr-2"></i>
+                                                                Go to Settings
+                                                            </a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        <?php else: ?>
-                                            <span class="text-gray-400 text-sm">Current User</span>
-                                        <?php endif; ?>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>

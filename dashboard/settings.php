@@ -103,7 +103,50 @@ $csrfToken = $auth->generateCSRFToken();
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Current Plan</label>
-                            <p class="mt-1 text-sm text-gray-900 capitalize"><?php echo htmlspecialchars($subscriptionInfo['plan']); ?></p>
+                            <div class="mt-1 flex items-center space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                    <?php 
+                                    switch($user->getPlan()) {
+                                        case 'premium': echo 'bg-purple-100 text-purple-800'; break;
+                                        case 'medium': echo 'bg-blue-100 text-blue-800'; break;
+                                        default: echo 'bg-gray-100 text-gray-800';
+                                    }
+                                    ?>">
+                                    <?php echo ucfirst($user->getPlan()); ?>
+                                </span>
+                                
+                                <?php if ($user->isAdmin()): ?>
+                                    <div class="relative inline-block text-left">
+                                        <button type="button" class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="togglePlanDropdown()">
+                                            <i class="fas fa-cog mr-1"></i>
+                                            Change
+                                        </button>
+                                        <div id="plan-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                                            <div class="py-1">
+                                                <?php 
+                                                $allPlans = ['free', 'medium', 'premium'];
+                                                foreach ($allPlans as $plan): 
+                                                    if ($plan !== $user->getPlan()):
+                                                ?>
+                                                    <form method="POST" class="block">
+                                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                                        <input type="hidden" name="action" value="update_plan">
+                                                        <input type="hidden" name="plan" value="<?php echo $plan; ?>">
+                                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                                                                onclick="return confirm('Change your plan to <?php echo ucfirst($plan); ?>?')">
+                                                            <i class="fas fa-arrow-right mr-2"></i>
+                                                            Switch to <?php echo ucfirst($plan); ?>
+                                                        </button>
+                                                    </form>
+                                                <?php 
+                                                    endif;
+                                                endforeach; 
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                             <p class="mt-1 text-xs text-gray-500">
                                 <?php if ($subscriptionInfo['subscription_status']): ?>
                                     <i class="fas fa-circle text-green-400 mr-1"></i>Active subscription
@@ -117,6 +160,9 @@ $csrfToken = $auth->generateCSRFToken();
                                     $sourceLimit = $user->getSourceLimit();
                                     echo $sourceLimit === PHP_INT_MAX ? 'Unlimited sources' : "$sourceLimit source" . ($sourceLimit !== 1 ? 's' : '') . ' allowed';
                                     ?>
+                                    <?php if ($user->isAdmin()): ?>
+                                        <span class="text-blue-600 ml-2">(Admin: Can change plan freely)</span>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </p>
                         </div>
@@ -307,6 +353,80 @@ $csrfToken = $auth->generateCSRFToken();
                 </div>
             </div>
 
+            <?php if ($user->isAdmin()): ?>
+            <!-- Admin Plan Management -->
+            <div class="bg-white shadow rounded-lg border-l-4 border-blue-500">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-blue-900 mb-4">
+                        <i class="fas fa-crown mr-2"></i>
+                        Admin Plan Management
+                    </h3>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            <div>
+                                <h4 class="text-sm font-medium text-blue-900">Admin Privileges</h4>
+                                <p class="text-blue-700 text-sm">As an admin, you can change your plan freely without payment processing. This is for testing and administration purposes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <?php 
+                        $planDetails = [
+                            'free' => ['name' => 'Free', 'sources' => '1 source', 'price' => '$0/month', 'color' => 'gray'],
+                            'medium' => ['name' => 'Medium', 'sources' => '5 sources', 'price' => '$5/month', 'color' => 'blue'],
+                            'premium' => ['name' => 'Premium', 'sources' => 'Unlimited', 'price' => '$10/month', 'color' => 'purple']
+                        ];
+                        
+                        foreach ($planDetails as $planKey => $details):
+                            $isCurrent = $user->getPlan() === $planKey;
+                        ?>
+                        <div class="border rounded-lg p-4 <?php echo $isCurrent ? 'border-' . $details['color'] . '-500 bg-' . $details['color'] . '-50' : 'border-gray-200'; ?>">
+                            <div class="text-center">
+                                <h4 class="font-medium text-gray-900 mb-1">
+                                    <?php echo $details['name']; ?>
+                                    <?php if ($isCurrent): ?>
+                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-<?php echo $details['color']; ?>-100 text-<?php echo $details['color']; ?>-800">
+                                            Current
+                                        </span>
+                                    <?php endif; ?>
+                                </h4>
+                                <p class="text-sm text-gray-600 mb-2"><?php echo $details['sources']; ?></p>
+                                <p class="text-lg font-bold text-gray-900 mb-3"><?php echo $details['price']; ?></p>
+                                
+                                <?php if (!$isCurrent): ?>
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                        <input type="hidden" name="action" value="update_plan">
+                                        <input type="hidden" name="plan" value="<?php echo $planKey; ?>">
+                                        <button type="submit" 
+                                                class="w-full bg-<?php echo $details['color']; ?>-600 hover:bg-<?php echo $details['color']; ?>-700 text-white font-medium py-2 px-4 rounded text-sm"
+                                                onclick="return confirm('Switch to <?php echo $details['name']; ?> plan?')">
+                                            Switch to <?php echo $details['name']; ?>
+                                        </button>
+                                    </form>
+                                <?php else: ?>
+                                    <button disabled class="w-full bg-gray-300 text-gray-500 font-medium py-2 px-4 rounded text-sm cursor-not-allowed">
+                                        Current Plan
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="/dashboard/users.php" class="inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
+                            <i class="fas fa-users mr-2"></i>
+                            Manage All Users
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
             <!-- Danger Zone -->
             <div class="bg-white shadow rounded-lg border-l-4 border-red-500">
                 <div class="px-4 py-5 sm:p-6">
@@ -430,6 +550,21 @@ $csrfToken = $auth->generateCSRFToken();
                 alert('Error: ' + error.message);
             }
         }
+
+        function togglePlanDropdown() {
+            const dropdown = document.getElementById('plan-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('plan-dropdown');
+            const button = event.target.closest('[onclick="togglePlanDropdown()"]');
+            
+            if (!button && !dropdown?.contains(event.target)) {
+                dropdown?.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
