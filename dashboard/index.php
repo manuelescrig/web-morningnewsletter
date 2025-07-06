@@ -611,7 +611,8 @@ $csrfToken = $auth->generateCSRFToken();
                 loadingDiv.classList.remove('hidden');
                 resultsDiv.classList.add('hidden');
                 
-                const response = await fetch(`/api/geocoding.php?q=${encodeURIComponent(query)}`);
+                const apiUrl = `/api/geocoding/?q=${encodeURIComponent(query)}`;
+                const response = await fetch(apiUrl);
                 const data = await response.json();
                 
                 loadingDiv.classList.add('hidden');
