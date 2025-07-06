@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Path Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>API Path Test</h1>
+    <p>Testing different API paths to find which one works on your server...</p>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testPath(path, description) {
+            const resultsDiv = document.getElementById('results');
+            
+            try {
+                console.log(`Testing: ${path}`);
+                const response = await fetch(path);
+                const text = await response.text();
+                
+                let result = `<div class="test ${response.ok ? 'success' : 'error'}">`;
+                result += `<h3>${description}</h3>`;
+                result += `<p><strong>Path:</strong> ${path}</p>`;
+                result += `<p><strong>Status:</strong> ${response.status}</p>`;
+                result += `<p><strong>Response:</strong> ${text.substring(0, 200)}${text.length > 200 ? '...' : ''}</p>`;
+                result += '</div>';
+                
+                resultsDiv.innerHTML += result;
+                
+                if (response.ok) {
+                    try {
+                        const data = JSON.parse(text);
+                        if (data.success) {
+                            console.log('✅ Working path found:', path);
+                        }
+                    } catch (e) {
+                        console.log('❌ Response is not JSON:', path);
+                    }
+                }
+                
+            } catch (error) {
+                const result = `<div class="test error">
+                    <h3>${description}</h3>
+                    <p><strong>Path:</strong> ${path}</p>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                </div>`;
+                resultsDiv.innerHTML += result;
+            }
+        }
+        
+        async function runTests() {
+            const tests = [
+                { path: '/api/geocoding.php?q=London', desc: 'Direct PHP file' },
+                { path: '/api/geocoding-wrapper.php?q=London', desc: 'Wrapper file' },
+                { path: '/api/geocoding/?q=London', desc: 'URL rewrite (clean)' },
+                { path: '/api/geocoding.php?q=London&test=1', desc: 'Direct with extra params' }
+            ];
+            
+            for (const test of tests) {
+                await testPath(test.path, test.desc);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between tests
+            }
+        }
+        
+        // Run tests on page load
+        window.onload = runTests;
+    </script>
+</body>
+</html> 

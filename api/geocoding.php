@@ -1,4 +1,17 @@
 <?php
+// Handle both direct access and URL rewriting
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+$isDirectAccess = strpos($requestUri, 'geocoding.php') !== false;
+
+// If this is a direct access, set the query parameter
+if ($isDirectAccess && !isset($_GET['q'])) {
+    // Extract query from URL if present
+    $path = parse_url($requestUri, PHP_URL_PATH);
+    if (preg_match('/geocoding\.php\?q=([^&]+)/', $requestUri, $matches)) {
+        $_GET['q'] = urldecode($matches[1]);
+    }
+}
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
