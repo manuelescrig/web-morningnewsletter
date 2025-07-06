@@ -34,9 +34,11 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
                         Dashboard
                     </a>
+                    <?php if ($user->isAdmin()): ?>
                     <a href="/dashboard/sources.php" class="<?php echo getNavClass('sources', $currentPage); ?>">
                         Sources
                     </a>
+                    <?php endif; ?>
                     <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
                         Schedule
                     </a>

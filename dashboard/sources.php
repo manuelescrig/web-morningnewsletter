@@ -14,6 +14,12 @@ $auth = Auth::getInstance();
 $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
+
+// Restrict access to admin users only
+if (!$user->isAdmin()) {
+    header('Location: /dashboard/');
+    exit();
+}
 $sources = $user->getSources();
 $error = '';
 $success = '';
