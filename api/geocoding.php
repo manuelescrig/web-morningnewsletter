@@ -21,8 +21,17 @@ if (empty($query) || strlen(trim($query)) < 2) {
 function getCachePath($query) {
     $cacheDir = __DIR__ . '/../cache';
     if (!is_dir($cacheDir)) {
-        mkdir($cacheDir, 0755, true);
+        if (!mkdir($cacheDir, 0755, true)) {
+            error_log('Failed to create cache directory: ' . $cacheDir);
+            return null;
+        }
     }
+    
+    if (!is_writable($cacheDir)) {
+        error_log('Cache directory not writable: ' . $cacheDir);
+        return null;
+    }
+    
     return $cacheDir . '/geocoding_' . md5(strtolower(trim($query))) . '.json';
 }
 
@@ -39,17 +48,28 @@ function getCachedResult($query) {
 
 function cacheResult($query, $results) {
     $cacheFile = getCachePath($query);
+    if ($cacheFile === null) {
+        error_log('Cannot cache result - cache path is null');
+        return;
+    }
+    
     $data = [
         'timestamp' => time(),
         'results' => $results
     ];
-    file_put_contents($cacheFile, json_encode($data));
+    
+    if (file_put_contents($cacheFile, json_encode($data)) === false) {
+        error_log('Failed to write cache file: ' . $cacheFile);
+    }
 }
 
 try {
+    error_log('Geocoding API called with query: ' . $query);
+    
     // Check cache first
     $cachedResults = getCachedResult($query);
     if ($cachedResults !== null) {
+        error_log('Returning cached results for: ' . $query);
         echo json_encode([
             'success' => true,
             'results' => $cachedResults,

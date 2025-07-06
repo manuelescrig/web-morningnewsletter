@@ -6,6 +6,7 @@ RewriteRule ^api/stripe-webhook/?$ api/stripe-webhook.php [L]
 RewriteRule ^api/cancel-subscription/?$ api/cancel-subscription.php [L]
 RewriteRule ^api/billing-portal/?$ api/billing-portal.php [L]
 RewriteRule ^api/geocoding/?$ api/geocoding.php [L]
+RewriteRule ^api/geocoding\.php$ api/geocoding.php [L]
 
 # Clean URLs for main pages
 RewriteRule ^terms/?$ legal/terms.php [L]

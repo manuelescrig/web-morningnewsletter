@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocoding API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Geocoding API Test</h1>
+    
+    <div>
+        <label>Search for location:</label>
+        <input type="text" id="searchInput" value="London" placeholder="Enter city name">
+        <button onclick="testAPI()">Test API</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testAPI() {
+            const query = document.getElementById('searchInput').value;
+            const resultsDiv = document.getElementById('results');
+            
+            resultsDiv.innerHTML = '<p>Testing...</p>';
+            
+            // Test both API paths
+            const paths = [
+                '/api/geocoding/?q=' + encodeURIComponent(query),
+                '/api/geocoding.php?q=' + encodeURIComponent(query)
+            ];
+            
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                console.log('Testing path:', path);
+                
+                try {
+                    const response = await fetch(path);
+                    console.log('Response status:', response.status);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Response data:', data);
+                        
+                        if (data.success) {
+                            resultsDiv.innerHTML = `
+                                <div class="result success">
+                                    <h3>✅ Success! (Path: ${path})</h3>
+                                    <p>Found ${data.results.length} results:</p>
+                                    <ul>
+                                        ${data.results.map(r => `<li>${r.name} (${r.latitude}, ${r.longitude})</li>`).join('')}
+                                    </ul>
+                                </div>
+                            `;
+                            return;
+                        } else {
+                            resultsDiv.innerHTML = `
+                                <div class="result error">
+                                    <h3>❌ API Error (Path: ${path})</h3>
+                                    <p>${data.error || 'Unknown error'}</p>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        console.log('HTTP error:', response.status);
+                        if (i === paths.length - 1) {
+                            resultsDiv.innerHTML = `
+                                <div class="result error">
+                                    <h3>❌ HTTP Error (Path: ${path})</h3>
+                                    <p>Status: ${response.status}</p>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    if (i === paths.length - 1) {
+                        resultsDiv.innerHTML = `
+                            <div class="result error">
+                                <h3>❌ Network Error (Path: ${path})</h3>
+                                <p>${error.message}</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+        }
+        
+        // Test on page load
+        window.onload = function() {
+            testAPI();
+        };
+    </script>
+</body>
+</html> 

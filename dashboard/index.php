@@ -611,9 +611,24 @@ $csrfToken = $auth->generateCSRFToken();
                 loadingDiv.classList.remove('hidden');
                 resultsDiv.classList.add('hidden');
                 
-                const apiUrl = `/api/geocoding/?q=${encodeURIComponent(query)}`;
-                const response = await fetch(apiUrl);
+                // Try both API paths in case one doesn't work
+                let apiUrl = `/api/geocoding/?q=${encodeURIComponent(query)}`;
+                console.log('Making request to:', apiUrl);
+                
+                let response = await fetch(apiUrl);
+                
+                // If the first path fails, try the direct path
+                if (!response.ok) {
+                    console.log('First path failed, trying direct path...');
+                    apiUrl = `/api/geocoding.php?q=${encodeURIComponent(query)}`;
+                    console.log('Making request to:', apiUrl);
+                    response = await fetch(apiUrl);
+                }
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 loadingDiv.classList.add('hidden');
                 
