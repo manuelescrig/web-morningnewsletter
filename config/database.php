@@ -101,6 +101,18 @@ class Database {
                 FOREIGN KEY (subscription_id) REFERENCES subscriptions (id) ON DELETE SET NULL
             )",
             
+            "CREATE TABLE IF NOT EXISTS source_configs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type TEXT UNIQUE NOT NULL,
+                name TEXT NOT NULL,
+                description TEXT,
+                is_enabled INTEGER DEFAULT 1,
+                api_required INTEGER DEFAULT 0,
+                default_config TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )",
+            
             "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
             "CREATE INDEX IF NOT EXISTS idx_sources_user_id ON sources(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_user_id ON email_logs(user_id)",
@@ -108,7 +120,8 @@ class Database {
             "CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_subscriptions_stripe_id ON subscriptions(stripe_subscription_id)",
             "CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id)",
-            "CREATE INDEX IF NOT EXISTS idx_payments_stripe_id ON payments(stripe_payment_intent_id)"
+            "CREATE INDEX IF NOT EXISTS idx_payments_stripe_id ON payments(stripe_payment_intent_id)",
+            "CREATE INDEX IF NOT EXISTS idx_source_configs_type ON source_configs(type)"
         ];
         
         foreach ($queries as $query) {
@@ -157,6 +170,9 @@ class Database {
             
             // Migrate plan names from old system to new system
             $this->migratePlanNames();
+            
+            // Populate source configs table with default data
+            $this->populateSourceConfigs();
             
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
@@ -217,6 +233,90 @@ class Database {
                 $this->pdo->rollBack();
             }
             error_log("Database migration error during plan name migration: " . $e->getMessage());
+        }
+    }
+    
+    private function populateSourceConfigs() {
+        try {
+            // Check if source_configs table is empty
+            $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM source_configs");
+            $result = $stmt->fetch();
+            
+            if ($result['count'] == 0) {
+                error_log("Database migration: Populating source_configs table with default data");
+                
+                $defaultSources = [
+                    [
+                        'type' => 'bitcoin',
+                        'name' => 'Bitcoin Price',
+                        'description' => 'Track Bitcoin price and 24-hour changes',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'sp500',
+                        'name' => 'S&P 500 Index',
+                        'description' => 'Monitor S&P 500 index performance and trends',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'weather',
+                        'name' => 'Weather',
+                        'description' => 'Weather forecast using Norwegian Meteorological Institute',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode(['city' => 'New York'])
+                    ],
+                    [
+                        'type' => 'news',
+                        'name' => 'News Headlines',
+                        'description' => 'Top headlines from trusted news sources',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'appstore',
+                        'name' => 'App Store Sales',
+                        'description' => 'App Store Connect revenue and sales tracking',
+                        'is_enabled' => 1,
+                        'api_required' => 1,
+                        'default_config' => json_encode(['api_key' => '', 'app_id' => ''])
+                    ],
+                    [
+                        'type' => 'stripe',
+                        'name' => 'Stripe Revenue',
+                        'description' => 'Track your Stripe payments and revenue',
+                        'is_enabled' => 1,
+                        'api_required' => 1,
+                        'default_config' => json_encode(['api_key' => ''])
+                    ]
+                ];
+                
+                $stmt = $this->pdo->prepare("
+                    INSERT INTO source_configs (type, name, description, is_enabled, api_required, default_config) 
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+                
+                foreach ($defaultSources as $source) {
+                    $stmt->execute([
+                        $source['type'],
+                        $source['name'],
+                        $source['description'],
+                        $source['is_enabled'],
+                        $source['api_required'],
+                        $source['default_config']
+                    ]);
+                }
+                
+                error_log("Database migration: Successfully populated source_configs table with " . count($defaultSources) . " source types");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database migration error during source configs population: " . $e->getMessage());
         }
     }
 }

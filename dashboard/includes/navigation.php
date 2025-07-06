@@ -34,11 +34,6 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
                         Dashboard
                     </a>
-                    <?php if ($user->isAdmin()): ?>
-                    <a href="/dashboard/sources.php" class="<?php echo getNavClass('sources', $currentPage); ?>">
-                        Sources
-                    </a>
-                    <?php endif; ?>
                     <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
                         Schedule
                     </a>
@@ -108,6 +103,10 @@ function getNavClass($page, $currentPage) {
                         <a href="/dashboard/users.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
                             <i class="fas fa-users mr-2 text-purple-500"></i>
                             Users
+                        </a>
+                        <a href="/dashboard/sources.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-plug mr-2 text-purple-500"></i>
+                            Source Config
                         </a>
                         <a href="/dashboard/cron_status.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
                             <i class="fas fa-server mr-2 text-purple-500"></i>

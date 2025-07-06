@@ -89,15 +89,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Available source modules
-$availableModules = [
-    'bitcoin' => new BitcoinModule(),
-    'sp500' => new SP500Module(),
-    'weather' => new WeatherModule(),
-    'news' => new NewsModule(),
-    'appstore' => new AppStoreModule(),
-    'stripe' => new StripeModule()
-];
+// Get available source modules from database (only enabled ones)
+$db = Database::getInstance()->getConnection();
+$stmt = $db->query("SELECT * FROM source_configs WHERE is_enabled = 1 ORDER BY type");
+$enabledSources = $stmt->fetchAll();
+
+$availableModules = [];
+foreach ($enabledSources as $sourceConfig) {
+    $moduleClass = ucfirst($sourceConfig['type']) . 'Module';
+    if (class_exists($moduleClass)) {
+        $availableModules[$sourceConfig['type']] = new $moduleClass();
+    }
+}
 
 $csrfToken = $auth->generateCSRFToken();
 ?>
@@ -308,7 +311,13 @@ $csrfToken = $auth->generateCSRFToken();
                              data-source-type="<?php echo $type; ?>" 
                              <?php echo $canAdd ? 'draggable="true"' : ''; ?>>
                             <div class="flex items-center justify-between mb-2">
-                                <h4 class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($module->getTitle()); ?></h4>
+                                <h4 class="text-sm font-medium text-gray-900"><?php 
+                                $sourceConfig = array_filter($enabledSources, function($s) use ($type) {
+                                    return $s['type'] === $type;
+                                });
+                                $sourceConfig = reset($sourceConfig);
+                                echo htmlspecialchars($sourceConfig['name'] ?? $module->getTitle());
+                                ?></h4>
                                 <?php if ($sourceCount > 0): ?>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                         <i class="fas fa-layers mr-1"></i>
@@ -325,15 +334,11 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <p class="text-xs text-gray-500 mb-3">
                                 <?php 
-                                $descriptions = [
-                                    'bitcoin' => 'Track Bitcoin price and 24-hour changes',
-                                    'sp500' => 'Monitor S&P 500 index performance and trends',
-                                    'weather' => 'Weather forecast using Norwegian Meteorological Institute (no API key required)',
-                                    'news' => 'Top headlines from trusted news sources',
-                                    'appstore' => 'App Store Connect revenue and sales tracking',
-                                    'stripe' => 'Track your Stripe payments and revenue'
-                                ];
-                                echo htmlspecialchars($descriptions[$type] ?? 'Data source module');
+                                $sourceConfig = array_filter($enabledSources, function($s) use ($type) {
+                                    return $s['type'] === $type;
+                                });
+                                $sourceConfig = reset($sourceConfig);
+                                echo htmlspecialchars($sourceConfig['description'] ?? 'Data source module');
                                 ?>
                             </p>
                             <?php if ($canAdd): ?>
@@ -559,15 +564,9 @@ $csrfToken = $auth->generateCSRFToken();
         }
 
         function getSourceName(sourceType) {
-            const names = {
-                'bitcoin': 'Bitcoin Price',
-                'sp500': 'S&P 500 Index',
-                'weather': 'Weather',
-                'news': 'News Headlines',
-                'appstore': 'App Store Sales',
-                'stripe': 'Stripe Revenue'
-            };
-            return names[sourceType] || sourceType;
+            const sourceConfigs = <?php echo json_encode($enabledSources); ?>;
+            const sourceConfig = sourceConfigs.find(s => s.type === sourceType);
+            return sourceConfig ? sourceConfig.name : sourceType;
         }
 
         function removeSource(sourceId) {
