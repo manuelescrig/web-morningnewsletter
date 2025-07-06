@@ -183,32 +183,29 @@ class WeatherModule extends BaseSourceModule {
             [
                 'name' => 'location_search',
                 'type' => 'location_search',
-                'label' => 'Search Location',
-                'required' => false,
-                'description' => 'Search for your city or location'
+                'label' => 'Location',
+                'required' => true,
+                'description' => 'Search and select your city or location'
             ],
             [
                 'name' => 'location',
-                'type' => 'text',
+                'type' => 'hidden',
                 'label' => 'Location Name',
                 'required' => true,
-                'description' => 'Display name for your location',
                 'default' => 'New York'
             ],
             [
                 'name' => 'latitude',
-                'type' => 'number',
+                'type' => 'hidden',
                 'label' => 'Latitude',
                 'required' => true,
-                'description' => 'Latitude coordinate',
                 'default' => '40.7128'
             ],
             [
                 'name' => 'longitude',
-                'type' => 'number',
+                'type' => 'hidden',
                 'label' => 'Longitude',
                 'required' => true,
-                'description' => 'Longitude coordinate',
                 'default' => '-74.0060'
             ]
         ];

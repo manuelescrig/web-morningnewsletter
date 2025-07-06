@@ -472,8 +472,11 @@ $csrfToken = $auth->generateCSRFToken();
             if (field.type === 'location_search') {
                 fieldHtml += `
                     <div class="relative">
-                        <input type="text" id="location_search_input" placeholder="Type a city name..."
-                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" id="location_search_input" placeholder="Type a city name (e.g., New York, London, Tokyo)..."
+                               class="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
                         <div id="location_search_results" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"></div>
                         <div id="location_search_loading" class="hidden absolute right-3 top-2">
                             <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
@@ -492,6 +495,10 @@ $csrfToken = $auth->generateCSRFToken();
                 fieldHtml += `<textarea id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
                                 rows="3" placeholder="${field.description || ''}"
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${field.default || ''}</textarea>`;
+            } else if (field.type === 'hidden') {
+                fieldHtml += `<input type="hidden" id="config_${field.name}" name="config_${field.name}" value="${field.default || ''}">`;
+                // Don't show label or description for hidden fields
+                fieldHtml = `<input type="hidden" id="config_${field.name}" name="config_${field.name}" value="${field.default || ''}">`;
             } else {
                 const inputType = field.type === 'password' ? 'password' : (field.type === 'number' ? 'number' : 'text');
                 fieldHtml += `<input type="${inputType}" id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
@@ -500,7 +507,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
             }
 
-            if (field.description) {
+            if (field.description && field.type !== 'hidden') {
                 fieldHtml += `<p class="mt-1 text-xs text-gray-500">${field.description}</p>`;
             }
 
@@ -632,10 +639,9 @@ $csrfToken = $auth->generateCSRFToken();
                 html += `
                     <div class="location-result p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
                          onclick="selectLocation('${location.name.replace(/'/g, "\\'")}', ${location.latitude}, ${location.longitude})">
-                        <div class="font-medium text-gray-900">${location.name}</div>
-                        <div class="text-xs text-gray-500 mt-1">
-                            <i class="fas fa-map-marker-alt mr-1"></i>
-                            ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+                            <div class="font-medium text-gray-900">${location.name}</div>
                         </div>
                     </div>
                 `;

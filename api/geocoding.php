@@ -22,35 +22,46 @@ try {
     $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query([
         'q' => trim($query),
         'format' => 'json',
-        'limit' => 10,
+        'limit' => 8,
         'addressdetails' => 1,
         'extratags' => 0,
         'namedetails' => 0
     ]);
 
-    $headers = [
-        'User-Agent: MorningNewsletter/1.0 (github.com/your-repo/morning-newsletter)'
-    ];
-
-    // Make the request
-    $context = stream_context_create([
-        'http' => [
-            'method' => 'GET',
-            'header' => implode("\r\n", $headers),
-            'timeout' => 10
+    // Use cURL for better error handling
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 10,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_MAXREDIRS => 3,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (contact@morningnewsletter.com)',
+        CURLOPT_HTTPHEADER => [
+            'Accept: application/json'
         ]
     ]);
 
-    $response = file_get_contents($url, false, $context);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
     
     if ($response === false) {
-        throw new Exception('Failed to fetch geocoding data');
+        throw new Exception("cURL error: $error");
+    }
+    
+    if ($httpCode !== 200) {
+        throw new Exception("HTTP error: $httpCode");
     }
 
     $data = json_decode($response, true);
     
     if (!is_array($data)) {
-        throw new Exception('Invalid response from geocoding service');
+        throw new Exception('Invalid JSON response from geocoding service');
     }
 
     // Format the results
