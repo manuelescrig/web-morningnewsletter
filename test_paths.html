@@ -58,6 +58,7 @@
         
         async function runTests() {
             const tests = [
+                { path: '/api/test-simple.php?q=London', desc: 'Simple test API' },
                 { path: '/api/geocoding.php?q=London', desc: 'Direct PHP file' },
                 { path: '/api/geocoding-wrapper.php?q=London', desc: 'Wrapper file' },
                 { path: '/api/geocoding/?q=London', desc: 'URL rewrite (clean)' },
