@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($action) {
             case 'add_source':
                 $sourceType = $_POST['source_type'] ?? '';
+                $sourceName = $_POST['source_name'] ?? '';
                 $config = [];
                 
                 // Get configuration fields from POST data
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             
                             // Validate configuration
                             if ($module->validateConfig($config)) {
-                                if ($user->addSource($sourceType, $config)) {
+                                if ($user->addSource($sourceType, $config, $sourceName)) {
                                     $success = 'Source added successfully!';
                                     // Refresh sources
                                     $sources = $user->getSources();
@@ -237,17 +238,34 @@ $csrfToken = $auth->generateCSRFToken();
                                         <div class="flex items-center">
                                             <i class="fas fa-grip-vertical text-gray-400 mr-3"></i>
                                             <div>
-                                                <h5 class="text-sm font-medium text-gray-900 capitalize">
+                                                <h5 class="text-sm font-medium text-gray-900">
                                                     <?php 
-                                                    $moduleClass = ucfirst($source['type']) . 'Module';
-                                                    if (class_exists($moduleClass)) {
-                                                        $tempModule = new $moduleClass();
-                                                        echo htmlspecialchars($tempModule->getTitle());
+                                                    if (!empty($source['name'])) {
+                                                        echo htmlspecialchars($source['name']);
                                                     } else {
-                                                        echo htmlspecialchars($source['type']);
+                                                        $moduleClass = ucfirst($source['type']) . 'Module';
+                                                        if (class_exists($moduleClass)) {
+                                                            $tempModule = new $moduleClass();
+                                                            echo htmlspecialchars($tempModule->getTitle());
+                                                        } else {
+                                                            echo htmlspecialchars($source['type']);
+                                                        }
                                                     }
                                                     ?>
                                                 </h5>
+                                                <?php if (!empty($source['name'])): ?>
+                                                    <p class="text-xs text-gray-400">
+                                                        <?php 
+                                                        $moduleClass = ucfirst($source['type']) . 'Module';
+                                                        if (class_exists($moduleClass)) {
+                                                            $tempModule = new $moduleClass();
+                                                            echo htmlspecialchars($tempModule->getTitle());
+                                                        } else {
+                                                            echo htmlspecialchars($source['type']);
+                                                        }
+                                                        ?>
+                                                    </p>
+                                                <?php endif; ?>
                                                 <p class="text-xs text-gray-500">
                                                     Last updated: <?php echo $source['last_updated'] ? date('M j, g:i A', strtotime($source['last_updated'])) : 'Never'; ?>
                                                 </p>
@@ -275,24 +293,26 @@ $csrfToken = $auth->generateCSRFToken();
         <div class="bg-white shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Available Sources</h3>
-                <p class="text-sm text-gray-600 mb-6">Drag sources to your newsletter above to add them. You can use <?php echo $user->getSourceLimit() === PHP_INT_MAX ? 'unlimited' : $user->getSourceLimit(); ?> sources on your <?php echo ucfirst($user->getPlan()); ?> plan.</p>
+                <p class="text-sm text-gray-600 mb-6">Drag sources to your newsletter above to add them. You can add multiple instances of the same source type with different configurations. You can use <?php echo $user->getSourceLimit() === PHP_INT_MAX ? 'unlimited' : $user->getSourceLimit(); ?> sources on your <?php echo ucfirst($user->getPlan()); ?> plan.</p>
                 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <?php 
                     $userSourceTypes = array_column($sources, 'type');
                     foreach ($availableModules as $type => $module): 
-                        $isActive = in_array($type, $userSourceTypes);
-                        $canAdd = !$isActive && $user->canAddSource();
+                        $sourceCount = count(array_filter($sources, function($source) use ($type) {
+                            return $source['type'] === $type;
+                        }));
+                        $canAdd = $user->canAddSource();
                     ?>
-                        <div class="available-source border border-gray-200 rounded-lg p-4 <?php echo $canAdd ? 'cursor-move hover:border-blue-300 hover:shadow-sm transition-all duration-200' : ($isActive ? 'opacity-50' : 'opacity-30'); ?>" 
+                        <div class="available-source border border-gray-200 rounded-lg p-4 <?php echo $canAdd ? 'cursor-move hover:border-blue-300 hover:shadow-sm transition-all duration-200' : 'opacity-30'; ?>" 
                              data-source-type="<?php echo $type; ?>" 
                              <?php echo $canAdd ? 'draggable="true"' : ''; ?>>
                             <div class="flex items-center justify-between mb-2">
                                 <h4 class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($module->getTitle()); ?></h4>
-                                <?php if ($isActive): ?>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        <i class="fas fa-check mr-1"></i>
-                                        Added
+                                <?php if ($sourceCount > 0): ?>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        <i class="fas fa-layers mr-1"></i>
+                                        <?php echo $sourceCount; ?>
                                     </span>
                                 <?php elseif (!$user->canAddSource()): ?>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
@@ -320,10 +340,6 @@ $csrfToken = $auth->generateCSRFToken();
                                 <button onclick="showAddSourceModal('<?php echo $type; ?>')" class="w-full text-xs text-blue-600 hover:text-blue-500 border border-blue-200 rounded px-2 py-1 hover:bg-blue-50">
                                     <i class="fas fa-plus mr-1"></i>Configure & Add
                                 </button>
-                            <?php elseif ($isActive): ?>
-                                <div class="text-xs text-green-600 text-center">
-                                    <i class="fas fa-check mr-1"></i>Already in your newsletter
-                                </div>
                             <?php else: ?>
                                 <div class="text-xs text-gray-400 text-center">
                                     <i class="fas fa-crown mr-1"></i>Upgrade plan to add more sources
@@ -351,6 +367,16 @@ $csrfToken = $auth->generateCSRFToken();
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                     <input type="hidden" name="action" value="add_source">
                     <input type="hidden" name="source_type" id="modal-source-type">
+                    
+                    <div class="mb-4">
+                        <label for="source_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Source Name (Optional)
+                        </label>
+                        <input type="text" id="source_name" name="source_name" 
+                               placeholder="Give this source a custom name (e.g., 'New York Weather', 'Personal Stripe')"
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p class="mt-1 text-xs text-gray-500">Leave empty to use the default name</p>
+                    </div>
                     
                     <div id="modal-config-fields"></div>
                     
@@ -441,6 +467,12 @@ $csrfToken = $auth->generateCSRFToken();
             sourceTypeInput.value = sourceType;
             title.textContent = `Add ${getSourceName(sourceType)}`;
             
+            // Clear source name field
+            const sourceNameField = document.getElementById('source_name');
+            if (sourceNameField) {
+                sourceNameField.value = '';
+            }
+            
             // Clear and populate config fields
             configFields.innerHTML = '';
             
@@ -457,6 +489,12 @@ $csrfToken = $auth->generateCSRFToken();
         function closeAddSourceModal() {
             const modal = document.getElementById('add-source-modal');
             modal.classList.add('hidden');
+            
+            // Clear the source name field
+            const sourceNameField = document.getElementById('source_name');
+            if (sourceNameField) {
+                sourceNameField.value = '';
+            }
         }
 
         function createConfigField(field, container) {

@@ -243,19 +243,20 @@ class User {
         return $this->getSourceCount() < $this->getSourceLimit();
     }
     
-    public function addSource($type, $config = []) {
+    public function addSource($type, $config = [], $name = null) {
         if (!$this->canAddSource()) {
             throw new Exception("Source limit reached for current plan");
         }
         
         $stmt = $this->db->prepare("
-            INSERT INTO sources (user_id, type, config) 
-            VALUES (?, ?, ?)
+            INSERT INTO sources (user_id, type, name, config) 
+            VALUES (?, ?, ?, ?)
         ");
         
         return $stmt->execute([
             $this->id, 
             $type, 
+            $name,
             json_encode($config)
         ]);
     }

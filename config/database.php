@@ -53,6 +53,7 @@ class Database {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 type TEXT NOT NULL,
+                name TEXT,
                 config TEXT,
                 is_active INTEGER DEFAULT 1,
                 last_result TEXT,
@@ -135,6 +136,23 @@ class Database {
             if (!$hasNameColumn) {
                 $this->pdo->exec("ALTER TABLE users ADD COLUMN name TEXT");
                 error_log("Database migration: Added 'name' column to users table");
+            }
+            
+            // Check if name column exists in sources table, if not add it
+            $stmt = $this->pdo->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            
+            $hasSourceNameColumn = false;
+            foreach ($columns as $column) {
+                if ($column['name'] === 'name') {
+                    $hasSourceNameColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasSourceNameColumn) {
+                $this->pdo->exec("ALTER TABLE sources ADD COLUMN name TEXT");
+                error_log("Database migration: Added 'name' column to sources table");
             }
             
             // Migrate plan names from old system to new system

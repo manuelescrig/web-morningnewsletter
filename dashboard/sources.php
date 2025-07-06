@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($action) {
             case 'add_source':
                 $type = $_POST['source_type'] ?? '';
+                $name = $_POST['source_name'] ?? '';
                 $config = $_POST['config'] ?? [];
                 
                 if (!isset($availableModules[$type])) {
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $module = new $moduleClass($config);
                         
                         if ($module->validateConfig($config)) {
-                            $user->addSource($type, $config);
+                            $user->addSource($type, $config, $name);
                             $success = 'Source added successfully';
                             // Refresh sources
                             $sources = $user->getSources();
@@ -130,7 +131,7 @@ $csrfToken = $auth->generateCSRFToken();
         <div class="px-4 py-6 sm:px-0">
             <h1 class="text-3xl font-bold text-gray-900">Data Sources</h1>
             <p class="mt-2 text-gray-600">
-                Manage your newsletter data sources 
+                Manage your newsletter data sources. You can add multiple instances of the same source type with different configurations.
                 (<?php echo $user->getSourceCount(); ?>/<?php echo $user->getSourceLimit() === PHP_INT_MAX ? '∞' : $user->getSourceLimit(); ?> used)
             </p>
         </div>
@@ -167,9 +168,20 @@ $csrfToken = $auth->generateCSRFToken();
                                     <div class="border border-gray-200 rounded-lg p-4">
                                         <div class="flex items-center justify-between">
                                             <div class="flex-1">
-                                                <h4 class="text-lg font-medium text-gray-900 capitalize">
-                                                    <?php echo htmlspecialchars($availableModules[$source['type']]['name'] ?? $source['type']); ?>
+                                                <h4 class="text-lg font-medium text-gray-900">
+                                                    <?php 
+                                                    if (!empty($source['name'])) {
+                                                        echo htmlspecialchars($source['name']);
+                                                    } else {
+                                                        echo htmlspecialchars($availableModules[$source['type']]['name'] ?? $source['type']);
+                                                    }
+                                                    ?>
                                                 </h4>
+                                                <?php if (!empty($source['name'])): ?>
+                                                    <p class="text-sm text-gray-400 mt-1">
+                                                        <?php echo htmlspecialchars($availableModules[$source['type']]['name'] ?? $source['type']); ?>
+                                                    </p>
+                                                <?php endif; ?>
                                                 <p class="text-sm text-gray-500 mt-1">
                                                     <?php echo htmlspecialchars($availableModules[$source['type']]['description'] ?? ''); ?>
                                                 </p>
@@ -232,6 +244,14 @@ $csrfToken = $auth->generateCSRFToken();
                                             <option value="<?php echo $type; ?>"><?php echo htmlspecialchars($info['name']); ?></option>
                                         <?php endforeach; ?>
                                     </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="source_name" class="block text-sm font-medium text-gray-700 mb-2">Source Name (Optional)</label>
+                                    <input type="text" id="source_name" name="source_name" 
+                                           placeholder="Give this source a custom name (e.g., 'New York Weather', 'Personal Stripe')"
+                                           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <p class="mt-1 text-xs text-gray-500">Leave empty to use the default name</p>
                                 </div>
 
                                 <!-- Dynamic config fields will be inserted here -->
