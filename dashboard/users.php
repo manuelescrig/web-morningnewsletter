@@ -435,23 +435,6 @@ $csrfToken = $auth->generateCSRFToken();
                                                             </form>
                                                         <?php endif; ?>
                                                         
-                                                        <!-- Quick Plan Selector -->
-                                                        <div class="px-4 py-2">
-                                                            <label class="block text-xs font-medium text-gray-700 mb-1">Quick Plan Change:</label>
-                                                            <form method="POST" class="flex items-center space-x-1" onsubmit="return confirm('Change <?php echo htmlspecialchars($userData['email']); ?>\'s plan?');">
-                                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                                                <input type="hidden" name="action" value="change_plan">
-                                                                <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                                <select name="new_plan" class="text-xs border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 flex-1" onchange="this.form.submit()">
-                                                                    <option value="">Select...</option>
-                                                                    <?php foreach ($planHierarchy as $plan): ?>
-                                                                        <?php if ($plan !== $currentPlan): ?>
-                                                                            <option value="<?php echo $plan; ?>"><?php echo ucfirst($plan); ?></option>
-                                                                        <?php endif; ?>
-                                                                    <?php endforeach; ?>
-                                                                </select>
-                                                            </form>
-                                                        </div>
                                                         
                                                         <?php if (($currentIndex < count($planHierarchy) - 1) || ($currentIndex > 0)): ?>
                                                             <div class="border-t border-gray-100"></div>
