@@ -249,7 +249,7 @@ $csrfToken = $auth->generateCSRFToken();
         <!-- Plan Distribution -->
         <div class="mb-6 bg-white shadow rounded-lg p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Plan Distribution</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <?php
                 $planCounts = [
                     'free' => count(array_filter($users, function($u) { return $u['plan'] === 'free'; })),
