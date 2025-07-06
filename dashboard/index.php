@@ -611,19 +611,11 @@ $csrfToken = $auth->generateCSRFToken();
                 loadingDiv.classList.remove('hidden');
                 resultsDiv.classList.add('hidden');
                 
-                // Try multiple API paths since server configuration varies
-                let apiUrl = `/api/geocoding.php?q=${encodeURIComponent(query)}`;
+                // Use the geocoding API in the root directory where PHP works
+                const apiUrl = `/geocoding-api.php?q=${encodeURIComponent(query)}`;
                 console.log('Making request to:', apiUrl);
                 
-                let response = await fetch(apiUrl);
-                
-                // If direct access fails, try the wrapper
-                if (!response.ok) {
-                    console.log('Direct access failed, trying wrapper...');
-                    apiUrl = `/api/geocoding-wrapper.php?q=${encodeURIComponent(query)}`;
-                    console.log('Making request to:', apiUrl);
-                    response = await fetch(apiUrl);
-                }
+                const response = await fetch(apiUrl);
                 console.log('Response status:', response.status);
                 console.log('Response headers:', response.headers);
                 
