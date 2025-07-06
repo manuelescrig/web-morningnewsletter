@@ -152,19 +152,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get all users
+// Pagination and filtering setup
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$perPage = 200;
+$offset = ($page - 1) * $perPage;
+
+// Filters
+$verifiedFilter = $_GET['verified'] ?? '';
+$adminFilter = $_GET['admin'] ?? '';
+$planFilter = $_GET['plan'] ?? '';
+
+// Build WHERE clause for filters
+$whereConditions = [];
+$params = [];
+
+if ($verifiedFilter === 'verified') {
+    $whereConditions[] = "email_verified = 1";
+} elseif ($verifiedFilter === 'unverified') {
+    $whereConditions[] = "email_verified = 0";
+}
+
+if ($adminFilter === 'admin') {
+    $whereConditions[] = "is_admin = 1";
+} elseif ($adminFilter === 'user') {
+    $whereConditions[] = "is_admin = 0";
+}
+
+if ($planFilter && in_array($planFilter, ['free', 'starter', 'pro', 'unlimited'])) {
+    $whereConditions[] = "plan = ?";
+    $params[] = $planFilter;
+}
+
+$whereClause = empty($whereConditions) ? '' : 'WHERE ' . implode(' AND ', $whereConditions);
+
+// Get filtered users with pagination
 try {
     $db = Database::getInstance()->getConnection();
-    $stmt = $db->query("
+    
+    // Get total count for pagination
+    $countQuery = "SELECT COUNT(*) as total FROM users $whereClause";
+    $countStmt = $db->prepare($countQuery);
+    $countStmt->execute($params);
+    $totalUsers = $countStmt->fetch()['total'];
+    $totalPages = ceil($totalUsers / $perPage);
+    
+    // Get users for current page
+    $usersQuery = "
+        SELECT id, email, plan, is_admin, email_verified, created_at,
+               (SELECT COUNT(*) FROM sources WHERE user_id = users.id AND is_active = 1) as source_count
+        FROM users 
+        $whereClause
+        ORDER BY created_at DESC
+        LIMIT $perPage OFFSET $offset
+    ";
+    $usersStmt = $db->prepare($usersQuery);
+    $usersStmt->execute($params);
+    $users = $usersStmt->fetchAll();
+    
+    // Get all users for statistics (unfiltered)
+    $allUsersStmt = $db->query("
         SELECT id, email, plan, is_admin, email_verified, created_at,
                (SELECT COUNT(*) FROM sources WHERE user_id = users.id AND is_active = 1) as source_count
         FROM users 
         ORDER BY created_at DESC
     ");
-    $users = $stmt->fetchAll();
+    $allUsers = $allUsersStmt->fetchAll();
+    
 } catch (Exception $e) {
     $error = 'Failed to load users: ' . $e->getMessage();
     $users = [];
+    $allUsers = [];
+    $totalUsers = 0;
+    $totalPages = 0;
 }
 
 $currentPage = 'users';
@@ -198,7 +257,7 @@ $csrfToken = $auth->generateCSRFToken();
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Total Users</div>
-                        <div class="text-2xl font-bold text-gray-900"><?php echo count($users); ?></div>
+                        <div class="text-2xl font-bold text-gray-900"><?php echo count($allUsers); ?></div>
                     </div>
                 </div>
             </div>
@@ -211,7 +270,7 @@ $csrfToken = $auth->generateCSRFToken();
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Verified Users</div>
                         <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['email_verified']; })); ?>
+                            <?php echo count(array_filter($allUsers, function($u) { return $u['email_verified']; })); ?>
                         </div>
                     </div>
                 </div>
@@ -225,7 +284,7 @@ $csrfToken = $auth->generateCSRFToken();
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Admin Users</div>
                         <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['is_admin']; })); ?>
+                            <?php echo count(array_filter($allUsers, function($u) { return $u['is_admin']; })); ?>
                         </div>
                     </div>
                 </div>
@@ -239,12 +298,12 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <?php
                 $planCounts = [
-                    'free' => count(array_filter($users, function($u) { return $u['plan'] === 'free'; })),
-                    'starter' => count(array_filter($users, function($u) { return $u['plan'] === 'starter'; })),
-                    'pro' => count(array_filter($users, function($u) { return $u['plan'] === 'pro'; })),
-                    'unlimited' => count(array_filter($users, function($u) { return $u['plan'] === 'unlimited'; }))
+                    'free' => count(array_filter($allUsers, function($u) { return $u['plan'] === 'free'; })),
+                    'starter' => count(array_filter($allUsers, function($u) { return $u['plan'] === 'starter'; })),
+                    'pro' => count(array_filter($allUsers, function($u) { return $u['plan'] === 'pro'; })),
+                    'unlimited' => count(array_filter($allUsers, function($u) { return $u['plan'] === 'unlimited'; }))
                 ];
-                $totalUsers = count($users);
+                $totalUsersForStats = count($allUsers);
                 ?>
                 
                 <?php foreach ($planCounts as $plan => $count): ?>
@@ -264,7 +323,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     default: echo 'text-gray-600';
                                 }
                                 ?>">
-                                <?php echo $totalUsers > 0 ? round(($count / $totalUsers) * 100) : 0; ?>%
+                                <?php echo $totalUsersForStats > 0 ? round(($count / $totalUsersForStats) * 100) : 0; ?>%
                             </div>
                             <div class="text-xs text-gray-500">
                                 <?php 
@@ -293,13 +352,116 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
         <?php endif; ?>
 
+        <!-- Filters -->
+        <div class="mb-6 bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Filters</h3>
+            <form method="GET" class="space-y-4 sm:space-y-0 sm:flex sm:items-end sm:space-x-4">
+                <!-- Preserve current page if no filters are changed -->
+                <input type="hidden" name="page" value="1">
+                
+                <!-- Verification Status Filter -->
+                <div class="sm:w-1/4">
+                    <label for="verified" class="block text-sm font-medium text-gray-700 mb-1">Email Status</label>
+                    <select name="verified" id="verified" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <option value="">All Users</option>
+                        <option value="verified" <?php echo $verifiedFilter === 'verified' ? 'selected' : ''; ?>>Verified</option>
+                        <option value="unverified" <?php echo $verifiedFilter === 'unverified' ? 'selected' : ''; ?>>Unverified</option>
+                    </select>
+                </div>
+
+                <!-- Admin Status Filter -->
+                <div class="sm:w-1/4">
+                    <label for="admin" class="block text-sm font-medium text-gray-700 mb-1">User Type</label>
+                    <select name="admin" id="admin" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <option value="">All Types</option>
+                        <option value="admin" <?php echo $adminFilter === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                        <option value="user" <?php echo $adminFilter === 'user' ? 'selected' : ''; ?>>Regular User</option>
+                    </select>
+                </div>
+
+                <!-- Plan Filter -->
+                <div class="sm:w-1/4">
+                    <label for="plan" class="block text-sm font-medium text-gray-700 mb-1">Plan</label>
+                    <select name="plan" id="plan" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <option value="">All Plans</option>
+                        <option value="free" <?php echo $planFilter === 'free' ? 'selected' : ''; ?>>Free</option>
+                        <option value="starter" <?php echo $planFilter === 'starter' ? 'selected' : ''; ?>>Starter</option>
+                        <option value="pro" <?php echo $planFilter === 'pro' ? 'selected' : ''; ?>>Pro</option>
+                        <option value="unlimited" <?php echo $planFilter === 'unlimited' ? 'selected' : ''; ?>>Unlimited</option>
+                    </select>
+                </div>
+
+                <!-- Filter Actions -->
+                <div class="sm:w-1/4 flex space-x-2">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-filter mr-2"></i>
+                        Apply Filters
+                    </button>
+                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-times mr-2"></i>
+                        Clear
+                    </a>
+                </div>
+            </form>
+            
+            <!-- Filter Results Summary -->
+            <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
+            <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <span class="text-sm text-blue-700">
+                        Showing <?php echo number_format($totalUsers); ?> of <?php echo number_format(count($allUsers)); ?> users
+                        <?php
+                        $activeFilters = [];
+                        if ($verifiedFilter) $activeFilters[] = "Email: " . ucfirst($verifiedFilter);
+                        if ($adminFilter) $activeFilters[] = "Type: " . ucfirst($adminFilter);
+                        if ($planFilter) $activeFilters[] = "Plan: " . ucfirst($planFilter);
+                        if (!empty($activeFilters)) {
+                            echo " (" . implode(", ", $activeFilters) . ")";
+                        }
+                        ?>
+                    </span>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+
         <!-- Users Table -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
             <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">All Users</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Users 
+                        <?php if ($totalPages > 1): ?>
+                            <span class="text-sm font-normal text-gray-500">
+                                (Page <?php echo $page; ?> of <?php echo $totalPages; ?>)
+                            </span>
+                        <?php endif; ?>
+                    </h3>
+                    <?php if ($totalUsers > 0): ?>
+                        <span class="text-sm text-gray-500">
+                            Showing <?php echo (($page - 1) * $perPage) + 1; ?>-<?php echo min($page * $perPage, $totalUsers); ?> of <?php echo number_format($totalUsers); ?> users
+                        </span>
+                    <?php endif; ?>
+                </div>
                 
                 <?php if (empty($users)): ?>
-                    <p class="text-gray-500">No users found.</p>
+                    <div class="text-center py-8">
+                        <i class="fas fa-users text-gray-300 text-4xl mb-4"></i>
+                        <p class="text-gray-500">
+                            <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
+                                No users found matching the selected filters.
+                            <?php else: ?>
+                                No users found.
+                            <?php endif; ?>
+                        </p>
+                        <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
+                            <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="mt-2 inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
+                                <i class="fas fa-times mr-1"></i>
+                                Clear all filters
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 <?php else: ?>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -489,6 +651,89 @@ $csrfToken = $auth->generateCSRFToken();
                             </tbody>
                         </table>
                     </div>
+                    
+                    <!-- Pagination -->
+                    <?php if ($totalPages > 1): ?>
+                    <div class="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                        <div class="flex flex-1 justify-between sm:hidden">
+                            <!-- Mobile pagination -->
+                            <?php if ($page > 1): ?>
+                                <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+                            <?php else: ?>
+                                <span class="relative inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400">Previous</span>
+                            <?php endif; ?>
+                            
+                            <?php if ($page < $totalPages): ?>
+                                <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                            <?php else: ?>
+                                <span class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400">Next</span>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-700">
+                                    Showing <span class="font-medium"><?php echo (($page - 1) * $perPage) + 1; ?></span> to <span class="font-medium"><?php echo min($page * $perPage, $totalUsers); ?></span> of <span class="font-medium"><?php echo number_format($totalUsers); ?></span> results
+                                </p>
+                            </div>
+                            <div>
+                                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                    <!-- Previous button -->
+                                    <?php if ($page > 1): ?>
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <i class="fas fa-chevron-left h-5 w-5"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
+                                            <i class="fas fa-chevron-left h-5 w-5"></i>
+                                        </span>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Page numbers -->
+                                    <?php
+                                    $startPage = max(1, $page - 2);
+                                    $endPage = min($totalPages, $page + 2);
+                                    
+                                    // Show first page if not in range
+                                    if ($startPage > 1): ?>
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => 1])); ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">1</a>
+                                        <?php if ($startPage > 2): ?>
+                                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300">...</span>
+                                        <?php endif; ?>
+                                    <?php endif;
+                                    
+                                    // Show page range
+                                    for ($i = $startPage; $i <= $endPage; $i++):
+                                        if ($i == $page): ?>
+                                            <span class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"><?php echo $i; ?></span>
+                                        <?php else: ?>
+                                            <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"><?php echo $i; ?></a>
+                                        <?php endif; ?>
+                                    <?php endfor;
+                                    
+                                    // Show last page if not in range
+                                    if ($endPage < $totalPages): ?>
+                                        <?php if ($endPage < $totalPages - 1): ?>
+                                            <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300">...</span>
+                                        <?php endif; ?>
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $totalPages])); ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"><?php echo $totalPages; ?></a>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Next button -->
+                                    <?php if ($page < $totalPages): ?>
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <i class="fas fa-chevron-right h-5 w-5"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
+                                            <i class="fas fa-chevron-right h-5 w-5"></i>
+                                        </span>
+                                    <?php endif; ?>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         </div>
