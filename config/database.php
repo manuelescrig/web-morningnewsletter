@@ -137,8 +137,68 @@ class Database {
                 error_log("Database migration: Added 'name' column to users table");
             }
             
+            // Migrate plan names from old system to new system
+            $this->migratePlanNames();
+            
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
+        }
+    }
+    
+    private function migratePlanNames() {
+        try {
+            // Check if we need to migrate plan names
+            $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM users WHERE plan IN ('medium', 'premium')");
+            $result = $stmt->fetch();
+            
+            if ($result['count'] > 0) {
+                error_log("Database migration: Starting plan name migration for {$result['count']} users");
+                
+                // Begin transaction
+                $this->pdo->beginTransaction();
+                
+                // Update plan names: medium -> starter, premium -> pro
+                $migrations = [
+                    'medium' => 'starter',
+                    'premium' => 'pro'
+                ];
+                
+                $totalUpdated = 0;
+                
+                foreach ($migrations as $oldPlan => $newPlan) {
+                    $stmt = $this->pdo->prepare("UPDATE users SET plan = ?, updated_at = CURRENT_TIMESTAMP WHERE plan = ?");
+                    $stmt->execute([$newPlan, $oldPlan]);
+                    $updated = $stmt->rowCount();
+                    $totalUpdated += $updated;
+                    
+                    if ($updated > 0) {
+                        error_log("Database migration: Migrated {$updated} users from '{$oldPlan}' to '{$newPlan}'");
+                    }
+                }
+                
+                // Also update subscriptions table if it has records
+                foreach ($migrations as $oldPlan => $newPlan) {
+                    $stmt = $this->pdo->prepare("UPDATE subscriptions SET plan = ?, updated_at = CURRENT_TIMESTAMP WHERE plan = ?");
+                    $stmt->execute([$newPlan, $oldPlan]);
+                    $updated = $stmt->rowCount();
+                    
+                    if ($updated > 0) {
+                        error_log("Database migration: Updated {$updated} subscription records from '{$oldPlan}' to '{$newPlan}'");
+                    }
+                }
+                
+                // Commit transaction
+                $this->pdo->commit();
+                
+                error_log("Database migration: Plan name migration completed successfully! Total users updated: {$totalUpdated}");
+                error_log("Database migration: New plan structure - free: 1 source, starter: 5 sources, pro: 15 sources, unlimited: unlimited sources");
+            }
+            
+        } catch (Exception $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            error_log("Database migration error during plan name migration: " . $e->getMessage());
         }
     }
 }

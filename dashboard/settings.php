@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($action) {
             case 'update_plan':
                 $plan = $_POST['plan'] ?? '';
-                if (in_array($plan, ['free', 'medium', 'premium'])) {
+                if (in_array($plan, ['free', 'starter', 'pro', 'unlimited'])) {
                     if ($user->updateProfile(['plan' => $plan])) {
                         $success = 'Plan updated successfully!';
                         // Refresh user data
@@ -107,8 +107,9 @@ $csrfToken = $auth->generateCSRFToken();
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                     <?php 
                                     switch($user->getPlan()) {
-                                        case 'premium': echo 'bg-purple-100 text-purple-800'; break;
-                                        case 'medium': echo 'bg-blue-100 text-blue-800'; break;
+                                        case 'unlimited': echo 'bg-purple-100 text-purple-800'; break;
+                                        case 'pro': echo 'bg-red-100 text-red-800'; break;
+                                        case 'starter': echo 'bg-blue-100 text-blue-800'; break;
                                         default: echo 'bg-gray-100 text-gray-800';
                                     }
                                     ?>">
@@ -124,7 +125,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <div id="plan-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
                                             <div class="py-1">
                                                 <?php 
-                                                $allPlans = ['free', 'medium', 'premium'];
+                                                $allPlans = ['free', 'starter', 'pro', 'unlimited'];
                                                 foreach ($allPlans as $plan): 
                                                     if ($plan !== $user->getPlan()):
                                                 ?>
@@ -376,8 +377,9 @@ $csrfToken = $auth->generateCSRFToken();
                         <?php 
                         $planDetails = [
                             'free' => ['name' => 'Free', 'sources' => '1 source', 'price' => '$0/month', 'color' => 'gray'],
-                            'medium' => ['name' => 'Medium', 'sources' => '5 sources', 'price' => '$5/month', 'color' => 'blue'],
-                            'premium' => ['name' => 'Premium', 'sources' => 'Unlimited', 'price' => '$10/month', 'color' => 'purple']
+                            'starter' => ['name' => 'Starter', 'sources' => '5 sources', 'price' => '$5/month', 'color' => 'blue'],
+                            'pro' => ['name' => 'Pro', 'sources' => '15 sources', 'price' => '$15/month', 'color' => 'red'],
+                            'unlimited' => ['name' => 'Unlimited', 'sources' => 'Unlimited sources', 'price' => '$19/month', 'color' => 'purple']
                         ];
                         
                         foreach ($planDetails as $planKey => $details):

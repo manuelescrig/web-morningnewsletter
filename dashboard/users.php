@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                     case 'change_plan':
                         $newPlan = $_POST['new_plan'] ?? '';
-                        $validPlans = ['free', 'medium', 'premium'];
+                        $validPlans = ['free', 'starter', 'pro', 'unlimited'];
                         if (!in_array($newPlan, $validPlans)) {
                             $error = 'Invalid plan selected.';
                         } elseif ($newPlan === $targetUser->getPlan()) {
@@ -237,9 +237,9 @@ $csrfToken = $auth->generateCSRFToken();
                         <i class="fas fa-star text-purple-600 text-2xl"></i>
                     </div>
                     <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Premium Users</div>
+                        <div class="text-sm font-medium text-gray-500">Unlimited Users</div>
                         <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['plan'] === 'premium'; })); ?>
+                            <?php echo count(array_filter($users, function($u) { return $u['plan'] === 'unlimited'; })); ?>
                         </div>
                     </div>
                 </div>
@@ -253,8 +253,9 @@ $csrfToken = $auth->generateCSRFToken();
                 <?php
                 $planCounts = [
                     'free' => count(array_filter($users, function($u) { return $u['plan'] === 'free'; })),
-                    'medium' => count(array_filter($users, function($u) { return $u['plan'] === 'medium'; })),
-                    'premium' => count(array_filter($users, function($u) { return $u['plan'] === 'premium'; }))
+                    'starter' => count(array_filter($users, function($u) { return $u['plan'] === 'starter'; })),
+                    'pro' => count(array_filter($users, function($u) { return $u['plan'] === 'pro'; })),
+                    'unlimited' => count(array_filter($users, function($u) { return $u['plan'] === 'unlimited'; }))
                 ];
                 $totalUsers = count($users);
                 ?>
@@ -270,8 +271,9 @@ $csrfToken = $auth->generateCSRFToken();
                             <div class="text-lg font-semibold 
                                 <?php 
                                 switch($plan) {
-                                    case 'premium': echo 'text-purple-600'; break;
-                                    case 'medium': echo 'text-blue-600'; break;
+                                    case 'unlimited': echo 'text-purple-600'; break;
+                                    case 'pro': echo 'text-red-600'; break;
+                                    case 'starter': echo 'text-blue-600'; break;
                                     default: echo 'text-gray-600';
                                 }
                                 ?>">
@@ -279,7 +281,7 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <div class="text-xs text-gray-500">
                                 <?php 
-                                $limits = ['free' => '1 source', 'medium' => '5 sources', 'premium' => 'Unlimited'];
+                                $limits = ['free' => '1 source', 'starter' => '5 sources', 'pro' => '15 sources', 'unlimited' => 'Unlimited'];
                                 echo $limits[$plan];
                                 ?>
                             </div>
@@ -352,8 +354,9 @@ $csrfToken = $auth->generateCSRFToken();
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                             <?php 
                                             switch($userData['plan']) {
-                                                case 'premium': echo 'bg-purple-100 text-purple-800'; break;
-                                                case 'medium': echo 'bg-blue-100 text-blue-800'; break;
+                                                case 'unlimited': echo 'bg-purple-100 text-purple-800'; break;
+                                                case 'pro': echo 'bg-red-100 text-red-800'; break;
+                                                case 'starter': echo 'bg-blue-100 text-blue-800'; break;
                                                 default: echo 'bg-gray-100 text-gray-800';
                                             }
                                             ?>">
@@ -362,7 +365,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <?php 
-                                        $limits = ['free' => 1, 'medium' => 5, 'premium' => PHP_INT_MAX];
+                                        $limits = ['free' => 1, 'starter' => 5, 'pro' => 15, 'unlimited' => PHP_INT_MAX];
                                         $limit = $limits[$userData['plan']] ?? 1;
                                         $limitText = $limit === PHP_INT_MAX ? '∞' : $limit;
                                         $isAtLimit = $userData['source_count'] >= $limit && $limit !== PHP_INT_MAX;
@@ -404,7 +407,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                         <!-- Plan Management Section -->
                                                         <?php 
                                                         $currentPlan = $userData['plan'];
-                                                        $planHierarchy = ['free', 'medium', 'premium'];
+                                                        $planHierarchy = ['free', 'starter', 'pro', 'unlimited'];
                                                         $currentIndex = array_search($currentPlan, $planHierarchy);
                                                         ?>
                                                         

@@ -228,9 +228,11 @@ class User {
         switch ($this->plan) {
             case 'free':
                 return 1;
-            case 'medium':
+            case 'starter':
                 return 5;
-            case 'premium':
+            case 'pro':
+                return 15;
+            case 'unlimited':
                 return PHP_INT_MAX;
             default:
                 return 1;
@@ -645,7 +647,7 @@ class User {
     }
     
     public function promotePlan() {
-        $planHierarchy = ['free', 'medium', 'premium'];
+        $planHierarchy = ['free', 'starter', 'pro', 'unlimited'];
         $currentIndex = array_search($this->plan, $planHierarchy);
         
         if ($currentIndex === false || $currentIndex >= count($planHierarchy) - 1) {
@@ -668,7 +670,7 @@ class User {
     }
     
     public function demotePlan() {
-        $planHierarchy = ['free', 'medium', 'premium'];
+        $planHierarchy = ['free', 'starter', 'pro', 'unlimited'];
         $currentIndex = array_search($this->plan, $planHierarchy);
         
         if ($currentIndex === false || $currentIndex <= 0) {
@@ -691,7 +693,7 @@ class User {
     }
     
     public function changePlan($newPlan) {
-        $validPlans = ['free', 'medium', 'premium'];
+        $validPlans = ['free', 'starter', 'pro', 'unlimited'];
         
         if (!in_array($newPlan, $validPlans)) {
             return false;
@@ -711,7 +713,7 @@ class User {
     }
     
     public function getNextPlan() {
-        $planHierarchy = ['free', 'medium', 'premium'];
+        $planHierarchy = ['free', 'starter', 'pro', 'unlimited'];
         $currentIndex = array_search($this->plan, $planHierarchy);
         
         if ($currentIndex === false || $currentIndex >= count($planHierarchy) - 1) {
@@ -722,7 +724,7 @@ class User {
     }
     
     public function getPreviousPlan() {
-        $planHierarchy = ['free', 'medium', 'premium'];
+        $planHierarchy = ['free', 'starter', 'pro', 'unlimited'];
         $currentIndex = array_search($this->plan, $planHierarchy);
         
         if ($currentIndex === false || $currentIndex <= 0) {

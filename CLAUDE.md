@@ -206,8 +206,9 @@ CREATE TABLE payments (
 
 ### Authorization Levels
 - **Free Plan**: 1 data source, basic features
-- **Medium Plan**: 5 data sources, $5/month
-- **Premium Plan**: Unlimited sources, $10/month
+- **Starter Plan**: 5 data sources, $5/month
+- **Pro Plan**: 15 data sources, $15/month
+- **Unlimited Plan**: Unlimited sources, $19/month
 - **Admin Users**: Complete system management
 
 ---
@@ -326,8 +327,9 @@ interface SourceModule {
 
 ### Subscription Plans
 - **Free**: $0/month, 1 data source
-- **Medium**: $5/month, 5 data sources
-- **Premium**: $10/month, unlimited sources
+- **Starter**: $5/month, 5 data sources
+- **Pro**: $15/month, 15 data sources
+- **Unlimited**: $19/month, unlimited sources
 
 ### Payment Flow
 1. **Plan Selection**: User chooses subscription tier
