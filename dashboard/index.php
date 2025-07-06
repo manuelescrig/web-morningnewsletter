@@ -469,7 +469,18 @@ $csrfToken = $auth->generateCSRFToken();
                 </label>
             `;
 
-            if (field.type === 'select') {
+            if (field.type === 'location_search') {
+                fieldHtml += `
+                    <div class="relative">
+                        <input type="text" id="location_search_input" placeholder="Type a city name..."
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <div id="location_search_results" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"></div>
+                        <div id="location_search_loading" class="hidden absolute right-3 top-2">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+                        </div>
+                    </div>
+                `;
+            } else if (field.type === 'select') {
                 fieldHtml += `<select id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
                 Object.entries(field.options).forEach(([value, label]) => {
@@ -495,6 +506,11 @@ $csrfToken = $auth->generateCSRFToken();
 
             fieldDiv.innerHTML = fieldHtml;
             container.appendChild(fieldDiv);
+            
+            // Initialize location search if this is a location search field
+            if (field.type === 'location_search') {
+                initializeLocationSearch();
+            }
         }
 
         function getSourceName(sourceType) {
@@ -530,6 +546,129 @@ $csrfToken = $auth->generateCSRFToken();
                 closeAddSourceModal();
             }
         });
+
+        // Location search functionality
+        let searchTimeout;
+        
+        function initializeLocationSearch() {
+            const searchInput = document.getElementById('location_search_input');
+            const resultsDiv = document.getElementById('location_search_results');
+            const loadingDiv = document.getElementById('location_search_loading');
+            
+            if (!searchInput) return;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                clearTimeout(searchTimeout);
+                
+                if (query.length < 2) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                searchTimeout = setTimeout(() => {
+                    searchLocations(query);
+                }, 300);
+            });
+            
+            // Hide results when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!searchInput.contains(event.target) && !resultsDiv.contains(event.target)) {
+                    resultsDiv.classList.add('hidden');
+                }
+            });
+        }
+        
+        async function searchLocations(query) {
+            const resultsDiv = document.getElementById('location_search_results');
+            const loadingDiv = document.getElementById('location_search_loading');
+            
+            try {
+                loadingDiv.classList.remove('hidden');
+                resultsDiv.classList.add('hidden');
+                
+                const response = await fetch(`/api/geocoding.php?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                loadingDiv.classList.add('hidden');
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to search locations');
+                }
+                
+                displayLocationResults(data.results || []);
+                
+            } catch (error) {
+                loadingDiv.classList.add('hidden');
+                console.error('Location search error:', error);
+                
+                resultsDiv.innerHTML = `
+                    <div class="p-3 text-sm text-red-600">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Failed to search locations. Please try again.
+                    </div>
+                `;
+                resultsDiv.classList.remove('hidden');
+            }
+        }
+        
+        function displayLocationResults(results) {
+            const resultsDiv = document.getElementById('location_search_results');
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="p-3 text-sm text-gray-500">
+                        <i class="fas fa-search mr-2"></i>
+                        No locations found. Try a different search term.
+                    </div>
+                `;
+                resultsDiv.classList.remove('hidden');
+                return;
+            }
+            
+            let html = '';
+            results.forEach((location, index) => {
+                html += `
+                    <div class="location-result p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
+                         onclick="selectLocation('${location.name.replace(/'/g, "\\'")}', ${location.latitude}, ${location.longitude})">
+                        <div class="font-medium text-gray-900">${location.name}</div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.remove('hidden');
+        }
+        
+        function selectLocation(name, latitude, longitude) {
+            // Fill in the form fields
+            const locationField = document.getElementById('config_location');
+            const latField = document.getElementById('config_latitude');
+            const lonField = document.getElementById('config_longitude');
+            const searchInput = document.getElementById('location_search_input');
+            const resultsDiv = document.getElementById('location_search_results');
+            
+            if (locationField) locationField.value = name;
+            if (latField) latField.value = latitude;
+            if (lonField) lonField.value = longitude;
+            if (searchInput) searchInput.value = name;
+            
+            // Hide results
+            resultsDiv.classList.add('hidden');
+            
+            // Show success feedback
+            if (searchInput) {
+                searchInput.style.borderColor = '#10B981';
+                setTimeout(() => {
+                    searchInput.style.borderColor = '';
+                }, 1000);
+            }
+        }
     </script>
 </body>
 </html>

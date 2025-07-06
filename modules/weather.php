@@ -181,11 +181,18 @@ class WeatherModule extends BaseSourceModule {
     public function getConfigFields(): array {
         return [
             [
+                'name' => 'location_search',
+                'type' => 'location_search',
+                'label' => 'Search Location',
+                'required' => false,
+                'description' => 'Search for your city or location'
+            ],
+            [
                 'name' => 'location',
                 'type' => 'text',
                 'label' => 'Location Name',
                 'required' => true,
-                'description' => 'Display name for your location (e.g., "New York", "London", "Tokyo")',
+                'description' => 'Display name for your location',
                 'default' => 'New York'
             ],
             [
@@ -193,7 +200,7 @@ class WeatherModule extends BaseSourceModule {
                 'type' => 'number',
                 'label' => 'Latitude',
                 'required' => true,
-                'description' => 'Latitude coordinate (e.g., 40.7128 for New York)',
+                'description' => 'Latitude coordinate',
                 'default' => '40.7128'
             ],
             [
@@ -201,7 +208,7 @@ class WeatherModule extends BaseSourceModule {
                 'type' => 'number',
                 'label' => 'Longitude',
                 'required' => true,
-                'description' => 'Longitude coordinate (e.g., -74.0060 for New York)',
+                'description' => 'Longitude coordinate',
                 'default' => '-74.0060'
             ]
         ];
