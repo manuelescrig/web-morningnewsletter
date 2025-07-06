@@ -17,7 +17,48 @@ if (empty($query) || strlen(trim($query)) < 2) {
     exit;
 }
 
+// Simple caching mechanism
+function getCachePath($query) {
+    $cacheDir = __DIR__ . '/../cache';
+    if (!is_dir($cacheDir)) {
+        mkdir($cacheDir, 0755, true);
+    }
+    return $cacheDir . '/geocoding_' . md5(strtolower(trim($query))) . '.json';
+}
+
+function getCachedResult($query) {
+    $cacheFile = getCachePath($query);
+    if (file_exists($cacheFile)) {
+        $data = json_decode(file_get_contents($cacheFile), true);
+        if ($data && isset($data['timestamp']) && (time() - $data['timestamp']) < 86400) { // 24 hours
+            return $data['results'];
+        }
+    }
+    return null;
+}
+
+function cacheResult($query, $results) {
+    $cacheFile = getCachePath($query);
+    $data = [
+        'timestamp' => time(),
+        'results' => $results
+    ];
+    file_put_contents($cacheFile, json_encode($data));
+}
+
 try {
+    // Check cache first
+    $cachedResults = getCachedResult($query);
+    if ($cachedResults !== null) {
+        echo json_encode([
+            'success' => true,
+            'results' => $cachedResults,
+            'count' => count($cachedResults),
+            'cached' => true
+        ]);
+        exit;
+    }
+
     // Use Nominatim (OpenStreetMap) geocoding service
     $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query([
         'q' => trim($query),
@@ -33,15 +74,17 @@ try {
     curl_setopt_array($ch, [
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 10,
-        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT => 15,
+        CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_MAXREDIRS => 3,
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_SSL_VERIFYHOST => 2,
-        CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (contact@morningnewsletter.com)',
+        // Use a more compliant User-Agent for Nominatim
+        CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (https://morningnewsletter.com; contact@morningnewsletter.com)',
         CURLOPT_HTTPHEADER => [
-            'Accept: application/json'
+            'Accept: application/json',
+            'Accept-Language: en-US,en;q=0.9'
         ]
     ]);
 
@@ -51,17 +94,21 @@ try {
     curl_close($ch);
     
     if ($response === false) {
-        throw new Exception("cURL error: $error");
+        throw new Exception("Network error: $error");
+    }
+    
+    if ($httpCode === 429) {
+        throw new Exception("Rate limit exceeded. Please wait a moment and try again.");
     }
     
     if ($httpCode !== 200) {
-        throw new Exception("HTTP error: $httpCode");
+        throw new Exception("Service temporarily unavailable (HTTP $httpCode)");
     }
 
     $data = json_decode($response, true);
     
     if (!is_array($data)) {
-        throw new Exception('Invalid JSON response from geocoding service');
+        throw new Exception('Invalid response from geocoding service');
     }
 
     // Format the results
@@ -77,9 +124,6 @@ try {
 
         // Extract useful parts for a cleaner display name
         $address = $item['address'] ?? [];
-        $name = '';
-        
-        // Build a clean name from available address components
         $nameComponents = [];
         
         if (!empty($address['city'])) {
@@ -123,6 +167,9 @@ try {
         return $b['importance'] <=> $a['importance'];
     });
 
+    // Cache the results
+    cacheResult($query, $results);
+
     echo json_encode([
         'success' => true,
         'results' => $results,
@@ -131,9 +178,16 @@ try {
 
 } catch (Exception $e) {
     error_log('Geocoding API error: ' . $e->getMessage());
-    http_response_code(500);
+    
+    // Return appropriate HTTP status code
+    if (strpos($e->getMessage(), 'Rate limit') !== false) {
+        http_response_code(429);
+    } else {
+        http_response_code(500);
+    }
+    
     echo json_encode([
-        'error' => 'Failed to search locations: ' . $e->getMessage(),
+        'error' => 'Failed to search locations. Please try again.',
         'results' => []
     ]);
 }

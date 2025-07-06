@@ -199,6 +199,41 @@ Some sources require API keys:
 
 The application is designed to work out of the box with minimal configuration. For production:
 
+## 🐛 Troubleshooting
+
+### Weather Location Search Issues
+
+If you encounter "Failed to search locations" when adding weather sources:
+
+1. **Rate Limiting**: The geocoding service (Nominatim) has a rate limit of 1 request per second. The system now includes:
+   - Client-side rate limiting (1 second minimum between searches)
+   - Server-side caching (24-hour cache for repeated searches)
+   - Better error handling and user feedback
+
+2. **Network Issues**: If the geocoding service is temporarily unavailable:
+   - Wait a moment and try again
+   - Check your internet connection
+   - The system will show specific error messages for different issues
+
+3. **Cache**: The system caches geocoding results for 24 hours to reduce API calls. Clear the cache by deleting the `cache/` directory if needed.
+
+### Common Issues
+
+- **"Rate limit exceeded"**: Wait 1-2 seconds between searches
+- **"Network error"**: Check your internet connection
+- **"Service temporarily unavailable"**: The geocoding service is down, try again later
+
+### Testing the Geocoding API
+
+Run the test script to verify the geocoding API is working:
+```bash
+php test_geocoding.php
+```
+
+## 🔧 Configuration
+
+The application is designed to work out of the box with minimal configuration. For production:
+
 1. Set up proper web server (Apache/Nginx)
 2. Configure SMTP for email delivery
 3. Set up SSL/TLS

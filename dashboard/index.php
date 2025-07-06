@@ -556,6 +556,8 @@ $csrfToken = $auth->generateCSRFToken();
 
         // Location search functionality
         let searchTimeout;
+        let lastSearchTime = 0;
+        const MIN_SEARCH_INTERVAL = 1000; // 1 second minimum between searches
         
         function initializeLocationSearch() {
             const searchInput = document.getElementById('location_search_input');
@@ -574,9 +576,20 @@ $csrfToken = $auth->generateCSRFToken();
                     return;
                 }
                 
-                searchTimeout = setTimeout(() => {
-                    searchLocations(query);
-                }, 300);
+                // Rate limiting: ensure at least 1 second between searches
+                const now = Date.now();
+                const timeSinceLastSearch = now - lastSearchTime;
+                
+                if (timeSinceLastSearch < MIN_SEARCH_INTERVAL) {
+                    const delay = MIN_SEARCH_INTERVAL - timeSinceLastSearch;
+                    searchTimeout = setTimeout(() => {
+                        searchLocations(query);
+                    }, delay);
+                } else {
+                    searchTimeout = setTimeout(() => {
+                        searchLocations(query);
+                    }, 300);
+                }
             });
             
             // Hide results when clicking outside
@@ -591,6 +604,9 @@ $csrfToken = $auth->generateCSRFToken();
             const resultsDiv = document.getElementById('location_search_results');
             const loadingDiv = document.getElementById('location_search_loading');
             
+            // Update last search time
+            lastSearchTime = Date.now();
+            
             try {
                 loadingDiv.classList.remove('hidden');
                 resultsDiv.classList.add('hidden');
@@ -601,7 +617,14 @@ $csrfToken = $auth->generateCSRFToken();
                 loadingDiv.classList.add('hidden');
                 
                 if (!response.ok) {
+                    if (response.status === 429) {
+                        throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+                    }
                     throw new Error(data.error || 'Failed to search locations');
+                }
+                
+                if (data.error) {
+                    throw new Error(data.error);
                 }
                 
                 displayLocationResults(data.results || []);
@@ -610,10 +633,17 @@ $csrfToken = $auth->generateCSRFToken();
                 loadingDiv.classList.add('hidden');
                 console.error('Location search error:', error);
                 
+                let errorMessage = 'Failed to search locations. Please try again.';
+                if (error.message.includes('Rate limit')) {
+                    errorMessage = 'Too many requests. Please wait a moment and try again.';
+                } else if (error.message.includes('Network')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                }
+                
                 resultsDiv.innerHTML = `
                     <div class="p-3 text-sm text-red-600">
                         <i class="fas fa-exclamation-triangle mr-2"></i>
-                        Failed to search locations. Please try again.
+                        ${errorMessage}
                     </div>
                 `;
                 resultsDiv.classList.remove('hidden');
