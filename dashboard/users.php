@@ -492,10 +492,6 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <i class="fas fa-info-circle mr-1"></i>
                                                                 This is your account
                                                             </div>
-                                                            <a href="/dashboard/settings.php" class="w-full text-left px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 flex items-center">
-                                                                <i class="fas fa-cog mr-2"></i>
-                                                                Go to Settings
-                                                            </a>
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
