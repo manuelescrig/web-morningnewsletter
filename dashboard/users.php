@@ -206,12 +206,12 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-crown text-red-600 text-2xl"></i>
+                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
                     </div>
                     <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Admin Users</div>
+                        <div class="text-sm font-medium text-gray-500">Verified Users</div>
                         <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['is_admin']; })); ?>
+                            <?php echo count(array_filter($users, function($u) { return $u['email_verified']; })); ?>
                         </div>
                     </div>
                 </div>
@@ -220,12 +220,12 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                        <i class="fas fa-crown text-red-600 text-2xl"></i>
                     </div>
                     <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Verified Users</div>
+                        <div class="text-sm font-medium text-gray-500">Admin Users</div>
                         <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['email_verified']; })); ?>
+                            <?php echo count(array_filter($users, function($u) { return $u['is_admin']; })); ?>
                         </div>
                     </div>
                 </div>
