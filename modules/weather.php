@@ -17,12 +17,20 @@ class WeatherModule extends BaseSourceModule {
             }
             
             // Current weather
-            $currentUrl = "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric";
+            $currentUrl = "https://api.openweathermap.org/data/2.5/weather?q=" . urlencode($city) . "&appid=$apiKey&units=metric";
+            error_log("Weather API request URL: $currentUrl");
+            
             $currentResponse = $this->makeHttpRequest($currentUrl);
+            error_log("Weather API response: " . substr($currentResponse, 0, 500));
+            
             $currentData = json_decode($currentResponse, true);
             
-            if (!$currentData || $currentData['cod'] !== 200) {
-                throw new Exception('Weather API error: ' . ($currentData['message'] ?? 'Unknown error'));
+            if (!$currentData) {
+                throw new Exception('Failed to parse weather API response: ' . $currentResponse);
+            }
+            
+            if (isset($currentData['cod']) && $currentData['cod'] !== 200) {
+                throw new Exception('Weather API error (code ' . $currentData['cod'] . '): ' . ($currentData['message'] ?? 'Unknown error'));
             }
             
             // Forecast
@@ -143,11 +151,33 @@ class WeatherModule extends BaseSourceModule {
             return $result;
             
         } catch (Exception $e) {
-            error_log('Weather module error: ' . $e->getMessage());
+            $errorMessage = $e->getMessage();
+            error_log('Weather module error: ' . $errorMessage);
+            error_log('Weather module config: ' . print_r($this->config, true));
+            
+            // Provide more specific error messages based on common issues
+            $displayMessage = 'Data unavailable';
+            if (strpos($errorMessage, 'API key') !== false) {
+                $displayMessage = 'Invalid API key';
+            } elseif (strpos($errorMessage, 'city not found') !== false || strpos($errorMessage, '404') !== false) {
+                $displayMessage = 'City not found';
+            } elseif (strpos($errorMessage, 'HTTP error: 401') !== false) {
+                $displayMessage = 'Invalid API key';
+            } elseif (strpos($errorMessage, 'HTTP error: 429') !== false) {
+                $displayMessage = 'Rate limit exceeded';
+            } elseif (strpos($errorMessage, 'cURL error') !== false || strpos($errorMessage, 'Failed to fetch') !== false) {
+                $displayMessage = 'Network error';
+            }
+            
             return [
                 [
                     'label' => 'Weather',
-                    'value' => 'Data unavailable',
+                    'value' => $displayMessage,
+                    'delta' => null
+                ],
+                [
+                    'label' => 'Error Details',
+                    'value' => $errorMessage,
                     'delta' => null
                 ]
             ];
