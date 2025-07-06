@@ -46,7 +46,7 @@ function getNavClass($page, $currentPage) {
                 <!-- Profile dropdown -->
                 <div class="relative ml-3">
                     <div>
-                        <button type="button" onclick="toggleDropdown()" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-md lg:hover:bg-gray-50 transition-colors" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <button type="button" onclick="toggleUserDropdown()" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-md lg:hover:bg-gray-50 transition-colors" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <div class="flex items-center">
                                 <!-- Avatar circle with initial -->
                                 <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -129,38 +129,84 @@ function getNavClass($page, $currentPage) {
 </nav>
 
 <script>
-function toggleDropdown() {
-    const dropdown = document.getElementById('dropdown-menu');
-    const button = document.getElementById('user-menu-button');
+// User menu dropdown functionality - wrapped in IIFE to avoid conflicts
+(function() {
+    let isInitialized = false;
     
-    if (dropdown.classList.contains('hidden')) {
-        dropdown.classList.remove('hidden');
-        button.setAttribute('aria-expanded', 'true');
-    } else {
-        dropdown.classList.add('hidden');
-        button.setAttribute('aria-expanded', 'false');
-    }
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('dropdown-menu');
-    const button = document.getElementById('user-menu-button');
-    
-    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.add('hidden');
-        button.setAttribute('aria-expanded', 'false');
-    }
-});
-
-// Close dropdown when pressing escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
+    function initUserDropdown() {
+        if (isInitialized) return;
+        
         const dropdown = document.getElementById('dropdown-menu');
         const button = document.getElementById('user-menu-button');
         
-        dropdown.classList.add('hidden');
-        button.setAttribute('aria-expanded', 'false');
+        if (!dropdown || !button) {
+            // Elements not ready yet, try again
+            setTimeout(initUserDropdown, 100);
+            return;
+        }
+        
+        isInitialized = true;
+        
+        // Toggle function
+        function toggleDropdown() {
+            try {
+                if (dropdown.classList.contains('hidden')) {
+                    // Close any other open dropdowns first
+                    document.querySelectorAll('[id*="dropdown-"]').forEach(el => {
+                        if (el !== dropdown) {
+                            el.classList.add('hidden');
+                        }
+                    });
+                    
+                    dropdown.classList.remove('hidden');
+                    button.setAttribute('aria-expanded', 'true');
+                } else {
+                    dropdown.classList.add('hidden');
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            } catch (error) {
+                console.error('Error toggling user dropdown:', error);
+            }
+        }
+        
+        // Make function available globally for onclick
+        window.toggleUserDropdown = toggleDropdown;
+        
+        // Also add direct event listener as backup
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleDropdown();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            // Check if the click is outside both button and dropdown
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Close dropdown when pressing escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                dropdown.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     }
-});
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUserDropdown);
+    } else {
+        initUserDropdown();
+    }
+})();
 </script>

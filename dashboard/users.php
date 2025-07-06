@@ -399,7 +399,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleDropdown(<?php echo $userData['id']; ?>)">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserActionDropdown(<?php echo $userData['id']; ?>)">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
@@ -529,7 +529,7 @@ $csrfToken = $auth->generateCSRFToken();
     </div>
 
     <script>
-        function toggleDropdown(userId) {
+        function toggleUserActionDropdown(userId) {
             const dropdown = document.getElementById('dropdown-' + userId);
             const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
             
@@ -546,7 +546,7 @@ $csrfToken = $auth->generateCSRFToken();
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(event) {
-            if (!event.target.closest('[onclick^="toggleDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
+            if (!event.target.closest('[onclick^="toggleUserActionDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
                 document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
                     d.classList.add('hidden');
                 });
