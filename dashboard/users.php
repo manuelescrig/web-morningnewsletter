@@ -190,7 +190,7 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
 
         <!-- Admin Statistics -->
-        <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -231,19 +231,6 @@ $csrfToken = $auth->generateCSRFToken();
                 </div>
             </div>
             
-            <div class="bg-white shadow rounded-lg p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-star text-purple-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-500">Unlimited Users</div>
-                        <div class="text-2xl font-bold text-gray-900">
-                            <?php echo count(array_filter($users, function($u) { return $u['plan'] === 'unlimited'; })); ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Plan Distribution -->
