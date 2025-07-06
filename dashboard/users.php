@@ -402,7 +402,7 @@ $csrfToken = $auth->generateCSRFToken();
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserActionDropdown(<?php echo $userData['id']; ?>)">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
-                                                <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                                                <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
                                                     <div class="py-1">
                                                         <!-- Plan Management Section -->
                                                         <?php 
@@ -510,17 +510,42 @@ $csrfToken = $auth->generateCSRFToken();
     <script>
         function toggleUserActionDropdown(userId) {
             const dropdown = document.getElementById('dropdown-' + userId);
+            const button = dropdown.previousElementSibling;
             const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
             
             // Close all other dropdowns
             allDropdowns.forEach(d => {
                 if (d !== dropdown) {
                     d.classList.add('hidden');
+                    // Reset position classes for other dropdowns
+                    d.classList.remove('origin-bottom-right', 'mb-2');
+                    d.classList.add('origin-top-right', 'mt-2');
                 }
             });
             
-            // Toggle current dropdown
-            dropdown.classList.toggle('hidden');
+            if (dropdown.classList.contains('hidden')) {
+                // Calculate if there's enough space below
+                const buttonRect = button.getBoundingClientRect();
+                const dropdownHeight = 300; // Approximate dropdown height
+                const viewportHeight = window.innerHeight;
+                const spaceBelow = viewportHeight - buttonRect.bottom;
+                const spaceAbove = buttonRect.top;
+                
+                // Remove existing position classes
+                dropdown.classList.remove('origin-top-right', 'origin-bottom-right', 'mt-2', 'mb-2');
+                
+                if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                    // Not enough space below, but enough space above - open upward
+                    dropdown.classList.add('origin-bottom-right', 'mb-2');
+                } else {
+                    // Default - open downward
+                    dropdown.classList.add('origin-top-right', 'mt-2');
+                }
+                
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
         }
 
         // Close dropdowns when clicking outside
