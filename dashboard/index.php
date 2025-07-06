@@ -613,14 +613,9 @@ $csrfToken = $auth->generateCSRFToken();
                 
                 // Use the geocoding API in the root directory where PHP works
                 const apiUrl = `/geocoding-api.php?q=${encodeURIComponent(query)}`;
-                console.log('Making request to:', apiUrl);
                 
                 const response = await fetch(apiUrl);
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
-                
                 const data = await response.json();
-                console.log('Response data:', data);
                 
                 loadingDiv.classList.add('hidden');
                 
