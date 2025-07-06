@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Handle both direct access and URL rewriting
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 $isDirectAccess = strpos($requestUri, 'geocoding.php') !== false;
@@ -79,6 +83,9 @@ function cacheResult($query, $results) {
 try {
     error_log('Geocoding API called with query: ' . $query);
     
+    // Debug output
+    echo "<!-- Debug: Starting geocoding API -->\n";
+    
     // Check cache first
     $cachedResults = getCachedResult($query);
     if ($cachedResults !== null) {
@@ -101,6 +108,9 @@ try {
         'extratags' => 0,
         'namedetails' => 0
     ]);
+
+    echo "<!-- Debug: Making request to Nominatim -->\n";
+    echo "<!-- Debug: URL = $url -->\n";
 
     // Use cURL for better error handling
     $ch = curl_init();
@@ -125,6 +135,9 @@ try {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     curl_close($ch);
+    
+    echo "<!-- Debug: Nominatim response status = $httpCode -->\n";
+    echo "<!-- Debug: Response length = " . strlen($response) . " -->\n";
     
     if ($response === false) {
         throw new Exception("Network error: $error");

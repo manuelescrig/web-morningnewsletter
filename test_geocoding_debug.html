@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocoding Debug</title>
+    <style>
+        body { font-family: monospace; margin: 20px; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Geocoding API Debug</h1>
+    
+    <button onclick="testAPI()">Test Geocoding API</button>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testAPI() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing...</p>';
+            
+            try {
+                const response = await fetch('/api/geocoding.php?q=London');
+                const text = await response.text();
+                
+                let html = '<div class="debug">';
+                html += '<h3>Raw Response</h3>';
+                html += '<p><strong>Status:</strong> ' + response.status + '</p>';
+                html += '<p><strong>Content-Type:</strong> ' + response.headers.get('content-type') + '</p>';
+                html += '<p><strong>Length:</strong> ' + text.length + ' characters</p>';
+                html += '<h4>Response Content:</h4>';
+                html += '<pre>' + text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+                html += '</div>';
+                
+                resultsDiv.innerHTML = html;
+                
+                // Try to parse as JSON
+                try {
+                    const data = JSON.parse(text);
+                    if (data.success) {
+                        resultsDiv.innerHTML += '<div class="success"><h3>✅ JSON Parsed Successfully</h3><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+                    } else {
+                        resultsDiv.innerHTML += '<div class="error"><h3>❌ API Error</h3><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+                    }
+                } catch (e) {
+                    resultsDiv.innerHTML += '<div class="error"><h3>❌ Not Valid JSON</h3><p>' + e.message + '</p></div>';
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="error"><h3>❌ Network Error</h3><p>' + error.message + '</p></div>';
+            }
+        }
+        
+        // Test on page load
+        window.onload = testAPI;
+    </script>
+</body>
+</html> 
