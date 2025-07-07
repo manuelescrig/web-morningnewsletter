@@ -106,8 +106,8 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <div class="space-y-3">
                             <div class="flex items-center">
                                 <i class="fas fa-envelope text-blue-600 w-5 mr-3"></i>
-                                <a href="mailto:press@morningnewsletter.com" class="text-blue-600 hover:text-blue-700">
-                                    press@morningnewsletter.com
+                                <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-700">
+                                    hello@morningnewsletter.com
                                 </a>
                             </div>
                             <div class="flex items-center">
@@ -150,7 +150,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Brand Assets</h3>
                     <p class="text-gray-600 mb-6">High-resolution logos, brand colors, and style guidelines</p>
-                    <a href="mailto:press@morningnewsletter.com?subject=Brand Assets Request" 
+                    <a href="mailto:hello@morningnewsletter.com?subject=Brand Assets Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
                         <i class="fas fa-download mr-2"></i>Request Assets
                     </a>
@@ -162,7 +162,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Fact Sheet</h3>
                     <p class="text-gray-600 mb-6">Company overview, key metrics, and executive bios</p>
-                    <a href="mailto:press@morningnewsletter.com?subject=Fact Sheet Request" 
+                    <a href="mailto:hello@morningnewsletter.com?subject=Fact Sheet Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
                         <i class="fas fa-download mr-2"></i>Download PDF
                     </a>
@@ -174,7 +174,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Screenshots</h3>
                     <p class="text-gray-600 mb-6">Product screenshots and interface examples</p>
-                    <a href="mailto:press@morningnewsletter.com?subject=Screenshots Request" 
+                    <a href="mailto:hello@morningnewsletter.com?subject=Screenshots Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
                         <i class="fas fa-download mr-2"></i>Request Images
                     </a>
@@ -207,7 +207,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 </p>
                 <p class="text-gray-500">
                     For interview requests or story pitches, contact us at 
-                    <a href="mailto:press@morningnewsletter.com" class="text-blue-600 hover:text-blue-700">press@morningnewsletter.com</a>
+                    <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-700">hello@morningnewsletter.com</a>
                 </p>
             </div>
         </div>
@@ -237,7 +237,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 I'm always happy to provide quotes, data, or interviews for stories about productivity, 
                 morning routines, and the future of personalized information.
             </p>
-            <a href="mailto:press@morningnewsletter.com" 
+            <a href="mailto:hello@morningnewsletter.com" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 <i class="fas fa-envelope mr-3"></i>
                 Contact Press Team

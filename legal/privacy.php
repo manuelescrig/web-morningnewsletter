@@ -179,7 +179,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     If you have any questions about this Privacy Policy or our privacy practices, please contact us:
                 </p>
                 <p class="text-gray-700 mb-4">
-                    Email: privacy@morningnewsletter.com<br>
+                    Email: hello@morningnewsletter.com<br>
                     Website: MorningNewsletter.com<br>
                     Subject Line: Privacy Policy Inquiry
                 </p>

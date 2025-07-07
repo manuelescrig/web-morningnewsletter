@@ -121,7 +121,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     If you have any questions about these Terms of Service, please contact us at:
                 </p>
                 <p class="text-gray-700 mb-4">
-                    Email: legal@morningnewsletter.com<br>
+                    Email: hello@morningnewsletter.com<br>
                     Website: MorningNewsletter.com
                 </p>
             </div>

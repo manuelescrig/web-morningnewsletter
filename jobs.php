@@ -106,7 +106,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="mailto:careers@morningnewsletter.com" 
+                    <a href="mailto:hello@morningnewsletter.com" 
                        class="inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 font-medium">
                         <i class="fas fa-envelope mr-2"></i>
                         Send Us Your Resume
@@ -190,7 +190,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Even if there aren't current openings, I'm always interested in connecting with talented individuals who share the vision.
             </p>
-            <a href="mailto:careers@morningnewsletter.com" 
+            <a href="mailto:hello@morningnewsletter.com" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 <i class="fas fa-paper-plane mr-3"></i>
                 Get In Touch

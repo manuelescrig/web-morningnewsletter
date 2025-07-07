@@ -131,7 +131,7 @@ if (empty($token)) {
         </form>
 
         <div class="text-center text-sm text-gray-500">
-            <p>Having trouble? <a href="mailto:support@morningnewsletter.com" class="text-blue-600 hover:text-blue-500">Contact support</a></p>
+            <p>Having trouble? <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-500">Contact support</a></p>
         </div>
         <?php endif; ?>
     </div>

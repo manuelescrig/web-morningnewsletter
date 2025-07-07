@@ -97,7 +97,7 @@ try {
         CURLOPT_MAXREDIRS => 3,
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_SSL_VERIFYHOST => 2,
-        CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (https://morningnewsletter.com; contact@morningnewsletter.com)',
+        CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (https://morningnewsletter.com; hello@morningnewsletter.com)',
         CURLOPT_HTTPHEADER => [
             'Accept: application/json',
             'Accept-Language: en-US,en;q=0.9'
