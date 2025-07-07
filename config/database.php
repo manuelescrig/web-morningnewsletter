@@ -43,6 +43,7 @@ class Database {
                 plan TEXT DEFAULT 'free',
                 timezone TEXT DEFAULT 'UTC',
                 email_verified INTEGER DEFAULT 0,
+                unsubscribed INTEGER DEFAULT 0,
                 send_time TEXT DEFAULT '06:00',
                 newsletter_title TEXT DEFAULT 'Your Morning Brief',
                 verification_token TEXT,
@@ -191,6 +192,23 @@ class Database {
             if (!$hasSortOrderColumn) {
                 $this->pdo->exec("ALTER TABLE sources ADD COLUMN sort_order INTEGER DEFAULT 0");
                 error_log("Database migration: Added 'sort_order' column to sources table");
+            }
+            
+            // Check if unsubscribed column exists in users table, if not add it
+            $stmt = $this->pdo->query("PRAGMA table_info(users)");
+            $userColumns = $stmt->fetchAll();
+            
+            $hasUnsubscribedColumn = false;
+            foreach ($userColumns as $column) {
+                if ($column['name'] === 'unsubscribed') {
+                    $hasUnsubscribedColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasUnsubscribedColumn) {
+                $this->pdo->exec("ALTER TABLE users ADD COLUMN unsubscribed INTEGER DEFAULT 0");
+                error_log("Database migration: Added 'unsubscribed' column to users table");
             }
             
             // Check if newsletter_title column exists in users table, if not add it

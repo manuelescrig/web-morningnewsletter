@@ -20,10 +20,11 @@ class Scheduler {
         
         $users = [];
         
-        // Get all users with verified emails
+        // Get all users with verified emails who haven't unsubscribed
         $stmt = $this->db->prepare("
             SELECT * FROM users 
             WHERE email_verified = 1 
+            AND (unsubscribed IS NULL OR unsubscribed = 0)
             AND send_time IS NOT NULL
         ");
         $stmt->execute();

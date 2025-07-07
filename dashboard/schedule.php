@@ -14,9 +14,20 @@ $currentPage = 'schedule';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $csrfToken = $_POST['csrf_token'] ?? '';
+    $action = $_POST['action'] ?? '';
     
     if (!$auth->validateCSRFToken($csrfToken)) {
         $error = 'Invalid request. Please try again.';
+    } else if ($action === 'resubscribe') {
+        // Handle resubscribe action
+        $updateData = ['unsubscribed' => 0];
+        if ($user->updateProfile($updateData)) {
+            $success = 'You have been resubscribed! You will start receiving newsletters again.';
+            // Refresh user data
+            $user = $auth->getCurrentUser();
+        } else {
+            $error = 'Failed to resubscribe. Please try again.';
+        }
     } else {
         $timezone = $_POST['timezone'] ?? '';
         $sendTime = $_POST['send_time'] ?? '';
@@ -162,10 +173,28 @@ $timezones = [
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Today's Status</p>
                                 <p class="text-lg">
-                                    <?php if ($scheduleStatus['sent_today']): ?>
+                                    <?php if ($user->isUnsubscribed()): ?>
+                                        <span class="text-red-600"><i class="fas fa-ban mr-1"></i>Unsubscribed</span>
+                                    <?php elseif ($scheduleStatus['sent_today']): ?>
                                         <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Sent</span>
                                     <?php else: ?>
                                         <span class="text-yellow-600"><i class="fas fa-clock mr-1"></i>Pending</span>
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-bell text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">Subscription Status</p>
+                                <p class="text-lg">
+                                    <?php if ($user->isUnsubscribed()): ?>
+                                        <span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Unsubscribed</span>
+                                    <?php else: ?>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Active</span>
                                     <?php endif; ?>
                                 </p>
                             </div>
@@ -177,10 +206,33 @@ $timezones = [
             <!-- Update Schedule Form -->
             <div class="bg-white shadow rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Update Schedule</h3>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                        <?php echo $user->isUnsubscribed() ? 'Resubscribe to Newsletter' : 'Update Schedule'; ?>
+                    </h3>
                     
-                    <form method="POST" class="space-y-6">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                    <?php if ($user->isUnsubscribed()): ?>
+                        <!-- Resubscribe Section -->
+                        <div class="text-center">
+                            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
+                                <i class="fas fa-bell-slash text-red-600 text-2xl"></i>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">You're Currently Unsubscribed</h4>
+                            <p class="text-sm text-gray-600 mb-6">You won't receive any newsletters until you resubscribe. Click the button below to start receiving your morning brief again.</p>
+                            
+                            <form method="POST" class="inline">
+                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                <input type="hidden" name="action" value="resubscribe">
+                                <button type="submit"
+                                        class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    <i class="fas fa-bell mr-2"></i>
+                                    Resubscribe to Newsletter
+                                </button>
+                            </form>
+                        </div>
+                    <?php else: ?>
+                        <!-- Regular Schedule Form -->
+                        <form method="POST" class="space-y-6">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                         
                         <div>
                             <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone</label>
@@ -212,6 +264,7 @@ $timezones = [
                             </button>
                         </div>
                     </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

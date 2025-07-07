@@ -11,6 +11,7 @@ class User {
     private $send_time;
     private $newsletter_title;
     private $email_verified;
+    private $unsubscribed;
     private $is_admin;
     
     public function __construct($userData = null) {
@@ -25,6 +26,7 @@ class User {
             $this->send_time = $userData['send_time'];
             $this->newsletter_title = $userData['newsletter_title'] ?? 'Your Morning Brief';
             $this->email_verified = $userData['email_verified'];
+            $this->unsubscribed = $userData['unsubscribed'] ?? 0;
             $this->is_admin = $userData['is_admin'] ?? 0;
         }
     }
@@ -844,6 +846,7 @@ class User {
     public function getTimezone() { return $this->timezone; }
     public function getSendTime() { return $this->send_time; }
     public function getNewsletterTitle() { return $this->newsletter_title ?? 'Your Morning Brief'; }
+    public function isUnsubscribed() { return $this->unsubscribed == 1; }
     public function isEmailVerified() { return (bool)$this->email_verified; }
     public function isAdmin() { return (bool)$this->is_admin; }
 }
