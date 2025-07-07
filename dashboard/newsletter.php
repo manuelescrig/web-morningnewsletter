@@ -233,7 +233,7 @@ $canAddSource = count($sources) < $maxSources;
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
                         <a href="/dashboard/" class="text-gray-700 hover:text-blue-600 inline-flex items-center">
-                            <i class="fas fa-home mr-2"></i>
+                            <i class="fas fa-newspaper mr-2"></i>
                             My Newsletters
                         </a>
                     </li>
