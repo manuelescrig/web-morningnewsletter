@@ -77,7 +77,8 @@ class Database {
             
             "CREATE TABLE IF NOT EXISTS sources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                newsletter_id INTEGER NOT NULL,
+                user_id INTEGER,
+                newsletter_id INTEGER,
                 type TEXT NOT NULL,
                 name TEXT,
                 config TEXT,
@@ -86,6 +87,7 @@ class Database {
                 last_result TEXT,
                 last_updated DATETIME,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE CASCADE
             )",
             
@@ -164,11 +166,11 @@ class Database {
             $this->pdo->exec($query);
         }
         
-        // Add missing columns to existing tables (migrations)
-        $this->runMigrations();
+        // Add missing columns to existing tables (migrations) - but only for basic migrations
+        $this->runBasicMigrations();
     }
     
-    private function runMigrations() {
+    private function runBasicMigrations() {
         try {
             // Check if name column exists in users table, if not add it
             $stmt = $this->pdo->query("PRAGMA table_info(users)");
@@ -241,12 +243,14 @@ class Database {
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
-            // Migrate to newsletter structure
-            $this->migrateToNewsletterStructure();
-            
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
         }
+    }
+    
+    public function runNewsletterMigration() {
+        // This method can be called separately to run the newsletter migration
+        $this->migrateToNewsletterStructure();
     }
     
     private function migratePlanNames() {

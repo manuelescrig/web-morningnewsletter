@@ -102,8 +102,22 @@ try {
     echo "3. Check if SQLite is properly installed\n";
 }
 
-echo "\n\nIf you see migration issues, please:\n";
-echo "1. Visit /migrate.php in your browser\n";
-echo "2. Or run: php migrate.php from the command line\n";
-echo "3. Then check this status page again\n";
+echo "\n\nNEXT STEPS:\n";
+echo "----------\n";
+if (isset($hasUserIdColumn) && isset($hasNewsletterIdColumn)) {
+    if ($hasUserIdColumn && !$hasNewsletterIdColumn) {
+        echo "🔧 ACTION REQUIRED: Run the migration\n";
+        echo "   Visit: /migrate.php\n";
+    } elseif (!$hasUserIdColumn && $hasNewsletterIdColumn) {
+        echo "✅ DATABASE IS READY: You can use the dashboard\n";
+    } elseif ($hasUserIdColumn && $hasNewsletterIdColumn) {
+        echo "🔄 MIGRATION IN PROGRESS: Visit /migrate.php to complete\n";
+    } else {
+        echo "❌ INVALID STATE: Contact support\n";
+    }
+} else {
+    echo "🔧 RUN MIGRATION: Visit /migrate.php to set up the database\n";
+}
+echo "\nFor detailed migration: /migrate.php\n";
+echo "For this status check: /status.php\n";
 ?>
