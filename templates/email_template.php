@@ -561,18 +561,18 @@
         <!-- Footer -->
         <div class="email-footer">
             <div class="footer-brand">
-                <div class="footer-brand-icon">🌅</div>
-                <span class="footer-brand-text">Made with MorningNewsletter</span>
+                <div class="footer-brand-icon">📧</div>
+                <span class="footer-brand-text">Made with Mailbrew</span>
             </div>
             <div class="footer-address">
-                MorningNewsletter, Creating personalized morning briefings.
+                Mailbrew Inc, 2803 Philadelphia Pike, Claymont, DE.
             </div>
             <div class="footer-digest">
                 {{NEWSLETTER_TITLE}} is a digest by <a href="#">{{AUTHOR_NAME}}</a>.
             </div>
             <div class="footer-links">
                 <a href="{{BASE_URL}}/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a> •
-                <a href="{{BASE_URL}}/dashboard/">Edit Newsletter</a> •
+                <a href="{{BASE_URL}}/dashboard/">Edit Brew</a> •
                 <a href="#">View Online</a>
             </div>
         </div>
