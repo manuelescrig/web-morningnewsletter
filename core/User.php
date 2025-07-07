@@ -266,8 +266,19 @@ class User {
     }
     
     public function getNewsletters() {
-        require_once __DIR__ . '/Newsletter.php';
-        return Newsletter::findByUserId($this->id);
+        try {
+            // Check if newsletters table exists
+            $stmt = $this->db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='newsletters'");
+            if (!$stmt->fetch()) {
+                return []; // Newsletter table doesn't exist yet
+            }
+            
+            require_once __DIR__ . '/Newsletter.php';
+            return Newsletter::findByUserId($this->id);
+        } catch (Exception $e) {
+            error_log("Error in getNewsletters: " . $e->getMessage());
+            return [];
+        }
     }
     
     public function getPrimaryNewsletter() {

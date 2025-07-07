@@ -78,7 +78,6 @@ class Database {
             "CREATE TABLE IF NOT EXISTS sources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER,
-                newsletter_id INTEGER,
                 type TEXT NOT NULL,
                 name TEXT,
                 config TEXT,
@@ -87,8 +86,7 @@ class Database {
                 last_result TEXT,
                 last_updated DATETIME,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-                FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             )",
             
             "CREATE TABLE IF NOT EXISTS email_logs (
