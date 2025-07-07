@@ -154,6 +154,8 @@ class Scheduler {
         
         return [
             'next_send' => $nextSend->format('Y-m-d H:i:s T'),
+            'next_send_formatted' => $nextSend->format('F j, Y g:i A T'),
+            'next_send_object' => $nextSend,
             'sent_today' => $wasEmailSentToday,
             'timezone' => $user->getTimezone(),
             'send_time' => $user->getSendTime()

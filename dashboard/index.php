@@ -236,7 +236,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Next Newsletter</dt>
                                 <dd class="text-lg font-medium text-gray-900">
-                                    <?php echo date('g:i A', strtotime($scheduleStatus['next_send'])); ?>
+                                    <?php echo htmlspecialchars($scheduleStatus['next_send_object']->format('g:i A')); ?>
                                 </dd>
                             </dl>
                         </div>

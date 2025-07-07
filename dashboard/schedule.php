@@ -162,7 +162,7 @@ $timezones = [
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Next Newsletter</p>
-                                <p class="text-lg text-gray-600"><?php echo date('F j, Y g:i A T', strtotime($scheduleStatus['next_send'])); ?></p>
+                                <p class="text-lg text-gray-600"><?php echo htmlspecialchars($scheduleStatus['next_send_formatted']); ?></p>
                             </div>
                         </div>
                         
