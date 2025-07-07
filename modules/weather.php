@@ -3,8 +3,7 @@ require_once __DIR__ . '/../core/SourceModule.php';
 
 class WeatherModule extends BaseSourceModule {
     public function getTitle(): string {
-        $location = $this->config['location'] ?? 'Weather';
-        return "Weather - $location";
+        return "Weather";
     }
     
     public function getData(): array {
