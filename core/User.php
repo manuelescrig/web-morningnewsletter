@@ -51,16 +51,19 @@ class User {
             $this->email_verified = 0;
             $this->is_admin = 0;
             
-            // Create default newsletter for the user
-            require_once __DIR__ . '/Newsletter.php';
-            require_once __DIR__ . '/NewsletterRecipient.php';
-            
-            $newsletter = new Newsletter();
-            $newsletterId = $newsletter->create($this->id, 'Your Morning Brief', '06:00', $timezone);
-            
-            // Subscribe the user to their own newsletter
-            $recipient = new NewsletterRecipient();
-            $recipient->create($newsletterId, $email);
+            // Create default newsletter for the user (only if newsletter tables exist)
+            $stmt = $this->db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='newsletters'");
+            if ($stmt->fetch()) {
+                require_once __DIR__ . '/Newsletter.php';
+                require_once __DIR__ . '/NewsletterRecipient.php';
+                
+                $newsletter = new Newsletter();
+                $newsletterId = $newsletter->create($this->id, 'Your Morning Brief', '06:00', $timezone);
+                
+                // Subscribe the user to their own newsletter
+                $recipient = new NewsletterRecipient();
+                $recipient->create($newsletterId, $email);
+            }
             
             $this->db->commit();
             return $verificationToken;
