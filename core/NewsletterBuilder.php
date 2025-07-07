@@ -54,7 +54,7 @@ class NewsletterBuilder {
                 }
                 
                 $sourceData[] = [
-                    'title' => $module->getTitle(),
+                    'title' => $source['name'] ?? $module->getTitle(),
                     'type' => $source['type'],
                     'data' => $data,
                     'last_updated' => date('Y-m-d H:i:s')
@@ -64,7 +64,7 @@ class NewsletterBuilder {
                 error_log("Error loading source {$source['type']}: " . $e->getMessage());
                 
                 $sourceData[] = [
-                    'title' => ucfirst($source['type']) . ' (Error)',
+                    'title' => ($source['name'] ?? ucfirst($source['type'])) . ' (Error)',
                     'type' => $source['type'],
                     'data' => [
                         [
