@@ -235,7 +235,7 @@ if (empty($newsletters)) {
                         $sources = $newsletter->getSources();
                         $sourceCount = count($sources);
                         ?>
-                        <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200">
+                        <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer" onclick="window.location.href='/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>'">
                             <!-- Newsletter Header -->
                             <div class="p-6 border-b border-gray-200">
                                 <div class="flex justify-between items-start mb-3">
@@ -243,12 +243,12 @@ if (empty($newsletters)) {
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                                     </h3>
                                     <div class="flex space-x-1">
-                                        <button onclick="editNewsletter(<?php echo $newsletter->getId(); ?>)" 
+                                        <button onclick="event.stopPropagation(); editNewsletter(<?php echo $newsletter->getId(); ?>)" 
                                                 class="text-gray-400 hover:text-blue-600 p-1">
                                             <i class="fas fa-edit text-sm"></i>
                                         </button>
                                         <?php if (count($newsletters) > 1): ?>
-                                            <button onclick="deleteNewsletter(<?php echo $newsletter->getId(); ?>)" 
+                                            <button onclick="event.stopPropagation(); deleteNewsletter(<?php echo $newsletter->getId(); ?>)" 
                                                     class="text-gray-400 hover:text-red-600 p-1">
                                                 <i class="fas fa-trash text-sm"></i>
                                             </button>
@@ -282,13 +282,15 @@ if (empty($newsletters)) {
                             <!-- Newsletter Actions -->
                             <div class="p-6">
                                 <div class="grid grid-cols-2 gap-3">
-                                    <a href="/dashboard/sources.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                       class="btn-secondary">
+                                    <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>" 
+                                       class="btn-secondary"
+                                       onclick="event.stopPropagation();">
                                         <i class="fas fa-cog mr-2"></i>
                                         Manage Sources
                                     </a>
                                     <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                       class="btn-primary" target="_blank">
+                                       class="btn-primary" target="_blank"
+                                       onclick="event.stopPropagation();">
                                         <i class="fas fa-eye mr-2"></i>
                                         Preview
                                     </a>
