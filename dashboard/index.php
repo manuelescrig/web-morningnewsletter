@@ -243,10 +243,13 @@ if (empty($newsletters)) {
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                                     </h3>
                                     <div class="flex space-x-1">
-                                        <button onclick="event.stopPropagation(); editNewsletter(<?php echo $newsletter->getId(); ?>)" 
-                                                class="text-gray-400 hover:text-blue-600 p-1">
-                                            <i class="fas fa-edit text-sm"></i>
-                                        </button>
+                                        <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
+                                           target="_blank"
+                                           onclick="event.stopPropagation();"
+                                           class="inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors duration-200">
+                                            <i class="fas fa-eye mr-1"></i>
+                                            Preview
+                                        </a>
                                         <?php if (count($newsletters) > 1): ?>
                                             <button onclick="event.stopPropagation(); deleteNewsletter(<?php echo $newsletter->getId(); ?>)" 
                                                     class="text-gray-400 hover:text-red-600 p-1">
@@ -279,25 +282,11 @@ if (empty($newsletters)) {
                                 <?php endif; ?>
                             </div>
                             
-                            <!-- Newsletter Actions -->
+                            <!-- Newsletter Content -->
                             <div class="p-6">
-                                <div class="grid grid-cols-2 gap-3">
-                                    <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>" 
-                                       class="btn-secondary"
-                                       onclick="event.stopPropagation();">
-                                        <i class="fas fa-cog mr-2"></i>
-                                        Manage Sources
-                                    </a>
-                                    <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                       class="btn-primary" target="_blank"
-                                       onclick="event.stopPropagation();">
-                                        <i class="fas fa-eye mr-2"></i>
-                                        Preview
-                                    </a>
-                                </div>
                                 
                                 <?php if ($sourceCount > 0): ?>
-                                    <div class="mt-4">
+                                    <div>
                                         <p class="text-xs font-medium text-gray-700 mb-2">Active Sources:</p>
                                         <div class="flex flex-wrap gap-1">
                                             <?php foreach (array_slice($sources, 0, 3) as $source): ?>
@@ -313,7 +302,7 @@ if (empty($newsletters)) {
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                                    <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                                         <p class="text-sm text-yellow-800">
                                             <i class="fas fa-exclamation-triangle mr-1"></i>
                                             No sources configured yet
