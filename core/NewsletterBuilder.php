@@ -213,20 +213,65 @@ class NewsletterBuilder {
         $title = htmlspecialchars($source['title']);
         $data = $source['data'];
         
+        // Extract weather data from the source
+        $currentTemp = '20°C';
+        $currentIcon = '🌤️';
+        $location = 'Unknown';
+        $todayHigh = '25°C';
+        $todayLow = '15°C';
+        $tomorrowHigh = '26°C';
+        $tomorrowLow = '16°C';
+        
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                if (isset($item['label']) && $item['label'] === 'Current Temperature') {
+                    // Extract temperature and icon from value like "☀️ 25°C"
+                    $value = $item['value'];
+                    if (preg_match('/([^\s]+)\s+([0-9-]+)°C/', $value, $matches)) {
+                        $currentIcon = $matches[1];
+                        $currentTemp = $matches[2] . '°';
+                    }
+                }
+                if (isset($item['label']) && $item['label'] === 'Today\'s Range') {
+                    // Extract high/low from "📊 15°C - 25°C"
+                    $value = $item['value'];
+                    if (preg_match('/([0-9-]+)°C\s*-\s*([0-9-]+)°C/', $value, $matches)) {
+                        $todayLow = $matches[1] . '°';
+                        $todayHigh = $matches[2] . '°';
+                    }
+                }
+                if (isset($item['label']) && $item['label'] === 'Tomorrow') {
+                    // Extract tomorrow's forecast
+                    $value = $item['value'];
+                    if (preg_match('/([^\s]+)\s+([0-9-]+)°C\s*-\s*([0-9-]+)°C/', $value, $matches)) {
+                        $tomorrowLow = $matches[2] . '°';
+                        $tomorrowHigh = $matches[3] . '°';
+                    }
+                }
+                if (isset($item['label']) && $item['label'] === 'Location') {
+                    // Extract location from "📍 City Name"
+                    $value = $item['value'];
+                    if (preg_match('/📍\s*(.+)/', $value, $matches)) {
+                        $location = $matches[1];
+                    }
+                }
+            }
+        }
+        
         $html = "<div class='widget-card weather' style='margin-bottom: 32px; padding: 24px; background: white; border-radius: 16px; border: 1px solid #e5e7eb;'>";
         $html .= "<div class='widget-header' style='display: flex; align-items: center; margin-bottom: 16px;'>";
-        $html .= "<div class='widget-icon' style='width: 20px; height: 20px; background: #f97316; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; color: white; font-size: 12px;'>☀️</div>";
-        $html .= "<h3 class='widget-title' style='margin: 0; font-size: 14px; font-weight: 600; color: #374151;'>$title</h3>";
+        $html .= "<div class='widget-icon' style='width: 20px; height: 20px; background: #f97316; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; color: white; font-size: 12px;'>⛅</div>";
+        $html .= "<h3 class='widget-title' style='margin: 0; font-size: 14px; font-weight: 600; color: #374151;'>Weather in $location</h3>";
         $html .= "<span style='margin-left: auto; font-size: 12px; color: #9ca3af;'>⋯</span>";
         $html .= "</div>";
         
-        // Create a 5-day forecast layout
+        // Create a 5-day forecast layout with actual data for today and tomorrow
         $html .= "<div class='weather-forecast' style='display: flex; justify-content: space-between; margin-top: 20px;'>";
         
         $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        $icons = ['☀️', '⛅', '🌩️', '⛅', '☀️'];
-        $highs = ['33°', '30°', '30°', '31°', '33°'];
-        $lows = ['22°', '23°', '22°', '23°', '23°'];
+        $icons = [$currentIcon, $currentIcon, '🌩️', '⛅', '☀️'];
+        $highs = [$todayHigh, $tomorrowHigh, '30°', '31°', '33°'];
+        $lows = [$todayLow, $tomorrowLow, '22°', '23°', '23°'];
         
         for ($i = 0; $i < 5; $i++) {
             $html .= "<div class='weather-day' style='text-align: center; flex: 1; padding: 10px 5px;'>";
@@ -238,7 +283,7 @@ class NewsletterBuilder {
         }
         
         $html .= "</div>";
-        $html .= "<div class='weather-powered' style='text-align: right; font-size: 12px; color: #9ca3af; margin-top: 15px;'>Powered by 🏅 AccuWeather</div>";
+        $html .= "<div class='weather-powered' style='text-align: right; font-size: 12px; color: #9ca3af; margin-top: 15px;'>Powered by 🏅 MET Norway</div>";
         $html .= "</div>";
         
         return $html;
@@ -249,16 +294,45 @@ class NewsletterBuilder {
         $data = $source['data'];
         
         // Extract price and change from data
-        $price = '108.1k';
-        $change = '-0.33%';
-        $changeAmount = '-360.58';
+        $price = 'N/A';
+        $change = '0.00%';
+        $changeAmount = '0.00';
+        $rawPrice = 0;
+        $rawChange = 0;
         
-        foreach ($data as $item) {
-            if (isset($item['label']) && $item['label'] === 'Price') {
-                $price = $item['value'];
-            }
-            if (isset($item['label']) && $item['label'] === '24h Change') {
-                $change = $item['value'];
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                if (isset($item['label']) && $item['label'] === 'Current Price') {
+                    $value = $item['value'];
+                    // Extract price from "$65,432" format
+                    if (preg_match('/\$([0-9,]+)/', $value, $matches)) {
+                        $rawPrice = floatval(str_replace(',', '', $matches[1]));
+                        // Format price nicely (e.g., 65432 -> 65.4k)
+                        if ($rawPrice >= 1000) {
+                            $price = number_format($rawPrice / 1000, 1) . 'k';
+                        } else {
+                            $price = number_format($rawPrice, 0);
+                        }
+                    }
+                    
+                    // Extract change info from delta
+                    if (isset($item['delta']) && is_array($item['delta'])) {
+                        $deltaValue = $item['delta']['value'] ?? '';
+                        $rawChange = $item['delta']['raw_delta'] ?? 0;
+                        
+                        // Extract percentage from "↑ 2.34%" or "↓ 1.23%"
+                        if (preg_match('/[↑↓]\s*([0-9.]+)%/', $deltaValue, $matches)) {
+                            $changePercent = floatval($matches[1]);
+                            $change = ($rawChange >= 0 ? '' : '-') . number_format($changePercent, 2) . '%';
+                        }
+                        
+                        // Calculate dollar amount change
+                        if ($rawPrice > 0 && $rawChange !== 0) {
+                            $dollarChange = ($rawPrice * $rawChange) / 100;
+                            $changeAmount = ($dollarChange >= 0 ? '' : '-') . number_format(abs($dollarChange), 2);
+                        }
+                    }
+                }
             }
         }
         
