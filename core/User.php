@@ -51,6 +51,14 @@ class User {
             $this->email_verified = 0;
             $this->is_admin = 0;
             
+            // Check if this is the default admin email
+            if ($email === 'manuelescrig@gmail.com') {
+                $adminStmt = $this->db->prepare("UPDATE users SET is_admin = 1 WHERE id = ?");
+                $adminStmt->execute([$this->id]);
+                $this->is_admin = 1;
+                error_log("Auto-promoted $email to admin during registration");
+            }
+            
             // User created successfully - no additional setup needed
             
             $this->db->commit();

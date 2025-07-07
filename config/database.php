@@ -213,6 +213,9 @@ class Database {
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
+            // Set up default admin user
+            $this->setupDefaultAdmin();
+            
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
         }
@@ -301,6 +304,33 @@ class Database {
             
         } catch (Exception $e) {
             error_log("Database migration error during source configs population: " . $e->getMessage());
+        }
+    }
+    
+    private function setupDefaultAdmin() {
+        try {
+            $adminEmail = 'manuelescrig@gmail.com';
+            
+            // Check if this user exists and promote to admin
+            $stmt = $this->pdo->prepare("SELECT id, is_admin FROM users WHERE email = ?");
+            $stmt->execute([$adminEmail]);
+            $user = $stmt->fetch();
+            
+            if ($user) {
+                if (!$user['is_admin']) {
+                    // User exists but is not admin, promote them
+                    $stmt = $this->pdo->prepare("UPDATE users SET is_admin = 1, updated_at = CURRENT_TIMESTAMP WHERE email = ?");
+                    $stmt->execute([$adminEmail]);
+                    error_log("Database setup: Promoted $adminEmail to admin");
+                } else {
+                    error_log("Database setup: $adminEmail is already an admin");
+                }
+            } else {
+                error_log("Database setup: Admin user $adminEmail not found - will be promoted when account is created");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database setup error during admin promotion: " . $e->getMessage());
         }
     }
 }
