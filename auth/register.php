@@ -111,35 +111,8 @@ $userTimezone = date_default_timezone_get();
                            placeholder="Confirm your password">
                 </div>
 
-                <div>
-                    <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone</label>
-                    <select id="timezone" name="timezone" required
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <?php
-                        $timezones = [
-                            'America/New_York' => 'Eastern Time (EST/EDT)',
-                            'America/Chicago' => 'Central Time (CST/CDT)',
-                            'America/Denver' => 'Mountain Time (MST/MDT)',
-                            'America/Los_Angeles' => 'Pacific Time (PST/PDT)',
-                            'Europe/London' => 'London (GMT/BST)',
-                            'Europe/Paris' => 'Paris (CET/CEST)',
-                            'Europe/Berlin' => 'Berlin (CET/CEST)',
-                            'Asia/Tokyo' => 'Tokyo (JST)',
-                            'Asia/Shanghai' => 'Shanghai (CST)',
-                            'Australia/Sydney' => 'Sydney (AEST/AEDT)',
-                            'UTC' => 'UTC'
-                        ];
-                        
-                        $selectedTimezone = $_POST['timezone'] ?? $userTimezone;
-                        
-                        foreach ($timezones as $value => $label) {
-                            $selected = ($value === $selectedTimezone) ? 'selected' : '';
-                            echo "<option value=\"$value\" $selected>$label</option>";
-                        }
-                        ?>
-                    </select>
-                    <p class="mt-1 text-xs text-gray-500">Your newsletter will be delivered based on this timezone</p>
-                </div>
+                <!-- Hidden timezone field - automatically detected -->
+                <input type="hidden" id="timezone" name="timezone" value="UTC">
             </div>
 
             <div>
@@ -160,5 +133,18 @@ $userTimezone = date_default_timezone_get();
             </div>
         </form>
     </div>
+
+    <script>
+        // Automatically detect user's timezone
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                document.getElementById('timezone').value = timezone;
+            } catch (error) {
+                console.warn('Could not detect timezone, using UTC:', error);
+                document.getElementById('timezone').value = 'UTC';
+            }
+        });
+    </script>
 </body>
 </html>
