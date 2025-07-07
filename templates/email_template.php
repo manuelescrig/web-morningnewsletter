@@ -34,22 +34,71 @@
         
         /* Header */
         .email-header {
-            background: linear-gradient(135deg, #0041EC 0%, #3b82f6 100%);
-            color: white;
-            padding: 30px 20px;
+            background: white;
+            color: #111827;
+            padding: 40px 20px 20px 20px;
             text-align: center;
+            border-bottom: 1px solid #f3f4f6;
         }
         
         .email-header h1 {
             margin: 0;
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
         }
         
         .email-header .date {
             margin: 8px 0 0 0;
             font-size: 16px;
-            opacity: 0.9;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .email-header .author {
+            margin: 12px 0 0 0;
+            font-size: 14px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .email-header .author-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #d1d5db;
+        }
+        
+        /* Date section */
+        .date-section {
+            padding: 30px 20px;
+            text-align: left;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .date-large {
+            font-size: 120px;
+            font-weight: 300;
+            color: #111827;
+            line-height: 0.8;
+            margin: 0;
+        }
+        
+        .date-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ef4444;
+            margin: 8px 0 0 0;
+        }
+        
+        .date-full {
+            font-size: 24px;
+            font-weight: 600;
+            color: #6b7280;
+            margin: 4px 0 0 0;
         }
         
         /* Main content */
@@ -181,65 +230,88 @@
         
         /* Bitcoin widget specific styles */
         .widget-card.bitcoin {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            color: white;
+            background: white;
+            border: 1px solid #e5e7eb;
+            text-align: center;
         }
         
-        .widget-card.bitcoin .widget-title,
-        .widget-card.bitcoin .widget-value,
-        .widget-card.bitcoin .widget-subtitle {
-            color: white;
+        .crypto-symbol {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
         
-        .widget-card.bitcoin .widget-icon {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
+        .crypto-price {
+            font-size: 48px;
+            font-weight: 300;
+            color: #a3a3a3;
+            margin: 0;
+            line-height: 1;
         }
         
-        .widget-card.bitcoin .widget-change {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-        
-        .widget-card.bitcoin .widget-details {
-            border-top-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .widget-card.bitcoin .widget-detail-label {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .widget-card.bitcoin .widget-detail-value {
-            color: white;
+        .crypto-change {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         /* Weather widget specific styles */
         .widget-card.weather {
-            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-            color: white;
+            background: white;
+            border: 1px solid #e5e7eb;
         }
         
-        .widget-card.weather .widget-title,
-        .widget-card.weather .widget-value,
-        .widget-card.weather .widget-subtitle {
-            color: white;
+        .weather-forecast {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
         }
         
-        .widget-card.weather .widget-icon {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
+        .weather-day {
+            text-align: center;
+            flex: 1;
+            padding: 10px 5px;
         }
         
-        .widget-card.weather .widget-details {
-            border-top-color: rgba(255, 255, 255, 0.2);
+        .weather-day-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 8px;
         }
         
-        .widget-card.weather .widget-detail-label {
-            color: rgba(255, 255, 255, 0.8);
+        .weather-icon {
+            font-size: 32px;
+            margin: 8px 0;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .widget-card.weather .widget-detail-value {
-            color: white;
+        .weather-temp {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin: 4px 0;
+        }
+        
+        .weather-temp-low {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .weather-powered {
+            text-align: right;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 15px;
         }
         
         /* Legacy source sections for non-widget sources */
@@ -311,24 +383,68 @@
         
         /* Footer */
         .email-footer {
-            background-color: #f3f4f6;
-            padding: 20px;
+            background-color: white;
+            padding: 40px 20px;
             text-align: center;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid #f3f4f6;
         }
         
-        .email-footer p {
-            margin: 0 0 10px 0;
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-brand-icon {
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .footer-brand-text {
+            font-size: 14px;
+            font-weight: 500;
             color: #6b7280;
         }
         
-        .email-footer a {
-            color: #0041EC;
+        .footer-address {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+        
+        .footer-digest {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+        
+        .footer-digest a {
+            color: #9ca3af;
             text-decoration: none;
         }
         
-        .email-footer a:hover {
+        .footer-links {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            margin: 0 4px;
+        }
+        
+        .footer-links a:hover {
             text-decoration: underline;
         }
         
@@ -410,8 +526,19 @@
     <div class="email-container">
         <!-- Header -->
         <div class="email-header">
-            <h1>🌅 {{NEWSLETTER_TITLE}}</h1>
-            <p class="date">{{DATE}}</p>
+            <h1>{{NEWSLETTER_TITLE}}</h1>
+            <p class="date">{{DATE}} • Issue #{{ISSUE_NUMBER}} • Edit</p>
+            <div class="author">
+                <div class="author-avatar"></div>
+                <span>{{AUTHOR_NAME}}</span>
+            </div>
+        </div>
+        
+        <!-- Date Section -->
+        <div class="date-section">
+            <div class="date-large">{{DAY_NUMBER}}</div>
+            <div class="date-text">{{DAY_NAME}}</div>
+            <div class="date-full">{{MONTH_NAME}}, {{YEAR}}</div>
         </div>
         
         <!-- Main Content -->
@@ -433,14 +560,21 @@
         
         <!-- Footer -->
         <div class="email-footer">
-            <p>You're receiving this because you subscribed to "{{NEWSLETTER_TITLE}}"</p>
-            <p>
-                <a href="{{BASE_URL}}/dashboard/">Manage Preferences</a> | 
-                <a href="{{BASE_URL}}/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>
-            </p>
-            <p style="margin-top: 15px; color: #9ca3af;">
-                © {{CURRENT_YEAR}} MorningNewsletter. All rights reserved.
-            </p>
+            <div class="footer-brand">
+                <div class="footer-brand-icon">📧</div>
+                <span class="footer-brand-text">Made with Mailbrew</span>
+            </div>
+            <div class="footer-address">
+                Mailbrew Inc, 2803 Philadelphia Pike, Claymont, DE.
+            </div>
+            <div class="footer-digest">
+                {{NEWSLETTER_TITLE}} is a digest by <a href="#">{{AUTHOR_NAME}}</a>.
+            </div>
+            <div class="footer-links">
+                <a href="{{BASE_URL}}/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a> •
+                <a href="{{BASE_URL}}/dashboard/">Edit Brew</a> •
+                <a href="#">View Online</a>
+            </div>
         </div>
     </div>
 </body>
