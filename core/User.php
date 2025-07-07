@@ -223,20 +223,46 @@ class User {
     }
     
     public function getSources() {
-        // Get sources from the user's primary newsletter
-        $newsletter = $this->getPrimaryNewsletter();
-        if ($newsletter) {
-            return $newsletter->getSources();
+        // Check if newsletter_id column exists in sources table
+        try {
+            $stmt = $this->db->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            $hasNewsletterIdColumn = false;
+            $hasUserIdColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                }
+                if ($column['name'] === 'user_id') {
+                    $hasUserIdColumn = true;
+                }
+            }
+            
+            // If we have newsletter structure, use it
+            if ($hasNewsletterIdColumn) {
+                $newsletter = $this->getPrimaryNewsletter();
+                if ($newsletter) {
+                    return $newsletter->getSources();
+                }
+            }
+            
+            // Fallback to legacy direct sources (for backward compatibility)
+            if ($hasUserIdColumn) {
+                $stmt = $this->db->prepare("
+                    SELECT * FROM sources 
+                    WHERE user_id = ? AND is_active = 1 
+                    ORDER BY sort_order, created_at
+                ");
+                $stmt->execute([$this->id]);
+                return $stmt->fetchAll();
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error in getSources: " . $e->getMessage());
         }
         
-        // Fallback to legacy direct sources (for backward compatibility during migration)
-        $stmt = $this->db->prepare("
-            SELECT * FROM sources 
-            WHERE user_id = ? AND is_active = 1 
-            ORDER BY sort_order, created_at
-        ");
-        $stmt->execute([$this->id]);
-        return $stmt->fetchAll();
+        return [];
     }
     
     public function getNewsletters() {
@@ -269,26 +295,52 @@ class User {
     }
     
     public function getSourceCount() {
-        // Count sources from the user's primary newsletter
-        $newsletter = $this->getPrimaryNewsletter();
-        if ($newsletter) {
-            $stmt = $this->db->prepare("
-                SELECT COUNT(*) as count 
-                FROM sources 
-                WHERE newsletter_id = ? AND is_active = 1
-            ");
-            $stmt->execute([$newsletter->getId()]);
-            return $stmt->fetch()['count'];
+        try {
+            // Check if newsletter_id column exists in sources table
+            $stmt = $this->db->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            $hasNewsletterIdColumn = false;
+            $hasUserIdColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                }
+                if ($column['name'] === 'user_id') {
+                    $hasUserIdColumn = true;
+                }
+            }
+            
+            // If we have newsletter structure, use it
+            if ($hasNewsletterIdColumn) {
+                $newsletter = $this->getPrimaryNewsletter();
+                if ($newsletter) {
+                    $stmt = $this->db->prepare("
+                        SELECT COUNT(*) as count 
+                        FROM sources 
+                        WHERE newsletter_id = ? AND is_active = 1
+                    ");
+                    $stmt->execute([$newsletter->getId()]);
+                    return $stmt->fetch()['count'];
+                }
+            }
+            
+            // Fallback to legacy count
+            if ($hasUserIdColumn) {
+                $stmt = $this->db->prepare("
+                    SELECT COUNT(*) as count 
+                    FROM sources 
+                    WHERE user_id = ? AND is_active = 1
+                ");
+                $stmt->execute([$this->id]);
+                return $stmt->fetch()['count'];
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error in getSourceCount: " . $e->getMessage());
         }
         
-        // Fallback to legacy count
-        $stmt = $this->db->prepare("
-            SELECT COUNT(*) as count 
-            FROM sources 
-            WHERE user_id = ? AND is_active = 1
-        ");
-        $stmt->execute([$this->id]);
-        return $stmt->fetch()['count'];
+        return 0;
     }
     
     public function getSourceLimit() {
@@ -315,47 +367,134 @@ class User {
             throw new Exception("Source limit reached for current plan");
         }
         
-        $newsletter = $this->getPrimaryNewsletter();
-        if (!$newsletter) {
-            throw new Exception("No newsletter found for user");
+        try {
+            // Check if newsletter_id column exists in sources table
+            $stmt = $this->db->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            $hasNewsletterIdColumn = false;
+            $hasUserIdColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                }
+                if ($column['name'] === 'user_id') {
+                    $hasUserIdColumn = true;
+                }
+            }
+            
+            // If we have newsletter structure, use it
+            if ($hasNewsletterIdColumn) {
+                $newsletter = $this->getPrimaryNewsletter();
+                if (!$newsletter) {
+                    throw new Exception("No newsletter found for user");
+                }
+                
+                // Get the next sort order
+                $stmt = $this->db->prepare("
+                    SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
+                    FROM sources 
+                    WHERE newsletter_id = ? AND is_active = 1
+                ");
+                $stmt->execute([$newsletter->getId()]);
+                $nextOrder = $stmt->fetch()['next_order'];
+                
+                $stmt = $this->db->prepare("
+                    INSERT INTO sources (newsletter_id, type, name, config, sort_order) 
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                
+                return $stmt->execute([
+                    $newsletter->getId(), 
+                    $type, 
+                    $name,
+                    json_encode($config),
+                    $nextOrder
+                ]);
+            }
+            
+            // Fallback to legacy structure
+            if ($hasUserIdColumn) {
+                // Get the next sort order
+                $stmt = $this->db->prepare("
+                    SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
+                    FROM sources 
+                    WHERE user_id = ? AND is_active = 1
+                ");
+                $stmt->execute([$this->id]);
+                $nextOrder = $stmt->fetch()['next_order'];
+                
+                $stmt = $this->db->prepare("
+                    INSERT INTO sources (user_id, type, name, config, sort_order) 
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                
+                return $stmt->execute([
+                    $this->id, 
+                    $type, 
+                    $name,
+                    json_encode($config),
+                    $nextOrder
+                ]);
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error in addSource: " . $e->getMessage());
+            throw $e;
         }
         
-        // Get the next sort order
-        $stmt = $this->db->prepare("
-            SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
-            FROM sources 
-            WHERE newsletter_id = ? AND is_active = 1
-        ");
-        $stmt->execute([$newsletter->getId()]);
-        $nextOrder = $stmt->fetch()['next_order'];
-        
-        $stmt = $this->db->prepare("
-            INSERT INTO sources (newsletter_id, type, name, config, sort_order) 
-            VALUES (?, ?, ?, ?, ?)
-        ");
-        
-        return $stmt->execute([
-            $newsletter->getId(), 
-            $type, 
-            $name,
-            json_encode($config),
-            $nextOrder
-        ]);
+        throw new Exception("Unable to add source - database structure issue");
     }
     
     public function removeSource($sourceId) {
-        $newsletter = $this->getPrimaryNewsletter();
-        if (!$newsletter) {
-            return false;
+        try {
+            // Check if newsletter_id column exists in sources table
+            $stmt = $this->db->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            $hasNewsletterIdColumn = false;
+            $hasUserIdColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                }
+                if ($column['name'] === 'user_id') {
+                    $hasUserIdColumn = true;
+                }
+            }
+            
+            // If we have newsletter structure, use it
+            if ($hasNewsletterIdColumn) {
+                $newsletter = $this->getPrimaryNewsletter();
+                if (!$newsletter) {
+                    return false;
+                }
+                
+                $stmt = $this->db->prepare("
+                    UPDATE sources 
+                    SET is_active = 0 
+                    WHERE id = ? AND newsletter_id = ?
+                ");
+                
+                return $stmt->execute([$sourceId, $newsletter->getId()]);
+            }
+            
+            // Fallback to legacy structure
+            if ($hasUserIdColumn) {
+                $stmt = $this->db->prepare("
+                    UPDATE sources 
+                    SET is_active = 0 
+                    WHERE id = ? AND user_id = ?
+                ");
+                
+                return $stmt->execute([$sourceId, $this->id]);
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error in removeSource: " . $e->getMessage());
         }
         
-        $stmt = $this->db->prepare("
-            UPDATE sources 
-            SET is_active = 0 
-            WHERE id = ? AND newsletter_id = ?
-        ");
-        
-        return $stmt->execute([$sourceId, $newsletter->getId()]);
+        return false;
     }
     
     public function promoteToAdmin() {

@@ -392,6 +392,15 @@ class Database {
     
     private function migrateToNewsletterStructure() {
         try {
+            // First, check if newsletters table exists
+            $stmt = $this->pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='newsletters'");
+            $newslettersTableExists = $stmt->fetch() !== false;
+            
+            if (!$newslettersTableExists) {
+                error_log("Database migration: Newsletters table doesn't exist yet, skipping migration");
+                return;
+            }
+            
             // Check if we need to migrate by seeing if newsletters table is empty
             $stmt = $this->pdo->query("SELECT COUNT(*) as count FROM newsletters");
             $newsletterCount = $stmt->fetch()['count'];
@@ -412,7 +421,7 @@ class Database {
             }
             
             // Only migrate if newsletters table is empty and we still have old structure
-            if ($newsletterCount == 0 && $hasUserIdColumn) {
+            if ($newsletterCount == 0 && $hasUserIdColumn && !$hasNewsletterIdColumn) {
                 error_log("Database migration: Starting newsletter structure migration");
                 
                 // Begin transaction for safe migration
