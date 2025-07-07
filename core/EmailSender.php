@@ -203,9 +203,11 @@ class EmailSender {
                 </div>
                 
                 <p style='font-size: 14px; color: #666;'>
-                    If the button doesn't work, copy and paste this link into your browser:<br>
-                    <a href='$verificationUrl'>$verificationUrl</a>
+                    If the button doesn't work, copy and paste this link into your browser:
                 </p>
+                <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
+                    <a href='$verificationUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
+                </div>
             </div>
             
             <div style='font-size: 12px; color: #666; text-align: center;'>
@@ -247,9 +249,11 @@ class EmailSender {
                 </div>
                 
                 <p style='font-size: 14px; color: #666;'>
-                    If the button doesn't work, copy and paste this link into your browser:<br>
-                    <a href='$resetUrl'>$resetUrl</a>
+                    If the button doesn't work, copy and paste this link into your browser:
                 </p>
+                <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
+                    <a href='$resetUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$resetUrl</a>
+                </div>
                 
                 <p style='font-size: 14px; color: #666; margin-top: 20px;'>
                     <strong>This link will expire in 1 hour.</strong>
@@ -298,9 +302,11 @@ class EmailSender {
                 </div>
                 
                 <p style='font-size: 14px; color: #666;'>
-                    If the button doesn't work, copy and paste this link into your browser:<br>
-                    <a href='$verificationUrl'>$verificationUrl</a>
+                    If the button doesn't work, copy and paste this link into your browser:
                 </p>
+                <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
+                    <a href='$verificationUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
+                </div>
                 
                 <p style='font-size: 14px; color: #666; margin-top: 20px;'>
                     <strong>This verification link will expire in 1 hour.</strong>
