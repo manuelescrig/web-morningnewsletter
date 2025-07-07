@@ -17,10 +17,10 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     ];
     
     $sunSizeClasses = [
-        'sm' => 'h-3 w-2',
-        'md' => 'h-4 w-3',
-        'lg' => 'h-5 w-4',
-        'xl' => 'h-6 w-5'
+        'sm' => 'logo-icon',
+        'md' => 'logo-icon',
+        'lg' => 'logo-icon',
+        'xl' => 'logo-icon'
     ];
     
     $sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
@@ -29,7 +29,7 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     $allClasses = trim("$baseClasses $classes");
     
     echo "<a href=\"$href\" class=\"$allClasses flex items-center justify-center\">";
-    echo "<img src=\"/assets/logos/logo-sun.png\" alt=\"\" class=\"$sunSizeClass logo-sun-rotated self-center\">";
+    echo "<img src=\"/assets/logos/logo-sun.png\" alt=\"\" class=\"$sunSizeClass logo-sun-rotated self-center\" style=\"height: 1.05rem !important; width: auto; margin-bottom: -2px;\">";
     echo "<span><span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span></span>";
     echo "</a>";
 }
