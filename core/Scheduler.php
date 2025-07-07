@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/User.php';
+require_once __DIR__ . '/Newsletter.php';
 require_once __DIR__ . '/NewsletterBuilder.php';
 require_once __DIR__ . '/EmailSender.php';
 
@@ -12,44 +13,63 @@ class Scheduler {
         $this->emailSender = new EmailSender();
     }
     
-    public function getUsersToSend($timeWindow = 15) {
+    public function getNewslettersToSend($timeWindow = 15) {
         $currentTime = new DateTime('now', new DateTimeZone('UTC'));
         $windowStart = clone $currentTime;
         $windowEnd = clone $currentTime;
         $windowEnd->add(new DateInterval("PT{$timeWindow}M"));
         
-        $users = [];
+        $newslettersToSend = [];
         
-        // Get all users with verified emails who haven't unsubscribed
+        // Get all newsletters from verified, active users
         $stmt = $this->db->prepare("
-            SELECT * FROM users 
-            WHERE email_verified = 1 
-            AND (unsubscribed IS NULL OR unsubscribed = 0)
-            AND send_time IS NOT NULL
+            SELECT n.*, u.email, u.email_verified, u.unsubscribed 
+            FROM newsletters n
+            JOIN users u ON n.user_id = u.id
+            WHERE n.is_active = 1 
+            AND u.email_verified = 1 
+            AND (u.unsubscribed IS NULL OR u.unsubscribed = 0)
+            AND n.send_time IS NOT NULL
         ");
         $stmt->execute();
-        $allUsers = $stmt->fetchAll();
+        $allNewsletters = $stmt->fetchAll();
         
-        foreach ($allUsers as $userData) {
-            $user = new User($userData);
-            $userTime = $this->getUserCurrentTime($user);
-            $userSendTime = $this->getUserSendDateTime($user, $userTime);
+        foreach ($allNewsletters as $newsletterData) {
+            $newsletter = new Newsletter($newsletterData);
+            $user = User::findById($newsletter->getUserId());
             
-            // Check if user's send time falls within our window
-            if ($this->isTimeInWindow($userSendTime, $windowStart, $windowEnd)) {
-                // Check if we already sent today
-                if (!$this->wasEmailSentToday($user->getId())) {
-                    $users[] = $user;
+            if (!$user) continue;
+            
+            $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
+            $newsletterSendTime = $this->getNewsletterSendDateTime($newsletter, $newsletterTime);
+            
+            // Check if newsletter's send time falls within our window
+            if ($this->isTimeInWindow($newsletterSendTime, $windowStart, $windowEnd)) {
+                // Check if we already sent this newsletter today
+                if (!$this->wasNewsletterSentToday($newsletter->getId())) {
+                    $newslettersToSend[] = ['newsletter' => $newsletter, 'user' => $user];
                 }
             }
+        }
+        
+        return $newslettersToSend;
+    }
+    
+    // Backward compatibility method
+    public function getUsersToSend($timeWindow = 15) {
+        $newsletters = $this->getNewslettersToSend($timeWindow);
+        $users = [];
+        
+        foreach ($newsletters as $item) {
+            $users[] = $item['user'];
         }
         
         return $users;
     }
     
-    private function getUserCurrentTime(User $user) {
+    private function getNewsletterCurrentTime(Newsletter $newsletter) {
         try {
-            $timezone = new DateTimeZone($user->getTimezone());
+            $timezone = new DateTimeZone($newsletter->getTimezone());
             return new DateTime('now', $timezone);
         } catch (Exception $e) {
             // Fallback to UTC if timezone is invalid
@@ -57,14 +77,35 @@ class Scheduler {
         }
     }
     
+    private function getNewsletterSendDateTime(Newsletter $newsletter, DateTime $newsletterTime) {
+        $sendTime = $newsletter->getSendTime(); // Format: "06:00"
+        list($hour, $minute) = explode(':', $sendTime);
+        
+        $sendDateTime = clone $newsletterTime;
+        $sendDateTime->setTime((int)$hour, (int)$minute, 0);
+        
+        // Convert to UTC for comparison
+        $sendDateTime->setTimezone(new DateTimeZone('UTC'));
+        
+        return $sendDateTime;
+    }
+    
+    // Backward compatibility methods
+    private function getUserCurrentTime(User $user) {
+        try {
+            $timezone = new DateTimeZone($user->getTimezone());
+            return new DateTime('now', $timezone);
+        } catch (Exception $e) {
+            return new DateTime('now', new DateTimeZone('UTC'));
+        }
+    }
+    
     private function getUserSendDateTime(User $user, DateTime $userTime) {
-        $sendTime = $user->getSendTime(); // Format: "06:00"
+        $sendTime = $user->getSendTime();
         list($hour, $minute) = explode(':', $sendTime);
         
         $sendDateTime = clone $userTime;
         $sendDateTime->setTime((int)$hour, (int)$minute, 0);
-        
-        // Convert to UTC for comparison
         $sendDateTime->setTimezone(new DateTimeZone('UTC'));
         
         return $sendDateTime;
@@ -74,6 +115,22 @@ class Scheduler {
         return $sendTime >= $windowStart && $sendTime <= $windowEnd;
     }
     
+    private function wasNewsletterSentToday($newsletterId) {
+        $today = date('Y-m-d');
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) as count 
+            FROM email_logs 
+            WHERE newsletter_id = ? 
+            AND status = 'sent' 
+            AND DATE(sent_at) = ?
+        ");
+        $stmt->execute([$newsletterId, $today]);
+        $result = $stmt->fetch();
+        
+        return $result['count'] > 0;
+    }
+    
+    // Backward compatibility method
     private function wasEmailSentToday($userId) {
         $today = date('Y-m-d');
         $stmt = $this->db->prepare("
@@ -90,40 +147,45 @@ class Scheduler {
     }
     
     public function sendNewsletters() {
-        $users = $this->getUsersToSend();
+        $newslettersToSend = $this->getNewslettersToSend();
         $results = [
-            'total' => count($users),
+            'total' => count($newslettersToSend),
             'sent' => 0,
             'failed' => 0,
             'errors' => []
         ];
         
-        foreach ($users as $user) {
+        foreach ($newslettersToSend as $item) {
+            $newsletter = $item['newsletter'];
+            $user = $item['user'];
+            
             try {
-                $this->sendNewsletterToUser($user);
+                $this->sendNewsletterToUser($newsletter, $user);
                 $results['sent']++;
             } catch (Exception $e) {
                 $results['failed']++;
                 $results['errors'][] = [
                     'user_id' => $user->getId(),
+                    'newsletter_id' => $newsletter->getId(),
                     'email' => $user->getEmail(),
+                    'newsletter_title' => $newsletter->getTitle(),
                     'error' => $e->getMessage()
                 ];
-                error_log("Failed to send newsletter to user {$user->getId()}: " . $e->getMessage());
+                error_log("Failed to send newsletter {$newsletter->getId()} to user {$user->getId()}: " . $e->getMessage());
             }
         }
         
         return $results;
     }
     
-    private function sendNewsletterToUser(User $user) {
+    private function sendNewsletterToUser(Newsletter $newsletter, User $user) {
         // Build newsletter content
-        $builder = new NewsletterBuilder($user);
+        $builder = new NewsletterBuilder($newsletter, $user);
         $content = $builder->build();
         
         // Send email
-        $subject = "Your Morning Brief - " . date('F j, Y');
-        $success = $this->emailSender->sendNewsletter($user, $content, $subject);
+        $subject = $newsletter->getTitle() . " - " . date('F j, Y');
+        $success = $this->emailSender->sendNewsletter($user, $content, $subject, $newsletter->getId());
         
         if (!$success) {
             throw new Exception("Failed to send email to " . $user->getEmail());
@@ -132,33 +194,66 @@ class Scheduler {
         return true;
     }
     
-    public function getNextSendTime(User $user) {
-        $userTime = $this->getUserCurrentTime($user);
-        $sendTime = $user->getSendTime();
+    public function getNextSendTime($object) {
+        // Handle both Newsletter and User objects for backward compatibility
+        if ($object instanceof Newsletter) {
+            $newsletter = $object;
+            $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
+            $sendTime = $newsletter->getSendTime();
+        } else if ($object instanceof User) {
+            $user = $object;
+            $newsletter = $user->getDefaultNewsletter();
+            if (!$newsletter) {
+                throw new Exception("User has no newsletters");
+            }
+            $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
+            $sendTime = $newsletter->getSendTime();
+        } else {
+            throw new Exception("Invalid object type for getNextSendTime");
+        }
+        
         list($hour, $minute) = explode(':', $sendTime);
         
-        $nextSend = clone $userTime;
+        $nextSend = clone $newsletterTime;
         $nextSend->setTime((int)$hour, (int)$minute, 0);
         
         // If send time has passed today, schedule for tomorrow
-        if ($nextSend <= $userTime) {
+        if ($nextSend <= $newsletterTime) {
             $nextSend->add(new DateInterval('P1D'));
         }
         
         return $nextSend;
     }
     
-    public function getScheduleStatus(User $user) {
-        $nextSend = $this->getNextSendTime($user);
-        $wasEmailSentToday = $this->wasEmailSentToday($user->getId());
+    public function getScheduleStatus($object) {
+        // Handle both Newsletter and User objects for backward compatibility
+        if ($object instanceof Newsletter) {
+            $newsletter = $object;
+            $nextSend = $this->getNextSendTime($newsletter);
+            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
+            $timezone = $newsletter->getTimezone();
+            $sendTime = $newsletter->getSendTime();
+        } else if ($object instanceof User) {
+            $user = $object;
+            $newsletter = $user->getDefaultNewsletter();
+            if (!$newsletter) {
+                throw new Exception("User has no newsletters");
+            }
+            $nextSend = $this->getNextSendTime($newsletter);
+            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
+            $timezone = $newsletter->getTimezone();
+            $sendTime = $newsletter->getSendTime();
+        } else {
+            throw new Exception("Invalid object type for getScheduleStatus");
+        }
         
         return [
             'next_send' => $nextSend->format('Y-m-d H:i:s T'),
             'next_send_formatted' => $nextSend->format('F j, Y g:i A T'),
             'next_send_object' => $nextSend,
             'sent_today' => $wasEmailSentToday,
-            'timezone' => $user->getTimezone(),
-            'send_time' => $user->getSendTime()
+            'timezone' => $timezone,
+            'send_time' => $sendTime
         ];
     }
 }

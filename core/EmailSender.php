@@ -22,7 +22,7 @@ class EmailSender {
         $this->fromName = $_ENV['FROM_NAME'] ?? $providerConfig['from_name'];
     }
     
-    public function sendNewsletter(User $user, $htmlContent, $subject = null) {
+    public function sendNewsletter(User $user, $htmlContent, $subject = null, $newsletterId = null) {
         if (!$subject) {
             $subject = "Your Morning Brief - " . date('F j, Y');
         }
@@ -34,11 +34,11 @@ class EmailSender {
                 $htmlContent
             );
             
-            $this->logEmail($user->getId(), $success ? 'sent' : 'failed');
+            $this->logEmail($user->getId(), $success ? 'sent' : 'failed', null, $newsletterId);
             return $success;
             
         } catch (Exception $e) {
-            $this->logEmail($user->getId(), 'failed', $e->getMessage());
+            $this->logEmail($user->getId(), 'failed', $e->getMessage(), $newsletterId);
             throw $e;
         }
     }
@@ -165,13 +165,24 @@ class EmailSender {
         return $success;
     }
     
-    private function logEmail($userId, $status, $errorMessage = null) {
+    private function logEmail($userId, $status, $errorMessage = null, $newsletterId = null) {
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("
-            INSERT INTO email_logs (user_id, status, error_message) 
-            VALUES (?, ?, ?)
-        ");
-        $stmt->execute([$userId, $status, $errorMessage]);
+        
+        // Check if newsletter_id column exists in email_logs table
+        try {
+            $stmt = $db->prepare("
+                INSERT INTO email_logs (user_id, status, error_message, newsletter_id) 
+                VALUES (?, ?, ?, ?)
+            ");
+            $stmt->execute([$userId, $status, $errorMessage, $newsletterId]);
+        } catch (Exception $e) {
+            // Fall back to old schema if newsletter_id column doesn't exist
+            $stmt = $db->prepare("
+                INSERT INTO email_logs (user_id, status, error_message) 
+                VALUES (?, ?, ?)
+            ");
+            $stmt->execute([$userId, $status, $errorMessage]);
+        }
     }
     
     public function sendVerificationEmail($email, $token) {

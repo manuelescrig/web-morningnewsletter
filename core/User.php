@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/Newsletter.php';
 
 class User {
     private $db;
@@ -7,9 +8,6 @@ class User {
     private $email;
     private $name;
     private $plan;
-    private $timezone;
-    private $send_time;
-    private $newsletter_title;
     private $email_verified;
     private $unsubscribed;
     private $is_admin;
@@ -22,9 +20,6 @@ class User {
             $this->email = $userData['email'];
             $this->name = $userData['name'];
             $this->plan = $userData['plan'];
-            $this->timezone = $userData['timezone'];
-            $this->send_time = $userData['send_time'];
-            $this->newsletter_title = $userData['newsletter_title'] ?? 'Your Morning Brief';
             $this->email_verified = $userData['email_verified'];
             $this->unsubscribed = $userData['unsubscribed'] ?? 0;
             $this->is_admin = $userData['is_admin'] ?? 0;
@@ -36,20 +31,17 @@ class User {
         $verificationToken = bin2hex(random_bytes(32));
         
         $stmt = $this->db->prepare("
-            INSERT INTO users (email, password_hash, timezone, verification_token) 
-            VALUES (?, ?, ?, ?)
+            INSERT INTO users (email, password_hash, verification_token) 
+            VALUES (?, ?, ?)
         ");
         
         try {
             $this->db->beginTransaction();
             
-            $stmt->execute([$email, $passwordHash, $timezone, $verificationToken]);
+            $stmt->execute([$email, $passwordHash, $verificationToken]);
             $this->id = $this->db->lastInsertId();
             $this->email = $email;
             $this->plan = 'free';
-            $this->timezone = $timezone;
-            $this->send_time = '06:00';
-            $this->newsletter_title = 'Your Morning Brief';
             $this->email_verified = 0;
             $this->is_admin = 0;
             
@@ -61,7 +53,9 @@ class User {
                 error_log("Auto-promoted $email to admin during registration");
             }
             
-            // User created successfully - no additional setup needed
+            // Create default newsletter for the user
+            $newsletter = new Newsletter();
+            $newsletter->create($this->id, 'My Morning Brief', $timezone, '06:00');
             
             $this->db->commit();
             return $verificationToken;
@@ -114,7 +108,7 @@ class User {
         try {
             error_log("User::updateProfile called with data: " . json_encode($data));
             
-            $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email', 'newsletter_title'];
+            $allowedFields = ['plan', 'name', 'email'];
             $updates = [];
             $values = [];
             
@@ -198,8 +192,8 @@ class User {
         try {
             $this->db->beginTransaction();
             
-            // Delete user's sources
-            $stmt = $this->db->prepare("DELETE FROM sources WHERE user_id = ?");
+            // Delete user's newsletters (which will cascade delete sources)
+            $stmt = $this->db->prepare("DELETE FROM newsletters WHERE user_id = ?");
             $stmt->execute([$this->id]);
             
             // Delete user's subscriptions  
@@ -223,35 +217,38 @@ class User {
         }
     }
     
-    public function getSources() {
-        try {
-            $stmt = $this->db->prepare("
-                SELECT * FROM sources 
-                WHERE user_id = ? AND is_active = 1 
-                ORDER BY sort_order, created_at
-            ");
-            $stmt->execute([$this->id]);
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            error_log("Error in getSources: " . $e->getMessage());
-            return [];
-        }
+    // Newsletter management methods
+    public function getNewsletters() {
+        return Newsletter::findByUser($this->id);
     }
     
+    public function getNewsletter($newsletterId) {
+        $newsletter = Newsletter::findById($newsletterId);
+        if ($newsletter && $newsletter->getUserId() == $this->id) {
+            return $newsletter;
+        }
+        return null;
+    }
+    
+    public function createNewsletter($title, $timezone = 'UTC', $sendTime = '06:00') {
+        $newsletter = new Newsletter();
+        return $newsletter->create($this->id, $title, $timezone, $sendTime);
+    }
+    
+    public function getDefaultNewsletter() {
+        $newsletters = $this->getNewsletters();
+        return !empty($newsletters) ? $newsletters[0] : null;
+    }
+    
+    // Backward compatibility methods (for existing code)
+    public function getSources() {
+        $newsletter = $this->getDefaultNewsletter();
+        return $newsletter ? $newsletter->getSources() : [];
+    }
     
     public function getSourceCount() {
-        try {
-            $stmt = $this->db->prepare("
-                SELECT COUNT(*) as count 
-                FROM sources 
-                WHERE user_id = ? AND is_active = 1
-            ");
-            $stmt->execute([$this->id]);
-            return $stmt->fetch()['count'];
-        } catch (Exception $e) {
-            error_log("Error in getSourceCount: " . $e->getMessage());
-            return 0;
-        }
+        $newsletter = $this->getDefaultNewsletter();
+        return $newsletter ? $newsletter->getSourceCount() : 0;
     }
     
     public function getSourceLimit() {
@@ -273,52 +270,27 @@ class User {
         return $this->getSourceCount() < $this->getSourceLimit();
     }
     
+    // Backward compatibility methods (delegate to default newsletter)
     public function addSource($type, $config = [], $name = null) {
         if (!$this->canAddSource()) {
             throw new Exception("Source limit reached for current plan");
         }
         
-        try {
-            // Get the next sort order
-            $stmt = $this->db->prepare("
-                SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
-                FROM sources 
-                WHERE user_id = ? AND is_active = 1
-            ");
-            $stmt->execute([$this->id]);
-            $nextOrder = $stmt->fetch()['next_order'];
-            
-            $stmt = $this->db->prepare("
-                INSERT INTO sources (user_id, type, name, config, sort_order) 
-                VALUES (?, ?, ?, ?, ?)
-            ");
-            
-            return $stmt->execute([
-                $this->id, 
-                $type, 
-                $name,
-                json_encode($config),
-                $nextOrder
-            ]);
-        } catch (Exception $e) {
-            error_log("Error in addSource: " . $e->getMessage());
-            throw $e;
+        $newsletter = $this->getDefaultNewsletter();
+        if (!$newsletter) {
+            throw new Exception("No newsletter found for user");
         }
+        
+        return $newsletter->addSource($type, $config, $name);
     }
     
     public function removeSource($sourceId) {
-        try {
-            $stmt = $this->db->prepare("
-                UPDATE sources 
-                SET is_active = 0 
-                WHERE id = ? AND user_id = ?
-            ");
-            
-            return $stmt->execute([$sourceId, $this->id]);
-        } catch (Exception $e) {
-            error_log("Error in removeSource: " . $e->getMessage());
+        $newsletter = $this->getDefaultNewsletter();
+        if (!$newsletter) {
             return false;
         }
+        
+        return $newsletter->removeSource($sourceId);
     }
     
     public function promoteToAdmin() {
@@ -354,9 +326,9 @@ class User {
             // Start transaction for data consistency
             $this->db->beginTransaction();
             
-            // Delete related data first (sources and email_logs have CASCADE DELETE in schema)
-            // But we'll explicitly delete them to be safe
-            $stmt = $this->db->prepare("DELETE FROM sources WHERE user_id = ?");
+            // Delete related data first (newsletters will cascade delete sources)
+            // Delete newsletters first
+            $stmt = $this->db->prepare("DELETE FROM newsletters WHERE user_id = ?");
             $stmt->execute([$this->id]);
             
             $stmt = $this->db->prepare("DELETE FROM email_logs WHERE user_id = ?");
@@ -786,56 +758,21 @@ class User {
     }
     
     public function updateSourceOrder($sourceIds) {
-        try {
-            $this->db->beginTransaction();
-            
-            $stmt = $this->db->prepare("
-                UPDATE sources 
-                SET sort_order = ?
-                WHERE id = ? AND user_id = ?
-            ");
-            
-            foreach ($sourceIds as $order => $sourceId) {
-                $stmt->execute([$order + 1, $sourceId, $this->id]);
-            }
-            
-            $this->db->commit();
-            return true;
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            error_log("Error updating source order: " . $e->getMessage());
+        $newsletter = $this->getDefaultNewsletter();
+        if (!$newsletter) {
             return false;
         }
+        
+        return $newsletter->updateSourceOrder($sourceIds);
     }
     
     public function updateSource($sourceId, $config = null, $name = null) {
-        $updates = [];
-        $values = [];
-        
-        if ($config !== null) {
-            $updates[] = "config = ?";
-            $values[] = json_encode($config);
-        }
-        
-        if ($name !== null) {
-            $updates[] = "name = ?";
-            $values[] = $name;
-        }
-        
-        if (empty($updates)) {
+        $newsletter = $this->getDefaultNewsletter();
+        if (!$newsletter) {
             return false;
         }
         
-        $values[] = $sourceId;
-        $values[] = $this->id;
-        
-        $stmt = $this->db->prepare("
-            UPDATE sources 
-            SET " . implode(', ', $updates) . ", last_updated = CURRENT_TIMESTAMP 
-            WHERE id = ? AND user_id = ?
-        ");
-        
-        return $stmt->execute($values);
+        return $newsletter->updateSource($sourceId, $config, $name);
     }
     
     // Getters
@@ -843,10 +780,23 @@ class User {
     public function getEmail() { return $this->email; }
     public function getName() { return $this->name; }
     public function getPlan() { return $this->plan; }
-    public function getTimezone() { return $this->timezone; }
-    public function getSendTime() { return $this->send_time; }
-    public function getNewsletterTitle() { return $this->newsletter_title ?? 'Your Morning Brief'; }
     public function isUnsubscribed() { return $this->unsubscribed == 1; }
     public function isEmailVerified() { return (bool)$this->email_verified; }
     public function isAdmin() { return (bool)$this->is_admin; }
+    
+    // Backward compatibility getters
+    public function getTimezone() { 
+        $newsletter = $this->getDefaultNewsletter();
+        return $newsletter ? $newsletter->getTimezone() : 'UTC';
+    }
+    
+    public function getSendTime() { 
+        $newsletter = $this->getDefaultNewsletter();
+        return $newsletter ? $newsletter->getSendTime() : '06:00';
+    }
+    
+    public function getNewsletterTitle() { 
+        $newsletter = $this->getDefaultNewsletter();
+        return $newsletter ? $newsletter->getTitle() : 'My Morning Brief';
+    }
 }

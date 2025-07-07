@@ -71,7 +71,8 @@ function main() {
         // Log individual errors if any
         if (!empty($results['errors'])) {
             foreach ($results['errors'] as $error) {
-                logMessage("Error sending to user {$error['user_id']} ({$error['email']}): {$error['error']}", 'ERROR');
+                $newsletterInfo = isset($error['newsletter_id']) ? " newsletter {$error['newsletter_id']} ('{$error['newsletter_title']}')": "";
+                logMessage("Error sending{$newsletterInfo} to user {$error['user_id']} ({$error['email']}): {$error['error']}", 'ERROR');
             }
         }
         
@@ -104,8 +105,8 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'health-check') {
         
         // Test scheduler
         $scheduler = new Scheduler();
-        $users = $scheduler->getUsersToSend(15);
-        logMessage("Health check: Found " . count($users) . " users scheduled for current window");
+        $newsletters = $scheduler->getNewslettersToSend(15);
+        logMessage("Health check: Found " . count($newsletters) . " newsletters scheduled for current window");
         
         echo "✓ Health check passed\n";
         exit(0);
@@ -126,8 +127,11 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'dry-run') {
         logMessage("DRY RUN: Would send newsletters to " . count($users) . " users:");
         
         foreach ($users as $user) {
-            $sources = $user->getSources();
-            logMessage("DRY RUN: User {$user->getId()} ({$user->getEmail()}) - {$user->getSourceCount()} sources configured");
+            $newsletters = $user->getNewsletters();
+            logMessage("DRY RUN: User {$user->getId()} ({$user->getEmail()}) - " . count($newsletters) . " newsletters:");
+            foreach ($newsletters as $newsletter) {
+                logMessage("  - Newsletter {$newsletter->getId()}: '{$newsletter->getTitle()}' ({$newsletter->getSourceCount()} sources)");
+            }
         }
         
         echo "Dry run completed. Check logs for details.\n";
@@ -140,31 +144,76 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'dry-run') {
     }
 }
 
-// Force send mode - send to a specific user (for testing)
-if (isset($_GET['mode']) && $_GET['mode'] === 'force-send' && isset($_GET['user_id'])) {
+// Force send mode - send to a specific user or newsletter (for testing)
+if (isset($_GET['mode']) && $_GET['mode'] === 'force-send') {
     try {
-        $userId = (int)$_GET['user_id'];
-        $user = User::findById($userId);
-        
-        if (!$user) {
-            logMessage("Force send failed: User $userId not found", 'ERROR');
-            exit(1);
-        }
-        
-        logMessage("FORCE SEND: Sending newsletter to user $userId ({$user->getEmail()})");
-        
-        $builder = new NewsletterBuilder($user);
-        $content = $builder->build();
-        
-        $emailSender = new EmailSender();
-        $success = $emailSender->sendNewsletter($user, $content, "Test Newsletter - " . date('F j, Y'));
-        
-        if ($success) {
-            logMessage("FORCE SEND: Successfully sent to user $userId");
-            echo "✓ Newsletter sent successfully\n";
+        if (isset($_GET['newsletter_id'])) {
+            // Send specific newsletter
+            $newsletterId = (int)$_GET['newsletter_id'];
+            $newsletter = Newsletter::findById($newsletterId);
+            
+            if (!$newsletter) {
+                logMessage("Force send failed: Newsletter $newsletterId not found", 'ERROR');
+                exit(1);
+            }
+            
+            $user = User::findById($newsletter->getUserId());
+            if (!$user) {
+                logMessage("Force send failed: User for newsletter $newsletterId not found", 'ERROR');
+                exit(1);
+            }
+            
+            logMessage("FORCE SEND: Sending newsletter $newsletterId ('{$newsletter->getTitle()}') to user {$user->getId()} ({$user->getEmail()})");
+            
+            $builder = new NewsletterBuilder($newsletter, $user);
+            $content = $builder->build();
+            
+            $emailSender = new EmailSender();
+            $success = $emailSender->sendNewsletter($user, $content, "Test: {$newsletter->getTitle()} - " . date('F j, Y'), $newsletter->getId());
+            
+            if ($success) {
+                logMessage("FORCE SEND: Successfully sent newsletter $newsletterId to user {$user->getId()}");
+                echo "✓ Newsletter sent successfully\n";
+            } else {
+                logMessage("FORCE SEND: Failed to send newsletter $newsletterId to user {$user->getId()}", 'ERROR');
+                echo "✗ Failed to send newsletter\n";
+                exit(1);
+            }
+        } else if (isset($_GET['user_id'])) {
+            // Send default newsletter for user (backward compatibility)
+            $userId = (int)$_GET['user_id'];
+            $user = User::findById($userId);
+            
+            if (!$user) {
+                logMessage("Force send failed: User $userId not found", 'ERROR');
+                exit(1);
+            }
+            
+            $newsletter = $user->getDefaultNewsletter();
+            if (!$newsletter) {
+                logMessage("Force send failed: User $userId has no newsletters", 'ERROR');
+                exit(1);
+            }
+            
+            logMessage("FORCE SEND: Sending default newsletter to user $userId ({$user->getEmail()})");
+            
+            $builder = new NewsletterBuilder($newsletter, $user);
+            $content = $builder->build();
+            
+            $emailSender = new EmailSender();
+            $success = $emailSender->sendNewsletter($user, $content, "Test Newsletter - " . date('F j, Y'), $newsletter->getId());
+            
+            if ($success) {
+                logMessage("FORCE SEND: Successfully sent to user $userId");
+                echo "✓ Newsletter sent successfully\n";
+            } else {
+                logMessage("FORCE SEND: Failed to send to user $userId", 'ERROR');
+                echo "✗ Failed to send newsletter\n";
+                exit(1);
+            }
         } else {
-            logMessage("FORCE SEND: Failed to send to user $userId", 'ERROR');
-            echo "✗ Failed to send newsletter\n";
+            logMessage("Force send failed: Either user_id or newsletter_id parameter required", 'ERROR');
+            echo "Force send failed: Either user_id or newsletter_id parameter required\n";
             exit(1);
         }
         

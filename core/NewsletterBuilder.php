@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/User.php';
+require_once __DIR__ . '/Newsletter.php';
 require_once __DIR__ . '/SourceModule.php';
+require_once __DIR__ . '/../config/database.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
@@ -11,12 +13,23 @@ require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
 class NewsletterBuilder {
+    private $newsletter;
     private $user;
     private $sources;
     
-    public function __construct(User $user) {
-        $this->user = $user;
-        $this->sources = $user->getSources();
+    public function __construct(Newsletter $newsletter, User $user = null) {
+        $this->newsletter = $newsletter;
+        $this->user = $user ?? User::findById($newsletter->getUserId());
+        $this->sources = $newsletter->getSources();
+    }
+    
+    // Backward compatibility constructor
+    public static function fromUser(User $user) {
+        $newsletter = $user->getDefaultNewsletter();
+        if (!$newsletter) {
+            throw new Exception("User has no newsletters");
+        }
+        return new self($newsletter, $user);
     }
     
     public function build() {
@@ -101,9 +114,9 @@ class NewsletterBuilder {
         $stmt = $db->prepare("
             UPDATE sources 
             SET last_result = ?, last_updated = CURRENT_TIMESTAMP 
-            WHERE id = ?
+            WHERE id = ? AND newsletter_id = ?
         ");
-        $stmt->execute([json_encode($data), $sourceId]);
+        $stmt->execute([json_encode($data), $sourceId, $this->newsletter->getId()]);
     }
     
     private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken) {
@@ -116,7 +129,8 @@ class NewsletterBuilder {
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
-        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->user->getNewsletterTitle(), $html);
+        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->newsletter->getTitle(), $html);
+        $html = str_replace('{{NEWSLETTER_ID}}', $this->newsletter->getId(), $html);
         $html = str_replace('{{USER_ID}}', $this->user->getId(), $html);
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
