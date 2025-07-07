@@ -1027,9 +1027,9 @@ $csrfToken = $auth->generateCSRFToken();
         
         function selectLocation(name, latitude, longitude, fieldId = 'config_location_search') {
             // Determine field names based on prefix
-            const locationFieldId = fieldId.replace('_search', '').replace('location_search', 'location');
-            const latFieldId = fieldId.replace('_search', '').replace('location_search', 'latitude');  
-            const lonFieldId = fieldId.replace('_search', '').replace('location_search', 'longitude');
+            const locationFieldId = fieldId.replace('location_search', 'location');
+            const latFieldId = fieldId.replace('location_search', 'latitude');  
+            const lonFieldId = fieldId.replace('location_search', 'longitude');
             
             // Fill in the form fields
             const locationField = document.getElementById(locationFieldId);
