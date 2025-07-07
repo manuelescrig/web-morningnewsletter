@@ -34,9 +34,6 @@ function getNavClass($page, $currentPage) {
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
                         Dashboard
                     </a>
-                    <a href="/dashboard/schedule.php" class="<?php echo getNavClass('schedule', $currentPage); ?>">
-                        Schedule
-                    </a>
                 </div>
             </div>
             <div class="relative flex items-center">
