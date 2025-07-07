@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             error_log("Preview email: Starting send process for user " . $user->getId());
             
             require_once __DIR__ . '/core/EmailSender.php';
-            $builder = new NewsletterBuilder($user);
+            $builder = NewsletterBuilder::fromUser($user);
             $newsletterHtml = $builder->buildForPreview();
             
             error_log("Preview email: Newsletter HTML generated, length: " . strlen($newsletterHtml));
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
 }
 
 try {
-    $builder = new NewsletterBuilder($user);
+    $builder = NewsletterBuilder::fromUser($user);
     $newsletterHtml = $builder->buildForPreview();
     
     ?>
