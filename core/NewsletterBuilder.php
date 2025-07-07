@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/User.php';
 require_once __DIR__ . '/SourceModule.php';
-require_once __DIR__ . '/../config/database.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
@@ -124,14 +123,6 @@ class NewsletterBuilder {
         $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
-        // New template variables for the updated design
-        $html = str_replace('{{ISSUE_NUMBER}}', '2', $html);
-        $html = str_replace('{{AUTHOR_NAME}}', $this->user->getName() ?? 'Newsletter Author', $html);
-        $html = str_replace('{{DAY_NUMBER}}', date('j'), $html);
-        $html = str_replace('{{DAY_NAME}}', date('l'), $html);
-        $html = str_replace('{{MONTH_NAME}}', date('F'), $html);
-        $html = str_replace('{{YEAR}}', date('Y'), $html);
-        
         return $html;
     }
     
@@ -156,14 +147,6 @@ class NewsletterBuilder {
         $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
         
-        // Use new widget-style rendering for supported types
-        if ($type === 'weather') {
-            return $this->renderWeatherWidget($source);
-        } else if ($type === 'bitcoin') {
-            return $this->renderBitcoinWidget($source);
-        }
-        
-        // Legacy rendering for other types
         $html = "
         <div style='margin-bottom: 32px; padding: 24px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #3b82f6;'>
             <h2 style='margin: 0 0 16px 0; color: #1f2937; font-size: 20px; font-weight: 600;'>$title</h2>";
@@ -204,76 +187,6 @@ class NewsletterBuilder {
                       </div>";
         }
         
-        $html .= "</div>";
-        
-        return $html;
-    }
-    
-    private function renderWeatherWidget($source) {
-        $title = htmlspecialchars($source['title']);
-        $data = $source['data'];
-        
-        $html = "<div class='widget-card weather' style='margin-bottom: 32px; padding: 24px; background: white; border-radius: 16px; border: 1px solid #e5e7eb;'>";
-        $html .= "<div class='widget-header' style='display: flex; align-items: center; margin-bottom: 16px;'>";
-        $html .= "<div class='widget-icon' style='width: 20px; height: 20px; background: #f97316; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; color: white; font-size: 12px;'>☀️</div>";
-        $html .= "<h3 class='widget-title' style='margin: 0; font-size: 14px; font-weight: 600; color: #374151;'>$title</h3>";
-        $html .= "<span style='margin-left: auto; font-size: 12px; color: #9ca3af;'>⋯</span>";
-        $html .= "</div>";
-        
-        // Create a 5-day forecast layout
-        $html .= "<div class='weather-forecast' style='display: flex; justify-content: space-between; margin-top: 20px;'>";
-        
-        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        $icons = ['☀️', '⛅', '🌩️', '⛅', '☀️'];
-        $highs = ['33°', '30°', '30°', '31°', '33°'];
-        $lows = ['22°', '23°', '22°', '23°', '23°'];
-        
-        for ($i = 0; $i < 5; $i++) {
-            $html .= "<div class='weather-day' style='text-align: center; flex: 1; padding: 10px 5px;'>";
-            $html .= "<div class='weather-day-name' style='font-size: 14px; font-weight: 500; color: #6b7280; margin-bottom: 8px;'>{$days[$i]}</div>";
-            $html .= "<div class='weather-icon' style='font-size: 32px; margin: 8px 0; height: 40px; display: flex; align-items: center; justify-content: center;'>{$icons[$i]}</div>";
-            $html .= "<div class='weather-temp' style='font-size: 18px; font-weight: 600; color: #111827; margin: 4px 0;'>{$highs[$i]}</div>";
-            $html .= "<div class='weather-temp-low' style='font-size: 14px; color: #6b7280;'>{$lows[$i]}</div>";
-            $html .= "</div>";
-        }
-        
-        $html .= "</div>";
-        $html .= "<div class='weather-powered' style='text-align: right; font-size: 12px; color: #9ca3af; margin-top: 15px;'>Powered by 🏅 AccuWeather</div>";
-        $html .= "</div>";
-        
-        return $html;
-    }
-    
-    private function renderBitcoinWidget($source) {
-        $title = htmlspecialchars($source['title']);
-        $data = $source['data'];
-        
-        // Extract price and change from data
-        $price = '108.1k';
-        $change = '-0.33%';
-        $changeAmount = '-360.58';
-        
-        foreach ($data as $item) {
-            if (isset($item['label']) && $item['label'] === 'Price') {
-                $price = $item['value'];
-            }
-            if (isset($item['label']) && $item['label'] === '24h Change') {
-                $change = $item['value'];
-            }
-        }
-        
-        $html = "<div class='widget-card bitcoin' style='margin-bottom: 32px; padding: 24px; background: white; border-radius: 16px; border: 1px solid #e5e7eb; text-align: center;'>";
-        $html .= "<div class='widget-header' style='display: flex; align-items: center; margin-bottom: 16px;'>";
-        $html .= "<div class='widget-icon' style='width: 20px; height: 20px; background: #f97316; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; color: white; font-size: 12px;'>₿</div>";
-        $html .= "<h3 class='widget-title' style='margin: 0; font-size: 14px; font-weight: 600; color: #374151;'>Crypto</h3>";
-        $html .= "<span style='margin-left: auto; font-size: 12px; color: #9ca3af;'>⋯</span>";
-        $html .= "</div>";
-        
-        $html .= "<div class='crypto-symbol' style='font-size: 14px; font-weight: 500; color: #6b7280; margin-bottom: 8px; text-transform: uppercase;'>BTCUSDT</div>";
-        $html .= "<div class='crypto-price' style='font-size: 48px; font-weight: 300; color: #a3a3a3; margin: 0; line-height: 1;'>$price</div>";
-        $html .= "<div class='crypto-change' style='font-size: 14px; color: #6b7280; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;'>";
-        $html .= "<span>$change</span><span>$changeAmount</span>";
-        $html .= "</div>";
         $html .= "</div>";
         
         return $html;
