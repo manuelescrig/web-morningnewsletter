@@ -25,7 +25,7 @@
         /* Container */
         .email-container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
             background-color: #ffffff;
             border-radius: 8px;
             overflow: hidden;
@@ -440,9 +440,6 @@
             </p>
             <p style="margin-top: 15px; color: #9ca3af;">
                 © <?php echo date('Y'); ?> MorningNewsletter. All rights reserved.
-            </p>
-            <p style="font-size: 11px; color: #9ca3af; margin-top: 10px;">
-                Newsletter ID: {{NEWSLETTER_ID}} | Recipient: {{RECIPIENT_EMAIL}}
             </p>
         </div>
     </div>
