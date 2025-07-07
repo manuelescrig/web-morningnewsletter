@@ -69,6 +69,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
+            case 'update_newsletter_title':
+                $newTitle = trim($_POST['newsletter_title'] ?? '');
+                if (empty($newTitle)) {
+                    $newTitle = 'Your Morning Brief'; // Default fallback
+                }
+                
+                if ($user->updateProfile(['newsletter_title' => $newTitle])) {
+                    $success = 'Newsletter title updated successfully!';
+                } else {
+                    $error = 'Failed to update newsletter title.';
+                }
+                break;
+                
             case 'add_source':
                 $sourceType = $_POST['source_type'] ?? '';
                 $sourceName = $_POST['source_name'] ?? '';
@@ -255,11 +268,47 @@ $csrfToken = $auth->generateCSRFToken();
         <div class="bg-white shadow rounded-lg mb-8">
             <div class="px-4 py-5 sm:p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Your Newsletter</h3>
+                    <div class="flex items-center space-x-3">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Your Newsletter</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">•</span>
+                            <button id="newsletter-title-display" onclick="editNewsletterTitle()" class="text-sm text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-medium" title="Click to edit newsletter title">
+                                "<?php echo htmlspecialchars($user->getNewsletterTitle()); ?>"
+                            </button>
+                            <i class="fas fa-edit text-xs text-gray-400"></i>
+                        </div>
+                    </div>
                     <a href="/preview.php" target="_blank" class="inline-flex items-center px-4 py-2 border border-blue-300 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
                     </a>
+                </div>
+                
+                <!-- Newsletter Title Edit Form (Hidden by default) -->
+                <div id="newsletter-title-edit" class="hidden mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <form method="POST" class="flex items-center space-x-3">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                        <input type="hidden" name="action" value="update_newsletter_title">
+                        <div class="flex-1">
+                            <label for="newsletter_title_input" class="block text-sm font-medium text-gray-700 mb-1">Newsletter Title</label>
+                            <input type="text" id="newsletter_title_input" name="newsletter_title" 
+                                   value="<?php echo htmlspecialchars($user->getNewsletterTitle()); ?>"
+                                   placeholder="Enter newsletter title"
+                                   maxlength="100"
+                                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <i class="fas fa-check mr-1"></i>
+                                Save
+                            </button>
+                            <button type="button" onclick="cancelNewsletterTitleEdit()" class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <i class="fas fa-times mr-1"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                    <p class="mt-2 text-xs text-gray-500">This title will appear at the top of your newsletter emails.</p>
                 </div>
                 
                 <!-- Newsletter Drop Zone -->
@@ -497,6 +546,44 @@ $csrfToken = $auth->generateCSRFToken();
         ?>;
 
         let draggedElement = null;
+
+        // Newsletter title editing functionality
+        function editNewsletterTitle() {
+            const displayElement = document.getElementById('newsletter-title-display');
+            const editElement = document.getElementById('newsletter-title-edit');
+            const inputElement = document.getElementById('newsletter_title_input');
+            
+            // Hide display, show edit form
+            displayElement.parentElement.parentElement.style.display = 'none';
+            editElement.classList.remove('hidden');
+            
+            // Focus the input and select the text
+            inputElement.focus();
+            inputElement.select();
+        }
+        
+        function cancelNewsletterTitleEdit() {
+            const displayElement = document.getElementById('newsletter-title-display');
+            const editElement = document.getElementById('newsletter-title-edit');
+            const inputElement = document.getElementById('newsletter_title_input');
+            
+            // Reset input to original value
+            inputElement.value = inputElement.defaultValue;
+            
+            // Show display, hide edit form
+            displayElement.parentElement.parentElement.style.display = 'flex';
+            editElement.classList.add('hidden');
+        }
+        
+        // Handle escape key to cancel editing
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const editElement = document.getElementById('newsletter-title-edit');
+                if (!editElement.classList.contains('hidden')) {
+                    cancelNewsletterTitleEdit();
+                }
+            }
+        });
 
         // Drag and drop functionality
         document.addEventListener('DOMContentLoaded', function() {
