@@ -72,7 +72,7 @@ $csrfToken = $auth->generateCSRFToken();
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;

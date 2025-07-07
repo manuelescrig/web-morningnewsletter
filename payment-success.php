@@ -55,7 +55,7 @@ if ($plan) {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;

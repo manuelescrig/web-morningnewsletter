@@ -46,8 +46,8 @@
         <div class="mt-8 border-t border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between">
             <p class="text-gray-500 text-sm">&copy; 2025 MorningNewsletter.com. All rights reserved.</p>
             <div class="flex space-x-6 mt-4 sm:mt-0">
-                <a href="/legal/terms.php" class="text-gray-500 hover:text-gray-300 text-sm">Terms of Service</a>
-                <a href="/legal/privacy.php" class="text-gray-500 hover:text-gray-300 text-sm">Privacy Policy</a>
+                <a href="/legal/terms/" class="text-gray-500 hover:text-gray-300 text-sm">Terms of Service</a>
+                <a href="/legal/privacy/" class="text-gray-500 hover:text-gray-300 text-sm">Privacy Policy</a>
             </div>
         </div>
     </div>

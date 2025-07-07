@@ -11,6 +11,8 @@ RewriteRule ^api/billing-portal/?$ api/billing-portal.php [L]
 # Clean URLs for main pages
 RewriteRule ^terms/?$ legal/terms.php [L]
 RewriteRule ^privacy/?$ legal/privacy.php [L]
+RewriteRule ^legal/terms/?$ legal/terms.php [L]
+RewriteRule ^legal/privacy/?$ legal/privacy.php [L]
 RewriteRule ^login/?$ auth/login.php [L]
 RewriteRule ^register/?$ auth/register.php [L]
 RewriteRule ^payment-success/?$ payment-success.php [L]

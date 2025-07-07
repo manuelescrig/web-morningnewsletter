@@ -189,7 +189,7 @@ class EmailSender {
         </head>
         <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
-                <h1 style='color: #2563eb;'>Welcome to MorningNewsletter!</h1>
+                <h1 style='color: #0041EC;'>Welcome to MorningNewsletter!</h1>
             </div>
             
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
@@ -197,7 +197,7 @@ class EmailSender {
                 
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='$verificationUrl' 
-                       style='background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                       style='color: #0041EC; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
                         Verify Email Address
                     </a>
                 </div>
@@ -206,7 +206,7 @@ class EmailSender {
                     If the button doesn't work, copy and paste this link into your browser:
                 </p>
                 <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
-                    <a href='$verificationUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
+                    <a href='$verificationUrl' style='color: #0041EC; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
                 </div>
             </div>
             
@@ -235,7 +235,7 @@ class EmailSender {
         </head>
         <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
-                <h1 style='color: #2563eb;'>Password Reset Request</h1>
+                <h1 style='color: #0041EC;'>Password Reset Request</h1>
             </div>
             
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
@@ -252,7 +252,7 @@ class EmailSender {
                     If the button doesn't work, copy and paste this link into your browser:
                 </p>
                 <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
-                    <a href='$resetUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$resetUrl</a>
+                    <a href='$resetUrl' style='color: #0041EC; text-decoration: none; font-size: 12px;'>$resetUrl</a>
                 </div>
                 
                 <p style='font-size: 14px; color: #666; margin-top: 20px;'>
@@ -286,7 +286,7 @@ class EmailSender {
         </head>
         <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
-                <h1 style='color: #2563eb;'>Email Address Change Request</h1>
+                <h1 style='color: #0041EC;'>Email Address Change Request</h1>
             </div>
             
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>
@@ -296,7 +296,7 @@ class EmailSender {
                 
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='$verificationUrl' 
-                       style='background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                       style='background-color: #0041EC; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
                         Verify New Email Address
                     </a>
                 </div>
@@ -305,7 +305,7 @@ class EmailSender {
                     If the button doesn't work, copy and paste this link into your browser:
                 </p>
                 <div style='background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;'>
-                    <a href='$verificationUrl' style='color: #2563eb; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
+                    <a href='$verificationUrl' style='color: #0041EC; text-decoration: none; font-size: 12px;'>$verificationUrl</a>
                 </div>
                 
                 <p style='font-size: 14px; color: #666; margin-top: 20px;'>

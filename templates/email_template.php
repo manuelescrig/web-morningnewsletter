@@ -34,7 +34,7 @@
         
         /* Header */
         .email-header {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #0041EC 0%, #3b82f6 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -248,7 +248,7 @@
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid #0041EC;
         }
         
         .source-title {
@@ -324,7 +324,7 @@
         }
         
         .email-footer a {
-            color: #2563eb;
+            color: #0041EC;
             text-decoration: none;
         }
         
