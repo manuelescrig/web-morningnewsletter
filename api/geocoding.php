@@ -25,7 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 $query = $_GET['q'] ?? '';
 
+// Debug logging
+error_log("Geocoding API called: query='$query', method=" . $_SERVER['REQUEST_METHOD'] . ", user-agent=" . ($_SERVER['HTTP_USER_AGENT'] ?? 'none'));
+
 if (empty($query) || strlen(trim($query)) < 2) {
+    error_log("Geocoding API: Query too short");
     echo json_encode(['error' => 'Query too short', 'results' => []]);
     exit;
 }
@@ -207,10 +211,14 @@ try {
     ]);
 
 } catch (Exception $e) {
-    error_log('Geocoding API error: ' . $e->getMessage());
+    $errorMsg = $e->getMessage();
+    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+    $query = $_GET['q'] ?? 'unknown';
+    
+    error_log("Geocoding API error: $errorMsg | Query: $query | User-Agent: $userAgent");
     
     // Return appropriate HTTP status code
-    if (strpos($e->getMessage(), 'Rate limit') !== false) {
+    if (strpos($errorMsg, 'Rate limit') !== false) {
         http_response_code(429);
     } else {
         http_response_code(500);
@@ -218,6 +226,7 @@ try {
     
     echo json_encode([
         'error' => 'Failed to search locations. Please try again.',
+        'debug' => $errorMsg, // Add debug info for troubleshooting
         'results' => []
     ]);
 }

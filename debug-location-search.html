@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Location Search</title>
+</head>
+<body>
+    <h2>Location Search Debug</h2>
+    <input type="text" id="search" placeholder="Enter location" />
+    <button onclick="testSearch()">Search</button>
+    <div id="results"></div>
+
+    <script>
+    async function testSearch() {
+        const query = document.getElementById('search').value;
+        const resultsDiv = document.getElementById('results');
+        
+        resultsDiv.innerHTML = '<p>Searching...</p>';
+        
+        try {
+            console.log('Making request to:', `/api/geocoding.php?q=${encodeURIComponent(query)}`);
+            
+            const response = await fetch(`/api/geocoding.php?q=${encodeURIComponent(query)}`);
+            
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            const data = await response.json();
+            
+            console.log('Response data:', data);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${data.error || 'Unknown error'}`);
+            }
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            resultsDiv.innerHTML = `
+                <h3>Success!</h3>
+                <p>Found ${data.results.length} results:</p>
+                <ul>
+                ${data.results.map(r => `<li>${r.name} (${r.latitude}, ${r.longitude})</li>`).join('')}
+                </ul>
+            `;
+            
+        } catch (error) {
+            console.error('Search error:', error);
+            resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        }
+    }
+    </script>
+</body>
+</html>

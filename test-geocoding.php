@@ -66,5 +66,41 @@ if ($response === false) {
     }
 }
 
+// Test 4: Simulate exact frontend call
+echo "\nTest 4: Simulating frontend API call...\n";
+$testUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/api/geocoding.php?q=' . urlencode('London');
+echo "URL: $testUrl\n";
+
+$ch = curl_init();
+curl_setopt_array($ch, [
+    CURLOPT_URL => $testUrl,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 10,
+    CURLOPT_HEADER => true,
+    CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible frontend test)'
+]);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$headers = substr($response, 0, $headerSize);
+$body = substr($response, $headerSize);
+curl_close($ch);
+
+echo "HTTP Code: $httpCode\n";
+echo "Headers: " . trim($headers) . "\n";
+echo "Body: " . trim($body) . "\n";
+
+if ($httpCode === 200) {
+    $data = json_decode($body, true);
+    if ($data && isset($data['success'])) {
+        echo "✅ Frontend simulation successful!\n";
+    } else {
+        echo "❌ Frontend simulation: Invalid JSON response\n";
+    }
+} else {
+    echo "❌ Frontend simulation failed with HTTP $httpCode\n";
+}
+
 echo "\nTesting complete!\n";
 ?>
