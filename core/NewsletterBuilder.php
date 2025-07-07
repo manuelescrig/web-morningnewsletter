@@ -98,22 +98,169 @@ class NewsletterBuilder {
         // Replace placeholders
         $html = str_replace('{{USER_EMAIL}}', $this->user->getEmail(), $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
+        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->user->getNewsletterTitle(), $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;
     }
     
     private function renderSources($sourceData) {
+        if (empty($sourceData)) {
+            return '<div style="text-align: center; padding: 40px 20px; color: #6b7280;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                        <h3 style="margin: 0 0 8px 0; color: #374151;">No sources configured</h3>
+                        <p style="margin: 0; font-size: 14px;">Add data sources in your dashboard to start receiving updates.</p>
+                    </div>';
+        }
+        
+        $widgetSources = [];
+        $legacySources = [];
+        
+        // Separate widget-compatible sources from legacy sources
+        foreach ($sourceData as $source) {
+            if (in_array($source['type'], ['bitcoin', 'weather'])) {
+                $widgetSources[] = $source;
+            } else {
+                $legacySources[] = $source;
+            }
+        }
+        
         $content = '';
         
-        foreach ($sourceData as $source) {
-            $content .= $this->renderSource($source);
+        // Render widgets in grid layout
+        if (!empty($widgetSources)) {
+            $content .= '<div class="widget-container">';
+            foreach ($widgetSources as $source) {
+                $content .= $this->renderWidget($source);
+            }
+            $content .= '</div>';
+        }
+        
+        // Render legacy sources
+        foreach ($legacySources as $source) {
+            $content .= $this->renderLegacySource($source);
         }
         
         return $content;
     }
     
-    private function renderSource($source) {
+    private function renderWidget($source) {
+        $type = $source['type'];
+        $data = $source['data'];
+        
+        if ($type === 'bitcoin') {
+            return $this->renderBitcoinWidget($source);
+        } elseif ($type === 'weather') {
+            return $this->renderWeatherWidget($source);
+        }
+        
+        // Fallback to legacy rendering
+        return $this->renderLegacySource($source);
+    }
+    
+    private function renderBitcoinWidget($source) {
+        $data = $source['data'];
+        
+        if (empty($data)) {
+            return $this->renderLegacySource($source);
+        }
+        
+        $priceData = $data[0];
+        $price = $priceData['value'] ?? 'N/A';
+        $delta = $priceData['delta'] ?? null;
+        
+        $changeClass = 'neutral';
+        $changeIcon = '→';
+        $changeText = 'No change';
+        
+        if ($delta) {
+            if (isset($delta['raw_delta'])) {
+                if ($delta['raw_delta'] > 0) {
+                    $changeClass = 'positive';
+                    $changeIcon = '▲';
+                } elseif ($delta['raw_delta'] < 0) {
+                    $changeClass = 'negative';
+                    $changeIcon = '▼';
+                }
+            }
+            $changeText = $delta['value'] ?? $changeText;
+        }
+        
+        return '<div class="widget-card bitcoin">
+                    <div class="widget-header">
+                        <h3 class="widget-title">
+                            <div class="widget-icon">₿</div>
+                            Bitcoin
+                        </h3>
+                        <div style="opacity: 0.6; font-size: 12px;">●</div>
+                    </div>
+                    <div class="widget-value">' . htmlspecialchars($price) . '</div>
+                    <div class="widget-change ' . $changeClass . '">
+                        <span class="widget-change-icon">' . $changeIcon . '</span>
+                        ' . htmlspecialchars($changeText) . '
+                    </div>
+                </div>';
+    }
+    
+    private function renderWeatherWidget($source) {
+        $data = $source['data'];
+        
+        if (empty($data)) {
+            return $this->renderLegacySource($source);
+        }
+        
+        $temperature = '';
+        $conditions = '';
+        $location = '';
+        $humidity = '';
+        $todayRange = '';
+        
+        foreach ($data as $item) {
+            $label = $item['label'] ?? '';
+            $value = $item['value'] ?? '';
+            
+            if (strpos($label, 'Temperature') !== false) {
+                $temperature = $value;
+            } elseif (strpos($label, 'Conditions') !== false) {
+                $conditions = $value;
+            } elseif (strpos($label, 'Location') !== false) {
+                $location = str_replace('📍 ', '', $value);
+            } elseif (strpos($label, 'Humidity') !== false) {
+                $humidity = $value;
+            } elseif (strpos($label, 'Range') !== false) {
+                $todayRange = $value;
+            }
+        }
+        
+        // Extract temperature number and emoji
+        $tempParts = explode(' ', $temperature);
+        $tempValue = end($tempParts);
+        $weatherEmoji = isset($tempParts[0]) ? $tempParts[0] : '🌤️';
+        
+        return '<div class="widget-card weather">
+                    <div class="widget-header">
+                        <h3 class="widget-title">
+                            <div class="widget-icon">' . $weatherEmoji . '</div>
+                            ' . htmlspecialchars($location) . '
+                        </h3>
+                        <div style="opacity: 0.6; font-size: 12px;">☆☆☆</div>
+                    </div>
+                    <div class="widget-value">' . htmlspecialchars($tempValue) . '</div>
+                    <div class="widget-subtitle">' . htmlspecialchars($conditions) . '</div>
+                    <div class="widget-details">
+                        <div class="widget-detail-item">
+                            <span class="widget-detail-label">Humidity</span>
+                            <span class="widget-detail-value">' . htmlspecialchars(str_replace('💧 ', '', $humidity)) . '</span>
+                        </div>
+                        ' . ($todayRange ? '<div class="widget-detail-item">
+                            <span class="widget-detail-label">Today\'s Range</span>
+                            <span class="widget-detail-value">' . htmlspecialchars(str_replace('📊 ', '', $todayRange)) . '</span>
+                        </div>' : '') . '
+                    </div>
+                </div>';
+    }
+    
+    private function renderLegacySource($source) {
         $html = '<div class="source-section" style="margin-bottom: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">';
         $html .= '<h2 style="color: #333; margin-bottom: 15px; font-size: 18px;">' . htmlspecialchars($source['title']) . '</h2>';
         

@@ -32,6 +32,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid request. Please try again.';
     } else {
         switch ($action) {
+            case 'update_source_order':
+                $sourceIds = $_POST['source_ids'] ?? [];
+                if (is_array($sourceIds) && !empty($sourceIds)) {
+                    if ($user->updateSourceOrder($sourceIds)) {
+                        $success = 'Source order updated successfully!';
+                        // Refresh sources
+                        $sources = $user->getSources();
+                    } else {
+                        $error = 'Failed to update source order.';
+                    }
+                } else {
+                    $error = 'Invalid source order data.';
+                }
+                break;
+                
+            case 'update_source':
+                $sourceId = $_POST['source_id'] ?? '';
+                $sourceName = $_POST['source_name'] ?? '';
+                $config = [];
+                
+                // Get configuration fields from POST data
+                foreach ($_POST as $key => $value) {
+                    if (strpos($key, 'config_') === 0) {
+                        $configKey = substr($key, 7); // Remove 'config_' prefix
+                        $config[$configKey] = $value;
+                    }
+                }
+                
+                if ($user->updateSource($sourceId, $config, $sourceName)) {
+                    $success = 'Source updated successfully!';
+                    // Refresh sources
+                    $sources = $user->getSources();
+                } else {
+                    $error = 'Failed to update source.';
+                }
+                break;
+                
             case 'add_source':
                 $sourceType = $_POST['source_type'] ?? '';
                 $sourceName = $_POST['source_name'] ?? '';
@@ -234,13 +271,13 @@ $csrfToken = $auth->generateCSRFToken();
                             <p class="text-gray-500 mb-4">Drag sources from below to add them to your newsletter</p>
                         </div>
                     <?php else: ?>
-                        <div class="grid grid-cols-1 gap-3">
+                        <div id="sortable-sources" class="grid grid-cols-1 gap-3">
                             <?php foreach ($sources as $source): ?>
-                                <div class="source-item bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-move" data-source-id="<?php echo $source['id']; ?>" data-source-type="<?php echo $source['type']; ?>">
+                                <div class="source-item bg-gray-50 border border-gray-200 rounded-lg p-4 cursor-move" data-source-id="<?php echo $source['id']; ?>" data-source-type="<?php echo $source['type']; ?>" draggable="true">
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
+                                        <div class="flex items-center flex-1">
                                             <i class="fas fa-grip-vertical text-gray-400 mr-3"></i>
-                                            <div>
+                                            <div class="flex-1">
                                                 <h5 class="text-sm font-medium text-gray-900">
                                                     <?php 
                                                     if (!empty($source['name'])) {
@@ -279,6 +316,9 @@ $csrfToken = $auth->generateCSRFToken();
                                                 <i class="fas fa-check mr-1"></i>
                                                 Active
                                             </span>
+                                            <button onclick="editSource(<?php echo $source['id']; ?>, '<?php echo $source['type']; ?>', '<?php echo htmlspecialchars($source['name'] ?? '', ENT_QUOTES); ?>', <?php echo htmlspecialchars($source['config'] ?? '{}', ENT_QUOTES); ?>)" class="text-blue-600 hover:text-blue-500" title="Edit source">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button onclick="removeSource(<?php echo $source['id']; ?>)" class="text-red-600 hover:text-red-500" title="Remove source">
                                                 <i class="fas fa-times"></i>
                                             </button>
@@ -399,6 +439,48 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
     </div>
 
+    <!-- Edit Source Modal -->
+    <div id="edit-source-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-900" id="edit-modal-title">Edit Source</h3>
+                    <button onclick="closeEditSourceModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="edit-source-form" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                    <input type="hidden" name="action" value="update_source">
+                    <input type="hidden" name="source_id" id="edit-source-id">
+                    
+                    <div class="mb-4">
+                        <label for="edit_source_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Source Name
+                        </label>
+                        <input type="text" id="edit_source_name" name="source_name" 
+                               placeholder="Give this source a custom name"
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <p class="mt-1 text-xs text-gray-500">Leave empty to use the default name</p>
+                    </div>
+                    
+                    <div id="edit-modal-config-fields"></div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" onclick="closeEditSourceModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            <i class="fas fa-save mr-2"></i>
+                            Update Source
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Module configurations for dynamic form generation
         const moduleConfigs = <?php 
@@ -419,6 +501,7 @@ $csrfToken = $auth->generateCSRFToken();
         // Drag and drop functionality
         document.addEventListener('DOMContentLoaded', function() {
             initializeDragAndDrop();
+            initializeSortableSources();
         });
 
         function initializeDragAndDrop() {
@@ -462,6 +545,94 @@ $csrfToken = $auth->generateCSRFToken();
             });
         }
 
+        function initializeSortableSources() {
+            const sortableContainer = document.getElementById('sortable-sources');
+            if (!sortableContainer) return;
+            
+            let draggedSourceElement = null;
+            let dragOverElement = null;
+            
+            const sourceItems = sortableContainer.querySelectorAll('.source-item');
+            
+            sourceItems.forEach(item => {
+                item.addEventListener('dragstart', function(e) {
+                    draggedSourceElement = this;
+                    this.style.opacity = '0.5';
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+                
+                item.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                    draggedSourceElement = null;
+                    // Remove all drag-over indicators
+                    sourceItems.forEach(item => {
+                        item.classList.remove('border-blue-500', 'border-t-4');
+                    });
+                    
+                    // Update the order
+                    updateSourceOrder();
+                });
+                
+                item.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    if (draggedSourceElement && this !== draggedSourceElement) {
+                        // Remove previous indicators
+                        sourceItems.forEach(item => {
+                            item.classList.remove('border-blue-500', 'border-t-4');
+                        });
+                        
+                        // Add indicator to current item
+                        this.classList.add('border-blue-500', 'border-t-4');
+                        dragOverElement = this;
+                    }
+                });
+                
+                item.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (draggedSourceElement && this !== draggedSourceElement) {
+                        // Determine if we should insert before or after
+                        const rect = this.getBoundingClientRect();
+                        const midpoint = rect.top + rect.height / 2;
+                        const insertAfter = e.clientY > midpoint;
+                        
+                        if (insertAfter) {
+                            this.parentNode.insertBefore(draggedSourceElement, this.nextSibling);
+                        } else {
+                            this.parentNode.insertBefore(draggedSourceElement, this);
+                        }
+                    }
+                });
+            });
+        }
+        
+        function updateSourceOrder() {
+            const sourceItems = document.querySelectorAll('#sortable-sources .source-item');
+            const sourceIds = Array.from(sourceItems).map(item => item.dataset.sourceId);
+            
+            if (sourceIds.length === 0) return;
+            
+            // Send AJAX request to update order
+            const formData = new FormData();
+            formData.append('csrf_token', '<?php echo htmlspecialchars($csrfToken); ?>');
+            formData.append('action', 'update_source_order');
+            sourceIds.forEach((id, index) => {
+                formData.append('source_ids[]', id);
+            });
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Source order updated successfully');
+                } else {
+                    console.error('Failed to update source order');
+                }
+            }).catch(error => {
+                console.error('Error updating source order:', error);
+            });
+        }
+
         function showAddSourceModal(sourceType) {
             const modal = document.getElementById('add-source-modal');
             const title = document.getElementById('modal-title');
@@ -502,12 +673,15 @@ $csrfToken = $auth->generateCSRFToken();
             }
         }
 
-        function createConfigField(field, container) {
+        function createConfigField(field, container, prefix = '') {
             const fieldDiv = document.createElement('div');
             fieldDiv.className = 'mb-4';
             
+            const fieldId = prefix + 'config_' + field.name;
+            const fieldName = prefix ? prefix.replace('_', '') + 'config_' + field.name : 'config_' + field.name;
+            
             let fieldHtml = `
-                <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="${fieldId}" class="block text-sm font-medium text-gray-700 mb-2">
                     ${field.label}${field.required ? ' *' : ''}
                 </label>
             `;
@@ -515,19 +689,19 @@ $csrfToken = $auth->generateCSRFToken();
             if (field.type === 'location_search') {
                 fieldHtml += `
                     <div class="relative">
-                        <input type="text" id="location_search_input" placeholder="Type a city name (e.g., New York, London, Tokyo)..."
+                        <input type="text" id="${fieldId}_search_input" placeholder="Type a city name (e.g., New York, London, Tokyo)..."
                                class="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
-                        <div id="location_search_results" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"></div>
-                        <div id="location_search_loading" class="hidden absolute right-3 top-2">
+                        <div id="${fieldId}_search_results" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"></div>
+                        <div id="${fieldId}_search_loading" class="hidden absolute right-3 top-2">
                             <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
                         </div>
                     </div>
                 `;
             } else if (field.type === 'select') {
-                fieldHtml += `<select id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
+                fieldHtml += `<select id="${fieldId}" name="${fieldName}" ${field.required ? 'required' : ''} 
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
                 Object.entries(field.options).forEach(([value, label]) => {
                     const selected = field.default === value ? 'selected' : '';
@@ -535,16 +709,16 @@ $csrfToken = $auth->generateCSRFToken();
                 });
                 fieldHtml += '</select>';
             } else if (field.type === 'textarea') {
-                fieldHtml += `<textarea id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
+                fieldHtml += `<textarea id="${fieldId}" name="${fieldName}" ${field.required ? 'required' : ''} 
                                 rows="3" placeholder="${field.description || ''}"
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">${field.default || ''}</textarea>`;
             } else if (field.type === 'hidden') {
-                fieldHtml += `<input type="hidden" id="config_${field.name}" name="config_${field.name}" value="${field.default || ''}">`;
+                fieldHtml += `<input type="hidden" id="${fieldId}" name="${fieldName}" value="${field.default || ''}">`;
                 // Don't show label or description for hidden fields
-                fieldHtml = `<input type="hidden" id="config_${field.name}" name="config_${field.name}" value="${field.default || ''}">`;
+                fieldHtml = `<input type="hidden" id="${fieldId}" name="${fieldName}" value="${field.default || ''}">`;
             } else {
                 const inputType = field.type === 'password' ? 'password' : (field.type === 'number' ? 'number' : 'text');
-                fieldHtml += `<input type="${inputType}" id="config_${field.name}" name="config_${field.name}" ${field.required ? 'required' : ''} 
+                fieldHtml += `<input type="${inputType}" id="${fieldId}" name="${fieldName}" ${field.required ? 'required' : ''} 
                                 value="${field.default || ''}" placeholder="${field.description || ''}"
                                 ${field.min ? `min="${field.min}"` : ''} ${field.max ? `max="${field.max}"` : ''}
                                 class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">`;
@@ -559,7 +733,7 @@ $csrfToken = $auth->generateCSRFToken();
             
             // Initialize location search if this is a location search field
             if (field.type === 'location_search') {
-                initializeLocationSearch();
+                initializeLocationSearch(fieldId);
             }
         }
 
@@ -567,6 +741,49 @@ $csrfToken = $auth->generateCSRFToken();
             const sourceConfigs = <?php echo json_encode($enabledSources); ?>;
             const sourceConfig = sourceConfigs.find(s => s.type === sourceType);
             return sourceConfig ? sourceConfig.name : sourceType;
+        }
+
+        function editSource(sourceId, sourceType, sourceName, configJson) {
+            const modal = document.getElementById('edit-source-modal');
+            const title = document.getElementById('edit-modal-title');
+            const sourceIdInput = document.getElementById('edit-source-id');
+            const sourceNameInput = document.getElementById('edit_source_name');
+            const configFields = document.getElementById('edit-modal-config-fields');
+            
+            // Set basic info
+            sourceIdInput.value = sourceId;
+            sourceNameInput.value = sourceName;
+            title.textContent = `Edit ${getSourceName(sourceType)}`;
+            
+            // Clear and populate config fields
+            configFields.innerHTML = '';
+            
+            let config = {};
+            try {
+                config = JSON.parse(configJson);
+            } catch (e) {
+                console.warn('Could not parse config JSON:', configJson);
+            }
+            
+            if (moduleConfigs[sourceType]) {
+                moduleConfigs[sourceType].forEach(field => {
+                    createConfigField(field, configFields, 'edit_');
+                    
+                    // Populate existing values
+                    const fieldElement = document.getElementById('edit_config_' + field.name);
+                    if (fieldElement && config[field.name] !== undefined) {
+                        fieldElement.value = config[field.name];
+                    }
+                });
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+        }
+
+        function closeEditSourceModal() {
+            const modal = document.getElementById('edit-source-modal');
+            modal.classList.add('hidden');
         }
 
         function removeSource(sourceId) {
@@ -596,10 +813,10 @@ $csrfToken = $auth->generateCSRFToken();
         let lastSearchTime = 0;
         const MIN_SEARCH_INTERVAL = 1000; // 1 second minimum between searches
         
-        function initializeLocationSearch() {
-            const searchInput = document.getElementById('location_search_input');
-            const resultsDiv = document.getElementById('location_search_results');
-            const loadingDiv = document.getElementById('location_search_loading');
+        function initializeLocationSearch(fieldId = 'config_location_search') {
+            const searchInput = document.getElementById(fieldId + '_search_input');
+            const resultsDiv = document.getElementById(fieldId + '_search_results');
+            const loadingDiv = document.getElementById(fieldId + '_search_loading');
             
             if (!searchInput) return;
             
@@ -620,11 +837,11 @@ $csrfToken = $auth->generateCSRFToken();
                 if (timeSinceLastSearch < MIN_SEARCH_INTERVAL) {
                     const delay = MIN_SEARCH_INTERVAL - timeSinceLastSearch;
                     searchTimeout = setTimeout(() => {
-                        searchLocations(query);
+                        searchLocations(query, fieldId);
                     }, delay);
                 } else {
                     searchTimeout = setTimeout(() => {
-                        searchLocations(query);
+                        searchLocations(query, fieldId);
                     }, 300);
                 }
             });
@@ -637,9 +854,9 @@ $csrfToken = $auth->generateCSRFToken();
             });
         }
         
-        async function searchLocations(query) {
-            const resultsDiv = document.getElementById('location_search_results');
-            const loadingDiv = document.getElementById('location_search_loading');
+        async function searchLocations(query, fieldId = 'config_location_search') {
+            const resultsDiv = document.getElementById(fieldId + '_search_results');
+            const loadingDiv = document.getElementById(fieldId + '_search_loading');
             
             // Update last search time
             lastSearchTime = Date.now();
@@ -667,7 +884,7 @@ $csrfToken = $auth->generateCSRFToken();
                     throw new Error(data.error);
                 }
                 
-                displayLocationResults(data.results || []);
+                displayLocationResults(data.results || [], fieldId);
                 
             } catch (error) {
                 loadingDiv.classList.add('hidden');
@@ -690,8 +907,8 @@ $csrfToken = $auth->generateCSRFToken();
             }
         }
         
-        function displayLocationResults(results) {
-            const resultsDiv = document.getElementById('location_search_results');
+        function displayLocationResults(results, fieldId = 'config_location_search') {
+            const resultsDiv = document.getElementById(fieldId + '_search_results');
             
             if (results.length === 0) {
                 resultsDiv.innerHTML = `
@@ -708,7 +925,7 @@ $csrfToken = $auth->generateCSRFToken();
             results.forEach((location, index) => {
                 html += `
                     <div class="location-result p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
-                         onclick="selectLocation('${location.name.replace(/'/g, "\\'")}', ${location.latitude}, ${location.longitude})">
+                         onclick="selectLocation('${location.name.replace(/'/g, "\\'")}', ${location.latitude}, ${location.longitude}, '${fieldId}')">
                         <div class="flex items-center">
                             <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
                             <div class="font-medium text-gray-900">${location.name}</div>
@@ -721,13 +938,18 @@ $csrfToken = $auth->generateCSRFToken();
             resultsDiv.classList.remove('hidden');
         }
         
-        function selectLocation(name, latitude, longitude) {
+        function selectLocation(name, latitude, longitude, fieldId = 'config_location_search') {
+            // Determine field names based on prefix
+            const locationFieldId = fieldId.replace('_search', '').replace('location_search', 'location');
+            const latFieldId = fieldId.replace('_search', '').replace('location_search', 'latitude');  
+            const lonFieldId = fieldId.replace('_search', '').replace('location_search', 'longitude');
+            
             // Fill in the form fields
-            const locationField = document.getElementById('config_location');
-            const latField = document.getElementById('config_latitude');
-            const lonField = document.getElementById('config_longitude');
-            const searchInput = document.getElementById('location_search_input');
-            const resultsDiv = document.getElementById('location_search_results');
+            const locationField = document.getElementById(locationFieldId);
+            const latField = document.getElementById(latFieldId);
+            const lonField = document.getElementById(lonFieldId);
+            const searchInput = document.getElementById(fieldId + '_search_input');
+            const resultsDiv = document.getElementById(fieldId + '_search_results');
             
             if (locationField) locationField.value = name;
             if (latField) latField.value = latitude;

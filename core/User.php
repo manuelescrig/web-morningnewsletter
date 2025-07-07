@@ -9,6 +9,7 @@ class User {
     private $plan;
     private $timezone;
     private $send_time;
+    private $newsletter_title;
     private $email_verified;
     private $is_admin;
     
@@ -22,6 +23,7 @@ class User {
             $this->plan = $userData['plan'];
             $this->timezone = $userData['timezone'];
             $this->send_time = $userData['send_time'];
+            $this->newsletter_title = $userData['newsletter_title'] ?? 'Your Morning Brief';
             $this->email_verified = $userData['email_verified'];
             $this->is_admin = $userData['is_admin'] ?? 0;
         }
@@ -43,6 +45,7 @@ class User {
             $this->plan = 'free';
             $this->timezone = $timezone;
             $this->send_time = '06:00';
+            $this->newsletter_title = 'Your Morning Brief';
             $this->email_verified = 0;
             $this->is_admin = 0;
             
@@ -95,7 +98,7 @@ class User {
         try {
             error_log("User::updateProfile called with data: " . json_encode($data));
             
-            $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email'];
+            $allowedFields = ['timezone', 'send_time', 'plan', 'name', 'email', 'newsletter_title'];
             $updates = [];
             $values = [];
             
@@ -208,7 +211,7 @@ class User {
         $stmt = $this->db->prepare("
             SELECT * FROM sources 
             WHERE user_id = ? AND is_active = 1 
-            ORDER BY created_at
+            ORDER BY sort_order, created_at
         ");
         $stmt->execute([$this->id]);
         return $stmt->fetchAll();
@@ -248,16 +251,26 @@ class User {
             throw new Exception("Source limit reached for current plan");
         }
         
+        // Get the next sort order
         $stmt = $this->db->prepare("
-            INSERT INTO sources (user_id, type, name, config) 
-            VALUES (?, ?, ?, ?)
+            SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
+            FROM sources 
+            WHERE user_id = ? AND is_active = 1
+        ");
+        $stmt->execute([$this->id]);
+        $nextOrder = $stmt->fetch()['next_order'];
+        
+        $stmt = $this->db->prepare("
+            INSERT INTO sources (user_id, type, name, config, sort_order) 
+            VALUES (?, ?, ?, ?, ?)
         ");
         
         return $stmt->execute([
             $this->id, 
             $type, 
             $name,
-            json_encode($config)
+            json_encode($config),
+            $nextOrder
         ]);
     }
     
@@ -735,6 +748,59 @@ class User {
         return $planHierarchy[$currentIndex - 1];
     }
     
+    public function updateSourceOrder($sourceIds) {
+        try {
+            $this->db->beginTransaction();
+            
+            $stmt = $this->db->prepare("
+                UPDATE sources 
+                SET sort_order = ?
+                WHERE id = ? AND user_id = ?
+            ");
+            
+            foreach ($sourceIds as $order => $sourceId) {
+                $stmt->execute([$order + 1, $sourceId, $this->id]);
+            }
+            
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log("Error updating source order: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    public function updateSource($sourceId, $config = null, $name = null) {
+        $updates = [];
+        $values = [];
+        
+        if ($config !== null) {
+            $updates[] = "config = ?";
+            $values[] = json_encode($config);
+        }
+        
+        if ($name !== null) {
+            $updates[] = "name = ?";
+            $values[] = $name;
+        }
+        
+        if (empty($updates)) {
+            return false;
+        }
+        
+        $values[] = $sourceId;
+        $values[] = $this->id;
+        
+        $stmt = $this->db->prepare("
+            UPDATE sources 
+            SET " . implode(', ', $updates) . ", last_updated = CURRENT_TIMESTAMP 
+            WHERE id = ? AND user_id = ?
+        ");
+        
+        return $stmt->execute($values);
+    }
+    
     // Getters
     public function getId() { return $this->id; }
     public function getEmail() { return $this->email; }
@@ -742,6 +808,7 @@ class User {
     public function getPlan() { return $this->plan; }
     public function getTimezone() { return $this->timezone; }
     public function getSendTime() { return $this->send_time; }
+    public function getNewsletterTitle() { return $this->newsletter_title ?? 'Your Morning Brief'; }
     public function isEmailVerified() { return (bool)$this->email_verified; }
     public function isAdmin() { return (bool)$this->is_admin; }
 }

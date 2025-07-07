@@ -63,7 +63,186 @@
             color: #374151;
         }
         
-        /* Source sections */
+        /* Modern widget sections */
+        .widget-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .widget-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .widget-card.full-width {
+            grid-column: span 2;
+        }
+        
+        .widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .widget-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .widget-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .widget-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+            line-height: 1.1;
+        }
+        
+        .widget-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 8px 0 0 0;
+        }
+        
+        .widget-change {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        
+        .widget-change.positive {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .widget-change.negative {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .widget-change.neutral {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .widget-change-icon {
+            margin-right: 4px;
+        }
+        
+        .widget-details {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+        }
+        
+        .widget-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+        
+        .widget-detail-label {
+            color: #6b7280;
+        }
+        
+        .widget-detail-value {
+            color: #111827;
+            font-weight: 500;
+        }
+        
+        /* Bitcoin widget specific styles */
+        .widget-card.bitcoin {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+        }
+        
+        .widget-card.bitcoin .widget-title,
+        .widget-card.bitcoin .widget-value,
+        .widget-card.bitcoin .widget-subtitle {
+            color: white;
+        }
+        
+        .widget-card.bitcoin .widget-icon {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .widget-card.bitcoin .widget-change {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .widget-card.bitcoin .widget-details {
+            border-top-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .widget-card.bitcoin .widget-detail-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .widget-card.bitcoin .widget-detail-value {
+            color: white;
+        }
+        
+        /* Weather widget specific styles */
+        .widget-card.weather {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+        }
+        
+        .widget-card.weather .widget-title,
+        .widget-card.weather .widget-value,
+        .widget-card.weather .widget-subtitle {
+            color: white;
+        }
+        
+        .widget-card.weather .widget-icon {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .widget-card.weather .widget-details {
+            border-top-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .widget-card.weather .widget-detail-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .widget-card.weather .widget-detail-value {
+            color: white;
+        }
+        
+        /* Legacy source sections for non-widget sources */
         .source-section {
             margin-bottom: 30px;
             padding: 20px;
@@ -172,6 +351,23 @@
                 padding: 20px 15px;
             }
             
+            .widget-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .widget-card {
+                padding: 20px;
+            }
+            
+            .widget-card.full-width {
+                grid-column: span 1;
+            }
+            
+            .widget-value {
+                font-size: 28px;
+            }
+            
             .source-section {
                 padding: 15px;
                 margin-bottom: 20px;
@@ -214,7 +410,7 @@
     <div class="email-container">
         <!-- Header -->
         <div class="email-header">
-            <h1>🌅 Your Morning Brief</h1>
+            <h1>🌅 {{NEWSLETTER_TITLE}}</h1>
             <p class="date">{{DATE}}</p>
         </div>
         

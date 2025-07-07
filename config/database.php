@@ -43,6 +43,7 @@ class Database {
                 timezone TEXT DEFAULT 'UTC',
                 email_verified INTEGER DEFAULT 0,
                 send_time TEXT DEFAULT '06:00',
+                newsletter_title TEXT DEFAULT 'Your Morning Brief',
                 verification_token TEXT,
                 is_admin INTEGER DEFAULT 0,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -55,6 +56,7 @@ class Database {
                 type TEXT NOT NULL,
                 name TEXT,
                 config TEXT,
+                sort_order INTEGER DEFAULT 0,
                 is_active INTEGER DEFAULT 1,
                 last_result TEXT,
                 last_updated DATETIME,
@@ -166,6 +168,37 @@ class Database {
             if (!$hasSourceNameColumn) {
                 $this->pdo->exec("ALTER TABLE sources ADD COLUMN name TEXT");
                 error_log("Database migration: Added 'name' column to sources table");
+            }
+            
+            // Check if sort_order column exists in sources table, if not add it
+            $hasSortOrderColumn = false;
+            foreach ($columns as $column) {
+                if ($column['name'] === 'sort_order') {
+                    $hasSortOrderColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasSortOrderColumn) {
+                $this->pdo->exec("ALTER TABLE sources ADD COLUMN sort_order INTEGER DEFAULT 0");
+                error_log("Database migration: Added 'sort_order' column to sources table");
+            }
+            
+            // Check if newsletter_title column exists in users table, if not add it
+            $stmt = $this->pdo->query("PRAGMA table_info(users)");
+            $userColumns = $stmt->fetchAll();
+            
+            $hasNewsletterTitleColumn = false;
+            foreach ($userColumns as $column) {
+                if ($column['name'] === 'newsletter_title') {
+                    $hasNewsletterTitleColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasNewsletterTitleColumn) {
+                $this->pdo->exec("ALTER TABLE users ADD COLUMN newsletter_title TEXT DEFAULT 'Your Morning Brief'");
+                error_log("Database migration: Added 'newsletter_title' column to users table");
             }
             
             // Migrate plan names from old system to new system
