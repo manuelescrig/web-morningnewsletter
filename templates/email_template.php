@@ -410,6 +410,9 @@
     <div class="email-container">
         <!-- Header -->
         <div class="email-header">
+            <img src="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/assets/logos/logo-main.png" 
+                 alt="MorningNewsletter" 
+                 style="height: 32px; width: auto; margin-bottom: 16px; filter: brightness(0) invert(1);">
             <h1>🌅 {{NEWSLETTER_TITLE}}</h1>
             <p class="date">{{DATE}}</p>
         </div>

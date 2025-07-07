@@ -10,27 +10,18 @@
 
 function renderLogo($size = 'md', $href = '/', $classes = '') {
     $sizeClasses = [
-        'sm' => 'text-lg',
-        'md' => 'text-2xl',
-        'lg' => 'text-3xl',
-        'xl' => 'text-4xl'
-    ];
-    
-    $sunSizeClasses = [
-        'sm' => 'h-3 w-2',
-        'md' => 'h-4 w-3',
-        'lg' => 'h-5 w-4',
-        'xl' => 'h-6 w-5'
+        'sm' => 'h-6',      // ~24px height
+        'md' => 'h-8',      // ~32px height
+        'lg' => 'h-10',     // ~40px height
+        'xl' => 'h-12'      // ~48px height
     ];
     
     $sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
-    $sunSizeClass = $sunSizeClasses[$size] ?? $sunSizeClasses['md'];
-    $baseClasses = "$sizeClass font-bold text-blue-600 hover:text-blue-700 transition-colors duration-200";
+    $baseClasses = "hover:opacity-80 transition-opacity duration-200";
     $allClasses = trim("$baseClasses $classes");
     
-    echo "<a href=\"$href\" class=\"$allClasses flex items-center justify-center\">";
-    echo "<img src=\"/assets/logos/logo-sun.svg\" alt=\"\" class=\"$sunSizeClass logo-sun-rotated self-center\">";
-    echo "<span><span class=\"font-extrabold\">Morning</span><span class=\"font-medium\">Newsletter</span></span>";
+    echo "<a href=\"$href\" class=\"$allClasses inline-block\">";
+    echo "<img src=\"/assets/logos/logo-main.png\" alt=\"MorningNewsletter\" class=\"$sizeClass w-auto\">";
     echo "</a>";
 }
 ?>
