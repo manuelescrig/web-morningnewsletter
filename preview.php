@@ -19,25 +19,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
     
     if ($auth->validateCSRFToken($csrfToken) && $action === 'send_preview') {
         try {
+            error_log("Preview email: Starting send process for user " . $user->getId());
+            
             require_once __DIR__ . '/core/EmailSender.php';
             $builder = new NewsletterBuilder($user);
             $newsletterHtml = $builder->build();
             
+            error_log("Preview email: Newsletter HTML generated, length: " . strlen($newsletterHtml));
+            
             $emailSender = new EmailSender();
-            $success = $emailSender->sendEmail(
+            $success = $emailSender->sendPreviewEmail(
                 $user->getEmail(), 
                 'Newsletter Preview - ' . $user->getNewsletterTitle(),
                 $newsletterHtml
             );
             
+            error_log("Preview email: Send result: " . ($success ? 'success' : 'failed'));
+            
             if ($success) {
                 $previewSent = true;
             } else {
-                $previewError = 'Failed to send preview email. Please try again.';
+                $previewError = 'Failed to send preview email. Please check your email configuration.';
             }
         } catch (Exception $e) {
+            error_log("Preview email exception: " . $e->getMessage());
+            error_log("Preview email stack trace: " . $e->getTraceAsString());
             $previewError = 'Error sending preview: ' . $e->getMessage();
         }
+    } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
+        error_log("Preview email: CSRF validation failed or wrong action. Action: $action, CSRF valid: " . ($auth->validateCSRFToken($csrfToken) ? 'yes' : 'no'));
+        $previewError = 'Invalid request. Please try again.';
     }
 }
 

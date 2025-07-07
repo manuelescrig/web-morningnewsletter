@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/User.php';
+require_once __DIR__ . '/../config/database.php';
 
 class EmailSender {
     private $provider;
@@ -314,6 +315,23 @@ class EmailSender {
         ";
         
         return $this->sendEmail($newEmail, $subject, $htmlBody);
+    }
+    
+    public function sendPreviewEmail($email, $subject, $htmlContent) {
+        try {
+            $success = $this->sendEmail($email, $subject, $htmlContent);
+            
+            if ($success) {
+                error_log("Preview email sent successfully to: $email");
+            } else {
+                error_log("Failed to send preview email to: $email");
+            }
+            
+            return $success;
+        } catch (Exception $e) {
+            error_log("Preview email error: " . $e->getMessage());
+            throw $e;
+        }
     }
     
     public function getEmailStats($userId, $days = 30) {
