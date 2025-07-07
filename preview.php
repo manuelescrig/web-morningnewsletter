@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             
             require_once __DIR__ . '/core/EmailSender.php';
             $builder = new NewsletterBuilder($user);
-            $newsletterHtml = $builder->build();
+            $newsletterHtml = $builder->buildForPreview();
             
             error_log("Preview email: Newsletter HTML generated, length: " . strlen($newsletterHtml));
             
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
 
 try {
     $builder = new NewsletterBuilder($user);
-    $newsletterHtml = $builder->build();
+    $newsletterHtml = $builder->buildForPreview();
     
     ?>
     <!DOCTYPE html>

@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/User.php';
-require_once __DIR__ . '/Newsletter.php';
-require_once __DIR__ . '/NewsletterRecipient.php';
 require_once __DIR__ . '/SourceModule.php';
 
 // Include all source modules
@@ -13,68 +11,25 @@ require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
 class NewsletterBuilder {
-    private $newsletter;
     private $user;
     private $sources;
     
-    public function __construct(Newsletter $newsletter) {
-        $this->newsletter = $newsletter;
-        $this->user = User::findById($newsletter->getUserId());
-        $this->sources = $newsletter->getSources();
+    public function __construct(User $user) {
+        $this->user = $user;
+        $this->sources = $user->getSources();
     }
     
     public function build() {
-        $sourceData = [];
-        
-        foreach ($this->sources as $source) {
-            try {
-                $moduleClass = $this->getModuleClass($source['type']);
-                $config = json_decode($source['config'], true) ?: [];
-                
-                if (!$moduleClass) {
-                    throw new Exception("Unknown source type: {$source['type']}");
-                }
-                
-                if (!class_exists($moduleClass)) {
-                    throw new Exception("Module class not found: $moduleClass");
-                }
-                
-                $module = new $moduleClass($config);
-                $data = $module->getData();
-                
-                $sourceData[] = [
-                    'title' => $module->getTitle(),
-                    'type' => $source['type'],
-                    'data' => $data,
-                    'last_updated' => $source['last_updated']
-                ];
-                
-                // Update last_result in database
-                $this->updateSourceResult($source['id'], $data);
-            } catch (Exception $e) {
-                error_log("Error fetching data for source {$source['type']}: " . $e->getMessage());
-                
-                // Add a placeholder for failed sources so users know something went wrong
-                $sourceData[] = [
-                    'title' => ucfirst($source['type']) . ' (Error)',
-                    'type' => $source['type'],
-                    'data' => [
-                        [
-                            'label' => 'Status',
-                            'value' => 'Failed to load data: ' . $e->getMessage(),
-                            'delta' => null
-                        ]
-                    ],
-                    'last_updated' => $source['last_updated']
-                ];
-            }
-        }
-        
-        return $this->renderNewslettersForRecipients($sourceData);
+        $sourceData = $this->buildSourceData(true); // true = update source results
+        return $this->renderNewsletter($sourceData, $this->user->getEmail(), bin2hex(random_bytes(16)));
     }
     
     public function buildForPreview() {
-        // Build newsletter content without generating for all recipients (for preview purposes)
+        $sourceData = $this->buildSourceData(false); // false = don't update source results for preview
+        return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token');
+    }
+    
+    private function buildSourceData($updateResults = true) {
         $sourceData = [];
         
         foreach ($this->sources as $source) {
@@ -93,13 +48,21 @@ class NewsletterBuilder {
                 $module = new $moduleClass($config);
                 $data = $module->getData();
                 
+                // Update the source with latest data only if not preview
+                if ($updateResults) {
+                    $this->updateSourceResult($source['id'], $data);
+                }
+                
                 $sourceData[] = [
                     'title' => $module->getTitle(),
                     'type' => $source['type'],
                     'data' => $data,
-                    'last_updated' => $source['last_updated']
+                    'last_updated' => date('Y-m-d H:i:s')
                 ];
+                
             } catch (Exception $e) {
+                error_log("Error loading source {$source['type']}: " . $e->getMessage());
+                
                 $sourceData[] = [
                     'title' => ucfirst($source['type']) . ' (Error)',
                     'type' => $source['type'],
@@ -115,8 +78,7 @@ class NewsletterBuilder {
             }
         }
         
-        // Return single newsletter for preview (use owner email and a placeholder token)
-        return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token');
+        return $sourceData;
     }
     
     private function getModuleClass($type) {
@@ -142,30 +104,14 @@ class NewsletterBuilder {
         $stmt->execute([json_encode($data), $sourceId]);
     }
     
-    private function renderNewslettersForRecipients($sourceData) {
-        $recipients = $this->newsletter->getRecipients();
-        $newsletters = [];
-        
-        foreach ($recipients as $recipient) {
-            $newsletters[] = [
-                'email' => $recipient->getEmail(),
-                'html' => $this->renderNewsletter($sourceData, $recipient->getEmail(), $recipient->getUnsubscribeToken()),
-                'newsletter_id' => $this->newsletter->getId(),
-                'recipient_token' => $recipient->getUnsubscribeToken()
-            ];
-        }
-        
-        return $newsletters;
-    }
-    
     private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken) {
         $html = $this->getEmailTemplate();
         
         // Replace placeholders
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
-        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->newsletter->getTitle(), $html);
-        $html = str_replace('{{NEWSLETTER_ID}}', $this->newsletter->getId(), $html);
+        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->user->getNewsletterTitle(), $html);
+        $html = str_replace('{{USER_ID}}', $this->user->getId(), $html);
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
@@ -175,219 +121,87 @@ class NewsletterBuilder {
     private function renderSources($sourceData) {
         if (empty($sourceData)) {
             return '<div style="text-align: center; padding: 40px 20px; color: #6b7280;">
-                        <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
-                        <h3 style="margin: 0 0 8px 0; color: #374151;">No sources configured</h3>
-                        <p style="margin: 0; font-size: 14px;">Add data sources in your dashboard to start receiving updates.</p>
+                        <p>No data sources configured yet.</p>
+                        <p>Add some sources in your dashboard to see content here!</p>
                     </div>';
         }
         
-        $widgetSources = [];
-        $legacySources = [];
-        
-        // Separate widget-compatible sources from legacy sources
+        $html = '';
         foreach ($sourceData as $source) {
-            if (in_array($source['type'], ['bitcoin', 'weather'])) {
-                $widgetSources[] = $source;
-            } else {
-                $legacySources[] = $source;
-            }
+            $html .= $this->renderSource($source);
         }
         
-        $content = '';
-        
-        // Render widgets in grid layout
-        if (!empty($widgetSources)) {
-            $content .= '<div class="widget-container">';
-            foreach ($widgetSources as $source) {
-                $content .= $this->renderWidget($source);
-            }
-            $content .= '</div>';
-        }
-        
-        // Render legacy sources
-        foreach ($legacySources as $source) {
-            $content .= $this->renderLegacySource($source);
-        }
-        
-        return $content;
+        return $html;
     }
     
-    private function renderWidget($source) {
-        $type = $source['type'];
-        $data = $source['data'];
+    private function renderSource($source) {
+        $title = htmlspecialchars($source['title']);
+        $type = htmlspecialchars($source['type']);
+        $lastUpdated = $source['last_updated'];
         
-        if ($type === 'bitcoin') {
-            return $this->renderBitcoinWidget($source);
-        } elseif ($type === 'weather') {
-            return $this->renderWeatherWidget($source);
-        }
+        $html = "
+        <div style='margin-bottom: 32px; padding: 24px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #3b82f6;'>
+            <h2 style='margin: 0 0 16px 0; color: #1f2937; font-size: 20px; font-weight: 600;'>$title</h2>";
         
-        // Fallback to legacy rendering
-        return $this->renderLegacySource($source);
-    }
-    
-    private function renderBitcoinWidget($source) {
-        $data = $source['data'];
-        
-        if (empty($data)) {
-            return $this->renderLegacySource($source);
-        }
-        
-        $priceData = $data[0];
-        $price = $priceData['value'] ?? 'N/A';
-        $delta = $priceData['delta'] ?? null;
-        
-        $changeClass = 'neutral';
-        $changeIcon = '→';
-        $changeText = 'No change';
-        
-        if ($delta) {
-            if (isset($delta['raw_delta'])) {
-                if ($delta['raw_delta'] > 0) {
-                    $changeClass = 'positive';
-                    $changeIcon = '▲';
-                } elseif ($delta['raw_delta'] < 0) {
-                    $changeClass = 'negative';
-                    $changeIcon = '▼';
-                }
-            }
-            $changeText = $delta['value'] ?? $changeText;
-        }
-        
-        return '<div class="widget-card bitcoin">
-                    <div class="widget-header">
-                        <h3 class="widget-title">
-                            <div class="widget-icon">₿</div>
-                            Bitcoin
-                        </h3>
-                        <div style="opacity: 0.6; font-size: 12px;">●</div>
-                    </div>
-                    <div class="widget-value">' . htmlspecialchars($price) . '</div>
-                    <div class="widget-change ' . $changeClass . '">
-                        <span class="widget-change-icon">' . $changeIcon . '</span>
-                        ' . htmlspecialchars($changeText) . '
-                    </div>
-                </div>';
-    }
-    
-    private function renderWeatherWidget($source) {
-        $data = $source['data'];
-        
-        if (empty($data)) {
-            return $this->renderLegacySource($source);
-        }
-        
-        $temperature = '';
-        $conditions = '';
-        $location = '';
-        $humidity = '';
-        $todayRange = '';
-        
-        foreach ($data as $item) {
-            $label = $item['label'] ?? '';
-            $value = $item['value'] ?? '';
+        if (!empty($source['data']) && is_array($source['data'])) {
+            $html .= "<div style='space-y: 12px;'>";
             
-            if (strpos($label, 'Temperature') !== false) {
-                $temperature = $value;
-            } elseif (strpos($label, 'Conditions') !== false) {
-                $conditions = $value;
-            } elseif (strpos($label, 'Location') !== false) {
-                $location = str_replace('📍 ', '', $value);
-            } elseif (strpos($label, 'Humidity') !== false) {
-                $humidity = $value;
-            } elseif (strpos($label, 'Range') !== false) {
-                $todayRange = $value;
-            }
-        }
-        
-        // Extract temperature number and emoji
-        $tempParts = explode(' ', $temperature);
-        $tempValue = end($tempParts);
-        $weatherEmoji = isset($tempParts[0]) ? $tempParts[0] : '🌤️';
-        
-        return '<div class="widget-card weather">
-                    <div class="widget-header">
-                        <h3 class="widget-title">
-                            <div class="widget-icon">' . $weatherEmoji . '</div>
-                            ' . htmlspecialchars($location) . '
-                        </h3>
-                        <div style="opacity: 0.6; font-size: 12px;">☆☆☆</div>
-                    </div>
-                    <div class="widget-value">' . htmlspecialchars($tempValue) . '</div>
-                    <div class="widget-subtitle">' . htmlspecialchars($conditions) . '</div>
-                    <div class="widget-details">
-                        <div class="widget-detail-item">
-                            <span class="widget-detail-label">Humidity</span>
-                            <span class="widget-detail-value">' . htmlspecialchars(str_replace('💧 ', '', $humidity)) . '</span>
-                        </div>
-                        ' . ($todayRange ? '<div class="widget-detail-item">
-                            <span class="widget-detail-label">Today\'s Range</span>
-                            <span class="widget-detail-value">' . htmlspecialchars(str_replace('📊 ', '', $todayRange)) . '</span>
-                        </div>' : '') . '
-                    </div>
-                </div>';
-    }
-    
-    private function renderLegacySource($source) {
-        $html = '<div class="source-section" style="margin-bottom: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">';
-        $html .= '<h2 style="color: #333; margin-bottom: 15px; font-size: 18px;">' . htmlspecialchars($source['title']) . '</h2>';
-        
-        if (is_array($source['data'])) {
             foreach ($source['data'] as $item) {
-                $html .= '<div style="margin-bottom: 10px;">';
-                
-                if (isset($item['label']) && isset($item['value'])) {
-                    $html .= '<strong>' . htmlspecialchars($item['label']) . ':</strong> ';
-                    $html .= htmlspecialchars($item['value']);
+                if (is_array($item) && isset($item['label'], $item['value'])) {
+                    $label = htmlspecialchars($item['label']);
+                    $value = htmlspecialchars($item['value']);
+                    $delta = $item['delta'] ?? null;
                     
-                    if (isset($item['delta']) && !empty($item['delta'])) {
-                        $deltaColor = $item['delta']['color'] ?? 'black';
-                        $html .= ' <span style="color: ' . $deltaColor . '; font-weight: bold;">';
-                        $html .= htmlspecialchars($item['delta']['value']);
-                        $html .= '</span>';
+                    $html .= "<div style='display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #e5e7eb;'>
+                                <span style='color: #6b7280; font-weight: 500;'>$label:</span>
+                                <div style='text-align: right;'>
+                                    <span style='color: #1f2937; font-weight: 600;'>$value</span>";
+                    
+                    if ($delta !== null) {
+                        $deltaValue = (float)$delta;
+                        $deltaColor = $deltaValue >= 0 ? '#10b981' : '#ef4444';
+                        $deltaSymbol = $deltaValue >= 0 ? '+' : '';
+                        $html .= "<br><span style='color: $deltaColor; font-size: 12px;'>$deltaSymbol$delta</span>";
                     }
+                    
+                    $html .= "</div></div>";
                 }
-                
-                $html .= '</div>';
             }
+            
+            $html .= "</div>";
+        } else {
+            $html .= "<p style='color: #6b7280; font-style: italic;'>No data available</p>";
         }
         
-        $html .= '</div>';
+        if ($lastUpdated) {
+            $html .= "<div style='margin-top: 12px; text-align: right;'>
+                        <span style='color: #9ca3af; font-size: 12px;'>Updated: $lastUpdated</span>
+                      </div>";
+        }
+        
+        $html .= "</div>";
+        
         return $html;
     }
     
     private function getEmailTemplate() {
         $templatePath = __DIR__ . '/../templates/email_template.php';
         if (file_exists($templatePath)) {
-            ob_start();
-            include $templatePath;
-            return ob_get_clean();
+            return file_get_contents($templatePath);
         }
         
         // Fallback template
-        return '
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Your Morning Brief</title>
-        </head>
-        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <header style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e9ecef;">
-                <h1 style="color: #2563eb; margin-bottom: 5px;">Your Morning Brief</h1>
-                <p style="color: #666; margin: 0;">{{DATE}}</p>
-            </header>
-            
-            <main>
-                {{SOURCES_CONTENT}}
-            </main>
-            
-            <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center; color: #666; font-size: 12px;">
-                <p>You are receiving this because you subscribed to MorningNewsletter.</p>
-                <p><a href="#" style="color: #2563eb;">Unsubscribe</a> | <a href="#" style="color: #2563eb;">Update Preferences</a></p>
-            </footer>
-        </body>
-        </html>';
+        return '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{NEWSLETTER_TITLE}}</title>
+</head>
+<body>
+    <h1>{{NEWSLETTER_TITLE}} - {{DATE}}</h1>
+    {{SOURCES_CONTENT}}
+    <p><a href="mailto:support@morningnewsletter.com?subject=Unsubscribe&body=Token: {{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a></p>
+</body>
+</html>';
     }
 }
