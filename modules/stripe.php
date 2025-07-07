@@ -125,7 +125,7 @@ class StripeModule extends BaseSourceModule {
                 'method' => 'GET',
                 'header' => [
                     'Authorization: Bearer ' . $secretKey,
-                    'User-Agent: MorningNewsletter/1.0'
+                    'User-Agent: MorningNewsletter/1.0 (https://morningnewsletter.com; hello@morningnewsletter.com)'
                 ],
                 'timeout' => 10
             ]

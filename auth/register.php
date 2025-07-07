@@ -55,7 +55,7 @@ $userTimezone = date_default_timezone_get();
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8 p-8">
         <div class="text-center">
-<?php renderLogo('lg'); ?>
+<?php renderLogo('md'); ?>
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Create your account</h2>
             <p class="mt-2 text-sm text-gray-600">
                 Or

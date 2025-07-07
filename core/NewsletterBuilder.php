@@ -208,7 +208,7 @@ class NewsletterBuilder {
 <body>
     <h1>{{NEWSLETTER_TITLE}} - {{DATE}}</h1>
     {{SOURCES_CONTENT}}
-    <p><a href="mailto:support@morningnewsletter.com?subject=Unsubscribe&body=Token: {{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a></p>
+    <p><a href="mailto:hello@morningnewsletter.com?subject=Unsubscribe&body=Token: {{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a></p>
 </body>
 </html>';
     }

@@ -19,7 +19,7 @@ class NewsModule extends BaseSourceModule {
             
             $apiUrl = "https://newsapi.org/v2/top-headlines?country=$country&category=$category&pageSize=$limit&apikey=$apiKey";
             $response = $this->makeHttpRequest($apiUrl, [
-                'User-Agent: MorningNewsletter/1.0'
+                'User-Agent: MorningNewsletter/1.0 (https://morningnewsletter.com; hello@morningnewsletter.com)'
             ]);
             
             $data = json_decode($response, true);

@@ -28,7 +28,7 @@ class WeatherModule extends BaseSourceModule {
             // Get current weather from MET Norway API
             $weatherUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=$latitude&lon=$longitude";
             $headers = [
-                'User-Agent: MorningNewsletter/1.0 (github.com/your-repo/morning-newsletter)'
+                'User-Agent: MorningNewsletter/1.0 (https://morningnewsletter.com; hello@morningnewsletter.com)'
             ];
             
             $weatherResponse = $this->makeHttpRequest($weatherUrl, $headers);
