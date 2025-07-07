@@ -33,7 +33,8 @@ class Database {
     }
     
     private function initializeTables() {
-        $queries = [
+        // Create basic tables first (user-centric model)
+        $basicQueries = [
             "CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
@@ -50,34 +51,9 @@ class Database {
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
-            "CREATE TABLE IF NOT EXISTS newsletters (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER NOT NULL,
-                title TEXT DEFAULT 'Your Morning Brief',
-                send_time TEXT DEFAULT '06:00',
-                timezone TEXT DEFAULT 'UTC',
-                is_active INTEGER DEFAULT 1,
-                unsubscribe_token TEXT UNIQUE,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-            )",
-            
-            "CREATE TABLE IF NOT EXISTS newsletter_recipients (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                newsletter_id INTEGER NOT NULL,
-                email TEXT NOT NULL,
-                is_active INTEGER DEFAULT 1,
-                unsubscribe_token TEXT UNIQUE,
-                unsubscribed_at DATETIME,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE CASCADE,
-                UNIQUE(newsletter_id, email)
-            )",
-            
             "CREATE TABLE IF NOT EXISTS sources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
+                user_id INTEGER NOT NULL,
                 type TEXT NOT NULL,
                 name TEXT,
                 config TEXT,
@@ -92,13 +68,10 @@ class Database {
             "CREATE TABLE IF NOT EXISTS email_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
-                newsletter_id INTEGER,
-                recipient_email TEXT,
                 status TEXT NOT NULL,
                 error_message TEXT,
                 sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-                FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE SET NULL
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             )",
             
             "CREATE TABLE IF NOT EXISTS subscriptions (
@@ -141,17 +114,19 @@ class Database {
                 default_config TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )",
-            
+            )"
+        ];
+        
+        // Execute basic table creation
+        foreach ($basicQueries as $query) {
+            $this->pdo->exec($query);
+        }
+        
+        // Create basic indexes
+        $basicIndexes = [
             "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
-            "CREATE INDEX IF NOT EXISTS idx_newsletters_user_id ON newsletters(user_id)",
-            "CREATE INDEX IF NOT EXISTS idx_newsletters_unsubscribe_token ON newsletters(unsubscribe_token)",
-            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_newsletter_id ON newsletter_recipients(newsletter_id)",
-            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_email ON newsletter_recipients(email)",
-            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_unsubscribe_token ON newsletter_recipients(unsubscribe_token)",
-            "CREATE INDEX IF NOT EXISTS idx_sources_newsletter_id ON sources(newsletter_id)",
+            "CREATE INDEX IF NOT EXISTS idx_sources_user_id ON sources(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_user_id ON email_logs(user_id)",
-            "CREATE INDEX IF NOT EXISTS idx_email_logs_newsletter_id ON email_logs(newsletter_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at)",
             "CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_subscriptions_stripe_id ON subscriptions(stripe_subscription_id)",
@@ -160,7 +135,7 @@ class Database {
             "CREATE INDEX IF NOT EXISTS idx_source_configs_type ON source_configs(type)"
         ];
         
-        foreach ($queries as $query) {
+        foreach ($basicIndexes as $query) {
             $this->pdo->exec($query);
         }
         
@@ -241,6 +216,9 @@ class Database {
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
+            // Create indexes that depend on migrated columns
+            $this->createDependentIndexes();
+            
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
         }
@@ -248,7 +226,55 @@ class Database {
     
     public function runNewsletterMigration() {
         // This method can be called separately to run the newsletter migration
+        $this->createNewsletterTables();
         $this->migrateToNewsletterStructure();
+    }
+    
+    private function createNewsletterTables() {
+        // Create newsletter-specific tables
+        $newsletterQueries = [
+            "CREATE TABLE IF NOT EXISTS newsletters (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT DEFAULT 'Your Morning Brief',
+                send_time TEXT DEFAULT '06:00',
+                timezone TEXT DEFAULT 'UTC',
+                is_active INTEGER DEFAULT 1,
+                unsubscribe_token TEXT UNIQUE,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+            )",
+            
+            "CREATE TABLE IF NOT EXISTS newsletter_recipients (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                newsletter_id INTEGER NOT NULL,
+                email TEXT NOT NULL,
+                is_active INTEGER DEFAULT 1,
+                unsubscribe_token TEXT UNIQUE,
+                unsubscribed_at DATETIME,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE CASCADE,
+                UNIQUE(newsletter_id, email)
+            )"
+        ];
+        
+        foreach ($newsletterQueries as $query) {
+            $this->pdo->exec($query);
+        }
+        
+        // Create newsletter-specific indexes
+        $newsletterIndexes = [
+            "CREATE INDEX IF NOT EXISTS idx_newsletters_user_id ON newsletters(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_newsletters_unsubscribe_token ON newsletters(unsubscribe_token)",
+            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_newsletter_id ON newsletter_recipients(newsletter_id)",
+            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_email ON newsletter_recipients(email)",
+            "CREATE INDEX IF NOT EXISTS idx_newsletter_recipients_unsubscribe_token ON newsletter_recipients(unsubscribe_token)"
+        ];
+        
+        foreach ($newsletterIndexes as $query) {
+            $this->pdo->exec($query);
+        }
     }
     
     private function migratePlanNames() {
@@ -305,6 +331,30 @@ class Database {
                 $this->pdo->rollBack();
             }
             error_log("Database migration error during plan name migration: " . $e->getMessage());
+        }
+    }
+    
+    private function createDependentIndexes() {
+        try {
+            // Check if sources table has newsletter_id column
+            $stmt = $this->pdo->query("PRAGMA table_info(sources)");
+            $columns = $stmt->fetchAll();
+            $hasNewsletterIdColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                    break;
+                }
+            }
+            
+            if ($hasNewsletterIdColumn) {
+                $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_sources_newsletter_id ON sources(newsletter_id)");
+                error_log("Database migration: Created index on sources.newsletter_id");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database migration error during index creation: " . $e->getMessage());
         }
     }
     
@@ -536,6 +586,9 @@ class Database {
                         $this->pdo->exec("ALTER TABLE sources_new RENAME TO sources");
                         
                         // Recreate index
+                        $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_sources_newsletter_id ON sources(newsletter_id)");
+                    } else if ($hasNewsletterIdColumn) {
+                        // If newsletter_id column exists, ensure index exists
                         $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_sources_newsletter_id ON sources(newsletter_id)");
                     }
                     
