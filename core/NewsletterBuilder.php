@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/User.php';
+require_once __DIR__ . '/Newsletter.php';
+require_once __DIR__ . '/NewsletterRecipient.php';
 require_once __DIR__ . '/SourceModule.php';
 
 // Include all source modules
@@ -11,12 +13,14 @@ require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
 class NewsletterBuilder {
+    private $newsletter;
     private $user;
     private $sources;
     
-    public function __construct(User $user) {
-        $this->user = $user;
-        $this->sources = $user->getSources();
+    public function __construct(Newsletter $newsletter) {
+        $this->newsletter = $newsletter;
+        $this->user = User::findById($newsletter->getUserId());
+        $this->sources = $newsletter->getSources();
     }
     
     public function build() {
@@ -66,7 +70,53 @@ class NewsletterBuilder {
             }
         }
         
-        return $this->renderNewsletter($sourceData);
+        return $this->renderNewslettersForRecipients($sourceData);
+    }
+    
+    public function buildForPreview() {
+        // Build newsletter content without generating for all recipients (for preview purposes)
+        $sourceData = [];
+        
+        foreach ($this->sources as $source) {
+            try {
+                $moduleClass = $this->getModuleClass($source['type']);
+                $config = json_decode($source['config'], true) ?: [];
+                
+                if (!$moduleClass) {
+                    throw new Exception("Unknown source type: {$source['type']}");
+                }
+                
+                if (!class_exists($moduleClass)) {
+                    throw new Exception("Module class not found: $moduleClass");
+                }
+                
+                $module = new $moduleClass($config);
+                $data = $module->getData();
+                
+                $sourceData[] = [
+                    'title' => $module->getTitle(),
+                    'type' => $source['type'],
+                    'data' => $data,
+                    'last_updated' => $source['last_updated']
+                ];
+            } catch (Exception $e) {
+                $sourceData[] = [
+                    'title' => ucfirst($source['type']) . ' (Error)',
+                    'type' => $source['type'],
+                    'data' => [
+                        [
+                            'label' => 'Status',
+                            'value' => 'Failed to load data: ' . $e->getMessage(),
+                            'delta' => null
+                        ]
+                    ],
+                    'last_updated' => $source['last_updated']
+                ];
+            }
+        }
+        
+        // Return single newsletter for preview (use owner email and a placeholder token)
+        return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token');
     }
     
     private function getModuleClass($type) {
@@ -92,13 +142,31 @@ class NewsletterBuilder {
         $stmt->execute([json_encode($data), $sourceId]);
     }
     
-    private function renderNewsletter($sourceData) {
+    private function renderNewslettersForRecipients($sourceData) {
+        $recipients = $this->newsletter->getRecipients();
+        $newsletters = [];
+        
+        foreach ($recipients as $recipient) {
+            $newsletters[] = [
+                'email' => $recipient->getEmail(),
+                'html' => $this->renderNewsletter($sourceData, $recipient->getEmail(), $recipient->getUnsubscribeToken()),
+                'newsletter_id' => $this->newsletter->getId(),
+                'recipient_token' => $recipient->getUnsubscribeToken()
+            ];
+        }
+        
+        return $newsletters;
+    }
+    
+    private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken) {
         $html = $this->getEmailTemplate();
         
         // Replace placeholders
-        $html = str_replace('{{USER_EMAIL}}', $this->user->getEmail(), $html);
+        $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
-        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->user->getNewsletterTitle(), $html);
+        $html = str_replace('{{NEWSLETTER_TITLE}}', $this->newsletter->getTitle(), $html);
+        $html = str_replace('{{NEWSLETTER_ID}}', $this->newsletter->getId(), $html);
+        $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;

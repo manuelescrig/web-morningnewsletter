@@ -433,13 +433,16 @@
         
         <!-- Footer -->
         <div class="email-footer">
-            <p>You're receiving this because you subscribed to MorningNewsletter</p>
+            <p>You're receiving this because you subscribed to "{{NEWSLETTER_TITLE}}"</p>
             <p>
                 <a href="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/dashboard/">Manage Preferences</a> | 
-                <a href="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/unsubscribe.php?email={{USER_EMAIL}}">Unsubscribe</a>
+                <a href="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>
             </p>
             <p style="margin-top: 15px; color: #9ca3af;">
                 © <?php echo date('Y'); ?> MorningNewsletter. All rights reserved.
+            </p>
+            <p style="font-size: 11px; color: #9ca3af; margin-top: 10px;">
+                Newsletter ID: {{NEWSLETTER_ID}} | Recipient: {{RECIPIENT_EMAIL}}
             </p>
         </div>
     </div>

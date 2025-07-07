@@ -39,6 +39,8 @@ class User {
         ");
         
         try {
+            $this->db->beginTransaction();
+            
             $stmt->execute([$email, $passwordHash, $timezone, $verificationToken]);
             $this->id = $this->db->lastInsertId();
             $this->email = $email;
@@ -49,8 +51,21 @@ class User {
             $this->email_verified = 0;
             $this->is_admin = 0;
             
+            // Create default newsletter for the user
+            require_once __DIR__ . '/Newsletter.php';
+            require_once __DIR__ . '/NewsletterRecipient.php';
+            
+            $newsletter = new Newsletter();
+            $newsletterId = $newsletter->create($this->id, 'Your Morning Brief', '06:00', $timezone);
+            
+            // Subscribe the user to their own newsletter
+            $recipient = new NewsletterRecipient();
+            $recipient->create($newsletterId, $email);
+            
+            $this->db->commit();
             return $verificationToken;
         } catch (PDOException $e) {
+            $this->db->rollBack();
             throw new Exception("Failed to create user: " . $e->getMessage());
         }
     }
@@ -208,6 +223,13 @@ class User {
     }
     
     public function getSources() {
+        // Get sources from the user's primary newsletter
+        $newsletter = $this->getPrimaryNewsletter();
+        if ($newsletter) {
+            return $newsletter->getSources();
+        }
+        
+        // Fallback to legacy direct sources (for backward compatibility during migration)
         $stmt = $this->db->prepare("
             SELECT * FROM sources 
             WHERE user_id = ? AND is_active = 1 
@@ -217,7 +239,49 @@ class User {
         return $stmt->fetchAll();
     }
     
+    public function getNewsletters() {
+        require_once __DIR__ . '/Newsletter.php';
+        return Newsletter::findByUserId($this->id);
+    }
+    
+    public function getPrimaryNewsletter() {
+        $newsletters = $this->getNewsletters();
+        return !empty($newsletters) ? $newsletters[0] : null;
+    }
+    
+    public function createNewsletter($title = null, $sendTime = null, $timezone = null) {
+        require_once __DIR__ . '/Newsletter.php';
+        require_once __DIR__ . '/NewsletterRecipient.php';
+        
+        $newsletter = new Newsletter();
+        $newsletterId = $newsletter->create(
+            $this->id,
+            $title ?: 'Your Morning Brief',
+            $sendTime ?: $this->send_time ?: '06:00',
+            $timezone ?: $this->timezone ?: 'UTC'
+        );
+        
+        // Subscribe the user to their new newsletter
+        $recipient = new NewsletterRecipient();
+        $recipient->create($newsletterId, $this->email);
+        
+        return Newsletter::findById($newsletterId);
+    }
+    
     public function getSourceCount() {
+        // Count sources from the user's primary newsletter
+        $newsletter = $this->getPrimaryNewsletter();
+        if ($newsletter) {
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) as count 
+                FROM sources 
+                WHERE newsletter_id = ? AND is_active = 1
+            ");
+            $stmt->execute([$newsletter->getId()]);
+            return $stmt->fetch()['count'];
+        }
+        
+        // Fallback to legacy count
         $stmt = $this->db->prepare("
             SELECT COUNT(*) as count 
             FROM sources 
@@ -251,22 +315,27 @@ class User {
             throw new Exception("Source limit reached for current plan");
         }
         
+        $newsletter = $this->getPrimaryNewsletter();
+        if (!$newsletter) {
+            throw new Exception("No newsletter found for user");
+        }
+        
         // Get the next sort order
         $stmt = $this->db->prepare("
             SELECT COALESCE(MAX(sort_order), 0) + 1 as next_order 
             FROM sources 
-            WHERE user_id = ? AND is_active = 1
+            WHERE newsletter_id = ? AND is_active = 1
         ");
-        $stmt->execute([$this->id]);
+        $stmt->execute([$newsletter->getId()]);
         $nextOrder = $stmt->fetch()['next_order'];
         
         $stmt = $this->db->prepare("
-            INSERT INTO sources (user_id, type, name, config, sort_order) 
+            INSERT INTO sources (newsletter_id, type, name, config, sort_order) 
             VALUES (?, ?, ?, ?, ?)
         ");
         
         return $stmt->execute([
-            $this->id, 
+            $newsletter->getId(), 
             $type, 
             $name,
             json_encode($config),
@@ -275,13 +344,18 @@ class User {
     }
     
     public function removeSource($sourceId) {
+        $newsletter = $this->getPrimaryNewsletter();
+        if (!$newsletter) {
+            return false;
+        }
+        
         $stmt = $this->db->prepare("
             UPDATE sources 
             SET is_active = 0 
-            WHERE id = ? AND user_id = ?
+            WHERE id = ? AND newsletter_id = ?
         ");
         
-        return $stmt->execute([$sourceId, $this->id]);
+        return $stmt->execute([$sourceId, $newsletter->getId()]);
     }
     
     public function promoteToAdmin() {
@@ -749,17 +823,22 @@ class User {
     }
     
     public function updateSourceOrder($sourceIds) {
+        $newsletter = $this->getPrimaryNewsletter();
+        if (!$newsletter) {
+            return false;
+        }
+        
         try {
             $this->db->beginTransaction();
             
             $stmt = $this->db->prepare("
                 UPDATE sources 
                 SET sort_order = ?
-                WHERE id = ? AND user_id = ?
+                WHERE id = ? AND newsletter_id = ?
             ");
             
             foreach ($sourceIds as $order => $sourceId) {
-                $stmt->execute([$order + 1, $sourceId, $this->id]);
+                $stmt->execute([$order + 1, $sourceId, $newsletter->getId()]);
             }
             
             $this->db->commit();
@@ -772,6 +851,11 @@ class User {
     }
     
     public function updateSource($sourceId, $config = null, $name = null) {
+        $newsletter = $this->getPrimaryNewsletter();
+        if (!$newsletter) {
+            return false;
+        }
+        
         $updates = [];
         $values = [];
         
@@ -790,12 +874,12 @@ class User {
         }
         
         $values[] = $sourceId;
-        $values[] = $this->id;
+        $values[] = $newsletter->getId();
         
         $stmt = $this->db->prepare("
             UPDATE sources 
             SET " . implode(', ', $updates) . ", last_updated = CURRENT_TIMESTAMP 
-            WHERE id = ? AND user_id = ?
+            WHERE id = ? AND newsletter_id = ?
         ");
         
         return $stmt->execute($values);
