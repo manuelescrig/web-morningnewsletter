@@ -48,13 +48,22 @@ try {
     $userCount = $stmt->fetchColumn();
     echo "- Users in database: $userCount\n";
     
-    // Check if newsletters exist
-    $stmt = $conn->query("SELECT COUNT(*) FROM newsletters");
-    $newsletterCount = $stmt->fetchColumn();
-    echo "- Newsletters in database: $newsletterCount\n\n";
+    // Check if newsletters table exists and count newsletters
+    $stmt = $conn->query("SELECT name FROM sqlite_master WHERE type='table' AND name='newsletters'");
+    $newslettersTableExists = $stmt->fetch() !== false;
+    
+    if ($newslettersTableExists) {
+        $stmt = $conn->query("SELECT COUNT(*) FROM newsletters");
+        $newsletterCount = $stmt->fetchColumn();
+        echo "- Newsletters in database: $newsletterCount\n\n";
+    } else {
+        $newsletterCount = 0;
+        echo "- Newsletters table: DOES NOT EXIST\n";
+        echo "- Newsletter count: 0 (table not created yet)\n\n";
+    }
     
     // Step 3: Run newsletter migration if needed
-    if ($userCount > 0 && $newsletterCount == 0 && $hasUserIdColumn) {
+    if ($userCount > 0 && $newsletterCount == 0 && $hasUserIdColumn && !$newslettersTableExists) {
         echo "Step 3: Running newsletter migration...\n";
         $db->runNewsletterMigration();
         echo "✅ Newsletter migration completed\n\n";
@@ -68,6 +77,9 @@ try {
         }
         if (!$hasUserIdColumn) {
             echo "- Already using new structure\n";
+        }
+        if ($newslettersTableExists && $newsletterCount == 0) {
+            echo "- Newsletter table exists but is empty\n";
         }
         echo "\n";
     }
