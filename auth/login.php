@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../core/Auth.php';
-require_once __DIR__ . '/../core/SubscriptionManager.php';
 require_once __DIR__ . '/../includes/logo.php';
 
 $auth = Auth::getInstance();
@@ -9,16 +8,7 @@ $success = '';
 
 // Redirect if already logged in
 if ($auth->isLoggedIn()) {
-    // Check subscription status and redirect accordingly
-    $user = $auth->getCurrentUser();
-    $subscriptionManager = new SubscriptionManager();
-    $planInfo = $subscriptionManager->getUserPlanInfo($user->getId());
-    
-    if ($planInfo['plan'] !== 'free') {
-        header('Location: /billing');
-    } else {
-        header('Location: /upgrade');
-    }
+    header('Location: /dashboard/');
     exit;
 }
 
@@ -33,16 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $auth->login($email, $password);
         
         if ($result['success']) {
-            // After successful login, check subscription status
-            $user = $auth->getCurrentUser();
-            $subscriptionManager = new SubscriptionManager();
-            $planInfo = $subscriptionManager->getUserPlanInfo($user->getId());
-            
-            if ($planInfo['plan'] !== 'free') {
-                header('Location: /billing');
-            } else {
-                header('Location: /upgrade');
-            }
+            // Redirect to dashboard after successful login
+            header('Location: /dashboard/');
             exit;
         } else {
             $error = $result['message'];
