@@ -243,7 +243,7 @@ class EmailSender {
                 
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='$resetUrl' 
-                       style='background-color: #dc2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                       style='color: #dc2626; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
                         Reset Password
                     </a>
                 </div>
@@ -296,7 +296,7 @@ class EmailSender {
                 
                 <div style='text-align: center; margin: 30px 0;'>
                     <a href='$verificationUrl' 
-                       style='background-color: #0041EC; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
+                       style='color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;'>
                         Verify New Email Address
                     </a>
                 </div>
