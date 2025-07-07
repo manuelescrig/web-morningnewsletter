@@ -1,4 +1,10 @@
 <?php
+// Clean output buffer to ensure only JSON is returned
+if (ob_get_level()) {
+    ob_end_clean();
+}
+ob_start();
+
 // Handle both direct access and URL rewriting
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 $isDirectAccess = strpos($requestUri, 'geocoding.php') !== false;
@@ -30,6 +36,7 @@ error_log("Geocoding API called: query='$query', method=" . $_SERVER['REQUEST_ME
 
 if (empty($query) || strlen(trim($query)) < 2) {
     error_log("Geocoding API: Query too short");
+    ob_clean();
     echo json_encode(['error' => 'Query too short', 'results' => []]);
     exit;
 }
@@ -84,6 +91,7 @@ try {
     // Check cache first
     $cachedResults = getCachedResult($query);
     if ($cachedResults !== null) {
+        ob_clean();
         echo json_encode([
             'success' => true,
             'results' => $cachedResults,
@@ -204,6 +212,8 @@ try {
     // Cache the results
     cacheResult($query, $results);
 
+    // Clear any output and send clean JSON
+    ob_clean();
     echo json_encode([
         'success' => true,
         'results' => $results,
@@ -224,6 +234,8 @@ try {
         http_response_code(500);
     }
     
+    // Clear any output and send clean JSON
+    ob_clean();
     echo json_encode([
         'error' => 'Failed to search locations. Please try again.',
         'debug' => $errorMsg, // Add debug info for troubleshooting
