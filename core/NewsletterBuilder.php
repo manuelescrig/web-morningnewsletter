@@ -21,7 +21,9 @@ class NewsletterBuilder {
     
     public function build() {
         $sourceData = $this->buildSourceData(true); // true = update source results
-        return $this->renderNewsletter($sourceData, $this->user->getEmail(), bin2hex(random_bytes(16)));
+        $secretKey = 'unsubscribe_secret_key_2025'; // In production, use env variable
+        $unsubscribeToken = hash('sha256', $this->user->getId() . $secretKey);
+        return $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken);
     }
     
     public function buildForPreview() {
@@ -108,11 +110,17 @@ class NewsletterBuilder {
         $html = $this->getEmailTemplate();
         
         // Replace placeholders
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+        $baseUrl = $protocol . '://' . $host;
+        
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
         $html = str_replace('{{NEWSLETTER_TITLE}}', $this->user->getNewsletterTitle(), $html);
         $html = str_replace('{{USER_ID}}', $this->user->getId(), $html);
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
+        $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
+        $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;

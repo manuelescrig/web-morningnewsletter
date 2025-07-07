@@ -435,11 +435,11 @@
         <div class="email-footer">
             <p>You're receiving this because you subscribed to "{{NEWSLETTER_TITLE}}"</p>
             <p>
-                <a href="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/dashboard/">Manage Preferences</a> | 
-                <a href="http://<?php echo $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com'; ?>/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>
+                <a href="{{BASE_URL}}/dashboard/">Manage Preferences</a> | 
+                <a href="{{BASE_URL}}/unsubscribe.php?token={{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>
             </p>
             <p style="margin-top: 15px; color: #9ca3af;">
-                © <?php echo date('Y'); ?> MorningNewsletter. All rights reserved.
+                © {{CURRENT_YEAR}} MorningNewsletter. All rights reserved.
             </p>
         </div>
     </div>
