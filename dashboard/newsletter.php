@@ -364,95 +364,7 @@ $canAddSource = count($sources) < $maxSources;
         <?php endif; ?>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Newsletter Settings -->
-            <div class="lg:col-span-1">
-                <!-- Newsletter Settings -->
-                <div class="bg-white rounded-lg shadow mb-6">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-cog text-blue-600 mr-2"></i>
-                            Newsletter Settings
-                        </h2>
-                    </div>
-                    <div class="p-6">
-                        <form method="POST" class="space-y-4">
-                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                            <input type="hidden" name="action" value="update_newsletter_settings">
-                            
-                            <div>
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Newsletter Title
-                                </label>
-                                <input type="text" name="title" id="title" required 
-                                       value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <div>
-                                <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Timezone
-                                </label>
-                                <select name="timezone" id="timezone" 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <?php foreach ($timezones as $value => $label): ?>
-                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
-                                            <?php echo $label; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Send Time
-                                </label>
-                                <input type="time" name="send_time" id="send_time" required
-                                       value="<?php echo $newsletter->getSendTime(); ?>"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                                <i class="fas fa-save mr-2"></i>
-                                Update Settings
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Schedule Status -->
-                <div class="bg-white rounded-lg shadow">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-clock text-green-600 mr-2"></i>
-                            Schedule Status
-                        </h2>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Current Time:</span>
-                                <span class="font-medium"><?php echo date('M j, g:i A'); ?></span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Next Send:</span>
-                                <span class="font-medium"><?php echo date('M j, g:i A', strtotime($scheduleStatus['next_send'])); ?></span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Sent Today:</span>
-                                <span class="font-medium">
-                                    <?php if ($scheduleStatus['sent_today']): ?>
-                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Yes</span>
-                                    <?php else: ?>
-                                        <span class="text-gray-500"><i class="fas fa-times-circle mr-1"></i>No</span>
-                                    <?php endif; ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Data Sources -->
+            <!-- Left Column: Data Sources -->
             <div class="lg:col-span-2">
                 <!-- Add New Source -->
                 <?php if ($canAddSource): ?>
@@ -600,6 +512,94 @@ $canAddSource = count($sources) < $maxSources;
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Newsletter Settings -->
+            <div class="lg:col-span-1">
+                <!-- Newsletter Settings -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-cog text-blue-600 mr-2"></i>
+                            Newsletter Settings
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <form method="POST" class="space-y-4">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                            <input type="hidden" name="action" value="update_newsletter_settings">
+                            
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Newsletter Title
+                                </label>
+                                <input type="text" name="title" id="title" required 
+                                       value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Timezone
+                                </label>
+                                <select name="timezone" id="timezone" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php foreach ($timezones as $value => $label): ?>
+                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
+                                            <?php echo $label; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Send Time
+                                </label>
+                                <input type="time" name="send_time" id="send_time" required
+                                       value="<?php echo $newsletter->getSendTime(); ?>"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+                                <i class="fas fa-save mr-2"></i>
+                                Update Settings
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Schedule Status -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-clock text-green-600 mr-2"></i>
+                            Schedule Status
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Current Time:</span>
+                                <span class="font-medium"><?php echo date('M j, g:i A'); ?></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Next Send:</span>
+                                <span class="font-medium"><?php echo date('M j, g:i A', strtotime($scheduleStatus['next_send'])); ?></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Sent Today:</span>
+                                <span class="font-medium">
+                                    <?php if ($scheduleStatus['sent_today']): ?>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Yes</span>
+                                    <?php else: ?>
+                                        <span class="text-gray-500"><i class="fas fa-times-circle mr-1"></i>No</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
