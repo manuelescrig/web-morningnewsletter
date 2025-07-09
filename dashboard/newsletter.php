@@ -487,27 +487,31 @@ $canAddSource = count($sources) < $maxSources;
                                             </div>
                                         </div>
                                         
-                                        <?php if ($source['config']): ?>
+                                        <?php 
+                                        // Only show config section if there's actual content to display
+                                        if ($source['config']) {
+                                            $config = json_decode($source['config'], true);
+                                            $configDisplay = [];
+                                            $hiddenFields = ['latitude', 'longitude']; // Fields to hide from display
+                                            
+                                            if ($config) {
+                                                foreach ($config as $key => $value) {
+                                                    if (!empty($value) && !in_array($key, $hiddenFields)) {
+                                                        $configDisplay[] = ucfirst(str_replace('_', ' ', $key)) . ': ' . 
+                                                                         (strlen($value) > 50 ? substr($value, 0, 50) . '...' : $value);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            // Only show the divider and content if there's something to display
+                                            if (!empty($configDisplay)):
+                                        ?>
                                             <div class="mt-3 pt-3 border-t border-gray-100">
                                                 <div class="text-sm text-gray-600">
-                                                    <?php
-                                                    $config = json_decode($source['config'], true);
-                                                    if ($config) {
-                                                        $configDisplay = [];
-                                                        $hiddenFields = ['latitude', 'longitude']; // Fields to hide from display
-                                                        
-                                                        foreach ($config as $key => $value) {
-                                                            if (!empty($value) && !in_array($key, $hiddenFields)) {
-                                                                $configDisplay[] = ucfirst(str_replace('_', ' ', $key)) . ': ' . 
-                                                                                 (strlen($value) > 50 ? substr($value, 0, 50) . '...' : $value);
-                                                            }
-                                                        }
-                                                        echo htmlspecialchars(implode(' • ', $configDisplay));
-                                                    }
-                                                    ?>
+                                                    <?php echo htmlspecialchars(implode(' • ', $configDisplay)); ?>
                                                 </div>
                                             </div>
-                                        <?php endif; ?>
+                                        <?php endif; } ?>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
