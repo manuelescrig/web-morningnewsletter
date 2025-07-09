@@ -52,9 +52,22 @@ class Database {
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
             
+            "CREATE TABLE IF NOT EXISTS newsletters (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                timezone TEXT DEFAULT 'UTC',
+                send_time TEXT DEFAULT '06:00',
+                is_active INTEGER DEFAULT 1,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+            )",
+            
             "CREATE TABLE IF NOT EXISTS sources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
+                newsletter_id INTEGER NOT NULL,
                 type TEXT NOT NULL,
                 name TEXT,
                 config TEXT,
@@ -63,7 +76,8 @@ class Database {
                 last_result TEXT,
                 last_updated DATETIME,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+                FOREIGN KEY (newsletter_id) REFERENCES newsletters (id) ON DELETE CASCADE
             )",
             
             "CREATE TABLE IF NOT EXISTS email_logs (
@@ -126,7 +140,9 @@ class Database {
         // Create basic indexes
         $basicIndexes = [
             "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
+            "CREATE INDEX IF NOT EXISTS idx_newsletters_user_id ON newsletters(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_sources_user_id ON sources(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_sources_newsletter_id ON sources(newsletter_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_user_id ON email_logs(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at)",
             "CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id)",
@@ -228,6 +244,26 @@ class Database {
                 error_log("Database migration: Added 'newsletter_title' column to users table");
             }
             
+            // Check if newsletter_id column exists in sources table, if not add it
+            $stmt = $this->pdo->query("PRAGMA table_info(sources)");
+            $sourceColumns = $stmt->fetchAll();
+            
+            $hasNewsletterIdColumn = false;
+            foreach ($sourceColumns as $column) {
+                if ($column['name'] === 'newsletter_id') {
+                    $hasNewsletterIdColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasNewsletterIdColumn) {
+                $this->pdo->exec("ALTER TABLE sources ADD COLUMN newsletter_id INTEGER");
+                error_log("Database migration: Added 'newsletter_id' column to sources table");
+                
+                // Create default newsletters for existing users and link their sources
+                $this->migrateToNewsletterModel();
+            }
+            
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
@@ -239,7 +275,78 @@ class Database {
         }
     }
     
-    
+    private function migrateToNewsletterModel() {
+        try {
+            // Get all users who have sources but no newsletter
+            $stmt = $this->pdo->query("
+                SELECT DISTINCT u.id, u.newsletter_title, u.timezone, u.send_time
+                FROM users u
+                LEFT JOIN newsletters n ON u.id = n.user_id
+                LEFT JOIN sources s ON u.id = s.user_id
+                WHERE n.id IS NULL AND s.id IS NOT NULL
+            ");
+            
+            $usersToMigrate = $stmt->fetchAll();
+            
+            foreach ($usersToMigrate as $user) {
+                // Create default newsletter for this user
+                $insertStmt = $this->pdo->prepare("
+                    INSERT INTO newsletters (user_id, title, timezone, send_time)
+                    VALUES (?, ?, ?, ?)
+                ");
+                
+                $insertStmt->execute([
+                    $user['id'],
+                    $user['newsletter_title'] ?? 'My Morning Brief',
+                    $user['timezone'] ?? 'UTC',
+                    $user['send_time'] ?? '06:00'
+                ]);
+                
+                $newsletterId = $this->pdo->lastInsertId();
+                
+                // Update all sources for this user to link to the new newsletter
+                $updateStmt = $this->pdo->prepare("
+                    UPDATE sources 
+                    SET newsletter_id = ?
+                    WHERE user_id = ? AND newsletter_id IS NULL
+                ");
+                
+                $updateStmt->execute([$newsletterId, $user['id']]);
+                
+                error_log("Database migration: Created default newsletter (ID: {$newsletterId}) for user {$user['id']} and linked existing sources");
+            }
+            
+            // Also create default newsletters for users who have no sources
+            $stmt = $this->pdo->query("
+                SELECT u.id, u.newsletter_title, u.timezone, u.send_time
+                FROM users u
+                LEFT JOIN newsletters n ON u.id = n.user_id
+                WHERE n.id IS NULL
+            ");
+            
+            $usersWithoutNewsletters = $stmt->fetchAll();
+            
+            foreach ($usersWithoutNewsletters as $user) {
+                $insertStmt = $this->pdo->prepare("
+                    INSERT INTO newsletters (user_id, title, timezone, send_time)
+                    VALUES (?, ?, ?, ?)
+                ");
+                
+                $insertStmt->execute([
+                    $user['id'],
+                    $user['newsletter_title'] ?? 'My Morning Brief',
+                    $user['timezone'] ?? 'UTC',
+                    $user['send_time'] ?? '06:00'
+                ]);
+                
+                $newsletterId = $this->pdo->lastInsertId();
+                error_log("Database migration: Created default newsletter (ID: {$newsletterId}) for user {$user['id']}");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database migration error during newsletter model migration: " . $e->getMessage());
+        }
+    }
     
     private function populateSourceConfigs() {
         try {

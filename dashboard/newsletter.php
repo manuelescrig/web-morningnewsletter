@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 
-                if ($newsletter->canAddSource($user->getPlan())) {
+                if ($user->canAddSource()) {
                     try {
                         // Get the source module class
                         $moduleClass = ucfirst($sourceType) . 'Module';
