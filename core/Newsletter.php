@@ -195,11 +195,12 @@ class Newsletter {
             $nextOrder = $stmt->fetch()['next_order'];
             
             $stmt = $this->db->prepare("
-                INSERT INTO sources (newsletter_id, type, name, config, sort_order) 
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO sources (user_id, newsletter_id, type, name, config, sort_order) 
+                VALUES (?, ?, ?, ?, ?, ?)
             ");
             
             return $stmt->execute([
+                $this->user_id,
                 $this->id, 
                 $type, 
                 $name,
