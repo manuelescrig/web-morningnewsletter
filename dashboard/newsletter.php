@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'delete_source':
                 $sourceId = $_POST['source_id'] ?? '';
-                if ($newsletter->deleteSource($sourceId)) {
+                if ($newsletter->removeSource($sourceId)) {
                     $success = 'Source deleted successfully!';
                     // Refresh sources
                     $sources = $newsletter->getSources();
