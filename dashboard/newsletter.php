@@ -467,7 +467,7 @@ $canAddSource = count($sources) < $maxSources;
                                                         <h3 class="font-medium text-gray-900">
                                                             <?php echo htmlspecialchars($source['name'] ?: ucfirst($source['type'])); ?>
                                                         </h3>
-                                                        <p class="text-sm text-gray-600"><?php echo ucfirst($source['type']); ?> Source</p>
+                                                        <p class="text-sm text-gray-600"><?php echo ucfirst($source['type']); ?></p>
                                                     </div>
                                                 </div>
                                             </div>
