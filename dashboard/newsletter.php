@@ -490,8 +490,10 @@ $canAddSource = count($sources) < $maxSources;
                                                     $config = json_decode($source['config'], true);
                                                     if ($config) {
                                                         $configDisplay = [];
+                                                        $hiddenFields = ['latitude', 'longitude']; // Fields to hide from display
+                                                        
                                                         foreach ($config as $key => $value) {
-                                                            if (!empty($value)) {
+                                                            if (!empty($value) && !in_array($key, $hiddenFields)) {
                                                                 $configDisplay[] = ucfirst(str_replace('_', ' ', $key)) . ': ' . 
                                                                                  (strlen($value) > 50 ? substr($value, 0, 50) . '...' : $value);
                                                             }
