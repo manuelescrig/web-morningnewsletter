@@ -392,24 +392,14 @@ $canAddSource = count($sources) < $maxSources;
                                 <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
                                     Timezone
                                 </label>
-                                <div class="relative">
-                                    <input type="text" 
-                                           id="timezone-search" 
-                                           placeholder="Search for your city or timezone..."
-                                           autocomplete="off"
-                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <select name="timezone" id="timezone" 
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mt-2">
-                                        <?php foreach ($timezones as $value => $label): ?>
-                                            <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
-                                                <?php echo $label; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <p class="text-xs text-gray-500 mt-1">
-                                    Search above or select from the dropdown below
-                                </p>
+                                <select name="timezone" id="timezone" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php foreach ($timezones as $value => $label): ?>
+                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
+                                            <?php echo $label; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             
                             <div>
@@ -819,79 +809,6 @@ $canAddSource = count($sources) < $maxSources;
             console.log('Selected location:', { name, lat, lon, displayName });
         }
 
-        // Initialize timezone search functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            setupTimezoneSearch();
-        });
-
-        function setupTimezoneSearch() {
-            const searchInput = document.getElementById('timezone-search');
-            const selectElement = document.getElementById('timezone');
-            
-            if (!searchInput || !selectElement) return;
-            
-            // Store all options for filtering
-            const allOptions = Array.from(selectElement.options);
-            
-            // Set initial search value to current selection
-            const currentOption = selectElement.options[selectElement.selectedIndex];
-            if (currentOption) {
-                searchInput.value = currentOption.textContent;
-            }
-            
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                // Clear all options
-                selectElement.innerHTML = '';
-                
-                // Filter and add matching options
-                const matchingOptions = allOptions.filter(option => 
-                    option.textContent.toLowerCase().includes(searchTerm)
-                );
-                
-                matchingOptions.forEach(option => {
-                    const newOption = option.cloneNode(true);
-                    selectElement.appendChild(newOption);
-                });
-                
-                // If exact match found, select it
-                const exactMatch = matchingOptions.find(option => 
-                    option.textContent.toLowerCase() === searchTerm
-                );
-                if (exactMatch) {
-                    selectElement.value = exactMatch.value;
-                }
-                
-                // If no matches, show a "no results" option
-                if (matchingOptions.length === 0) {
-                    const noResultsOption = document.createElement('option');
-                    noResultsOption.textContent = 'No matching timezones found';
-                    noResultsOption.disabled = true;
-                    selectElement.appendChild(noResultsOption);
-                }
-            });
-            
-            // Update search input when select changes
-            selectElement.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                if (selectedOption) {
-                    searchInput.value = selectedOption.textContent;
-                }
-            });
-            
-            // Clear search to show all options
-            searchInput.addEventListener('focus', function() {
-                if (this.value && selectElement.options.length < allOptions.length) {
-                    this.value = '';
-                    selectElement.innerHTML = '';
-                    allOptions.forEach(option => {
-                        const newOption = option.cloneNode(true);
-                        selectElement.appendChild(newOption);
-                    });
-                }
-            });
-        }
 
         // Initialize drag and drop for source ordering
         <?php if (count($sources) > 1): ?>
