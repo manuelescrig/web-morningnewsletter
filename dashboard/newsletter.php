@@ -188,17 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
-            case 'toggle_source':
-                $sourceId = $_POST['source_id'] ?? '';
-                $isActive = $_POST['is_active'] === '1';
-                if ($newsletter->toggleSource($sourceId, $isActive)) {
-                    $success = 'Source ' . ($isActive ? 'enabled' : 'disabled') . ' successfully!';
-                    // Refresh sources
-                    $sources = $newsletter->getSources();
-                } else {
-                    $error = 'Failed to toggle source.';
-                }
-                break;
         }
     }
 }
@@ -483,15 +472,6 @@ $canAddSource = count($sources) < $maxSources;
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-2">
-                                                <form method="POST" class="inline">
-                                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                                                    <input type="hidden" name="action" value="toggle_source">
-                                                    <input type="hidden" name="source_id" value="<?php echo $source['id']; ?>">
-                                                    <input type="hidden" name="is_active" value="<?php echo $source['is_active'] ? '0' : '1'; ?>">
-                                                    <button type="submit" class="text-sm px-3 py-1 rounded-md font-medium transition-colors duration-200 <?php echo $source['is_active'] ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'; ?>">
-                                                        <?php echo $source['is_active'] ? 'Enabled' : 'Disabled'; ?>
-                                                    </button>
-                                                </form>
                                                 <button onclick="editSource(<?php echo $source['id']; ?>)" 
                                                         class="text-gray-400 hover:text-blue-600 p-1">
                                                     <i class="fas fa-edit"></i>
