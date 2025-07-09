@@ -44,17 +44,109 @@ $success = '';
 
 $currentPage = 'newsletter';
 
-// Common timezones for dropdown
+// Comprehensive timezone list with major cities
 $timezones = [
-    'UTC' => 'UTC',
-    'America/New_York' => 'Eastern Time',
-    'America/Chicago' => 'Central Time', 
-    'America/Denver' => 'Mountain Time',
-    'America/Los_Angeles' => 'Pacific Time',
-    'Europe/London' => 'London',
-    'Europe/Paris' => 'Paris',
-    'Asia/Tokyo' => 'Tokyo',
-    'Australia/Sydney' => 'Sydney'
+    // UTC and GMT
+    'UTC' => 'UTC (Coordinated Universal Time)',
+    'GMT' => 'GMT (Greenwich Mean Time)',
+    
+    // North America
+    'America/New_York' => 'New York (Eastern Time)',
+    'America/Chicago' => 'Chicago (Central Time)',
+    'America/Denver' => 'Denver (Mountain Time)',
+    'America/Los_Angeles' => 'Los Angeles (Pacific Time)',
+    'America/Phoenix' => 'Phoenix (Arizona Time)',
+    'America/Anchorage' => 'Anchorage (Alaska Time)',
+    'America/Honolulu' => 'Honolulu (Hawaii Time)',
+    'America/Toronto' => 'Toronto (Eastern Time)',
+    'America/Vancouver' => 'Vancouver (Pacific Time)',
+    'America/Mexico_City' => 'Mexico City',
+    
+    // South America
+    'America/Sao_Paulo' => 'São Paulo (Brazil Time)',
+    'America/Argentina/Buenos_Aires' => 'Buenos Aires',
+    'America/Lima' => 'Lima',
+    'America/Bogota' => 'Bogotá',
+    'America/Santiago' => 'Santiago',
+    
+    // Europe
+    'Europe/London' => 'London (GMT/BST)',
+    'Europe/Paris' => 'Paris (CET/CEST)',
+    'Europe/Berlin' => 'Berlin (CET/CEST)',
+    'Europe/Rome' => 'Rome (CET/CEST)',
+    'Europe/Madrid' => 'Madrid (CET/CEST)',
+    'Europe/Amsterdam' => 'Amsterdam (CET/CEST)',
+    'Europe/Brussels' => 'Brussels (CET/CEST)',
+    'Europe/Vienna' => 'Vienna (CET/CEST)',
+    'Europe/Prague' => 'Prague (CET/CEST)',
+    'Europe/Stockholm' => 'Stockholm (CET/CEST)',
+    'Europe/Oslo' => 'Oslo (CET/CEST)',
+    'Europe/Copenhagen' => 'Copenhagen (CET/CEST)',
+    'Europe/Helsinki' => 'Helsinki (EET/EEST)',
+    'Europe/Warsaw' => 'Warsaw (CET/CEST)',
+    'Europe/Moscow' => 'Moscow (MSK)',
+    'Europe/Istanbul' => 'Istanbul (TRT)',
+    'Europe/Athens' => 'Athens (EET/EEST)',
+    'Europe/Zurich' => 'Zurich (CET/CEST)',
+    'Europe/Dublin' => 'Dublin (GMT/IST)',
+    'Europe/Lisbon' => 'Lisbon (WET/WEST)',
+    
+    // Asia
+    'Asia/Tokyo' => 'Tokyo (JST)',
+    'Asia/Seoul' => 'Seoul (KST)',
+    'Asia/Shanghai' => 'Shanghai (CST)',
+    'Asia/Hong_Kong' => 'Hong Kong (HKT)',
+    'Asia/Singapore' => 'Singapore (SGT)',
+    'Asia/Bangkok' => 'Bangkok (ICT)',
+    'Asia/Jakarta' => 'Jakarta (WIB)',
+    'Asia/Manila' => 'Manila (PST)',
+    'Asia/Kuala_Lumpur' => 'Kuala Lumpur (MYT)',
+    'Asia/Kolkata' => 'Mumbai/Delhi (IST)',
+    'Asia/Karachi' => 'Karachi (PKT)',
+    'Asia/Dubai' => 'Dubai (GST)',
+    'Asia/Tehran' => 'Tehran (IRST)',
+    'Asia/Baghdad' => 'Baghdad (AST)',
+    'Asia/Riyadh' => 'Riyadh (AST)',
+    'Asia/Jerusalem' => 'Jerusalem (IST)',
+    'Asia/Baku' => 'Baku (AZT)',
+    'Asia/Yerevan' => 'Yerevan (AMT)',
+    'Asia/Tbilisi' => 'Tbilisi (GET)',
+    'Asia/Almaty' => 'Almaty (ALMT)',
+    'Asia/Tashkent' => 'Tashkent (UZT)',
+    'Asia/Novosibirsk' => 'Novosibirsk (NOVT)',
+    'Asia/Vladivostok' => 'Vladivostok (VLAT)',
+    
+    // Africa
+    'Africa/Cairo' => 'Cairo (EET)',
+    'Africa/Johannesburg' => 'Johannesburg (SAST)',
+    'Africa/Lagos' => 'Lagos (WAT)',
+    'Africa/Nairobi' => 'Nairobi (EAT)',
+    'Africa/Casablanca' => 'Casablanca (WET)',
+    'Africa/Algiers' => 'Algiers (CET)',
+    'Africa/Tunis' => 'Tunis (CET)',
+    'Africa/Addis_Ababa' => 'Addis Ababa (EAT)',
+    'Africa/Accra' => 'Accra (GMT)',
+    'Africa/Kinshasa' => 'Kinshasa (WAT)',
+    
+    // Australia & Oceania
+    'Australia/Sydney' => 'Sydney (AEST/AEDT)',
+    'Australia/Melbourne' => 'Melbourne (AEST/AEDT)',
+    'Australia/Brisbane' => 'Brisbane (AEST)',
+    'Australia/Perth' => 'Perth (AWST)',
+    'Australia/Adelaide' => 'Adelaide (ACST/ACDT)',
+    'Australia/Darwin' => 'Darwin (ACST)',
+    'Pacific/Auckland' => 'Auckland (NZST/NZDT)',
+    'Pacific/Fiji' => 'Fiji (FJT)',
+    'Pacific/Honolulu' => 'Honolulu (HST)',
+    'Pacific/Guam' => 'Guam (ChST)',
+    'Pacific/Tahiti' => 'Tahiti (TAHT)',
+    
+    // Other major cities
+    'Indian/Maldives' => 'Maldives (MVT)',
+    'Indian/Mauritius' => 'Mauritius (MUT)',
+    'Atlantic/Reykjavik' => 'Reykjavik (GMT)',
+    'Atlantic/Azores' => 'Azores (AZOT/AZOST)',
+    'Atlantic/Cape_Verde' => 'Cape Verde (CVT)',
 ];
 
 // Available source modules
@@ -300,14 +392,24 @@ $canAddSource = count($sources) < $maxSources;
                                 <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
                                     Timezone
                                 </label>
-                                <select name="timezone" id="timezone" 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <?php foreach ($timezones as $value => $label): ?>
-                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
-                                            <?php echo $label; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <div class="relative">
+                                    <input type="text" 
+                                           id="timezone-search" 
+                                           placeholder="Search for your city or timezone..."
+                                           autocomplete="off"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <select name="timezone" id="timezone" 
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mt-2">
+                                        <?php foreach ($timezones as $value => $label): ?>
+                                            <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
+                                                <?php echo $label; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Search above or select from the dropdown below
+                                </p>
                             </div>
                             
                             <div>
@@ -715,6 +817,80 @@ $canAddSource = count($sources) < $maxSources;
             document.getElementById('location_results').classList.add('hidden');
             
             console.log('Selected location:', { name, lat, lon, displayName });
+        }
+
+        // Initialize timezone search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTimezoneSearch();
+        });
+
+        function setupTimezoneSearch() {
+            const searchInput = document.getElementById('timezone-search');
+            const selectElement = document.getElementById('timezone');
+            
+            if (!searchInput || !selectElement) return;
+            
+            // Store all options for filtering
+            const allOptions = Array.from(selectElement.options);
+            
+            // Set initial search value to current selection
+            const currentOption = selectElement.options[selectElement.selectedIndex];
+            if (currentOption) {
+                searchInput.value = currentOption.textContent;
+            }
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                // Clear all options
+                selectElement.innerHTML = '';
+                
+                // Filter and add matching options
+                const matchingOptions = allOptions.filter(option => 
+                    option.textContent.toLowerCase().includes(searchTerm)
+                );
+                
+                matchingOptions.forEach(option => {
+                    const newOption = option.cloneNode(true);
+                    selectElement.appendChild(newOption);
+                });
+                
+                // If exact match found, select it
+                const exactMatch = matchingOptions.find(option => 
+                    option.textContent.toLowerCase() === searchTerm
+                );
+                if (exactMatch) {
+                    selectElement.value = exactMatch.value;
+                }
+                
+                // If no matches, show a "no results" option
+                if (matchingOptions.length === 0) {
+                    const noResultsOption = document.createElement('option');
+                    noResultsOption.textContent = 'No matching timezones found';
+                    noResultsOption.disabled = true;
+                    selectElement.appendChild(noResultsOption);
+                }
+            });
+            
+            // Update search input when select changes
+            selectElement.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption) {
+                    searchInput.value = selectedOption.textContent;
+                }
+            });
+            
+            // Clear search to show all options
+            searchInput.addEventListener('focus', function() {
+                if (this.value && selectElement.options.length < allOptions.length) {
+                    this.value = '';
+                    selectElement.innerHTML = '';
+                    allOptions.forEach(option => {
+                        const newOption = option.cloneNode(true);
+                        selectElement.appendChild(newOption);
+                    });
+                }
+            });
         }
 
         // Initialize drag and drop for source ordering
