@@ -570,18 +570,47 @@ $canAddSource = count($sources) < $maxSources;
             fieldsDiv.innerHTML = '';
             config.fields.forEach(field => {
                 const fieldDiv = document.createElement('div');
-                fieldDiv.innerHTML = `
-                    <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-1">
-                        ${field.label}${field.required ? ' *' : ''}
-                    </label>
-                    <input type="${field.type}" name="config_${field.name}" id="config_${field.name}"
-                           ${field.required ? 'required' : ''} 
-                           placeholder="${field.placeholder || ''}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
-                `;
+                
+                if (field.type === 'location_search') {
+                    // Special handling for location search field
+                    fieldDiv.innerHTML = `
+                        <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-1">
+                            ${field.label}${field.required ? ' *' : ''}
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="config_${field.name}" 
+                                   placeholder="Search for a city or location..."
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <div id="location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                        </div>
+                        ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
+                    `;
+                } else if (field.type === 'hidden') {
+                    // Handle hidden fields
+                    fieldDiv.innerHTML = `
+                        <input type="hidden" name="config_${field.name}" id="config_${field.name}" value="${field.default || ''}">
+                    `;
+                } else {
+                    // Standard field handling
+                    fieldDiv.innerHTML = `
+                        <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-1">
+                            ${field.label}${field.required ? ' *' : ''}
+                        </label>
+                        <input type="${field.type}" name="config_${field.name}" id="config_${field.name}"
+                               ${field.required ? 'required' : ''} 
+                               placeholder="${field.placeholder || ''}"
+                               value="${field.default || ''}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
+                    `;
+                }
                 fieldsDiv.appendChild(fieldDiv);
             });
+            
+            // Add location search functionality if weather module is selected
+            if (sourceType === 'weather') {
+                setupLocationSearch();
+            }
             
             configDiv.classList.remove('hidden');
         }
@@ -609,6 +638,101 @@ $canAddSource = count($sources) < $maxSources;
                 document.body.appendChild(form);
                 form.submit();
             }
+        }
+
+        function setupLocationSearch() {
+            const searchInput = document.getElementById('config_location_search');
+            const resultsDiv = document.getElementById('location_results');
+            
+            if (!searchInput || !resultsDiv) return;
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                if (query.length < 2) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchLocations(query);
+                }, 300);
+            });
+            
+            // Hide results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                    resultsDiv.classList.add('hidden');
+                }
+            });
+        }
+        
+        function searchLocations(query) {
+            const resultsDiv = document.getElementById('location_results');
+            
+            // Show loading state
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
+            resultsDiv.classList.remove('hidden');
+            
+            // Use OpenStreetMap Nominatim API for geocoding (free, no API key required)
+            const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`;
+            
+            fetch(apiUrl, {
+                headers: {
+                    'User-Agent': 'MorningNewsletter/1.0'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No locations found</div>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = '';
+                data.forEach(location => {
+                    const locationDiv = document.createElement('div');
+                    locationDiv.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                    
+                    const displayName = location.display_name;
+                    const shortName = location.name;
+                    const country = location.address?.country || '';
+                    const state = location.address?.state || location.address?.region || '';
+                    
+                    locationDiv.innerHTML = `
+                        <div class="font-medium text-gray-900">${shortName}</div>
+                        <div class="text-sm text-gray-600">${displayName}</div>
+                    `;
+                    
+                    locationDiv.addEventListener('click', function() {
+                        selectLocation(shortName, location.lat, location.lon, displayName);
+                    });
+                    
+                    resultsDiv.appendChild(locationDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Location search error:', error);
+                resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching locations</div>';
+            });
+        }
+        
+        function selectLocation(name, lat, lon, displayName) {
+            // Update the search input
+            document.getElementById('config_location_search').value = name;
+            
+            // Update the hidden fields
+            document.getElementById('config_location').value = name;
+            document.getElementById('config_latitude').value = lat;
+            document.getElementById('config_longitude').value = lon;
+            
+            // Hide results
+            document.getElementById('location_results').classList.add('hidden');
+            
+            console.log('Selected location:', { name, lat, lon, displayName });
         }
 
         // Initialize drag and drop for source ordering
