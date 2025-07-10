@@ -697,8 +697,192 @@ $canAddSource = count($sources) < $maxSources;
             const source = currentSources.find(s => s.id == sourceId);
             if (!source) return;
             
-            // For now, just alert - you could implement a modal here
-            alert(`Edit source: ${source.name || source.type}\n\nConfiguration:\n${JSON.stringify(source.config, null, 2)}`);
+            // Create edit modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-screen overflow-y-auto">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Edit ${source.name || source.type} Source</h3>
+                    </div>
+                    <form id="editSourceForm" method="POST" class="p-6">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                        <input type="hidden" name="action" value="update_source">
+                        <input type="hidden" name="source_id" value="${sourceId}">
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="edit_source_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Display Name (Optional)
+                                </label>
+                                <input type="text" name="source_name" id="edit_source_name" 
+                                       value="${source.name || ''}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Custom name for this source">
+                            </div>
+                            
+                            <div id="editConfigFields"></div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button type="button" onclick="closeEditModal()" 
+                                    class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors duration-200">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors duration-200">
+                                <i class="fas fa-save mr-2"></i>
+                                Update Source
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Populate config fields
+            populateEditConfigFields(source);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeEditModal();
+                }
+            });
+        }
+        
+        function populateEditConfigFields(source) {
+            const configDiv = document.getElementById('editConfigFields');
+            const sourceConfig = sourceConfigs.find(c => c.type === source.type);
+            
+            if (!sourceConfig || !sourceConfig.fields || sourceConfig.fields.length === 0) {
+                configDiv.innerHTML = '<p class="text-sm text-gray-500">No configuration options available.</p>';
+                return;
+            }
+            
+            configDiv.innerHTML = '';
+            sourceConfig.fields.forEach(field => {
+                const fieldDiv = document.createElement('div');
+                const currentValue = source.config[field.name] || field.default || '';
+                
+                if (field.type === 'location_search') {
+                    fieldDiv.innerHTML = `
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            ${field.label}${field.required ? ' *' : ''}
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="edit_config_${field.name}" 
+                                   value="${currentValue}"
+                                   placeholder="Search for a city or location..."
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <div id="edit_location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                        </div>
+                    `;
+                } else if (field.type === 'hidden') {
+                    fieldDiv.innerHTML = `
+                        <input type="hidden" name="config_${field.name}" id="edit_config_${field.name}" value="${currentValue}">
+                    `;
+                } else {
+                    fieldDiv.innerHTML = `
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            ${field.label}${field.required ? ' *' : ''}
+                        </label>
+                        <input type="${field.type}" name="config_${field.name}" id="edit_config_${field.name}"
+                               ${field.required ? 'required' : ''} 
+                               value="${currentValue}"
+                               placeholder="${field.placeholder || ''}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
+                    `;
+                }
+                configDiv.appendChild(fieldDiv);
+            });
+            
+            // Setup location search for weather sources
+            if (source.type === 'weather') {
+                setupEditLocationSearch();
+            }
+        }
+        
+        function setupEditLocationSearch() {
+            const searchInput = document.getElementById('edit_config_location_search');
+            const resultsDiv = document.getElementById('edit_location_results');
+            
+            if (!searchInput || !resultsDiv) return;
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                if (query.length < 2) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchEditLocations(query);
+                }, 300);
+            });
+        }
+        
+        function searchEditLocations(query) {
+            const resultsDiv = document.getElementById('edit_location_results');
+            
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
+            resultsDiv.classList.remove('hidden');
+            
+            const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`;
+            
+            fetch(apiUrl, {
+                headers: {
+                    'User-Agent': 'MorningNewsletter/1.0'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No locations found</div>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = '';
+                data.forEach(location => {
+                    const locationDiv = document.createElement('div');
+                    locationDiv.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                    
+                    locationDiv.innerHTML = `
+                        <div class="font-medium text-gray-900">${location.name}</div>
+                        <div class="text-sm text-gray-600">${location.display_name}</div>
+                    `;
+                    
+                    locationDiv.addEventListener('click', function() {
+                        selectEditLocation(location.name, location.lat, location.lon);
+                    });
+                    
+                    resultsDiv.appendChild(locationDiv);
+                });
+            })
+            .catch(error => {
+                resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching locations</div>';
+            });
+        }
+        
+        function selectEditLocation(name, lat, lon) {
+            document.getElementById('edit_config_location_search').value = name;
+            document.getElementById('edit_config_location').value = name;
+            document.getElementById('edit_config_latitude').value = lat;
+            document.getElementById('edit_config_longitude').value = lon;
+            document.getElementById('edit_location_results').classList.add('hidden');
+        }
+        
+        function closeEditModal() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
         }
 
         function deleteSource(sourceId) {
