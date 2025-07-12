@@ -664,13 +664,26 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             
                             <!-- Pause Option -->
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_paused" id="is_paused" value="1" 
-                                       <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>
-                                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                <label for="is_paused" class="ml-2 block text-sm text-gray-700">
-                                    Pause newsletter sending
-                                </label>
+                            <div class="flex items-center justify-between">
+                                <div class="flex flex-col">
+                                    <label class="text-sm font-medium text-gray-900">
+                                        Pause newsletter sending
+                                    </label>
+                                    <p class="text-xs text-gray-500">
+                                        Temporarily stop sending this newsletter
+                                    </p>
+                                </div>
+                                
+                                <div class="relative">
+                                    <input type="checkbox" name="is_paused" id="is_paused" value="1" 
+                                           <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>
+                                           class="sr-only toggle-checkbox">
+                                    <label for="is_paused" class="toggle-label cursor-pointer">
+                                        <div class="toggle-switch">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                             
                             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
@@ -1157,7 +1170,49 @@ $canAddSource = count($sources) < $maxSources;
                     break;
             }
         }
+    </script>
+
+    <style>
+        /* Toggle Switch Styling */
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background-color: #d1d5db;
+            border-radius: 24px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
         
+        .toggle-slider {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toggle-checkbox:checked + .toggle-label .toggle-switch {
+            background-color: #3b82f6;
+        }
+        
+        .toggle-checkbox:checked + .toggle-label .toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        .toggle-label:hover .toggle-switch {
+            background-color: #9ca3af;
+        }
+        
+        .toggle-checkbox:checked + .toggle-label:hover .toggle-switch {
+            background-color: #2563eb;
+        }
+    </style>
+
+    <script>
         // Initialize checkbox styling
         document.addEventListener('DOMContentLoaded', function() {
             // Style checkbox labels for days of week and months
@@ -1179,6 +1234,14 @@ $canAddSource = count($sources) < $maxSources;
                 updateStyle(); // Initial styling
                 checkbox.addEventListener('change', updateStyle);
             });
+            
+            // Initialize toggle switch
+            const toggleCheckbox = document.getElementById('is_paused');
+            if (toggleCheckbox) {
+                // The toggle animation is handled entirely by CSS
+                // Just add a console log for debugging if needed
+                console.log('Toggle switch initialized, current state:', toggleCheckbox.checked ? 'paused' : 'active');
+            }
         });
     </script>
 </body>
