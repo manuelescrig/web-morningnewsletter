@@ -164,13 +164,6 @@ class NewsletterBuilder {
                     <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
                 </p>
             </div>';
-            
-            // Debug logging
-            error_log("Newsletter Builder: Generated view in browser section for history ID: $historyId");
-            error_log("Newsletter Builder: View URL: $viewInBrowserUrl");
-        } else {
-            // Debug logging when no history ID
-            error_log("Newsletter Builder: No history ID provided, skipping view in browser link");
         }
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
@@ -183,13 +176,6 @@ class NewsletterBuilder {
         $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
         $html = str_replace('{{VIEW_IN_BROWSER_SECTION}}', $viewInBrowserSection, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
-        
-        // Debug logging for template replacement
-        if ($historyId) {
-            error_log("Newsletter Builder: Replaced VIEW_IN_BROWSER_SECTION with content of length: " . strlen($viewInBrowserSection));
-        } else {
-            error_log("Newsletter Builder: Replaced VIEW_IN_BROWSER_SECTION with empty string");
-        }
         
         return $html;
     }

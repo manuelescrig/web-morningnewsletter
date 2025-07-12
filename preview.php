@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/NewsletterBuilder.php';
+require_once __DIR__ . '/config/database.php';
 
 $auth = Auth::getInstance();
 $auth->requireAuth();
@@ -22,15 +23,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             error_log("Preview email: Starting send process for user " . $user->getId());
             
             require_once __DIR__ . '/core/EmailSender.php';
-            $builder = NewsletterBuilder::fromUser($user);
-            $newsletterHtml = $builder->buildForPreview();
+            require_once __DIR__ . '/core/NewsletterHistory.php';
+            require_once __DIR__ . '/core/Newsletter.php';
             
-            error_log("Preview email: Newsletter HTML generated, length: " . strlen($newsletterHtml));
+            // Get the user's default newsletter
+            $newsletters = Newsletter::findByUser($user->getId());
+            if (empty($newsletters)) {
+                throw new Exception("No newsletters found for user");
+            }
+            $newsletter = $newsletters[0];
+            
+            // Create a temporary history entry for the preview
+            $historyManager = new NewsletterHistory();
+            $historyId = $historyManager->saveToHistory(
+                $newsletter->getId(),
+                $user->getId(),
+                "Preview Newsletter - " . date('F j, Y'),
+                'preview content',
+                []
+            );
+            
+            // Build newsletter with history ID for "View in Browser" link
+            $builder = new NewsletterBuilder($newsletter, $user);
+            $result = $builder->buildWithSourceDataAndHistoryId($historyId);
+            $newsletterHtml = $result['content'];
+            
+            // Update the history with the final content
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("UPDATE newsletter_history SET content = ? WHERE id = ?");
+            $stmt->execute([$newsletterHtml, $historyId]);
+            
+            error_log("Preview email: Newsletter HTML generated with history ID $historyId, length: " . strlen($newsletterHtml));
             
             $emailSender = new EmailSender();
             $success = $emailSender->sendPreviewEmail(
                 $user->getEmail(), 
-                'Newsletter Preview - ' . $user->getNewsletterTitle(),
+                'Newsletter Preview - ' . date('F j, Y'),
                 $newsletterHtml
             );
             
@@ -53,8 +81,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
 }
 
 try {
-    $builder = NewsletterBuilder::fromUser($user);
-    $newsletterHtml = $builder->buildForPreview();
+    require_once __DIR__ . '/core/Newsletter.php';
+    require_once __DIR__ . '/core/NewsletterHistory.php';
+    
+    // Get the user's default newsletter
+    $newsletters = Newsletter::findByUser($user->getId());
+    if (empty($newsletters)) {
+        throw new Exception("No newsletters found for user");
+    }
+    $newsletter = $newsletters[0];
+    
+    // Create a temporary history entry for the preview display
+    $historyManager = new NewsletterHistory();
+    $historyId = $historyManager->saveToHistory(
+        $newsletter->getId(),
+        $user->getId(),
+        "Preview Newsletter - " . date('F j, Y'),
+        'preview content',
+        []
+    );
+    
+    // Build newsletter with history ID for "View in Browser" link
+    $builder = new NewsletterBuilder($newsletter, $user);
+    $result = $builder->buildWithSourceDataAndHistoryId($historyId);
+    $newsletterHtml = $result['content'];
+    
+    // Update the history with the final content
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("UPDATE newsletter_history SET content = ? WHERE id = ?");
+    $stmt->execute([$newsletterHtml, $historyId]);
     
     ?>
     <!DOCTYPE html>
