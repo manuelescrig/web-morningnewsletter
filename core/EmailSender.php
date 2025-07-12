@@ -62,37 +62,40 @@ class EmailSender {
         }
     }
     
-    public function sendNewsletterWithHistory(User $user, Newsletter $newsletter, $sourcesData = null) {
+    public function sendNewsletterWithHistory(User $user, Newsletter $newsletter) {
         $subject = $newsletter->getTitle() . " - " . date('F j, Y');
         $historyId = null;
         
         try {
-            // First save a placeholder to history to get the ID
+            // First build the newsletter to get the sources data
+            require_once __DIR__ . '/NewsletterBuilder.php';
+            $builder = new NewsletterBuilder($newsletter, $user);
+            $initialResult = $builder->buildWithSourceData();
+            
+            // Save to history to get the ID
             $newsletterHistory = new NewsletterHistory();
             $historyId = $newsletterHistory->saveToHistory(
                 $newsletter->getId(),
                 $user->getId(),
                 $subject,
-                '', // Placeholder content
-                $sourcesData
+                '', // Placeholder content - will be updated below
+                $initialResult['sources_data']
             );
             
             if (!$historyId) {
                 throw new Exception("Failed to create newsletter history entry");
             }
             
-            // Now build the newsletter with the history ID for the "View in Browser" link
-            require_once __DIR__ . '/NewsletterBuilder.php';
-            $builder = new NewsletterBuilder($newsletter, $user);
-            $result = $builder->buildWithSourceDataAndHistoryId($historyId);
+            // Now rebuild the newsletter with the history ID for the "View in Browser" link
+            $finalResult = $builder->buildWithSourceDataAndHistoryId($historyId);
             
-            // Update the history entry with the final content
-            $this->updateHistoryContent($historyId, $result['content']);
+            // Update the history entry with the final content that includes the view link
+            $this->updateHistoryContent($historyId, $finalResult['content']);
             
             $success = $this->sendEmail(
                 $user->getEmail(),
                 $subject,
-                $result['content']
+                $finalResult['content']
             );
             
             $this->logEmail($user->getId(), $success ? 'sent' : 'failed', null, $newsletter->getId(), $historyId);

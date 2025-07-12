@@ -119,9 +119,9 @@ class Scheduler {
         $today = date('Y-m-d');
         $stmt = $this->db->prepare("
             SELECT COUNT(*) as count 
-            FROM email_logs 
+            FROM newsletter_history 
             WHERE newsletter_id = ? 
-            AND status = 'sent' 
+            AND email_sent = 1 
             AND DATE(sent_at) = ?
         ");
         $stmt->execute([$newsletterId, $today]);

@@ -165,11 +165,8 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'force-send') {
             
             logMessage("FORCE SEND: Sending newsletter $newsletterId ('{$newsletter->getTitle()}') to user {$user->getId()} ({$user->getEmail()})");
             
-            $builder = new NewsletterBuilder($newsletter, $user);
-            $result = $builder->buildWithSourceData();
-            
             $emailSender = new EmailSender();
-            $success = $emailSender->sendNewsletter($user, $result['content'], "Test: {$newsletter->getTitle()} - " . date('F j, Y'), $newsletter->getId(), $result['sources_data']);
+            $success = $emailSender->sendNewsletterWithHistory($user, $newsletter);
             
             if ($success) {
                 logMessage("FORCE SEND: Successfully sent newsletter $newsletterId to user {$user->getId()}");
@@ -197,11 +194,8 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'force-send') {
             
             logMessage("FORCE SEND: Sending default newsletter to user $userId ({$user->getEmail()})");
             
-            $builder = new NewsletterBuilder($newsletter, $user);
-            $result = $builder->buildWithSourceData();
-            
             $emailSender = new EmailSender();
-            $success = $emailSender->sendNewsletter($user, $result['content'], "Test Newsletter - " . date('F j, Y'), $newsletter->getId(), $result['sources_data']);
+            $success = $emailSender->sendNewsletterWithHistory($user, $newsletter);
             
             if ($success) {
                 logMessage("FORCE SEND: Successfully sent to user $userId");

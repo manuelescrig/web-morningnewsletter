@@ -151,12 +151,19 @@ class NewsletterBuilder {
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
         $baseUrl = $protocol . '://' . $host;
         
-        // Generate view in browser URL
-        $viewInBrowserUrl = '';
+        // Generate view in browser section
+        $viewInBrowserSection = '';
         if ($historyId) {
             $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
             $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
             $viewInBrowserUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
+            
+            $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+                <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                    Having trouble viewing this email? 
+                    <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
+                </p>
+            </div>';
         }
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
@@ -167,7 +174,7 @@ class NewsletterBuilder {
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
         $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
-        $html = str_replace('{{VIEW_IN_BROWSER_URL}}', $viewInBrowserUrl, $html);
+        $html = str_replace('{{VIEW_IN_BROWSER_SECTION}}', $viewInBrowserSection, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;

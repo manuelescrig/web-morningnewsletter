@@ -12,7 +12,7 @@ require_once __DIR__ . '/config/database.php';
 
 // Get parameters
 $historyId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$token = isset($_GET['token']) ?? '';
+$token = isset($_GET['token']) ? $_GET['token'] : '';
 
 if (!$historyId || !$token) {
     http_response_code(404);
