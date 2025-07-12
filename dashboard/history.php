@@ -163,6 +163,7 @@ if ($newsletterId) {
                                         </h3>
                                         
                                         <!-- Status Badge -->
+                                        <?php if ($entry['email_status'] === 'sent' || $entry['email_status'] === 'failed'): ?>
                                         <div class="ml-3">
                                             <?php if ($entry['email_status'] === 'sent'): ?>
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -174,13 +175,9 @@ if ($newsletterId) {
                                                     <i class="fas fa-times-circle mr-1"></i>
                                                     Failed
                                                 </span>
-                                            <?php else: ?>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    <i class="fas fa-question-circle mr-1"></i>
-                                                    Unknown
-                                                </span>
                                             <?php endif; ?>
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                     
                                     <div class="mt-2 flex items-center text-sm text-gray-600">

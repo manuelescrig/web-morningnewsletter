@@ -50,10 +50,38 @@ echo "<div style='border: 1px solid #ccc; padding: 20px; margin: 20px 0;'>";
 echo $result['content'];
 echo "</div>";
 
+// Check if this newsletter content contains the "View in Browser" link
+if (strpos($result['content'], 'View in browser') !== false) {
+    echo "<p style='color: green;'><strong>✓ View in Browser link found in content!</strong></p>";
+} else {
+    echo "<p style='color: red;'><strong>✗ View in Browser link NOT found in content!</strong></p>";
+}
+
 // Update the history with the final content
 $db = Database::getInstance()->getConnection();
 $stmt = $db->prepare("UPDATE newsletter_history SET content = ? WHERE id = ?");
 $stmt->execute([$result['content'], $historyId]);
+
+echo "<h3>Test Email Send</h3>";
+echo "<form method='post'>";
+echo "<p>Send this newsletter as a test email to: " . htmlspecialchars($user->getEmail()) . "</p>";
+echo "<button type='submit' name='send_test' style='background: #0041EC; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;'>Send Test Email</button>";
+echo "</form>";
+
+// Handle email sending
+if (isset($_POST['send_test'])) {
+    require_once __DIR__ . '/core/EmailSender.php';
+    
+    $emailSender = new EmailSender();
+    $success = $emailSender->sendNewsletterWithHistory($user, $newsletter);
+    
+    if ($success) {
+        echo "<p style='color: green;'><strong>✓ Test email sent successfully!</strong></p>";
+        echo "<p>Check your email and see if the 'View in Browser' link appears.</p>";
+    } else {
+        echo "<p style='color: red;'><strong>✗ Failed to send test email!</strong></p>";
+    }
+}
 
 echo "<p><a href='/dashboard/history.php'>View in History</a></p>";
 ?>

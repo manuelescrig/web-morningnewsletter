@@ -89,6 +89,7 @@ $currentPage = 'history';
                         <span class="mx-3">•</span>
                         <span class="font-medium"><?php echo htmlspecialchars($historyEntry['newsletter_title']); ?></span>
                         
+                        <?php if ($historyEntry['email_status'] === 'sent' || $historyEntry['email_status'] === 'failed'): ?>
                         <span class="mx-3">•</span>
                         <div>
                             <?php if ($historyEntry['email_status'] === 'sent'): ?>
@@ -101,13 +102,9 @@ $currentPage = 'history';
                                     <i class="fas fa-times-circle mr-1"></i>
                                     Failed
                                 </span>
-                            <?php else: ?>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    <i class="fas fa-question-circle mr-1"></i>
-                                    Generated
-                                </span>
                             <?php endif; ?>
                         </div>
+                        <?php endif; ?>
                     </div>
                     
                     <?php if ($historyEntry['email_status'] === 'failed' && $historyEntry['error_message']): ?>
