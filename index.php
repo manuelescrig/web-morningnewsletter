@@ -548,7 +548,7 @@ try {
                             <span class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             The newsletter is delivered to your inbox every morning at 6 AM in your local timezone.
                         </div>
                     </div>
@@ -558,7 +558,7 @@ try {
                             <span class="text-lg font-medium text-gray-900">Can I customize what information I receive?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             Yes! You can customize your preferences in your dashboard to receive exactly the information that matters to you.
                         </div>
                     </div>
@@ -568,7 +568,7 @@ try {
                             <span class="text-lg font-medium text-gray-900">How do you handle my data?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             We take data security seriously. All your data is encrypted and we never share it with third parties. Read our privacy policy for more details.
                         </div>
                     </div>
@@ -578,7 +578,7 @@ try {
                             <span class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             Yes, you can cancel your subscription at any time. There are no long-term commitments required.
                         </div>
                     </div>
