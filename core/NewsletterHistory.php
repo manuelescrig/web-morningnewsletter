@@ -50,9 +50,11 @@ class NewsletterHistory {
             $stmt = $this->db->prepare("
                 SELECT 
                     h.*,
+                    n.title as newsletter_title,
                     el.status as email_status,
                     el.error_message
                 FROM newsletter_history h
+                JOIN newsletters n ON h.newsletter_id = n.id
                 LEFT JOIN email_logs el ON h.id = el.history_id
                 WHERE h.newsletter_id = ?
                 ORDER BY h.sent_at DESC
@@ -183,9 +185,11 @@ class NewsletterHistory {
             $stmt = $this->db->prepare("
                 SELECT 
                     h.*,
+                    n.title as newsletter_title,
                     el.status as email_status,
                     el.error_message
                 FROM newsletter_history h
+                JOIN newsletters n ON h.newsletter_id = n.id
                 LEFT JOIN email_logs el ON h.id = el.history_id
                 WHERE h.newsletter_id = ?
                 ORDER BY h.sent_at DESC
