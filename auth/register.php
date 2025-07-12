@@ -18,15 +18,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmPassword = $_POST['confirm_password'] ?? '';
     $timezone = $_POST['timezone'] ?? 'UTC';
     $discoverySource = $_POST['discovery_source'] ?? '';
-    $captchaAnswer = $_POST['captcha_answer'] ?? '';
-    $captchaExpected = $_POST['captcha_expected'] ?? '';
+    
+    // Invisible captcha fields
+    $honeypot = $_POST['website'] ?? ''; // Should be empty
+    $formStartTime = $_POST['form_start_time'] ?? 0;
+    $honeypot2 = $_POST['confirm_email'] ?? ''; // Should be empty
+    
     $csrfToken = $_POST['csrf_token'] ?? '';
     
     if (!$auth->validateCSRFToken($csrfToken)) {
         $error = 'Invalid request. Please try again.';
-    } elseif (empty($captchaAnswer) || (int)$captchaAnswer !== (int)$captchaExpected) {
-        $error = 'Please solve the math problem correctly.';
+    } elseif (!empty($honeypot) || !empty($honeypot2)) {
+        // Bot detected - honeypot fields should be empty
+        $error = 'Invalid submission detected.';
+        error_log("Bot registration attempt detected: honeypot filled - IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    } elseif (time() - (int)$formStartTime < 3) {
+        // Form submitted too quickly (less than 3 seconds)
+        $error = 'Please take a moment to review your information.';
+        error_log("Bot registration attempt detected: too fast submission - IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+    } elseif ($auth->isRateLimited($_SERVER['REMOTE_ADDR'] ?? '')) {
+        // Rate limiting check
+        $error = 'Too many registration attempts. Please try again later.';
+        error_log("Rate limited registration attempt - IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
     } else {
+        // Record registration attempt for rate limiting
+        $auth->recordRegistrationAttempt($_SERVER['REMOTE_ADDR'] ?? '');
+        
         $result = $auth->register($email, $password, $confirmPassword, $timezone, $discoverySource);
         
         if ($result['success']) {
@@ -45,10 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $csrfToken = $auth->generateCSRFToken();
 
-// Generate simple math captcha
-$captchaNum1 = rand(1, 10);
-$captchaNum2 = rand(1, 10);
-$captchaResult = $captchaNum1 + $captchaNum2;
+// Generate form start time for invisible captcha
+$formStartTime = time();
 
 // Get user's timezone for default selection
 $userTimezone = date_default_timezone_get();
@@ -161,24 +176,17 @@ $userTimezone = date_default_timezone_get();
                     </select>
                 </div>
 
-                <div class="auth-input-group">
-                    <label for="captcha_answer" class="auth-label">Security Check</label>
-                    <div class="flex items-center space-x-3">
-                        <div class="captcha-question">
-                            <?php echo $captchaNum1; ?> + <?php echo $captchaNum2; ?> = ?
-                        </div>
-                        <input type="number" 
-                               name="captcha_answer" 
-                               id="captcha_answer" 
-                               required
-                               class="auth-input captcha-input"
-                               placeholder="?"
-                               min="0" 
-                               max="20">
-                    </div>
-                    <input type="hidden" name="captcha_expected" value="<?php echo $captchaResult; ?>">
-                    <p class="auth-helper">Please solve the simple math problem above</p>
+                <!-- Invisible captcha fields (honeypots) -->
+                <div class="honeypot" aria-hidden="true">
+                    <label for="website">Website (leave blank)</label>
+                    <input type="text" name="website" id="website" tabindex="-1" autocomplete="nope">
+                    
+                    <label for="confirm_email">Confirm Email (leave blank)</label>
+                    <input type="email" name="confirm_email" id="confirm_email" tabindex="-1" autocomplete="nope">
                 </div>
+                
+                <!-- Form timing for bot detection -->
+                <input type="hidden" name="form_start_time" value="<?php echo $formStartTime; ?>">
 
                 <!-- Hidden timezone field - automatically detected -->
                 <input type="hidden" id="timezone" name="timezone" value="UTC">

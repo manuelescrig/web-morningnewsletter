@@ -10,7 +10,7 @@ const AuthManager = {
         this.initTimezoneDetection();
         this.initPasswordToggle();
         this.initFormSubmission();
-        this.initCaptcha();
+        this.initInvisibleCaptcha();
     },
 
     // Form validation
@@ -253,36 +253,65 @@ const AuthManager = {
         this.showToast(successMessage, 'success');
     },
 
-    // Captcha functionality
-    initCaptcha() {
-        const captchaInput = document.getElementById('captcha_answer');
-        const captchaExpected = document.querySelector('input[name="captcha_expected"]');
+    // Invisible captcha functionality
+    initInvisibleCaptcha() {
+        // Ensure honeypot fields remain empty
+        const honeypotFields = document.querySelectorAll('input[name="website"], input[name="confirm_email"]');
         
-        if (!captchaInput || !captchaExpected) return;
-        
-        // Real-time validation for captcha
-        captchaInput.addEventListener('input', () => {
-            const userAnswer = parseInt(captchaInput.value);
-            const expectedAnswer = parseInt(captchaExpected.value);
+        honeypotFields.forEach(field => {
+            // If any script tries to fill these fields, clear them
+            field.addEventListener('input', () => {
+                field.value = '';
+            });
             
-            if (captchaInput.value && !isNaN(userAnswer)) {
-                if (userAnswer === expectedAnswer) {
-                    captchaInput.classList.remove('border-red-500');
-                    captchaInput.classList.add('border-green-500');
-                    this.clearFieldError(captchaInput);
-                } else {
-                    captchaInput.classList.remove('border-green-500');
-                    captchaInput.classList.add('border-red-500');
+            // Monitor for any programmatic changes
+            const observer = new MutationObserver(() => {
+                if (field.value !== '') {
+                    field.value = '';
                 }
-            } else {
-                captchaInput.classList.remove('border-red-500', 'border-green-500');
-            }
+            });
+            
+            observer.observe(field, {
+                attributes: true,
+                attributeFilter: ['value']
+            });
         });
         
-        // Clear validation on focus
-        captchaInput.addEventListener('focus', () => {
-            captchaInput.classList.remove('border-red-500', 'border-green-500');
-            this.clearFieldError(captchaInput);
+        // Add additional bot detection measures
+        this.addBotDetection();
+    },
+    
+    // Additional bot detection measures
+    addBotDetection() {
+        // Track mouse movement (bots typically don't move mouse)
+        let hasMouseMovement = false;
+        document.addEventListener('mousemove', () => {
+            hasMouseMovement = true;
+        }, { once: true });
+        
+        // Track keyboard interaction
+        let hasKeyboardInteraction = false;
+        document.addEventListener('keydown', () => {
+            hasKeyboardInteraction = true;
+        }, { once: true });
+        
+        // Add form submission validation
+        const forms = document.querySelectorAll('.auth-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                // Check if honeypot fields are filled (additional JS check)
+                const website = document.querySelector('input[name="website"]');
+                const confirmEmail = document.querySelector('input[name="confirm_email"]');
+                
+                if ((website && website.value) || (confirmEmail && confirmEmail.value)) {
+                    e.preventDefault();
+                    this.showToast('Invalid submission detected.', 'error');
+                    return false;
+                }
+                
+                // Log interaction data for analysis (optional)
+                console.log('Form submission - Mouse:', hasMouseMovement, 'Keyboard:', hasKeyboardInteraction);
+            });
         });
     }
 };

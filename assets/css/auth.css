@@ -1,34 +1,14 @@
 /* Authentication Pages Styles */
 
-/* Captcha Styles */
-.captcha-question {
-    background-color: #f3f4f6;
-    border: 1px solid #d1d5db;
-    padding: 0.75rem 1rem;
-    border-radius: 0.375rem;
-    font-family: 'Courier New', monospace;
-    font-size: 1.125rem;
-    color: #374151;
-    font-weight: 500;
-    min-width: 120px;
-    text-align: center;
-}
-
-.captcha-input {
-    width: 5rem;
-    text-align: center;
-    font-size: 1.125rem;
-    transition: border-color 0.2s ease;
-}
-
-.captcha-input.border-green-500 {
-    border-color: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-}
-
-.captcha-input.border-red-500 {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+/* Invisible Captcha Styles */
+.honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
 }
 
 /* Auth Layout */

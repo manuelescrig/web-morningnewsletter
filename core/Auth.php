@@ -177,4 +177,63 @@ class Auth {
     public function validateCSRFToken($token) {
         return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
     }
+    
+    public function isRateLimited($ip) {
+        // Simple file-based rate limiting for registration attempts
+        $cacheDir = __DIR__ . '/../cache';
+        if (!is_dir($cacheDir)) {
+            return false; // If cache dir doesn't exist, no rate limiting yet
+        }
+        
+        $rateFile = $cacheDir . '/rate_limit_' . md5($ip) . '.txt';
+        $maxAttempts = 3;
+        $timeWindow = 300; // 5 minutes
+        
+        if (!file_exists($rateFile)) {
+            return false;
+        }
+        
+        $data = file_get_contents($rateFile);
+        $attempts = json_decode($data, true);
+        
+        if (!$attempts) {
+            return false;
+        }
+        
+        // Clean old attempts
+        $attempts = array_filter($attempts, function($timestamp) use ($timeWindow) {
+            return (time() - $timestamp) < $timeWindow;
+        });
+        
+        // Save cleaned attempts
+        file_put_contents($rateFile, json_encode($attempts));
+        
+        return count($attempts) >= $maxAttempts;
+    }
+    
+    public function recordRegistrationAttempt($ip) {
+        // Record registration attempt for rate limiting
+        $cacheDir = __DIR__ . '/../cache';
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0755, true);
+        }
+        
+        $rateFile = $cacheDir . '/rate_limit_' . md5($ip) . '.txt';
+        
+        $attempts = [];
+        if (file_exists($rateFile)) {
+            $data = file_get_contents($rateFile);
+            $attempts = json_decode($data, true) ?: [];
+        }
+        
+        $attempts[] = time();
+        
+        // Keep only recent attempts
+        $timeWindow = 300; // 5 minutes
+        $attempts = array_filter($attempts, function($timestamp) use ($timeWindow) {
+            return (time() - $timestamp) < $timeWindow;
+        });
+        
+        file_put_contents($rateFile, json_encode($attempts));
+    }
 }
