@@ -76,7 +76,7 @@ $currentPage = 'history';
             <div class="flex justify-between items-start">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">
-                        <?php echo htmlspecialchars($historyEntry['title']); ?>
+                        <?php echo htmlspecialchars($historyEntry['newsletter_title']); ?>
                         <span class="ml-2 text-lg text-gray-500">
                             #<?php echo $historyEntry['issue_number']; ?>
                         </span>
@@ -85,9 +85,6 @@ $currentPage = 'history';
                     <div class="mt-2 flex items-center text-sm text-gray-600">
                         <i class="fas fa-calendar mr-2"></i>
                         <span><?php echo date('F j, Y g:i A', strtotime($historyEntry['sent_at'])); ?></span>
-                        
-                        <span class="mx-3">•</span>
-                        <span class="font-medium"><?php echo htmlspecialchars($historyEntry['newsletter_title']); ?></span>
                         
                         <?php if ($historyEntry['email_status'] === 'sent' || $historyEntry['email_status'] === 'failed'): ?>
                         <span class="mx-3">•</span>
