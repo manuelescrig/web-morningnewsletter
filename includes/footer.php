@@ -5,7 +5,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <?php renderLogo('md', '/', 'block'); ?>
+                <?php renderLogo('md', '/', 'block !justify-start'); ?>
                 <p class="mt-4 text-gray-500 text-sm">Your personalized morning brief, delivered daily.</p>
                 <div class="mt-6 flex space-x-6">
                     <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
