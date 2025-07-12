@@ -59,36 +59,3 @@
         </div>
     </div>
 </footer>
-
-<script>
-function subscribeToNewsletter(event) {
-    event.preventDefault();
-    
-    const emailInput = document.getElementById('newsletter-email');
-    const email = emailInput.value.trim();
-    const button = event.target.querySelector('button[type="submit"]');
-    const originalText = button.textContent;
-    
-    // Basic email validation
-    if (!email || !email.includes('@')) {
-        alert('Please enter a valid email address');
-        return;
-    }
-    
-    // Show loading state
-    button.textContent = 'Subscribing...';
-    button.disabled = true;
-    
-    // TODO: Integrate with newsletter provider (e.g., Mailchimp, ConvertKit, etc.)
-    // For now, just simulate the subscription
-    setTimeout(() => {
-        // Show success message
-        alert('Thank you for subscribing! You\'ll receive updates about new features and tips.');
-        
-        // Reset form
-        emailInput.value = '';
-        button.textContent = originalText;
-        button.disabled = false;
-    }, 1000);
-}
-</script>

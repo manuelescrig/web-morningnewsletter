@@ -51,63 +51,84 @@ $userTimezone = date_default_timezone_get();
     <title>Create Account - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full space-y-8 p-8">
+<body class="auth-container">
+    <div class="auth-card">
+        <!-- Header -->
         <div class="text-center">
-<?php renderLogo('md'); ?>
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Create your account</h2>
+            <?php renderLogo('md'); ?>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Create your account
+            </h2>
             <p class="mt-2 text-sm text-gray-600">
                 Or
-                <a href="/auth/login.php" class="font-medium text-blue-600 hover:text-blue-500">
+                <a href="/auth/login.php" class="auth-link">
                     sign in to your existing account
                 </a>
             </p>
         </div>
 
+        <!-- Alerts -->
         <?php if ($error): ?>
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <?php echo htmlspecialchars($error); ?>
-        </div>
+            <div class="auth-alert auth-alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span><?php echo htmlspecialchars($error); ?></span>
+            </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
-            <?php echo $success; ?>
-            <div class="mt-2">
-                <a href="/auth/login.php" class="font-medium text-green-600 hover:text-green-500">
-                    Click here to sign in
-                </a>
+            <div class="auth-alert auth-alert-success">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <div><?php echo $success; ?></div>
+                    <div class="mt-2">
+                        <a href="/auth/login.php" class="auth-link">
+                            Click here to sign in
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
-        <form class="mt-8 space-y-6" method="POST">
+        <!-- Registration Form -->
+        <form class="auth-form" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
             
             <div class="space-y-4">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                <div class="auth-input-group">
+                    <label for="email" class="auth-label">Email address</label>
+                    <input id="email" 
+                           name="email" 
+                           type="email" 
+                           autocomplete="email" 
+                           required
+                           class="auth-input"
                            placeholder="Enter your email"
                            value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                 </div>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="new-password" required
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                <div class="auth-input-group">
+                    <label for="password" class="auth-label">Password</label>
+                    <input id="password" 
+                           name="password" 
+                           type="password" 
+                           autocomplete="new-password" 
+                           required
+                           class="auth-input"
                            placeholder="Choose a password (min 8 characters)">
-                    <p class="mt-1 text-xs text-gray-500">Must be at least 8 characters long</p>
+                    <p class="auth-helper">Must be at least 8 characters long</p>
                 </div>
 
-                <div>
-                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" required
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                <div class="auth-input-group">
+                    <label for="confirm_password" class="auth-label">Confirm Password</label>
+                    <input id="confirm_password" 
+                           name="confirm_password" 
+                           type="password" 
+                           autocomplete="new-password" 
+                           required
+                           class="auth-input"
                            placeholder="Confirm your password">
                 </div>
 
@@ -115,36 +136,24 @@ $userTimezone = date_default_timezone_get();
                 <input type="hidden" id="timezone" name="timezone" value="UTC">
             </div>
 
-            <div>
-                <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <div class="mt-6">
+                <button type="submit" class="auth-button">
                     Create Account
-                    <span class="absolute right-0 inset-y-0 flex items-center pr-3">
-                        <i class="fas fa-user-plus text-blue-500 group-hover:text-blue-400"></i>
+                    <span class="auth-button-icon">
+                        <i class="fas fa-user-plus"></i>
                     </span>
                 </button>
             </div>
 
-            <div class="text-xs text-gray-500 text-center">
+            <div class="auth-legal">
                 By creating an account, you agree to our 
-                <a href="/legal/terms/" target="_blank" class="text-blue-600 hover:text-blue-500">Terms of Service</a> 
+                <a href="/legal/terms/" target="_blank" class="auth-link">Terms of Service</a> 
                 and 
-                <a href="/legal/privacy/" target="_blank" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                <a href="/legal/privacy/" target="_blank" class="auth-link">Privacy Policy</a>
             </div>
         </form>
     </div>
-
-    <script>
-        // Automatically detect user's timezone
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                document.getElementById('timezone').value = timezone;
-            } catch (error) {
-                console.warn('Could not detect timezone, using UTC:', error);
-                document.getElementById('timezone').value = 'UTC';
-            }
-        });
-    </script>
+    
+    <script src="/assets/js/auth.js"></script>
 </body>
 </html>

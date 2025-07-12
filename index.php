@@ -30,38 +30,7 @@ try {
     <title>MorningNewsletter.com - Your Personalized Morning Brief</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-        }
-        .trusted-by-logos {
-            filter: grayscale(100%) brightness(0.3);
-            transition: filter 0.3s ease;
-        }
-        .trusted-by-logos:hover {
-            filter: grayscale(100%) brightness(0.5);
-        }
-        .nav-scrolled {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .mesh-bg {
-            background: radial-gradient(circle at 25% 25%, #e0e7ff 0%, transparent 50%),
-                        radial-gradient(circle at 75% 25%, #f3e8ff 0%, transparent 50%),
-                        radial-gradient(circle at 25% 75%, #dbeafe 0%, transparent 50%),
-                        radial-gradient(circle at 75% 75%, #fce7f3 0%, transparent 50%),
-                        radial-gradient(circle at 50% 50%, #f8fafc 0%, transparent 50%);
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body class="bg-white">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -70,43 +39,54 @@ try {
     <div class="relative mesh-bg py-24 sm:py-32 lg:py-40 overflow-hidden">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
+                <!-- Badge -->
                 <div class="mb-8">
                     <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        <i class="fas fa-sparkles mr-2"></i>
+                        <i class="fas fa-sparkles mr-2" aria-hidden="true"></i>
                         AI-Powered Content Curation
                     </span>
                 </div>
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
+                
+                <!-- Main Heading -->
+                <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
                     Your Personalized 
                     <span class="gradient-text">
                         Morning Brief
                     </span>
                 </h1>
-                <p class="mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
+                
+                <!-- Subtitle -->
+                <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
                     Start your day with clarity. Get everything that matters—KPIs, market updates, weather, news, and messages—delivered in one beautiful email.
                 </p>
+                
+                <!-- Call to Action Buttons -->
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="/register" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                    <a href="/auth/register.php" 
+                       class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
                         Start for Free
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200"></i>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
                     </a>
-                    <a href="#features" class="inline-flex items-center text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
+                    <a href="#features" 
+                       class="inline-flex items-center text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
                         See how it works
-                        <i class="fas fa-play-circle ml-2"></i>
+                        <i class="fas fa-play-circle ml-2" aria-hidden="true"></i>
                     </a>
                 </div>
-                <div class="mt-12 flex items-center justify-center gap-x-8 text-sm text-gray-600">
+                
+                <!-- Benefits List -->
+                <div class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-gray-600">
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        7-day free trial
+                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <span>7-day free trial</span>
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        Plans starting at $5/mo
+                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <span>Plans starting at $5/mo</span>
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                        Cancel anytime
+                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <span>Cancel anytime</span>
                     </div>
                 </div>
             </div>
@@ -607,74 +587,9 @@ try {
     <?php include __DIR__ . '/includes/footer.php'; ?>
 
     <script>
-        async function subscribeToPlan(plan) {
-            // Check if user is logged in
-            <?php if (!$isLoggedIn): ?>
-                // Store the selected plan in session storage for after login
-                sessionStorage.setItem('selectedPlan', plan);
-                window.location.href = '/login';
-                return;
-            <?php endif; ?>
-
-            try {
-                // Show loading state
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = 'Loading...';
-                button.disabled = true;
-
-                // Create Stripe checkout session
-                const response = await fetch('/api/checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ plan: plan })
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`HTTP ${response.status}: ${errorText}`);
-                }
-
-                const data = await response.json();
-
-                if (!data.checkout_url) {
-                    throw new Error('No checkout URL received');
-                }
-
-                // Redirect to Stripe Checkout
-                window.location.href = data.checkout_url;
-
-            } catch (error) {
-                // Restore button state
-                if (typeof event !== 'undefined' && event.target) {
-                    const button = event.target;
-                    button.textContent = originalText;
-                    button.disabled = false;
-                }
-                
-                console.error('Error creating checkout session:', error);
-                alert('Error: ' + error.message);
-            }
-        }
-
-        function toggleFAQ(button) {
-            const answer = button.nextElementSibling;
-            const icon = button.querySelector('i');
-            
-            if (answer.style.display === 'none' || answer.style.display === '') {
-                answer.style.display = 'block';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                answer.style.display = 'none';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-                icon.style.transform = 'rotate(0deg)';
-            }
-        }
+        // Pass PHP variables to JavaScript
+        const isLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
     </script>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html> 

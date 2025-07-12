@@ -56,68 +56,80 @@ $csrfToken = $auth->generateCSRFToken();
     <title>Forgot Password - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full space-y-8 p-8">
+<body class="auth-container">
+    <div class="auth-card">
+        <!-- Header -->
         <div class="text-center">
             <?php renderLogo('md'); ?>
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Forgot your password?</h2>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Forgot your password?
+            </h2>
             <p class="mt-2 text-sm text-gray-600">
                 Enter your email address and we'll send you a link to reset your password.
             </p>
         </div>
 
+        <!-- Alerts -->
         <?php if ($error): ?>
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <?php echo htmlspecialchars($error); ?>
-        </div>
+            <div class="auth-alert auth-alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span><?php echo htmlspecialchars($error); ?></span>
+            </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
-            <?php echo htmlspecialchars($success); ?>
-            <div class="mt-3 text-sm">
-                <a href="/auth/login.php" class="font-medium text-green-600 hover:text-green-500">
-                    Back to Sign In
-                </a>
+            <div class="auth-alert auth-alert-success">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <div><?php echo htmlspecialchars($success); ?></div>
+                    <div class="mt-3 text-sm">
+                        <a href="/auth/login.php" class="auth-link">
+                            Back to Sign In
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
+        <!-- Password Reset Form -->
         <?php if (!$success): ?>
-        <form class="mt-8 space-y-6" method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-            
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                <div class="mt-1">
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                           class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            <form class="auth-form" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                
+                <div class="auth-input-group">
+                    <label for="email" class="auth-label">Email address</label>
+                    <input id="email" 
+                           name="email" 
+                           type="email" 
+                           autocomplete="email" 
+                           required
+                           class="auth-input"
                            placeholder="Enter your email address"
                            value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                 </div>
-            </div>
 
-            <div>
-                <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Send Reset Link
-                    <span class="absolute right-0 inset-y-0 flex items-center pr-3">
-                        <i class="fas fa-paper-plane text-blue-500 group-hover:text-blue-400"></i>
-                    </span>
-                </button>
-            </div>
+                <div class="mt-6">
+                    <button type="submit" class="auth-button">
+                        Send Reset Link
+                        <span class="auth-button-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                    </button>
+                </div>
 
-            <div class="text-center">
-                <a href="/auth/login.php" class="font-medium text-blue-600 hover:text-blue-500">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to Sign In
-                </a>
-            </div>
-        </form>
+                <div class="text-center mt-4">
+                    <a href="/auth/login.php" class="auth-link">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Sign In
+                    </a>
+                </div>
+            </form>
         <?php endif; ?>
     </div>
+    
+    <script src="/assets/js/auth.js"></script>
 </body>
 </html>

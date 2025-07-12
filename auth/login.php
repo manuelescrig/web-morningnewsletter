@@ -42,71 +42,88 @@ $csrfToken = $auth->generateCSRFToken();
     <title>Sign In - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full space-y-8 p-8">
+<body class="auth-container">
+    <div class="auth-card">
+        <!-- Header -->
         <div class="text-center">
-<?php renderLogo('md'); ?>
-            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+            <?php renderLogo('md'); ?>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Sign in to your account
+            </h2>
             <p class="mt-2 text-sm text-gray-600">
                 Or
-                <a href="/auth/register.php" class="font-medium text-blue-600 hover:text-blue-500">
+                <a href="/auth/register.php" class="auth-link">
                     create a new account
                 </a>
             </p>
         </div>
 
+        <!-- Alerts -->
         <?php if ($error): ?>
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <?php echo htmlspecialchars($error); ?>
-        </div>
+            <div class="auth-alert auth-alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span><?php echo htmlspecialchars($error); ?></span>
+            </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
-            <?php echo htmlspecialchars($success); ?>
-        </div>
+            <div class="auth-alert auth-alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span><?php echo htmlspecialchars($success); ?></span>
+            </div>
         <?php endif; ?>
 
-        <form class="mt-8 space-y-6" method="POST">
+        <!-- Login Form -->
+        <form class="auth-form" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
             
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div>
+            <div class="space-y-4">
+                <div class="auth-input-group">
                     <label for="email" class="sr-only">Email address</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                    <input id="email" 
+                           name="email" 
+                           type="email" 
+                           autocomplete="email" 
+                           required
+                           class="auth-input auth-input-stacked"
                            placeholder="Email address"
                            value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                 </div>
-                <div>
+                
+                <div class="auth-input-group">
                     <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="current-password" required
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                    <input id="password" 
+                           name="password" 
+                           type="password" 
+                           autocomplete="current-password" 
+                           required
+                           class="auth-input auth-input-stacked"
                            placeholder="Password">
                 </div>
             </div>
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between mt-4">
                 <div class="text-sm">
-                    <a href="/auth/forgot_password.php" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="/auth/forgot_password.php" class="auth-link">
                         Forgot your password?
                     </a>
                 </div>
             </div>
 
-            <div>
-                <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <div class="mt-6">
+                <button type="submit" class="auth-button">
                     Sign in
-                    <span class="absolute right-0 inset-y-0 flex items-center pr-3">
-                        <i class="fas fa-sign-in-alt text-blue-500 group-hover:text-blue-400"></i>
+                    <span class="auth-button-icon">
+                        <i class="fas fa-sign-in-alt"></i>
                     </span>
                 </button>
             </div>
         </form>
     </div>
+    
+    <script src="/assets/js/auth.js"></script>
 </body>
 </html>
