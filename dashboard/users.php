@@ -536,18 +536,21 @@ $csrfToken = $auth->generateCSRFToken();
                                         <?php 
                                         if (!empty($userData['discovery_source'])) {
                                             $sources = [
+                                                'chatgpt' => 'ChatGPT',
                                                 'friend' => 'Friend',
-                                                'podcast' => 'Podcast', 
-                                                'team' => 'Follow Team',
-                                                'product_hunt' => 'Product Hunt',
-                                                'twitter' => 'Twitter',
                                                 'google_search' => 'Google Search',
-                                                'teammate' => 'Teammate',
-                                                'reddit' => 'Reddit',
-                                                'public_brew' => 'Public Brew',
                                                 'newsletter' => 'Newsletter',
-                                                'dont_remember' => "Don't Remember",
-                                                'other' => 'Other'
+                                                'podcast' => 'Podcast',
+                                                'product_hunt' => 'Product Hunt',
+                                                'reddit' => 'Reddit',
+                                                'teammate' => 'Teammate / Co-worker',
+                                                'x_twitter' => 'X/Twitter',
+                                                'other' => 'Other',
+                                                // Legacy options for backward compatibility
+                                                'team' => 'Follow Team',
+                                                'twitter' => 'Twitter',
+                                                'public_brew' => 'Public Brew',
+                                                'dont_remember' => "Don't Remember"
                                             ];
                                             echo htmlspecialchars($sources[$userData['discovery_source']] ?? ucfirst($userData['discovery_source']));
                                         } else {
