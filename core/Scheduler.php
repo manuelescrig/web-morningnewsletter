@@ -193,29 +193,166 @@ class Scheduler {
         // Handle both Newsletter and User objects for backward compatibility
         if ($object instanceof Newsletter) {
             $newsletter = $object;
-            $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
-            $sendTime = $newsletter->getSendTime();
         } else if ($object instanceof User) {
             $user = $object;
             $newsletter = $user->getDefaultNewsletter();
             if (!$newsletter) {
                 throw new Exception("User has no newsletters");
             }
-            $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
-            $sendTime = $newsletter->getSendTime();
         } else {
             throw new Exception("Invalid object type for getNextSendTime");
         }
         
+        return $this->calculateNextSendTime($newsletter);
+    }
+    
+    /**
+     * Calculate the next send time based on newsletter frequency
+     */
+    private function calculateNextSendTime(Newsletter $newsletter) {
+        $currentTime = $this->getNewsletterCurrentTime($newsletter);
+        $sendTime = $newsletter->getSendTime();
         list($hour, $minute) = explode(':', $sendTime);
         
-        $nextSend = clone $newsletterTime;
+        switch ($newsletter->getFrequency()) {
+            case 'daily':
+                return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+            case 'weekly':
+                return $this->getNextWeeklySendTime($newsletter, $currentTime, $hour, $minute);
+            case 'monthly':
+                return $this->getNextMonthlySendTime($newsletter, $currentTime, $hour, $minute);
+            case 'quarterly':
+                return $this->getNextQuarterlySendTime($newsletter, $currentTime, $hour, $minute);
+            default:
+                return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+        }
+    }
+    
+    private function getNextDailySendTime(Newsletter $newsletter, DateTime $currentTime, $hour, $minute) {
+        $nextSend = clone $currentTime;
         $nextSend->setTime((int)$hour, (int)$minute, 0);
         
         // If send time has passed today, schedule for tomorrow
-        if ($nextSend <= $newsletterTime) {
+        if ($nextSend <= $currentTime) {
             $nextSend->add(new DateInterval('P1D'));
         }
+        
+        return $nextSend;
+    }
+    
+    private function getNextWeeklySendTime(Newsletter $newsletter, DateTime $currentTime, $hour, $minute) {
+        $daysOfWeek = $newsletter->getDaysOfWeek();
+        if (empty($daysOfWeek)) {
+            $daysOfWeek = [1]; // Default to Monday
+        }
+        
+        $currentDayOfWeek = (int)$currentTime->format('N'); // 1 = Monday, 7 = Sunday
+        $nextSend = clone $currentTime;
+        $nextSend->setTime((int)$hour, (int)$minute, 0);
+        
+        // Check if today is a scheduled day and time hasn't passed
+        if (in_array($currentDayOfWeek, $daysOfWeek) && $nextSend > $currentTime) {
+            return $nextSend;
+        }
+        
+        // Find the next scheduled day
+        for ($i = 1; $i <= 7; $i++) {
+            $testDate = clone $currentTime;
+            $testDate->add(new DateInterval("P{$i}D"));
+            $testDayOfWeek = (int)$testDate->format('N');
+            
+            if (in_array($testDayOfWeek, $daysOfWeek)) {
+                $testDate->setTime((int)$hour, (int)$minute, 0);
+                return $testDate;
+            }
+        }
+        
+        // Fallback - should never reach here
+        return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+    }
+    
+    private function getNextMonthlySendTime(Newsletter $newsletter, DateTime $currentTime, $hour, $minute) {
+        $dayOfMonth = $newsletter->getDayOfMonth();
+        $currentDay = (int)$currentTime->format('j');
+        
+        $nextSend = clone $currentTime;
+        
+        // Try this month first
+        $lastDayOfMonth = (int)$currentTime->format('t');
+        $targetDay = min($dayOfMonth, $lastDayOfMonth);
+        
+        if ($currentDay < $targetDay || ($currentDay == $targetDay && $currentTime->format('H:i') < $newsletter->getSendTime())) {
+            // Can send this month
+            $nextSend->setDate((int)$nextSend->format('Y'), (int)$nextSend->format('n'), $targetDay);
+            $nextSend->setTime((int)$hour, (int)$minute, 0);
+            return $nextSend;
+        }
+        
+        // Move to next month
+        $nextSend->add(new DateInterval('P1M'));
+        $nextSend->setDate((int)$nextSend->format('Y'), (int)$nextSend->format('n'), 1); // First day of next month
+        
+        $lastDayOfNextMonth = (int)$nextSend->format('t');
+        $targetDay = min($dayOfMonth, $lastDayOfNextMonth);
+        
+        $nextSend->setDate((int)$nextSend->format('Y'), (int)$nextSend->format('n'), $targetDay);
+        $nextSend->setTime((int)$hour, (int)$minute, 0);
+        
+        return $nextSend;
+    }
+    
+    private function getNextQuarterlySendTime(Newsletter $newsletter, DateTime $currentTime, $hour, $minute) {
+        $months = $newsletter->getMonths();
+        $dayOfMonth = $newsletter->getDayOfMonth();
+        
+        if (empty($months)) {
+            $months = [1, 4, 7, 10]; // Default to first month of each quarter
+        }
+        
+        $currentMonth = (int)$currentTime->format('n');
+        $currentDay = (int)$currentTime->format('j');
+        $currentYear = (int)$currentTime->format('Y');
+        
+        // Check if we can send this month
+        if (in_array($currentMonth, $months)) {
+            $lastDayOfMonth = (int)$currentTime->format('t');
+            $targetDay = min($dayOfMonth, $lastDayOfMonth);
+            
+            if ($currentDay < $targetDay || ($currentDay == $targetDay && $currentTime->format('H:i') < $newsletter->getSendTime())) {
+                $nextSend = clone $currentTime;
+                $nextSend->setDate($currentYear, $currentMonth, $targetDay);
+                $nextSend->setTime((int)$hour, (int)$minute, 0);
+                return $nextSend;
+            }
+        }
+        
+        // Find next scheduled month
+        $nextMonth = null;
+        foreach ($months as $month) {
+            if ($month > $currentMonth) {
+                $nextMonth = $month;
+                $nextYear = $currentYear;
+                break;
+            }
+        }
+        
+        // If no month found this year, use first month of next year
+        if ($nextMonth === null) {
+            $nextMonth = $months[0];
+            $nextYear = $currentYear + 1;
+        } else {
+            $nextYear = $currentYear;
+        }
+        
+        $nextSend = new DateTime();
+        $nextSend->setTimezone($currentTime->getTimezone());
+        $nextSend->setDate($nextYear, $nextMonth, 1);
+        
+        $lastDayOfMonth = (int)$nextSend->format('t');
+        $targetDay = min($dayOfMonth, $lastDayOfMonth);
+        
+        $nextSend->setDate($nextYear, $nextMonth, $targetDay);
+        $nextSend->setTime((int)$hour, (int)$minute, 0);
         
         return $nextSend;
     }
