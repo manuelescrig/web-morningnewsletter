@@ -127,9 +127,9 @@ $userTimezone = date_default_timezone_get();
 
             <div class="text-xs text-gray-500 text-center">
                 By creating an account, you agree to our 
-                <a href="/legal/terms/" class="text-blue-600 hover:text-blue-500">Terms of Service</a> 
+                <a href="/legal/terms/" target="_blank" class="text-blue-600 hover:text-blue-500">Terms of Service</a> 
                 and 
-                <a href="/legal/privacy/" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                <a href="/legal/privacy/" target="_blank" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
             </div>
         </form>
     </div>
