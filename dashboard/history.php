@@ -51,7 +51,7 @@ if ($newsletterId) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Newsletter History - MorningNewsletter</title>
+    <title>History - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -63,7 +63,7 @@ if ($newsletterId) {
         <div class="mb-8">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Newsletter History</h1>
+                    <h1 class="text-3xl font-bold text-gray-900">History</h1>
                     <p class="mt-2 text-gray-600">
                         <?php if ($selectedNewsletter): ?>
                             View past issues of "<?php echo htmlspecialchars($selectedNewsletter->getTitle()); ?>"
