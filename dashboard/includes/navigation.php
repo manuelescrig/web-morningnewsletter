@@ -35,7 +35,6 @@ function getNavClass($page, $currentPage) {
                         My Newsletters
                     </a>
                     <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                        <i class="fas fa-history mr-1"></i>
                         History
                     </a>
                 </div>
