@@ -12,6 +12,13 @@ class Newsletter {
     private $created_at;
     private $updated_at;
     
+    // New scheduling fields
+    private $frequency;
+    private $days_of_week;
+    private $day_of_month;
+    private $months;
+    private $is_paused;
+    
     public function __construct($newsletterData = null) {
         $this->db = Database::getInstance()->getConnection();
         
@@ -24,6 +31,13 @@ class Newsletter {
             $this->is_active = $newsletterData['is_active'];
             $this->created_at = $newsletterData['created_at'];
             $this->updated_at = $newsletterData['updated_at'];
+            
+            // New scheduling fields with defaults
+            $this->frequency = $newsletterData['frequency'] ?? 'daily';
+            $this->days_of_week = $newsletterData['days_of_week'] ?? '';
+            $this->day_of_month = $newsletterData['day_of_month'] ?? 1;
+            $this->months = $newsletterData['months'] ?? '';
+            $this->is_paused = $newsletterData['is_paused'] ?? 0;
         }
     }
     
@@ -85,7 +99,7 @@ class Newsletter {
     
     public function update($data) {
         try {
-            $allowedFields = ['title', 'timezone', 'send_time'];
+            $allowedFields = ['title', 'timezone', 'send_time', 'frequency', 'days_of_week', 'day_of_month', 'months', 'is_paused'];
             $updates = [];
             $values = [];
             
@@ -290,4 +304,19 @@ class Newsletter {
     public function isActive() { return (bool)$this->is_active; }
     public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }
+    
+    // New scheduling getters
+    public function getFrequency() { return $this->frequency ?? 'daily'; }
+    public function getDaysOfWeek() { 
+        return $this->days_of_week ? json_decode($this->days_of_week, true) : []; 
+    }
+    public function getDayOfMonth() { return $this->day_of_month ?? 1; }
+    public function getMonths() { 
+        return $this->months ? json_decode($this->months, true) : []; 
+    }
+    public function isPaused() { return (bool)$this->is_paused; }
+    
+    // Helper methods for scheduling
+    public function getDaysOfWeekString() { return $this->days_of_week ?? ''; }
+    public function getMonthsString() { return $this->months ?? ''; }
 }

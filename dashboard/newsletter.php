@@ -172,8 +172,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateData = [
                     'title' => trim($_POST['title'] ?? ''),
                     'timezone' => $_POST['timezone'] ?? 'UTC',
-                    'send_time' => $_POST['send_time'] ?? '06:00'
+                    'send_time' => $_POST['send_time'] ?? '06:00',
+                    'frequency' => $_POST['frequency'] ?? 'daily',
+                    'is_paused' => isset($_POST['is_paused']) ? 1 : 0
                 ];
+                
+                // Handle days_of_week for weekly frequency
+                if ($updateData['frequency'] === 'weekly') {
+                    $daysOfWeek = $_POST['days_of_week'] ?? [];
+                    $updateData['days_of_week'] = !empty($daysOfWeek) ? json_encode(array_map('intval', $daysOfWeek)) : '';
+                } else {
+                    $updateData['days_of_week'] = '';
+                }
+                
+                // Handle day_of_month for monthly/quarterly frequency
+                if (in_array($updateData['frequency'], ['monthly', 'quarterly'])) {
+                    $updateData['day_of_month'] = max(1, min(31, (int)($_POST['day_of_month'] ?? 1)));
+                } else {
+                    $updateData['day_of_month'] = 1;
+                }
+                
+                // Handle months for quarterly frequency
+                if ($updateData['frequency'] === 'quarterly') {
+                    $months = $_POST['months'] ?? [];
+                    $updateData['months'] = !empty($months) ? json_encode(array_map('intval', $months)) : '';
+                } else {
+                    $updateData['months'] = '';
+                }
                 
                 if (empty($updateData['title'])) {
                     $error = 'Newsletter title is required.';
@@ -565,6 +590,87 @@ $canAddSource = count($sources) < $maxSources;
                                 <input type="time" name="send_time" id="send_time" required
                                        value="<?php echo $newsletter->getSendTime(); ?>"
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Frequency
+                                </label>
+                                <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
+                                    <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
+                                    <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
+                                    <option value="quarterly" <?php echo $newsletter->getFrequency() === 'quarterly' ? 'selected' : ''; ?>>Quarterly</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Weekly Schedule Options -->
+                            <div id="weekly-options" class="<?php echo $newsletter->getFrequency() !== 'weekly' ? 'hidden' : ''; ?>">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Days of Week
+                                </label>
+                                <div class="grid grid-cols-7 gap-2">
+                                    <?php 
+                                    $daysOfWeek = $newsletter->getDaysOfWeek();
+                                    $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                    for ($i = 1; $i <= 7; $i++): 
+                                    ?>
+                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50">
+                                            <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" 
+                                                   <?php echo in_array($i, $daysOfWeek) ? 'checked' : ''; ?>
+                                                   class="sr-only">
+                                            <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <!-- Monthly/Quarterly Day Options -->
+                            <div id="monthly-options" class="<?php echo !in_array($newsletter->getFrequency(), ['monthly', 'quarterly']) ? 'hidden' : ''; ?>">
+                                <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Day of Month
+                                </label>
+                                <select name="day_of_month" id="day_of_month"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php for ($day = 1; $day <= 31; $day++): ?>
+                                        <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
+                                            <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
+                            </div>
+                            
+                            <!-- Quarterly Month Options -->
+                            <div id="quarterly-options" class="<?php echo $newsletter->getFrequency() !== 'quarterly' ? 'hidden' : ''; ?>">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Months
+                                </label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <?php 
+                                    $selectedMonths = $newsletter->getMonths();
+                                    $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                    for ($i = 1; $i <= 12; $i++): 
+                                    ?>
+                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50">
+                                            <input type="checkbox" name="months[]" value="<?php echo $i; ?>" 
+                                                   <?php echo in_array($i, $selectedMonths) ? 'checked' : ''; ?>
+                                                   class="sr-only">
+                                            <span class="text-sm font-medium"><?php echo $monthNames[$i-1]; ?></span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <!-- Pause Option -->
+                            <div class="flex items-center">
+                                <input type="checkbox" name="is_paused" id="is_paused" value="1" 
+                                       <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>
+                                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <label for="is_paused" class="ml-2 block text-sm text-gray-700">
+                                    Pause newsletter sending
+                                </label>
                             </div>
                             
                             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
@@ -1024,6 +1130,56 @@ $canAddSource = count($sources) < $maxSources;
             }
         });
         <?php endif; ?>
+        
+        // Schedule options management
+        function updateScheduleOptions() {
+            const frequency = document.getElementById('frequency').value;
+            const weeklyOptions = document.getElementById('weekly-options');
+            const monthlyOptions = document.getElementById('monthly-options');
+            const quarterlyOptions = document.getElementById('quarterly-options');
+            
+            // Hide all options first
+            weeklyOptions.classList.add('hidden');
+            monthlyOptions.classList.add('hidden');
+            quarterlyOptions.classList.add('hidden');
+            
+            // Show relevant options based on frequency
+            switch (frequency) {
+                case 'weekly':
+                    weeklyOptions.classList.remove('hidden');
+                    break;
+                case 'monthly':
+                    monthlyOptions.classList.remove('hidden');
+                    break;
+                case 'quarterly':
+                    monthlyOptions.classList.remove('hidden');
+                    quarterlyOptions.classList.remove('hidden');
+                    break;
+            }
+        }
+        
+        // Initialize checkbox styling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Style checkbox labels for days of week and months
+            const checkboxLabels = document.querySelectorAll('input[type="checkbox"][name="days_of_week[]"], input[type="checkbox"][name="months[]"]');
+            
+            checkboxLabels.forEach(function(checkbox) {
+                const label = checkbox.closest('label');
+                
+                function updateStyle() {
+                    if (checkbox.checked) {
+                        label.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                        label.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+                    } else {
+                        label.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+                        label.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                    }
+                }
+                
+                updateStyle(); // Initial styling
+                checkbox.addEventListener('change', updateStyle);
+            });
+        });
     </script>
 </body>
 </html>

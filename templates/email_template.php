@@ -408,6 +408,14 @@
 </head>
 <body>
     <div class="email-container">
+        <!-- View in Browser Link -->
+        <div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+            <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                Having trouble viewing this email? 
+                <a href="{{VIEW_IN_BROWSER_URL}}" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
+            </p>
+        </div>
+        
         <!-- Header -->
         <div class="email-header">
             <h1>🌅 {{NEWSLETTER_TITLE}}</h1>

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/User.php';
+require_once __DIR__ . '/NewsletterHistory.php';
 require_once __DIR__ . '/../config/database.php';
 
 class EmailSender {
@@ -22,25 +23,91 @@ class EmailSender {
         $this->fromName = $_ENV['FROM_NAME'] ?? $providerConfig['from_name'];
     }
     
-    public function sendNewsletter(User $user, $htmlContent, $subject = null, $newsletterId = null) {
+    public function sendNewsletter(User $user, $htmlContent, $subject = null, $newsletterId = null, $sourcesData = null) {
         if (!$subject) {
             $subject = "Your Morning Brief - " . date('F j, Y');
         }
         
+        $historyId = null;
+        
         try {
+            // Save newsletter to history before sending to get the history ID
+            if ($newsletterId) {
+                $newsletterHistory = new NewsletterHistory();
+                $historyId = $newsletterHistory->saveToHistory(
+                    $newsletterId,
+                    $user->getId(),
+                    $subject,
+                    $htmlContent, // We'll update this with the final content later
+                    $sourcesData
+                );
+                
+                if (!$historyId) {
+                    error_log("Warning: Failed to save newsletter to history before sending");
+                }
+            }
+            
             $success = $this->sendEmail(
                 $user->getEmail(),
                 $subject,
                 $htmlContent
             );
             
-            $this->logEmail($user->getId(), $success ? 'sent' : 'failed', null, $newsletterId);
+            $this->logEmail($user->getId(), $success ? 'sent' : 'failed', null, $newsletterId, $historyId);
             return $success;
             
         } catch (Exception $e) {
-            $this->logEmail($user->getId(), 'failed', $e->getMessage(), $newsletterId);
+            $this->logEmail($user->getId(), 'failed', $e->getMessage(), $newsletterId, $historyId);
             throw $e;
         }
+    }
+    
+    public function sendNewsletterWithHistory(User $user, Newsletter $newsletter, $sourcesData = null) {
+        $subject = $newsletter->getTitle() . " - " . date('F j, Y');
+        $historyId = null;
+        
+        try {
+            // First save a placeholder to history to get the ID
+            $newsletterHistory = new NewsletterHistory();
+            $historyId = $newsletterHistory->saveToHistory(
+                $newsletter->getId(),
+                $user->getId(),
+                $subject,
+                '', // Placeholder content
+                $sourcesData
+            );
+            
+            if (!$historyId) {
+                throw new Exception("Failed to create newsletter history entry");
+            }
+            
+            // Now build the newsletter with the history ID for the "View in Browser" link
+            require_once __DIR__ . '/NewsletterBuilder.php';
+            $builder = new NewsletterBuilder($newsletter, $user);
+            $result = $builder->buildWithSourceDataAndHistoryId($historyId);
+            
+            // Update the history entry with the final content
+            $this->updateHistoryContent($historyId, $result['content']);
+            
+            $success = $this->sendEmail(
+                $user->getEmail(),
+                $subject,
+                $result['content']
+            );
+            
+            $this->logEmail($user->getId(), $success ? 'sent' : 'failed', null, $newsletter->getId(), $historyId);
+            return $success;
+            
+        } catch (Exception $e) {
+            $this->logEmail($user->getId(), 'failed', $e->getMessage(), $newsletter->getId(), $historyId);
+            throw $e;
+        }
+    }
+    
+    private function updateHistoryContent($historyId, $content) {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("UPDATE newsletter_history SET content = ? WHERE id = ?");
+        return $stmt->execute([$content, $historyId]);
     }
     
     private function sendEmail($to, $subject, $htmlBody) {
@@ -165,23 +232,34 @@ class EmailSender {
         return $success;
     }
     
-    private function logEmail($userId, $status, $errorMessage = null, $newsletterId = null) {
+    private function logEmail($userId, $status, $errorMessage = null, $newsletterId = null, $historyId = null) {
         $db = Database::getInstance()->getConnection();
         
-        // Check if newsletter_id column exists in email_logs table
+        // Try to insert with all new columns (newsletter_id and history_id)
         try {
             $stmt = $db->prepare("
-                INSERT INTO email_logs (user_id, status, error_message, newsletter_id) 
-                VALUES (?, ?, ?, ?)
+                INSERT INTO email_logs (user_id, status, error_message, newsletter_id, history_id) 
+                VALUES (?, ?, ?, ?, ?)
             ");
-            $stmt->execute([$userId, $status, $errorMessage, $newsletterId]);
+            $stmt->execute([$userId, $status, $errorMessage, $newsletterId, $historyId]);
+            
         } catch (Exception $e) {
-            // Fall back to old schema if newsletter_id column doesn't exist
-            $stmt = $db->prepare("
-                INSERT INTO email_logs (user_id, status, error_message) 
-                VALUES (?, ?, ?)
-            ");
-            $stmt->execute([$userId, $status, $errorMessage]);
+            // Fall back to try with just newsletter_id if history_id column doesn't exist yet
+            try {
+                $stmt = $db->prepare("
+                    INSERT INTO email_logs (user_id, status, error_message, newsletter_id) 
+                    VALUES (?, ?, ?, ?)
+                ");
+                $stmt->execute([$userId, $status, $errorMessage, $newsletterId]);
+                
+            } catch (Exception $e2) {
+                // Final fallback to old schema if newsletter_id column doesn't exist
+                $stmt = $db->prepare("
+                    INSERT INTO email_logs (user_id, status, error_message) 
+                    VALUES (?, ?, ?)
+                ");
+                $stmt->execute([$userId, $status, $errorMessage]);
+            }
         }
     }
     

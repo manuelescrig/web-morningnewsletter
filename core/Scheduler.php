@@ -38,15 +38,15 @@ class Scheduler {
             $newsletter = new Newsletter($newsletterData);
             $user = User::findById($newsletter->getUserId());
             
-            if (!$user) continue;
+            if (!$user || $newsletter->isPaused()) continue;
             
             $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
             $newsletterSendTime = $this->getNewsletterSendDateTime($newsletter, $newsletterTime);
             
             // Check if newsletter's send time falls within our window
             if ($this->isTimeInWindow($newsletterSendTime, $windowStart, $windowEnd)) {
-                // Check if we already sent this newsletter today
-                if (!$this->wasNewsletterSentToday($newsletter->getId())) {
+                // Check if newsletter should be sent based on frequency and last send
+                if ($this->shouldSendNewsletter($newsletter, $newsletterTime)) {
                     $newslettersToSend[] = ['newsletter' => $newsletter, 'user' => $user];
                 }
             }
@@ -179,13 +179,8 @@ class Scheduler {
     }
     
     private function sendNewsletterToUser(Newsletter $newsletter, User $user) {
-        // Build newsletter content
-        $builder = new NewsletterBuilder($newsletter, $user);
-        $content = $builder->build();
-        
-        // Send email
-        $subject = $newsletter->getTitle() . " - " . date('F j, Y');
-        $success = $this->emailSender->sendNewsletter($user, $content, $subject, $newsletter->getId());
+        // Send newsletter with history and view-in-browser functionality
+        $success = $this->emailSender->sendNewsletterWithHistory($user, $newsletter);
         
         if (!$success) {
             throw new Exception("Failed to send email to " . $user->getEmail());
@@ -255,5 +250,149 @@ class Scheduler {
             'timezone' => $timezone,
             'send_time' => $sendTime
         ];
+    }
+    
+    /**
+     * Check if a newsletter should be sent based on its frequency and schedule
+     */
+    private function shouldSendNewsletter(Newsletter $newsletter, DateTime $currentTime) {
+        switch ($newsletter->getFrequency()) {
+            case 'daily':
+                return $this->shouldSendDaily($newsletter);
+            case 'weekly':
+                return $this->shouldSendWeekly($newsletter, $currentTime);
+            case 'monthly':
+                return $this->shouldSendMonthly($newsletter, $currentTime);
+            case 'quarterly':
+                return $this->shouldSendQuarterly($newsletter, $currentTime);
+            default:
+                return $this->shouldSendDaily($newsletter); // Default to daily
+        }
+    }
+    
+    /**
+     * Check if daily newsletter should be sent (original logic)
+     */
+    private function shouldSendDaily(Newsletter $newsletter) {
+        return !$this->wasNewsletterSentToday($newsletter->getId());
+    }
+    
+    /**
+     * Check if weekly newsletter should be sent
+     */
+    private function shouldSendWeekly(Newsletter $newsletter, DateTime $currentTime) {
+        $daysOfWeek = $newsletter->getDaysOfWeek();
+        
+        if (empty($daysOfWeek)) {
+            // Default to Monday if no days specified
+            $daysOfWeek = [1];
+        }
+        
+        $currentDayOfWeek = (int)$currentTime->format('N'); // 1 = Monday, 7 = Sunday
+        
+        if (!in_array($currentDayOfWeek, $daysOfWeek)) {
+            return false; // Not a scheduled day
+        }
+        
+        // Check if already sent today
+        return !$this->wasNewsletterSentToday($newsletter->getId());
+    }
+    
+    /**
+     * Check if monthly newsletter should be sent
+     */
+    private function shouldSendMonthly(Newsletter $newsletter, DateTime $currentTime) {
+        $dayOfMonth = $newsletter->getDayOfMonth();
+        $currentDay = (int)$currentTime->format('j');
+        
+        // Handle end-of-month scenarios (e.g., day 31 in February)
+        $lastDayOfMonth = (int)$currentTime->format('t');
+        $targetDay = min($dayOfMonth, $lastDayOfMonth);
+        
+        if ($currentDay !== $targetDay) {
+            return false; // Not the scheduled day of month
+        }
+        
+        // Check if already sent this month
+        return !$this->wasNewsletterSentThisMonth($newsletter->getId());
+    }
+    
+    /**
+     * Check if quarterly newsletter should be sent
+     */
+    private function shouldSendQuarterly(Newsletter $newsletter, DateTime $currentTime) {
+        $months = $newsletter->getMonths();
+        $dayOfMonth = $newsletter->getDayOfMonth();
+        
+        if (empty($months)) {
+            // Default to first month of each quarter
+            $months = [1, 4, 7, 10];
+        }
+        
+        $currentMonth = (int)$currentTime->format('n');
+        $currentDay = (int)$currentTime->format('j');
+        
+        if (!in_array($currentMonth, $months)) {
+            return false; // Not a scheduled month
+        }
+        
+        // Handle end-of-month scenarios
+        $lastDayOfMonth = (int)$currentTime->format('t');
+        $targetDay = min($dayOfMonth, $lastDayOfMonth);
+        
+        if ($currentDay !== $targetDay) {
+            return false; // Not the scheduled day of month
+        }
+        
+        // Check if already sent this quarter
+        return !$this->wasNewsletterSentThisQuarter($newsletter->getId());
+    }
+    
+    /**
+     * Check if newsletter was sent this month
+     */
+    private function wasNewsletterSentThisMonth($newsletterId) {
+        $firstDayOfMonth = date('Y-m-01');
+        $lastDayOfMonth = date('Y-m-t');
+        
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) as count 
+            FROM newsletter_history 
+            WHERE newsletter_id = ? 
+            AND email_sent = 1 
+            AND DATE(sent_at) BETWEEN ? AND ?
+        ");
+        $stmt->execute([$newsletterId, $firstDayOfMonth, $lastDayOfMonth]);
+        $result = $stmt->fetch();
+        
+        return $result['count'] > 0;
+    }
+    
+    /**
+     * Check if newsletter was sent this quarter
+     */
+    private function wasNewsletterSentThisQuarter($newsletterId) {
+        $currentMonth = (int)date('n');
+        $currentYear = date('Y');
+        
+        // Determine current quarter
+        $quarter = ceil($currentMonth / 3);
+        $quarterStartMonth = (($quarter - 1) * 3) + 1;
+        $quarterEndMonth = $quarter * 3;
+        
+        $quarterStart = sprintf('%s-%02d-01', $currentYear, $quarterStartMonth);
+        $quarterEnd = date('Y-m-t', mktime(0, 0, 0, $quarterEndMonth, 1, $currentYear));
+        
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) as count 
+            FROM newsletter_history 
+            WHERE newsletter_id = ? 
+            AND email_sent = 1 
+            AND DATE(sent_at) BETWEEN ? AND ?
+        ");
+        $stmt->execute([$newsletterId, $quarterStart, $quarterEnd]);
+        $result = $stmt->fetch();
+        
+        return $result['count'] > 0;
     }
 }

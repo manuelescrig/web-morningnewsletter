@@ -39,6 +39,30 @@ class NewsletterBuilder {
         return $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken);
     }
     
+    public function buildWithSourceData() {
+        $sourceData = $this->buildSourceData(true); // true = update source results
+        $secretKey = 'unsubscribe_secret_key_2025'; // In production, use env variable
+        $unsubscribeToken = hash('sha256', $this->user->getId() . $secretKey);
+        $content = $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken);
+        
+        return [
+            'content' => $content,
+            'sources_data' => $sourceData
+        ];
+    }
+    
+    public function buildWithSourceDataAndHistoryId($historyId) {
+        $sourceData = $this->buildSourceData(true); // true = update source results
+        $secretKey = 'unsubscribe_secret_key_2025'; // In production, use env variable
+        $unsubscribeToken = hash('sha256', $this->user->getId() . $secretKey);
+        $content = $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken, $historyId);
+        
+        return [
+            'content' => $content,
+            'sources_data' => $sourceData
+        ];
+    }
+    
     public function buildForPreview() {
         $sourceData = $this->buildSourceData(false); // false = don't update source results for preview
         return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token');
@@ -119,13 +143,21 @@ class NewsletterBuilder {
         $stmt->execute([json_encode($data), $sourceId, $this->newsletter->getId()]);
     }
     
-    private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken) {
+    private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken, $historyId = null) {
         $html = $this->getEmailTemplate();
         
         // Replace placeholders
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
         $baseUrl = $protocol . '://' . $host;
+        
+        // Generate view in browser URL
+        $viewInBrowserUrl = '';
+        if ($historyId) {
+            $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
+            $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
+            $viewInBrowserUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
+        }
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', date('F j, Y'), $html);
@@ -135,6 +167,7 @@ class NewsletterBuilder {
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
         $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
+        $html = str_replace('{{VIEW_IN_BROWSER_URL}}', $viewInBrowserUrl, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;

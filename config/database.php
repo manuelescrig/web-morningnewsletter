@@ -267,6 +267,9 @@ class Database {
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
+            // Run newsletter history and scheduling migrations
+            $this->runNewsletterHistoryMigrations();
+            
             // Set up default admin user
             $this->setupDefaultAdmin();
             
@@ -429,6 +432,73 @@ class Database {
             
         } catch (Exception $e) {
             error_log("Database migration error during source configs population: " . $e->getMessage());
+        }
+    }
+    
+    private function runNewsletterHistoryMigrations() {
+        try {
+            // Create newsletter_history table
+            $this->pdo->exec("CREATE TABLE IF NOT EXISTS newsletter_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                newsletter_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL,
+                sources_data TEXT,
+                sent_at DATETIME NOT NULL,
+                email_sent INTEGER DEFAULT 1,
+                issue_number INTEGER DEFAULT 1,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (newsletter_id) REFERENCES newsletters(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )");
+            
+            // Create indexes for newsletter_history
+            $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_newsletter_history_newsletter_id ON newsletter_history(newsletter_id)");
+            $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_newsletter_history_user_id ON newsletter_history(user_id)");
+            $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_newsletter_history_sent_at ON newsletter_history(sent_at)");
+            
+            // Check and add scheduling fields to newsletters table
+            $stmt = $this->pdo->query("PRAGMA table_info(newsletters)");
+            $columns = $stmt->fetchAll();
+            $existingColumns = array_column($columns, 'name');
+            
+            $schedulingFields = [
+                'frequency' => 'ALTER TABLE newsletters ADD COLUMN frequency TEXT DEFAULT \'daily\'',
+                'days_of_week' => 'ALTER TABLE newsletters ADD COLUMN days_of_week TEXT DEFAULT \'\'',
+                'day_of_month' => 'ALTER TABLE newsletters ADD COLUMN day_of_month INTEGER DEFAULT 1',
+                'months' => 'ALTER TABLE newsletters ADD COLUMN months TEXT DEFAULT \'\'',
+                'is_paused' => 'ALTER TABLE newsletters ADD COLUMN is_paused INTEGER DEFAULT 0'
+            ];
+            
+            foreach ($schedulingFields as $fieldName => $alterQuery) {
+                if (!in_array($fieldName, $existingColumns)) {
+                    $this->pdo->exec($alterQuery);
+                    error_log("Database migration: Added '$fieldName' column to newsletters table");
+                }
+            }
+            
+            // Check and add newsletter_id to email_logs if it doesn't exist
+            $stmt = $this->pdo->query("PRAGMA table_info(email_logs)");
+            $emailLogColumns = $stmt->fetchAll();
+            $emailLogColumnNames = array_column($emailLogColumns, 'name');
+            
+            if (!in_array('newsletter_id', $emailLogColumnNames)) {
+                $this->pdo->exec("ALTER TABLE email_logs ADD COLUMN newsletter_id INTEGER");
+                $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_email_logs_newsletter_id ON email_logs(newsletter_id)");
+                error_log("Database migration: Added 'newsletter_id' column to email_logs table");
+            }
+            
+            if (!in_array('history_id', $emailLogColumnNames)) {
+                $this->pdo->exec("ALTER TABLE email_logs ADD COLUMN history_id INTEGER");
+                $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_email_logs_history_id ON email_logs(history_id)");
+                error_log("Database migration: Added 'history_id' column to email_logs table");
+            }
+            
+            error_log("Database migration: Newsletter history and scheduling migrations completed successfully");
+            
+        } catch (Exception $e) {
+            error_log("Database migration error during newsletter history migrations: " . $e->getMessage());
         }
     }
     

@@ -3,7 +3,7 @@
  * Shared Navigation Component for Dashboard Pages
  * 
  * Usage: 
- * $currentPage = 'dashboard'; // or 'sources', 'schedule', 'settings', 'cron_status'
+ * $currentPage = 'dashboard'; // or 'sources', 'schedule', 'settings', 'history', 'cron_status'
  * include __DIR__ . '/includes/navigation.php';
  */
 
@@ -33,6 +33,10 @@ function getNavClass($page, $currentPage) {
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
                         My Newsletters
+                    </a>
+                    <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
+                        <i class="fas fa-history mr-1"></i>
+                        History
                     </a>
                 </div>
             </div>
