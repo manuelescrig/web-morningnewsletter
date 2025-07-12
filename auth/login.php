@@ -6,9 +6,12 @@ $auth = Auth::getInstance();
 $error = '';
 $success = '';
 
+// Get return URL if provided
+$returnUrl = isset($_GET['return']) ? $_GET['return'] : '/dashboard/';
+
 // Redirect if already logged in
 if ($auth->isLoggedIn()) {
-    header('Location: /dashboard/');
+    header('Location: ' . $returnUrl);
     exit;
 }
 
@@ -16,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $csrfToken = $_POST['csrf_token'] ?? '';
+    $returnUrl = $_POST['return_url'] ?? '/dashboard/';
     
     if (!$auth->validateCSRFToken($csrfToken)) {
         $error = 'Invalid request. Please try again.';
@@ -23,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $auth->login($email, $password);
         
         if ($result['success']) {
-            // Redirect to dashboard after successful login
-            header('Location: /dashboard/');
+            // Redirect to the return URL or dashboard after successful login
+            header('Location: ' . $returnUrl);
             exit;
         } else {
             $error = $result['message'];
@@ -79,6 +83,7 @@ $csrfToken = $auth->generateCSRFToken();
         <!-- Login Form -->
         <form class="auth-form" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+            <input type="hidden" name="return_url" value="<?php echo htmlspecialchars($returnUrl); ?>">
             
             <div class="space-y-4">
                 <div class="auth-input-group">

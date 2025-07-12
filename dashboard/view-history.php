@@ -7,6 +7,7 @@ $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 $historyId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$fromEmail = isset($_GET['from']) && $_GET['from'] === 'email';
 
 if (!$historyId) {
     header('Location: /dashboard/history.php');
@@ -37,6 +38,22 @@ $currentPage = 'history';
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Success message when coming from email -->
+        <?php if ($fromEmail): ?>
+            <div class="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            You've been redirected from your email's "View in Browser" link. You're now viewing this newsletter in your dashboard history.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        
         <!-- Header -->
         <div class="mb-6">
             <nav class="flex mb-4" aria-label="Breadcrumb">
