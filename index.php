@@ -542,24 +542,47 @@ try {
             </div>
 
             <div class="mt-16 max-w-3xl mx-auto">
-                <dl class="space-y-8">
-                    <div>
-                        <dt class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</dt>
-                        <dd class="mt-2 text-gray-600">The newsletter is delivered to your inbox every morning at 6 AM in your local timezone.</dd>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 rounded-lg">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                            <span class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                            The newsletter is delivered to your inbox every morning at 6 AM in your local timezone.
+                        </div>
                     </div>
-                    <div>
-                        <dt class="text-lg font-medium text-gray-900">Can I customize what information I receive?</dt>
-                        <dd class="mt-2 text-gray-600">Yes! You can customize your preferences in your dashboard to receive exactly the information that matters to you.</dd>
+                    
+                    <div class="bg-gray-50 rounded-lg">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                            <span class="text-lg font-medium text-gray-900">Can I customize what information I receive?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                            Yes! You can customize your preferences in your dashboard to receive exactly the information that matters to you.
+                        </div>
                     </div>
-                    <div>
-                        <dt class="text-lg font-medium text-gray-900">How do you handle my data?</dt>
-                        <dd class="mt-2 text-gray-600">We take data security seriously. All your data is encrypted and we never share it with third parties. Read our privacy policy for more details.</dd>
+                    
+                    <div class="bg-gray-50 rounded-lg">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                            <span class="text-lg font-medium text-gray-900">How do you handle my data?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                            We take data security seriously. All your data is encrypted and we never share it with third parties. Read our privacy policy for more details.
+                        </div>
                     </div>
-                    <div>
-                        <dt class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</dt>
-                        <dd class="mt-2 text-gray-600">Yes, you can cancel your subscription at any time. There are no long-term commitments required.</dd>
+                    
+                    <div class="bg-gray-50 rounded-lg">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                            <span class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</span>
+                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-answer px-6 pb-4 text-gray-600" style="display: none;">
+                            Yes, you can cancel your subscription at any time. There are no long-term commitments required.
+                        </div>
                     </div>
-                </dl>
+                </div>
             </div>
         </div>
     </div>
@@ -633,6 +656,23 @@ try {
                 
                 console.error('Error creating checkout session:', error);
                 alert('Error: ' + error.message);
+            }
+        }
+
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.style.display = 'none';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+                icon.style.transform = 'rotate(0deg)';
             }
         }
     </script>
