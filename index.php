@@ -61,16 +61,11 @@ try {
                 </p>
                 
                 <!-- Call to Action Buttons -->
-                <div class="mt-10 flex items-center justify-center gap-x-6">
+                <div class="mt-10 flex items-center justify-center">
                     <a href="/auth/register.php" 
                        class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
                         Start for Free
                         <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
-                    </a>
-                    <a href="#features" 
-                       class="inline-flex items-center text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200">
-                        See how it works
-                        <i class="fas fa-play-circle ml-2" aria-hidden="true"></i>
                     </a>
                 </div>
                 
