@@ -111,12 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-// Create default newsletter if user has none
-if (empty($newsletters)) {
-    $user->createNewsletter('My Morning Brief', 'UTC', '06:00');
-    $newsletters = $user->getNewsletters();
-}
 ?>
 
 <!DOCTYPE html>

@@ -53,10 +53,6 @@ class User {
                 error_log("Auto-promoted $email to admin during registration");
             }
             
-            // Create default newsletter for the user
-            $newsletter = new Newsletter();
-            $newsletter->create($this->id, 'My Morning Brief', $timezone, '06:00');
-            
             $this->db->commit();
             return $verificationToken;
         } catch (PDOException $e) {
