@@ -160,8 +160,7 @@ if (empty($newsletters)) {
         <!-- Create New Newsletter Section -->
         <div class="bg-white rounded-lg shadow mb-8">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-900 flex items-center">
-                    <i class="fas fa-plus-circle text-blue-600 mr-2"></i>
+                <h2 class="text-xl font-semibold text-gray-900">
                     Create New Newsletter
                 </h2>
                 <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
@@ -216,8 +215,7 @@ if (empty($newsletters)) {
 
         <!-- Existing Newsletters -->
         <div class="space-y-6">
-            <h2 class="text-2xl font-bold text-gray-900 flex items-center">
-                <i class="fas fa-newspaper text-blue-600 mr-2"></i>
+            <h2 class="text-2xl font-bold text-gray-900">
                 Your Newsletters (<?php echo count($newsletters); ?>)
             </h2>
             
