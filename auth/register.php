@@ -17,12 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
     $timezone = $_POST['timezone'] ?? 'UTC';
+    $discoverySource = $_POST['discovery_source'] ?? '';
     $csrfToken = $_POST['csrf_token'] ?? '';
     
     if (!$auth->validateCSRFToken($csrfToken)) {
         $error = 'Invalid request. Please try again.';
     } else {
-        $result = $auth->register($email, $password, $confirmPassword, $timezone);
+        $result = $auth->register($email, $password, $confirmPassword, $timezone, $discoverySource);
         
         if ($result['success']) {
             $success = $result['message'];
@@ -130,6 +131,27 @@ $userTimezone = date_default_timezone_get();
                            required
                            class="auth-input"
                            placeholder="Confirm your password">
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="discovery_source" class="auth-label">How did you discover MorningNewsletter? (optional)</label>
+                    <select id="discovery_source" 
+                            name="discovery_source"
+                            class="auth-input">
+                        <option value="">Select an option</option>
+                        <option value="friend" <?php echo ($_POST['discovery_source'] ?? '') === 'friend' ? 'selected' : ''; ?>>Friend</option>
+                        <option value="podcast" <?php echo ($_POST['discovery_source'] ?? '') === 'podcast' ? 'selected' : ''; ?>>Podcast</option>
+                        <option value="team" <?php echo ($_POST['discovery_source'] ?? '') === 'team' ? 'selected' : ''; ?>>I follow the team</option>
+                        <option value="product_hunt" <?php echo ($_POST['discovery_source'] ?? '') === 'product_hunt' ? 'selected' : ''; ?>>Product Hunt</option>
+                        <option value="twitter" <?php echo ($_POST['discovery_source'] ?? '') === 'twitter' ? 'selected' : ''; ?>>Twitter</option>
+                        <option value="google_search" <?php echo ($_POST['discovery_source'] ?? '') === 'google_search' ? 'selected' : ''; ?>>Google Search</option>
+                        <option value="teammate" <?php echo ($_POST['discovery_source'] ?? '') === 'teammate' ? 'selected' : ''; ?>>Teammate / Co-worker</option>
+                        <option value="reddit" <?php echo ($_POST['discovery_source'] ?? '') === 'reddit' ? 'selected' : ''; ?>>Reddit</option>
+                        <option value="public_brew" <?php echo ($_POST['discovery_source'] ?? '') === 'public_brew' ? 'selected' : ''; ?>>MorningNewsletter public brew</option>
+                        <option value="newsletter" <?php echo ($_POST['discovery_source'] ?? '') === 'newsletter' ? 'selected' : ''; ?>>Newsletter</option>
+                        <option value="dont_remember" <?php echo ($_POST['discovery_source'] ?? '') === 'dont_remember' ? 'selected' : ''; ?>>Don't remember</option>
+                        <option value="other" <?php echo ($_POST['discovery_source'] ?? '') === 'other' ? 'selected' : ''; ?>>Other</option>
+                    </select>
                 </div>
 
                 <!-- Hidden timezone field - automatically detected -->

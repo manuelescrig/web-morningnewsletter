@@ -244,6 +244,20 @@ class Database {
                 error_log("Database migration: Added 'newsletter_title' column to users table");
             }
             
+            // Check if discovery_source column exists in users table, if not add it
+            $hasDiscoverySourceColumn = false;
+            foreach ($userColumns as $column) {
+                if ($column['name'] === 'discovery_source') {
+                    $hasDiscoverySourceColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasDiscoverySourceColumn) {
+                $this->pdo->exec("ALTER TABLE users ADD COLUMN discovery_source TEXT");
+                error_log("Database migration: Added 'discovery_source' column to users table");
+            }
+            
             // Check if newsletter_id column exists in sources table, if not add it
             $stmt = $this->pdo->query("PRAGMA table_info(sources)");
             $sourceColumns = $stmt->fetchAll();

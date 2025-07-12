@@ -26,19 +26,19 @@ class User {
         }
     }
     
-    public function create($email, $password, $timezone = 'UTC') {
+    public function create($email, $password, $timezone = 'UTC', $discoverySource = null) {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $verificationToken = bin2hex(random_bytes(32));
         
         $stmt = $this->db->prepare("
-            INSERT INTO users (email, password_hash, verification_token) 
-            VALUES (?, ?, ?)
+            INSERT INTO users (email, password_hash, verification_token, discovery_source) 
+            VALUES (?, ?, ?, ?)
         ");
         
         try {
             $this->db->beginTransaction();
             
-            $stmt->execute([$email, $passwordHash, $verificationToken]);
+            $stmt->execute([$email, $passwordHash, $verificationToken, $discoverySource]);
             $this->id = $this->db->lastInsertId();
             $this->email = $email;
             $this->plan = 'free';

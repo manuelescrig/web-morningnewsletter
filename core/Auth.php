@@ -43,7 +43,7 @@ class Auth {
         return ['success' => true, 'user' => $user];
     }
     
-    public function register($email, $password, $confirmPassword, $timezone = 'UTC') {
+    public function register($email, $password, $confirmPassword, $timezone = 'UTC', $discoverySource = null) {
         // Validation
         if (empty($email) || empty($password)) {
             return ['success' => false, 'message' => 'Email and password are required'];
@@ -68,7 +68,7 @@ class Auth {
         
         try {
             $user = new User();
-            $verificationToken = $user->create($email, $password, $timezone);
+            $verificationToken = $user->create($email, $password, $timezone, $discoverySource);
             
             // Send verification email
             $emailSent = $this->sendVerificationEmail($email, $verificationToken);

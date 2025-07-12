@@ -198,7 +198,7 @@ try {
     
     // Get users for current page
     $usersQuery = "
-        SELECT id, email, plan, is_admin, email_verified, created_at,
+        SELECT id, email, plan, is_admin, email_verified, created_at, discovery_source,
                (SELECT COUNT(*) FROM sources WHERE user_id = users.id AND is_active = 1) as source_count
         FROM users 
         $whereClause
@@ -471,6 +471,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sources</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discovery</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -530,6 +531,29 @@ $csrfToken = $auth->generateCSRFToken();
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $userData['email_verified'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
                                             <?php echo $userData['email_verified'] ? 'Verified' : 'Unverified'; ?>
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <?php 
+                                        if (!empty($userData['discovery_source'])) {
+                                            $sources = [
+                                                'friend' => 'Friend',
+                                                'podcast' => 'Podcast', 
+                                                'team' => 'Follow Team',
+                                                'product_hunt' => 'Product Hunt',
+                                                'twitter' => 'Twitter',
+                                                'google_search' => 'Google Search',
+                                                'teammate' => 'Teammate',
+                                                'reddit' => 'Reddit',
+                                                'public_brew' => 'Public Brew',
+                                                'newsletter' => 'Newsletter',
+                                                'dont_remember' => "Don't Remember",
+                                                'other' => 'Other'
+                                            ];
+                                            echo htmlspecialchars($sources[$userData['discovery_source']] ?? ucfirst($userData['discovery_source']));
+                                        } else {
+                                            echo '<span class="text-gray-400">-</span>';
+                                        }
+                                        ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <?php echo date('M j, Y', strtotime($userData['created_at'])); ?>

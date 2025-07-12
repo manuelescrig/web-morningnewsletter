@@ -119,6 +119,7 @@ CREATE TABLE users (
     email_verified INTEGER DEFAULT 0,
     is_admin INTEGER DEFAULT 0,
     verification_token TEXT,
+    discovery_source TEXT,              -- How the user discovered the service
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
