@@ -3,7 +3,7 @@
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <?php renderLogo('md', '/', 'block !justify-start'); ?>
                 <p class="mt-4 text-gray-500 text-sm">Your personalized morning brief, delivered daily.</p>
@@ -26,6 +26,15 @@
                 </ul>
             </div>
             <div>
+                <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
+                <ul class="mt-4 space-y-4">
+                    <li><a href="/about/" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
+                    <li><a href="/jobs/" class="text-base text-gray-500 hover:text-gray-300">Careers</a></li>
+                    <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Support</a></li>
+                    <li><a href="/press/" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
+                </ul>
+            </div>
+            <div>
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Stay Updated</h3>
                 <p class="mt-4 text-gray-500 text-sm">Subscribe to our newsletter for product updates and tips.</p>
                 <form class="mt-4" onsubmit="subscribeToNewsletter(event)">
@@ -39,12 +48,6 @@
                         </button>
                     </div>
                 </form>
-                <ul class="mt-6 space-y-4">
-                    <li><a href="/about/" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
-                    <li><a href="/jobs/" class="text-base text-gray-500 hover:text-gray-300">Careers</a></li>
-                    <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Support</a></li>
-                    <li><a href="/press/" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
-                </ul>
             </div>
         </div>
         <div class="mt-8 border-t border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between">
