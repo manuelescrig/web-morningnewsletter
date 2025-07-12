@@ -85,10 +85,14 @@ morningnewsletter/
 ├── 🎨 assets/                   # Static resources
 │   ├── css/                   # Stylesheet files
 │   │   ├── main.css          # Main application styles
-│   │   └── auth.css          # Authentication page styles
+│   │   ├── auth.css          # Authentication page styles
+│   │   └── dashboard.css     # Dashboard-specific styles
 │   ├── js/                    # JavaScript files
 │   │   ├── main.js           # Main application functionality
-│   │   └── auth.js           # Authentication functionality
+│   │   ├── auth.js           # Authentication functionality
+│   │   ├── dashboard.js      # Dashboard core utilities
+│   │   ├── payments.js       # Stripe payment processing
+│   │   └── newsletter-editor.js # Newsletter source management
 │   ├── logos/                 # Brand assets
 │   └── companies/             # Social proof logos
 └── 📄 legal/                    # Legal pages
@@ -204,10 +208,21 @@ The frontend assets are organized in a modular structure under `/assets/`:
   - Loading states and animations
   - Responsive authentication layouts
 
+- **`dashboard.css`**: Dashboard-specific styles including:
+  - Toggle switch styling for newsletter pause functionality
+  - Newsletter preview styling with grayed-out links
+  - Button utility classes (btn-primary, btn-secondary)
+  - Dropdown positioning utilities
+  - Modal backdrop styling
+  - Source item drag and drop styles
+  - Print styles for newsletter content
+  - Custom scrollbar styling for dropdowns
+  - Loading states and form validation styles
+
 #### JavaScript Structure (`/assets/js/`)
 - **`main.js`**: Core application functionality including:
   - FAQ toggle functionality
-  - Navigation scroll effects
+  - Navigation scroll effects and user dropdown management
   - Newsletter subscription handling
   - Stripe payment integration
   - Form validation utilities
@@ -221,6 +236,30 @@ The frontend assets are organized in a modular structure under `/assets/`:
   - Form submission handling
   - Field error management
   - Loading states
+
+- **`dashboard.js`**: Dashboard core utilities including:
+  - CSRF token management
+  - Modal management (open, close, outside-click, escape-key)
+  - Dropdown management with intelligent positioning
+  - Form submission with confirmation dialogs
+  - Print functionality for newsletter content
+  - Common dashboard initialization
+
+- **`payments.js`**: Stripe payment processing including:
+  - Subscription plan management
+  - Billing portal access
+  - Subscription cancellation
+  - Checkout session creation
+  - Plan selection and storage
+  - Error handling for payment flows
+
+- **`newsletter-editor.js`**: Newsletter source management including:
+  - Source CRUD operations (add, edit, delete)
+  - Configuration field management for different source types
+  - Location search functionality for weather sources
+  - Drag and drop for source ordering
+  - Schedule management (frequency options, checkbox styling)
+  - Form validation and error handling
 
 ### Page Integration
 Each page includes the appropriate CSS and JS files:
@@ -236,6 +275,32 @@ Each page includes the appropriate CSS and JS files:
 <link rel="stylesheet" href="/assets/css/main.css">
 <link rel="stylesheet" href="/assets/css/auth.css">
 <script src="/assets/js/auth.js"></script>
+```
+
+#### Dashboard Pages (`dashboard/*.php`)
+```html
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+```
+
+#### Payment Pages (billing, settings, upgrade)
+```html
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+<script src="/assets/js/payments.js"></script>
+```
+
+#### Newsletter Editor Pages (newsletter.php, sources.php)
+```html
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="/assets/css/dashboard.css">
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+<script src="/assets/js/newsletter-editor.js"></script>
 ```
 
 ### Frontend Development Guidelines
@@ -616,15 +681,42 @@ The frontend has been completely refactored to follow modern web development bes
 4. **Performance**: Cacheable external assets improve loading times
 5. **Maintainability**: Easier to update and modify styles and functionality
 
+#### Dashboard Cleanup (Latest Update)
+Recent comprehensive cleanup of dashboard codebase:
+
+1. **JavaScript Extraction**: Moved all inline JavaScript to organized external files
+   - Common utilities consolidated into `dashboard.js`
+   - Payment functionality separated into `payments.js`
+   - Newsletter editor complex logic moved to `newsletter-editor.js`
+
+2. **CSS Consolidation**: Moved inline styles to external files
+   - Toggle switch styling moved to `dashboard.css`
+   - Newsletter preview styles organized and reusable
+   - Button utility classes centralized
+
+3. **Code Deduplication**: Eliminated repeated code patterns
+   - Stripe payment functions consolidated
+   - Modal management unified
+   - Dropdown functionality standardized
+   - Form submission patterns streamlined
+
+4. **Icon Cleanup**: Removed unnecessary icons for cleaner UI
+   - Removed "My Newsletters" breadcrumb icon
+   - Cleaned up navigation elements
+
 #### When Making Frontend Updates
 **For CSS Changes**:
 - **Global styles**: Update `/assets/css/main.css`
 - **Authentication pages**: Update `/assets/css/auth.css`
+- **Dashboard pages**: Update `/assets/css/dashboard.css`
 - **New components**: Add to appropriate CSS file or create new module
 
 **For JavaScript Changes**:
 - **Core functionality**: Update `/assets/js/main.js`
 - **Authentication features**: Update `/assets/js/auth.js`
+- **Dashboard utilities**: Update `/assets/js/dashboard.js`
+- **Payment processing**: Update `/assets/js/payments.js`
+- **Newsletter editing**: Update `/assets/js/newsletter-editor.js`
 - **New features**: Add to appropriate JS file or create new module
 
 **For New Pages**:
@@ -650,6 +742,9 @@ The frontend has been completely refactored to follow modern web development bes
 #### JavaScript Function Organization
 - **Global utilities**: Add to `MorningNewsletter` object in `main.js`
 - **Authentication utilities**: Add to `AuthManager` object in `auth.js`
+- **Dashboard utilities**: Add to `Dashboard` object in `dashboard.js`
+- **Payment functions**: Add to `Payments` object in `payments.js`
+- **Newsletter editing**: Add to `NewsletterEditor` object in `newsletter-editor.js`
 - **Event handlers**: Use consistent naming and proper cleanup
 - **Form validation**: Follow established patterns for consistency
 

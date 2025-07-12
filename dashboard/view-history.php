@@ -33,6 +33,8 @@ $currentPage = 'history';
     <title><?php echo htmlspecialchars($historyEntry['title']); ?> - Newsletter History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -201,75 +203,11 @@ $currentPage = 'history';
         <?php endif; ?>
     </div>
 
-    <style>
-        /* Newsletter content styling */
-        .newsletter-preview {
-            /* Ensure content is readable */
-            max-width: 100%;
-            overflow-wrap: break-word;
-        }
-        
-        .newsletter-preview img {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        .newsletter-preview table {
-            max-width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .newsletter-preview td, .newsletter-preview th {
-            padding: 8px;
-            border: 1px solid #e5e7eb;
-        }
-        
-        /* Gray out all links in newsletter preview */
-        .newsletter-preview a {
-            color: #9ca3af !important;
-            cursor: not-allowed !important;
-            text-decoration: none !important;
-            pointer-events: none !important;
-        }
-        
-        .newsletter-preview a:hover {
-            text-decoration: none !important;
-        }
-        
-        /* Print styles */
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-            
-            body {
-                background: white !important;
-            }
-            
-            .bg-gray-50 {
-                background: white !important;
-            }
-            
-            .shadow {
-                box-shadow: none !important;
-            }
-        }
-    </style>
-
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
     <script>
         function printNewsletter() {
-            // Hide navigation and other elements
-            document.querySelector('nav').classList.add('no-print');
-            document.querySelector('.max-w-4xl > .mb-6').classList.add('no-print');
-            
-            // Focus on the newsletter content
-            window.print();
-            
-            // Restore navigation after printing
-            setTimeout(() => {
-                document.querySelector('nav').classList.remove('no-print');
-                document.querySelector('.max-w-4xl > .mb-6').classList.remove('no-print');
-            }, 1000);
+            Dashboard.print.hideElementsAndPrint(['nav', '.max-w-4xl > .mb-6']);
         }
     </script>
 </body>

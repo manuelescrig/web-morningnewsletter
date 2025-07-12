@@ -328,6 +328,8 @@ $canAddSource = count($sources) < $maxSources;
     <title><?php echo htmlspecialchars($newsletter->getTitle()); ?> - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 <body class="bg-gray-50">
@@ -340,7 +342,6 @@ $canAddSource = count($sources) < $maxSources;
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
                         <a href="/dashboard/" class="text-gray-700 hover:text-blue-600 inline-flex items-center">
-                            <i class="fas fa-newspaper mr-2"></i>
                             My Newsletters
                         </a>
                     </li>
@@ -730,8 +731,8 @@ $canAddSource = count($sources) < $maxSources;
     </div>
 
     <script>
-        // Source configuration data
-        const sourceConfigs = <?php echo json_encode(array_map(function($type, $module) {
+        // Initialize newsletter editor with PHP data
+        window.sourceConfigs = <?php echo json_encode(array_map(function($type, $module) {
             return [
                 'type' => $type,
                 'title' => $module->getTitle(),
@@ -739,8 +740,7 @@ $canAddSource = count($sources) < $maxSources;
             ];
         }, array_keys($availableModules), $availableModules)); ?>;
 
-        // Current sources data for editing
-        const currentSources = <?php echo json_encode(array_map(function($source) {
+        window.currentSources = <?php echo json_encode(array_map(function($source) {
             return [
                 'id' => $source['id'],
                 'type' => $source['type'],
@@ -749,126 +749,16 @@ $canAddSource = count($sources) < $maxSources;
             ];
         }, $sources)); ?>;
 
+        window.csrfToken = '<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>';
+
+        // Delegate to external newsletter editor
         function showSourceConfig(sourceType) {
-            const configDiv = document.getElementById('sourceConfig');
-            const fieldsDiv = document.getElementById('configFields');
-            
-            if (!sourceType) {
-                configDiv.classList.add('hidden');
-                return;
-            }
-            
-            const config = sourceConfigs.find(c => c.type === sourceType);
-            if (!config || !config.fields || config.fields.length === 0) {
-                configDiv.classList.add('hidden');
-                return;
-            }
-            
-            fieldsDiv.innerHTML = '';
-            config.fields.forEach(field => {
-                const fieldDiv = document.createElement('div');
-                
-                if (field.type === 'location_search') {
-                    // Special handling for location search field
-                    fieldDiv.innerHTML = `
-                        <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-1">
-                            ${field.label}${field.required ? ' *' : ''}
-                        </label>
-                        <div class="relative">
-                            <input type="text" id="config_${field.name}" 
-                                   placeholder="Search for a city or location..."
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <div id="location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
-                        </div>
-                        ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
-                    `;
-                } else if (field.type === 'hidden') {
-                    // Handle hidden fields
-                    fieldDiv.innerHTML = `
-                        <input type="hidden" name="config_${field.name}" id="config_${field.name}" value="${field.default || ''}">
-                    `;
-                } else {
-                    // Standard field handling
-                    fieldDiv.innerHTML = `
-                        <label for="config_${field.name}" class="block text-sm font-medium text-gray-700 mb-1">
-                            ${field.label}${field.required ? ' *' : ''}
-                        </label>
-                        <input type="${field.type}" name="config_${field.name}" id="config_${field.name}"
-                               ${field.required ? 'required' : ''} 
-                               placeholder="${field.placeholder || ''}"
-                               value="${field.default || ''}"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
-                    `;
-                }
-                fieldsDiv.appendChild(fieldDiv);
-            });
-            
-            // Add location search functionality if weather module is selected
-            if (sourceType === 'weather') {
-                setupLocationSearch();
-            }
-            
-            configDiv.classList.remove('hidden');
+            NewsletterEditor.sources.showConfigFields(sourceType);
         }
 
+        // Delegate to external newsletter editor
         function editSource(sourceId) {
-            const source = currentSources.find(s => s.id == sourceId);
-            if (!source) return;
-            
-            // Create edit modal
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-screen overflow-y-auto">
-                    <div class="p-6 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900">Edit ${source.name || source.type} Source</h3>
-                    </div>
-                    <form id="editSourceForm" method="POST" class="p-6">
-                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                        <input type="hidden" name="action" value="update_source">
-                        <input type="hidden" name="source_id" value="${sourceId}">
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label for="edit_source_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Display Name (Optional)
-                                </label>
-                                <input type="text" name="source_name" id="edit_source_name" 
-                                       value="${source.name || ''}"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Custom name for this source">
-                            </div>
-                            
-                            <div id="editConfigFields"></div>
-                        </div>
-                        
-                        <div class="flex justify-end space-x-3 mt-6">
-                            <button type="button" onclick="closeEditModal()" 
-                                    class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md font-medium transition-colors duration-200">
-                                Cancel
-                            </button>
-                            <button type="submit" 
-                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors duration-200">
-                                <i class="fas fa-save mr-2"></i>
-                                Update Source
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Populate config fields
-            populateEditConfigFields(source);
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeEditModal();
-                }
-            });
+            NewsletterEditor.sources.editSource(sourceId);
         }
         
         function populateEditConfigFields(source) {
@@ -1004,21 +894,9 @@ $canAddSource = count($sources) < $maxSources;
             }
         }
 
+        // Delegate to external newsletter editor
         function deleteSource(sourceId) {
-            const source = currentSources.find(s => s.id == sourceId);
-            if (!source) return;
-            
-            if (confirm(`Are you sure you want to delete "${source.name || source.type}"?`)) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.innerHTML = `
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                    <input type="hidden" name="action" value="delete_source">
-                    <input type="hidden" name="source_id" value="${sourceId}">
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            }
+            NewsletterEditor.sources.deleteSource(sourceId);
         }
 
         function setupLocationSearch() {
@@ -1172,77 +1050,8 @@ $canAddSource = count($sources) < $maxSources;
         }
     </script>
 
-    <style>
-        /* Toggle Switch Styling */
-        .toggle-switch {
-            width: 48px;
-            height: 24px;
-            background-color: #d1d5db;
-            border-radius: 24px;
-            position: relative;
-            transition: background-color 0.3s ease;
-        }
-        
-        .toggle-slider {
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .toggle-checkbox:checked + .toggle-label .toggle-switch {
-            background-color: #3b82f6;
-        }
-        
-        .toggle-checkbox:checked + .toggle-label .toggle-slider {
-            transform: translateX(24px);
-        }
-        
-        .toggle-label:hover .toggle-switch {
-            background-color: #9ca3af;
-        }
-        
-        .toggle-checkbox:checked + .toggle-label:hover .toggle-switch {
-            background-color: #2563eb;
-        }
-    </style>
-
-    <script>
-        // Initialize checkbox styling
-        document.addEventListener('DOMContentLoaded', function() {
-            // Style checkbox labels for days of week and months
-            const checkboxLabels = document.querySelectorAll('input[type="checkbox"][name="days_of_week[]"], input[type="checkbox"][name="months[]"]');
-            
-            checkboxLabels.forEach(function(checkbox) {
-                const label = checkbox.closest('label');
-                
-                function updateStyle() {
-                    if (checkbox.checked) {
-                        label.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
-                        label.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-                    } else {
-                        label.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
-                        label.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
-                    }
-                }
-                
-                updateStyle(); // Initial styling
-                checkbox.addEventListener('change', updateStyle);
-            });
-            
-            // Initialize toggle switch
-            const toggleCheckbox = document.getElementById('is_paused');
-            if (toggleCheckbox) {
-                // The toggle animation is handled entirely by CSS
-                // Just add a console log for debugging if needed
-                console.log('Toggle switch initialized, current state:', toggleCheckbox.checked ? 'paused' : 'active');
-            }
-        });
-    </script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/newsletter-editor.js"></script>
 </body>
 </html>

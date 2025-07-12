@@ -1,0 +1,276 @@
+/**
+ * Dashboard CSS
+ * Custom styles for dashboard functionality
+ */
+
+/* Toggle Switch Styling */
+.toggle-switch {
+    width: 48px;
+    height: 24px;
+    background-color: #d1d5db;
+    border-radius: 24px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-slider {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-switch {
+    background-color: #3b82f6;
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-slider {
+    transform: translateX(24px);
+}
+
+.toggle-label:hover .toggle-switch {
+    background-color: #9ca3af;
+}
+
+.toggle-checkbox:checked + .toggle-label:hover .toggle-switch {
+    background-color: #2563eb;
+}
+
+/* Newsletter preview styling */
+.newsletter-preview {
+    /* Ensure content is readable */
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.newsletter-preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+.newsletter-preview table {
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+.newsletter-preview td, 
+.newsletter-preview th {
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Gray out all links in newsletter preview */
+.newsletter-preview a {
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+    text-decoration: none !important;
+    pointer-events: none !important;
+}
+
+.newsletter-preview a:hover {
+    text-decoration: none !important;
+}
+
+/* Button utility classes */
+.btn-primary {
+    @apply inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200;
+}
+
+.btn-secondary {
+    @apply inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200;
+}
+
+/* Dropdown positioning utilities */
+.dropdown-up {
+    bottom: 100%;
+    top: auto;
+    margin-bottom: 0.5rem;
+}
+
+.dropdown-down {
+    top: 100%;
+    bottom: auto;
+    margin-top: 0.5rem;
+}
+
+/* Source item drag and drop */
+.source-item {
+    transition: opacity 0.2s ease;
+}
+
+.source-item:hover {
+    cursor: move;
+}
+
+.source-item.dragging {
+    opacity: 0.5;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+/* Custom scrollbar for dropdown menus */
+.dropdown-menu {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #f9fafb;
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .bg-gray-50 {
+        background: white !important;
+    }
+    
+    .shadow {
+        box-shadow: none !important;
+    }
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form validation states */
+.form-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-success {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .dropdown-menu {
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+}
+
+/* Focus states for accessibility */
+.toggle-checkbox:focus + .toggle-label .toggle-switch {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+.btn-primary,
+.btn-secondary,
+.toggle-switch,
+.source-item {
+    transition: all 0.2s ease;
+}
+
+/* Hover effects */
+.source-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Status indicators */
+.status-active {
+    color: #10b981;
+}
+
+.status-inactive {
+    color: #ef4444;
+}
+
+.status-pending {
+    color: #f59e0b;
+}
+
+/* Custom checkbox styling for days/months selection */
+.checkbox-pill {
+    transition: all 0.2s ease;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-pill:hover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+}
+
+.checkbox-pill.selected {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
+/* Animation for page transitions */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

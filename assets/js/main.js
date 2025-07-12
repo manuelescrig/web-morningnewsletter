@@ -53,6 +53,69 @@ const MorningNewsletter = {
                 lastScrollTop = scrollTop;
             });
         }
+
+        // Initialize user dropdown functionality
+        this.initUserDropdown();
+    },
+
+    // User dropdown functionality
+    initUserDropdown() {
+        const dropdown = document.getElementById('dropdown-menu');
+        const button = document.getElementById('user-menu-button');
+        
+        if (!dropdown || !button) {
+            return; // No dropdown on this page
+        }
+        
+        // Toggle function
+        const toggleDropdown = () => {
+            if (dropdown.classList.contains('hidden')) {
+                // Close any other open dropdowns first
+                document.querySelectorAll('[id*="dropdown-"]').forEach(el => {
+                    if (el !== dropdown && !el.classList.contains('hidden')) {
+                        el.classList.add('hidden');
+                    }
+                });
+                
+                dropdown.classList.remove('hidden');
+                button.setAttribute('aria-expanded', 'true');
+            } else {
+                dropdown.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+            }
+        };
+        
+        // Add click event listener to button
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleDropdown();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                if (!dropdown.classList.contains('hidden')) {
+                    dropdown.classList.add('hidden');
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+        
+        // Close dropdown when pressing escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                if (!dropdown.classList.contains('hidden')) {
+                    dropdown.classList.add('hidden');
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     },
 
     // Timezone detection for registration

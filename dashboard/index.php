@@ -127,6 +127,8 @@ if (empty($newsletters)) {
     <title>My Newsletters - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -364,15 +366,8 @@ if (empty($newsletters)) {
         </div>
     </div>
 
-    <style>
-        .btn-primary {
-            @apply inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200;
-        }
-        .btn-secondary {
-            @apply inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200;
-        }
-    </style>
-
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
     <script>
         // Newsletter data for the edit modal
         const newsletters = <?php echo json_encode(array_map(function($newsletter) {
@@ -393,35 +388,27 @@ if (empty($newsletters)) {
             document.getElementById('editTimezone').value = newsletter.timezone;
             document.getElementById('editSendTime').value = newsletter.send_time;
             
-            document.getElementById('editModal').classList.remove('hidden');
+            Dashboard.modal.open('editModal');
         }
         
         function closeEditModal() {
-            document.getElementById('editModal').classList.add('hidden');
+            Dashboard.modal.close('editModal');
         }
         
         function deleteNewsletter(newsletterId) {
             const newsletter = newsletters.find(n => n.id == newsletterId);
             if (!newsletter) return;
             
-            if (confirm(`Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`)) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.innerHTML = `
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                    <input type="hidden" name="action" value="delete_newsletter">
-                    <input type="hidden" name="newsletter_id" value="${newsletterId}">
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            }
+            Dashboard.form.submitWithConfirmation({
+                csrf_token: '<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>',
+                action: 'delete_newsletter',
+                newsletter_id: newsletterId
+            }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
         }
         
-        // Close modal when clicking outside
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeEditModal();
-            }
+        // Initialize modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            Dashboard.modal.closeOnOutsideClick('editModal');
         });
     </script>
 </body>
