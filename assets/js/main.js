@@ -22,14 +22,13 @@ const MorningNewsletter = {
             const icon = button.querySelector('i');
             
             if (answer.style.display === 'none' || answer.style.display === '') {
+                // Show answer
                 answer.style.display = 'block';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
                 icon.style.transform = 'rotate(180deg)';
+                // Keep the same icon class, just rotate it
             } else {
+                // Hide answer
                 answer.style.display = 'none';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
                 icon.style.transform = 'rotate(0deg)';
             }
         };

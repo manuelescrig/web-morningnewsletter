@@ -38,12 +38,12 @@
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Stay Updated</h3>
                 <p class="mt-4 text-gray-500 text-sm">Subscribe to our newsletter for product updates and tips.</p>
                 <form class="mt-4" onsubmit="subscribeToNewsletter(event)">
-                    <div class="flex flex-col sm:flex-row gap-2">
+                    <div class="flex flex-col gap-2">
                         <input type="email" id="newsletter-email" placeholder="Enter your email" 
-                               class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                               class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                                required>
                         <button type="submit" 
-                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             Subscribe
                         </button>
                     </div>
