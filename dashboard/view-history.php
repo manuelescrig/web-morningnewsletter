@@ -224,6 +224,18 @@ $currentPage = 'history';
             border: 1px solid #e5e7eb;
         }
         
+        /* Gray out all links in newsletter preview */
+        .newsletter-preview a {
+            color: #9ca3af !important;
+            cursor: not-allowed !important;
+            text-decoration: none !important;
+            pointer-events: none !important;
+        }
+        
+        .newsletter-preview a:hover {
+            text-decoration: none !important;
+        }
+        
         /* Print styles */
         @media print {
             .no-print {

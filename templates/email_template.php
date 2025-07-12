@@ -332,6 +332,15 @@
             text-decoration: underline;
         }
         
+        .email-footer a[href="#"] {
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .email-footer a[href="#"]:hover {
+            text-decoration: none;
+        }
+        
         /* Mobile responsive */
         @media only screen and (max-width: 600px) {
             .email-container {

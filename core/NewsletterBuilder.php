@@ -65,7 +65,7 @@ class NewsletterBuilder {
     
     public function buildForPreview() {
         $sourceData = $this->buildSourceData(false); // false = don't update source results for preview
-        return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token');
+        return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token', null, true);
     }
     
     private function buildSourceData($updateResults = true) {
@@ -143,7 +143,7 @@ class NewsletterBuilder {
         $stmt->execute([json_encode($data), $sourceId, $this->newsletter->getId()]);
     }
     
-    private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken, $historyId = null) {
+    private function renderNewsletter($sourceData, $recipientEmail, $unsubscribeToken, $historyId = null, $isPreview = false) {
         $html = $this->getEmailTemplate();
         
         // Replace placeholders
@@ -154,16 +154,33 @@ class NewsletterBuilder {
         // Generate view in browser section
         $viewInBrowserSection = '';
         if ($historyId) {
-            $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
-            $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
-            $viewInBrowserUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
-            
-            $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
-                <p style="margin: 0; font-size: 12px; color: #6b7280;">
-                    Having trouble viewing this email? 
-                    <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
-                </p>
-            </div>';
+            if ($isPreview) {
+                // Gray out the view in browser link for preview/history view
+                $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+                    <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                        Having trouble viewing this email? 
+                        <span style="color: #9ca3af; text-decoration: none; font-weight: 500; cursor: not-allowed;">View in browser</span>
+                    </p>
+                </div>';
+            } else {
+                $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
+                $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
+                $viewInBrowserUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
+                
+                $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+                    <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                        Having trouble viewing this email? 
+                        <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
+                    </p>
+                </div>';
+            }
+        }
+        
+        // Handle footer links based on preview mode
+        if ($isPreview) {
+            // Gray out footer links for preview/history view
+            $baseUrl = '#';
+            $unsubscribeToken = '#';
         }
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
