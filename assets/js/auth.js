@@ -10,6 +10,7 @@ const AuthManager = {
         this.initTimezoneDetection();
         this.initPasswordToggle();
         this.initFormSubmission();
+        this.initCaptcha();
     },
 
     // Form validation
@@ -250,6 +251,39 @@ const AuthManager = {
     // Handle form success from server
     handleServerSuccess(successMessage) {
         this.showToast(successMessage, 'success');
+    },
+
+    // Captcha functionality
+    initCaptcha() {
+        const captchaInput = document.getElementById('captcha_answer');
+        const captchaExpected = document.querySelector('input[name="captcha_expected"]');
+        
+        if (!captchaInput || !captchaExpected) return;
+        
+        // Real-time validation for captcha
+        captchaInput.addEventListener('input', () => {
+            const userAnswer = parseInt(captchaInput.value);
+            const expectedAnswer = parseInt(captchaExpected.value);
+            
+            if (captchaInput.value && !isNaN(userAnswer)) {
+                if (userAnswer === expectedAnswer) {
+                    captchaInput.classList.remove('border-red-500');
+                    captchaInput.classList.add('border-green-500');
+                    this.clearFieldError(captchaInput);
+                } else {
+                    captchaInput.classList.remove('border-green-500');
+                    captchaInput.classList.add('border-red-500');
+                }
+            } else {
+                captchaInput.classList.remove('border-red-500', 'border-green-500');
+            }
+        });
+        
+        // Clear validation on focus
+        captchaInput.addEventListener('focus', () => {
+            captchaInput.classList.remove('border-red-500', 'border-green-500');
+            this.clearFieldError(captchaInput);
+        });
     }
 };
 

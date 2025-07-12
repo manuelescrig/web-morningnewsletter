@@ -18,10 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmPassword = $_POST['confirm_password'] ?? '';
     $timezone = $_POST['timezone'] ?? 'UTC';
     $discoverySource = $_POST['discovery_source'] ?? '';
+    $captchaAnswer = $_POST['captcha_answer'] ?? '';
+    $captchaExpected = $_POST['captcha_expected'] ?? '';
     $csrfToken = $_POST['csrf_token'] ?? '';
     
     if (!$auth->validateCSRFToken($csrfToken)) {
         $error = 'Invalid request. Please try again.';
+    } elseif (empty($captchaAnswer) || (int)$captchaAnswer !== (int)$captchaExpected) {
+        $error = 'Please solve the math problem correctly.';
     } else {
         $result = $auth->register($email, $password, $confirmPassword, $timezone, $discoverySource);
         
@@ -40,6 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $csrfToken = $auth->generateCSRFToken();
+
+// Generate simple math captcha
+$captchaNum1 = rand(1, 10);
+$captchaNum2 = rand(1, 10);
+$captchaResult = $captchaNum1 + $captchaNum2;
 
 // Get user's timezone for default selection
 $userTimezone = date_default_timezone_get();
@@ -150,6 +159,25 @@ $userTimezone = date_default_timezone_get();
                         <option value="x_twitter" <?php echo ($_POST['discovery_source'] ?? '') === 'x_twitter' ? 'selected' : ''; ?>>X/Twitter</option>
                         <option value="other" <?php echo ($_POST['discovery_source'] ?? '') === 'other' ? 'selected' : ''; ?>>Other</option>
                     </select>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="captcha_answer" class="auth-label">Security Check</label>
+                    <div class="flex items-center space-x-3">
+                        <div class="captcha-question">
+                            <?php echo $captchaNum1; ?> + <?php echo $captchaNum2; ?> = ?
+                        </div>
+                        <input type="number" 
+                               name="captcha_answer" 
+                               id="captcha_answer" 
+                               required
+                               class="auth-input captcha-input"
+                               placeholder="?"
+                               min="0" 
+                               max="20">
+                    </div>
+                    <input type="hidden" name="captcha_expected" value="<?php echo $captchaResult; ?>">
+                    <p class="auth-helper">Please solve the simple math problem above</p>
                 </div>
 
                 <!-- Hidden timezone field - automatically detected -->
