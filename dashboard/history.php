@@ -151,8 +151,9 @@ if ($newsletterId) {
                     </div>
                 <?php else: ?>
                     <?php foreach ($history as $entry): ?>
-                        <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200">
-                            <div class="flex justify-between items-start">
+                        <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-200 cursor-pointer" 
+                             onclick="window.location.href='/dashboard/view-history.php?id=<?php echo $entry['id']; ?>'">
+                            <div class="flex items-start">
                                 <div class="flex-1">
                                     <div class="flex items-center">
                                         <h3 class="text-lg font-medium text-gray-900">
@@ -192,14 +193,6 @@ if ($newsletterId) {
                                             </span>
                                         <?php endif; ?>
                                     </div>
-                                </div>
-                                
-                                <div class="flex space-x-2">
-                                    <a href="/dashboard/view-history.php?id=<?php echo $entry['id']; ?>" 
-                                       class="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200">
-                                        <i class="fas fa-eye mr-1"></i>
-                                        View
-                                    </a>
                                 </div>
                             </div>
                         </div>
