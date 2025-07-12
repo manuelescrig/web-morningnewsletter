@@ -64,6 +64,7 @@ class EmailSender {
     
     public function sendNewsletterWithHistory(User $user, Newsletter $newsletter) {
         $subject = $newsletter->getTitle() . " - " . date('F j, Y');
+        $historyTitle = date('F j, Y'); // Only date for history
         $historyId = null;
         
         try {
@@ -72,12 +73,12 @@ class EmailSender {
             $builder = new NewsletterBuilder($newsletter, $user);
             $initialResult = $builder->buildWithSourceData();
             
-            // Save to history to get the ID
+            // Save to history to get the ID (use date-only title for history)
             $newsletterHistory = new NewsletterHistory();
             $historyId = $newsletterHistory->saveToHistory(
                 $newsletter->getId(),
                 $user->getId(),
-                $subject,
+                $historyTitle,
                 '', // Placeholder content - will be updated below
                 $initialResult['sources_data']
             );

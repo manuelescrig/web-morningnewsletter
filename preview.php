@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             $historyId = $historyManager->saveToHistory(
                 $newsletter->getId(),
                 $user->getId(),
-                $newsletter->getTitle() . " - " . date('F j, Y'),
+                date('F j, Y'),
                 'preview content',
                 []
             );
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             $emailSender = new EmailSender();
             $success = $emailSender->sendPreviewEmail(
                 $user->getEmail(), 
-                $newsletter->getTitle() . " - " . date('F j, Y'),
+                date('F j, Y'),
                 $newsletterHtml
             );
             
@@ -96,7 +96,7 @@ try {
     $historyId = $historyManager->saveToHistory(
         $newsletter->getId(),
         $user->getId(),
-        $newsletter->getTitle() . " - " . date('F j, Y'),
+        date('F j, Y'),
         'preview content',
         []
     );
