@@ -53,7 +53,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     try {
                         $newsletterId = $user->createNewsletter($title, $timezone, $sendTime, $frequency);
+                        
                         if ($newsletterId) {
+                            $newsletter = $user->getNewsletter($newsletterId);
+                            
+                            // Handle frequency-specific settings
+                            if ($frequency === 'weekly' && isset($_POST['days_of_week'])) {
+                                $daysOfWeek = array_map('intval', $_POST['days_of_week']);
+                                $newsletter->setDaysOfWeek($daysOfWeek);
+                            }
+                            
+                            if ($frequency === 'monthly' && isset($_POST['day_of_month'])) {
+                                $dayOfMonth = (int)$_POST['day_of_month'];
+                                $newsletter->setDayOfMonth($dayOfMonth);
+                            }
+                            
                             $success = "Newsletter '$title' created successfully!";
                             // Refresh newsletters
                             $newsletters = $user->getNewsletters();
@@ -188,12 +202,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
                                 Frequency
                             </label>
-                            <select name="frequency" id="frequency" 
+                            <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="daily">Daily</option>
                                 <option value="weekly">Weekly</option>
                                 <option value="monthly">Monthly</option>
-                                <option value="quarterly">Quarterly</option>
                             </select>
                         </div>
                         
@@ -204,6 +217,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="time" name="send_time" id="send_time" value="06:00" required
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
+                    </div>
+                    
+                    <!-- Weekly Schedule Options -->
+                    <div id="weekly-options" class="hidden mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Days of Week
+                        </label>
+                        <div class="grid grid-cols-7 gap-2">
+                            <?php 
+                            $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                            for ($i = 1; $i <= 7; $i++): 
+                            ?>
+                                <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
+                                    <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
+                                    <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                </label>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Day Options -->
+                    <div id="monthly-options" class="hidden mt-4">
+                        <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
+                            Day of Month
+                        </label>
+                        <select name="day_of_month" id="day_of_month"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <?php for ($day = 1; $day <= 31; $day++): ?>
+                                <option value="<?php echo $day; ?>" <?php echo $day == 1 ? 'selected' : ''; ?>>
+                                    <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
                     </div>
                     
                     <!-- Hidden timezone field - auto-detected -->
@@ -430,6 +477,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 action: 'delete_newsletter',
                 newsletter_id: newsletterId
             }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
+        }
+        
+        // Update schedule options visibility based on frequency
+        function updateScheduleOptions() {
+            const frequency = document.getElementById('frequency').value;
+            const weeklyOptions = document.getElementById('weekly-options');
+            const monthlyOptions = document.getElementById('monthly-options');
+            
+            // Hide all options first
+            weeklyOptions.classList.add('hidden');
+            monthlyOptions.classList.add('hidden');
+            
+            // Show relevant options based on frequency
+            switch (frequency) {
+                case 'weekly':
+                    weeklyOptions.classList.remove('hidden');
+                    break;
+                case 'monthly':
+                    monthlyOptions.classList.remove('hidden');
+                    break;
+            }
+        }
+        
+        // Toggle day selection styling
+        function toggleDaySelection(checkbox) {
+            const label = checkbox.parentElement;
+            if (checkbox.checked) {
+                label.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-900');
+            } else {
+                label.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-900');
+            }
         }
         
         // Initialize modal functionality

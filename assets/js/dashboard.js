@@ -207,6 +207,15 @@ const Dashboard = {
             if (timezoneInput) timezoneInput.value = 'UTC';
             if (sendTimeInput) sendTimeInput.value = '06:00';
             if (frequencySelect) frequencySelect.value = 'daily';
+            
+            // Clear frequency-specific options
+            this.clearFrequencyOptions();
+            
+            // Hide frequency-specific sections
+            const weeklyOptions = document.getElementById('weekly-options');
+            const monthlyOptions = document.getElementById('monthly-options');
+            if (weeklyOptions) weeklyOptions.classList.add('hidden');
+            if (monthlyOptions) monthlyOptions.classList.add('hidden');
         },
 
         detectAndSetTimezone: function() {
@@ -221,6 +230,19 @@ const Dashboard = {
                     timezoneInput.value = 'UTC';
                 }
             }
+        },
+
+        clearFrequencyOptions: function() {
+            // Clear weekly checkboxes
+            const weeklyCheckboxes = document.querySelectorAll('input[name="days_of_week[]"]');
+            weeklyCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.parentElement.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-900');
+            });
+            
+            // Reset monthly day selector
+            const dayOfMonthSelect = document.getElementById('day_of_month');
+            if (dayOfMonthSelect) dayOfMonthSelect.value = '1';
         }
     },
 
