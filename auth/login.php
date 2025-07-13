@@ -93,7 +93,7 @@ $csrfToken = $auth->generateCSRFToken();
                            type="email" 
                            autocomplete="email" 
                            required
-                           class="auth-input auth-input-stacked"
+                           class="auth-input"
                            placeholder="Email address"
                            value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                 </div>
@@ -105,7 +105,7 @@ $csrfToken = $auth->generateCSRFToken();
                            type="password" 
                            autocomplete="current-password" 
                            required
-                           class="auth-input auth-input-stacked"
+                           class="auth-input"
                            placeholder="Password">
                 </div>
             </div>
