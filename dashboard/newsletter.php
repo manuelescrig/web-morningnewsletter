@@ -813,123 +813,8 @@ $canAddSource = count($sources) < $maxSources;
             
             if (source) {
                 const config = source.config ? JSON.parse(source.config) : {};
-                showEditModal(sourceId, source.type, config, source.name || '');
+                NewsletterEditor.sources.edit(sourceId, source.type, config);
             }
-        }
-        
-        function showEditModal(sourceId, sourceType, config, sourceName) {
-            // Create modal HTML
-            const modalHTML = `
-                <div id="editSourceModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-                    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                        <div class="mt-3">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Edit ${sourceType.charAt(0).toUpperCase() + sourceType.slice(1)} Source</h3>
-                            <form method="POST">
-                                <input type="hidden" name="action" value="update_source">
-                                <input type="hidden" name="source_id" value="${sourceId}">
-                                <input type="hidden" name="csrf_token" value="${window.csrfToken}">
-                                
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                                        <input type="text" name="name" value="${sourceName}" 
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    </div>
-                                    ${generateConfigFields(sourceType, config)}
-                                </div>
-                                
-                                <div class="mt-6 flex justify-end space-x-2">
-                                    <button type="button" onclick="closeEditModal()" 
-                                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" 
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                                        Update Source
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-        }
-        
-        function generateConfigFields(sourceType, config) {
-            let fields = '';
-            
-            switch(sourceType) {
-                case 'weather':
-                    fields = `
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                            <input type="text" name="config[api_key]" value="${config.api_key || ''}" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                            <input type="text" name="config[city]" value="${config.city || ''}" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    `;
-                    break;
-                case 'news':
-                    fields = `
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                            <input type="text" name="config[api_key]" value="${config.api_key || ''}" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                            <select name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="us" ${config.country === 'us' ? 'selected' : ''}>United States</option>
-                                <option value="gb" ${config.country === 'gb' ? 'selected' : ''}>United Kingdom</option>
-                                <option value="ca" ${config.country === 'ca' ? 'selected' : ''}>Canada</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="general" ${config.category === 'general' ? 'selected' : ''}>General</option>
-                                <option value="business" ${config.category === 'business' ? 'selected' : ''}>Business</option>
-                                <option value="technology" ${config.category === 'technology' ? 'selected' : ''}>Technology</option>
-                                <option value="sports" ${config.category === 'sports' ? 'selected' : ''}>Sports</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
-                            <input type="number" name="config[limit]" value="${config.limit || 5}" min="1" max="20"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    `;
-                    break;
-                case 'stripe':
-                    fields = `
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                            <input type="text" name="config[api_key]" value="${config.api_key || ''}" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    `;
-                    break;
-                case 'sp500':
-                    fields = `
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                            <input type="text" name="config[api_key]" value="${config.api_key || ''}" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    `;
-                    break;
-                default:
-                    fields = '<p class="text-sm text-gray-500">No configuration options available for this source type.</p>';
-            }
-            
-            return fields;
         }
         
         function populateEditConfigFields(source) {
@@ -1286,6 +1171,113 @@ $canAddSource = count($sources) < $maxSources;
             }
         }
     </script>
+
+    <!-- Edit Source Modal -->
+    <div id="editSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Edit Source</h3>
+                <form method="POST">
+                    <input type="hidden" name="action" value="update_source">
+                    <input type="hidden" id="editSourceId" name="source_id">
+                    <input type="hidden" id="editSourceType" name="source_type">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                            <input type="text" id="editSourceName" name="name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <!-- Weather Config -->
+                        <div id="editConfigWeather" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                                <input type="text" id="edit_weather_api_key" name="config[api_key]" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                <input type="text" id="edit_weather_city" name="config[city]" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <!-- News Config -->
+                        <div id="editConfigNews" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                                <input type="text" id="edit_news_api_key" name="config[api_key]" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                                <select id="edit_news_country" name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="us">United States</option>
+                                    <option value="gb">United Kingdom</option>
+                                    <option value="ca">Canada</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                <select id="edit_news_category" name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="general">General</option>
+                                    <option value="business">Business</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="sports">Sports</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
+                                <input type="number" id="edit_news_limit" name="config[limit]" min="1" max="20" value="5"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Stripe Config -->
+                        <div id="editConfigStripe" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                                <input type="text" id="edit_stripe_api_key" name="config[api_key]" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <!-- SP500 Config -->
+                        <div id="editConfigSp500" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                                <input type="text" id="edit_sp500_api_key" name="config[api_key]" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Bitcoin Config (no config needed) -->
+                        <div id="editConfigBitcoin" class="hidden">
+                            <p class="text-sm text-gray-500">No configuration required for Bitcoin price data.</p>
+                        </div>
+                        
+                        <!-- AppStore Config -->
+                        <div id="editConfigAppstore" class="hidden">
+                            <p class="text-sm text-gray-500">App Store configuration options will be available soon.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-end space-x-2">
+                        <button type="button" onclick="Dashboard.modal.close('editSourceModal')" 
+                                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                            Update Source
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
