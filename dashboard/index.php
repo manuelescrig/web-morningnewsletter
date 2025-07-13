@@ -429,23 +429,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
         }
         
-        // Global wrapper functions for onclick handlers
-        function showCreateForm() {
-            if (window.Dashboard && Dashboard.newsletter) {
-                Dashboard.newsletter.showCreateForm();
-            } else {
-                console.error('Dashboard not loaded yet');
-            }
-        }
-        
-        function hideCreateForm() {
-            if (window.Dashboard && Dashboard.newsletter) {
-                Dashboard.newsletter.hideCreateForm();
-            } else {
-                console.error('Dashboard not loaded yet');
-            }
-        }
-        
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
             Dashboard.modal.closeOnOutsideClick('editModal');

@@ -227,3 +227,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Export for use in other scripts
 window.Dashboard = Dashboard;
+
+// Global wrapper functions for onclick handlers (to ensure Dashboard is loaded)
+window.showCreateForm = function() {
+    if (window.Dashboard && Dashboard.newsletter) {
+        Dashboard.newsletter.showCreateForm();
+    } else {
+        console.error('Dashboard not loaded yet');
+    }
+};
+
+window.hideCreateForm = function() {
+    if (window.Dashboard && Dashboard.newsletter) {
+        Dashboard.newsletter.hideCreateForm();
+    } else {
+        console.error('Dashboard not loaded yet');
+    }
+};
