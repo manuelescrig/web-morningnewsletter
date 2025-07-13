@@ -190,13 +190,14 @@ const AuthManager = {
         if (isLoading) {
             button.disabled = true;
             button.classList.add('auth-loading');
-            button.dataset.originalText = button.textContent;
+            // Store original HTML content instead of just text
+            button.dataset.originalHTML = button.innerHTML;
         } else {
             button.disabled = false;
             button.classList.remove('auth-loading');
-            if (button.dataset.originalText) {
-                button.textContent = button.dataset.originalText;
-                delete button.dataset.originalText;
+            if (button.dataset.originalHTML) {
+                button.innerHTML = button.dataset.originalHTML;
+                delete button.dataset.originalHTML;
             }
         }
     },
