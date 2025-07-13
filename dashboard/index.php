@@ -182,8 +182,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                     <input type="hidden" name="action" value="create_newsletter">
                     
-                    <div class="space-y-4">
-                        <div>
+                    <!-- Main form row - all on one line -->
+                    <div class="flex items-end gap-4 flex-wrap">
+                        <div class="flex-1 min-w-[200px]">
                             <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
                                 Newsletter Title *
                             </label>
@@ -192,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                    placeholder="e.g., Work Brief, Personal Digest">
                         </div>
                         
-                        <div>
+                        <div class="min-w-[120px]">
                             <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
                                 Frequency
                             </label>
@@ -204,26 +205,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </select>
                         </div>
                         
-                        <!-- Weekly Schedule Options -->
-                        <div id="weekly-options" class="hidden">
+                        <!-- Frequency-specific options inline -->
+                        <div id="weekly-options-inline" class="hidden min-w-[200px]">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Days of Week
                             </label>
-                            <div class="grid grid-cols-7 gap-2">
+                            <div class="flex gap-1">
                                 <?php 
-                                $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                $dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                                 for ($i = 1; $i <= 7; $i++): 
                                 ?>
-                                    <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
+                                    <label class="flex items-center justify-center w-8 h-8 border rounded cursor-pointer hover:bg-gray-50 day-checkbox text-xs">
                                         <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
-                                        <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                        <span class="font-medium"><?php echo $dayNames[$i-1]; ?></span>
                                     </label>
                                 <?php endfor; ?>
                             </div>
                         </div>
                         
-                        <!-- Monthly Day Options -->
-                        <div id="monthly-options" class="hidden">
+                        <div id="monthly-options-inline" class="hidden min-w-[100px]">
                             <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
                                 Day of Month
                             </label>
@@ -231,20 +231,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <?php for ($day = 1; $day <= 31; $day++): ?>
                                     <option value="<?php echo $day; ?>" <?php echo $day == 1 ? 'selected' : ''; ?>>
-                                        <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                        <?php echo $day; ?>
                                     </option>
                                 <?php endfor; ?>
                             </select>
-                            <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
                         </div>
                         
-                        <!-- Send Times (always visible, 15-minute intervals) -->
-                        <div id="send-times-section">
+                        <div class="min-w-[120px]">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Send Times (15-minute intervals only)
+                                Send Time
                             </label>
-                            <div id="daily-times-container" class="space-y-2">
-                                <div class="flex items-center gap-2">
+                            <div id="daily-times-container" class="flex gap-2">
+                                <div class="flex gap-1">
                                     <select name="daily_times[]" 
                                             class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         <?php for ($h = 0; $h < 24; $h++): ?>
@@ -260,63 +258,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <?php endfor; ?>
                                         <?php endfor; ?>
                                     </select>
-                                    <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
+                                    <button type="button" onclick="removeDailyTimeHorizontal(this)" class="px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50" style="display: none;">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <div class="px-2 w-8 spacer"></div> <!-- Spacer for alignment when only one time -->
                                 </div>
+                                <button type="button" onclick="addDailyTime()" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
+                                    <i class="fas fa-plus"></i>
+                                </button>
                             </div>
-                            <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
-                                <i class="fas fa-plus mr-1"></i> Add another time
+                        </div>
+                        
+                        <div>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                                <i class="fas fa-plus mr-2"></i>
+                                Create
                             </button>
-                            <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
                         </div>
-                    </div>
-                    
-                    <!-- Weekly Schedule Options -->
-                    <div id="weekly-options" class="hidden mt-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Days of Week
-                        </label>
-                        <div class="grid grid-cols-7 gap-2">
-                            <?php 
-                            $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                            for ($i = 1; $i <= 7; $i++): 
-                            ?>
-                                <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
-                                    <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
-                                    <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
-                                </label>
-                            <?php endfor; ?>
-                        </div>
-                    </div>
-                    
-                    <!-- Monthly Day Options -->
-                    <div id="monthly-options" class="hidden mt-4">
-                        <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
-                            Day of Month
-                        </label>
-                        <select name="day_of_month" id="day_of_month"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <?php for ($day = 1; $day <= 31; $day++): ?>
-                                <option value="<?php echo $day; ?>" <?php echo $day == 1 ? 'selected' : ''; ?>>
-                                    <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
                     </div>
                     
                     <!-- Hidden timezone field - auto-detected -->
                     <input type="hidden" id="timezone" name="timezone" value="UTC">
                     
-                    <div class="flex justify-end space-x-3">
+                    <div class="flex justify-end space-x-3 mt-4">
                         <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
                             Cancel
-                        </button>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
-                            <i class="fas fa-plus mr-2"></i>
-                            Create Newsletter
                         </button>
                     </div>
                 </form>
@@ -520,20 +485,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update schedule options visibility based on frequency
         function updateScheduleOptions() {
             const frequency = document.getElementById('frequency').value;
-            const weeklyOptions = document.getElementById('weekly-options');
-            const monthlyOptions = document.getElementById('monthly-options');
+            const weeklyOptions = document.getElementById('weekly-options-inline');
+            const monthlyOptions = document.getElementById('monthly-options-inline');
             
             // Hide all options first
-            weeklyOptions.classList.add('hidden');
-            monthlyOptions.classList.add('hidden');
+            if (weeklyOptions) weeklyOptions.classList.add('hidden');
+            if (monthlyOptions) monthlyOptions.classList.add('hidden');
             
             // Show relevant options based on frequency
             switch (frequency) {
                 case 'weekly':
-                    weeklyOptions.classList.remove('hidden');
+                    if (weeklyOptions) weeklyOptions.classList.remove('hidden');
                     break;
                 case 'monthly':
-                    monthlyOptions.classList.remove('hidden');
+                    if (monthlyOptions) monthlyOptions.classList.remove('hidden');
                     break;
             }
         }
@@ -552,8 +517,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Add daily time slot
         function addDailyTime() {
             const container = document.getElementById('daily-times-container');
-            const newTimeDiv = document.createElement('div');
-            newTimeDiv.className = 'flex items-center gap-2';
             
             // Generate time options for 15-minute intervals
             let timeOptions = '';
@@ -567,59 +530,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            newTimeDiv.innerHTML = `
-                <select name="daily_times[]" 
-                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    ${timeOptions}
-                </select>
-                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="px-2 w-8 spacer" style="display: none;"></div>
-            `;
-            container.appendChild(newTimeDiv);
-            // Update button visibility after adding
-            updateDailyTimeButtons();
+            // Create new time select element with remove button
+            const timeWrapper = document.createElement('div');
+            timeWrapper.className = 'flex gap-1';
+            
+            const newSelect = document.createElement('select');
+            newSelect.name = 'daily_times[]';
+            newSelect.className = 'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+            newSelect.innerHTML = timeOptions;
+            
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50';
+            removeButton.innerHTML = '<i class="fas fa-times"></i>';
+            removeButton.onclick = function() { removeDailyTimeHorizontal(this); };
+            
+            timeWrapper.appendChild(newSelect);
+            timeWrapper.appendChild(removeButton);
+            
+            // Insert before the + button
+            const addButton = container.querySelector('button');
+            container.insertBefore(timeWrapper, addButton);
+            
+            // Update visibility of remove buttons
+            updateRemoveButtonsVisibility();
         }
         
-        // Remove daily time slot
-        function removeDailyTime(button) {
+        // Remove daily time slot (horizontal layout)
+        function removeDailyTimeHorizontal(button) {
             const container = document.getElementById('daily-times-container');
-            const timeDiv = button.parentElement;
+            const timeWrapper = button.parentElement;
+            const timeSelects = container.querySelectorAll('select[name="daily_times[]"]');
             
             // Don't allow removing the last time slot
-            if (container.children.length > 1) {
-                timeDiv.remove();
-                // Update remaining X buttons visibility
-                updateDailyTimeButtons();
+            if (timeSelects.length > 1) {
+                timeWrapper.remove();
+                updateRemoveButtonsVisibility();
             }
         }
         
-        // Update X button visibility based on number of time slots
-        function updateDailyTimeButtons() {
+        // Update remove button visibility based on number of time slots
+        function updateRemoveButtonsVisibility() {
             const container = document.getElementById('daily-times-container');
-            const timeSlots = container.children;
+            const timeSelects = container.querySelectorAll('select[name="daily_times[]"]');
+            const removeButtons = container.querySelectorAll('button[onclick*="removeDailyTimeHorizontal"]');
             
-            for (let i = 0; i < timeSlots.length; i++) {
-                const timeSlot = timeSlots[i];
-                const button = timeSlot.querySelector('button[onclick*="removeDailyTime"]');
-                const spacer = timeSlot.querySelector('.spacer');
-                
-                if (timeSlots.length > 1) {
-                    // Show X button, hide spacer
-                    if (button) button.style.display = 'block';
-                    if (spacer) spacer.style.display = 'none';
-                } else {
-                    // Hide X button, show spacer
-                    if (button) button.style.display = 'none';
-                    if (spacer) spacer.style.display = 'block';
-                }
-            }
+            removeButtons.forEach(button => {
+                button.style.display = timeSelects.length > 1 ? 'block' : 'none';
+            });
         }
         
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
             Dashboard.modal.closeOnOutsideClick('editModal');
+            // Initialize remove button visibility
+            updateRemoveButtonsVisibility();
         });
     </script>
 </body>
