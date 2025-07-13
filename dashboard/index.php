@@ -165,16 +165,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Create New Newsletter Section (Hidden by default) -->
         <div id="createNewsletterSection" class="bg-white rounded-lg shadow mb-8 hidden">
             <div class="p-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-900">
-                            Create New Newsletter
-                        </h2>
-                        <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
-                    </div>
-                    <button onclick="hideCreateForm()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        Create New Newsletter
+                    </h2>
+                    <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
                 </div>
             </div>
             <div class="p-6">
@@ -242,21 +237,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Send Time
                             </label>
                             <div id="daily-times-container" class="flex gap-2">
-                                <select name="daily_times[]" 
-                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <?php for ($h = 0; $h < 24; $h++): ?>
-                                        <?php for ($m = 0; $m < 60; $m += 15): ?>
-                                            <?php 
-                                            $timeValue = sprintf('%02d:%02d', $h, $m);
-                                            $timeDisplay = date('g:i A', strtotime($timeValue));
-                                            $selected = ($timeValue === '06:00') ? 'selected' : '';
-                                            ?>
-                                            <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
-                                                <?php echo $timeDisplay; ?>
-                                            </option>
+                                <div class="flex gap-1 time-slot">
+                                    <select name="daily_times[]" 
+                                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <?php for ($h = 0; $h < 24; $h++): ?>
+                                            <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                                <?php 
+                                                $timeValue = sprintf('%02d:%02d', $h, $m);
+                                                $timeDisplay = date('g:i A', strtotime($timeValue));
+                                                $selected = ($timeValue === '06:00') ? 'selected' : '';
+                                                ?>
+                                                <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                    <?php echo $timeDisplay; ?>
+                                                </option>
+                                            <?php endfor; ?>
                                         <?php endfor; ?>
-                                    <?php endfor; ?>
-                                </select>
+                                    </select>
+                                    <button type="button" onclick="removeDailyTime(this)" class="px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn" style="display: none;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
                                 <button type="button" onclick="addDailyTime()" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
                                     <i class="fas fa-plus"></i>
                                 </button>
@@ -523,20 +523,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Create new time select element (no remove button)
+            // Create new time slot wrapper
+            const timeSlotWrapper = document.createElement('div');
+            timeSlotWrapper.className = 'flex gap-1 time-slot';
+            
             const newSelect = document.createElement('select');
             newSelect.name = 'daily_times[]';
             newSelect.className = 'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
             newSelect.innerHTML = timeOptions;
             
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn';
+            removeButton.innerHTML = '<i class="fas fa-times"></i>';
+            removeButton.onclick = function() { removeDailyTime(this); };
+            
+            timeSlotWrapper.appendChild(newSelect);
+            timeSlotWrapper.appendChild(removeButton);
+            
             // Insert before the + button
             const addButton = container.querySelector('button[onclick*="addDailyTime"]');
-            container.insertBefore(newSelect, addButton);
+            container.insertBefore(timeSlotWrapper, addButton);
+            
+            // Update remove button visibility
+            updateRemoveButtonsVisibility();
+        }
+        
+        // Remove daily time slot
+        function removeDailyTime(button) {
+            const container = document.getElementById('daily-times-container');
+            const timeSlot = button.closest('.time-slot');
+            const timeSlots = container.querySelectorAll('.time-slot');
+            
+            // Only remove if there's more than one time slot
+            if (timeSlots.length > 1) {
+                timeSlot.remove();
+                updateRemoveButtonsVisibility();
+            }
+        }
+        
+        // Update remove button visibility based on number of time slots
+        function updateRemoveButtonsVisibility() {
+            const container = document.getElementById('daily-times-container');
+            const timeSlots = container.querySelectorAll('.time-slot');
+            const removeButtons = container.querySelectorAll('.remove-time-btn');
+            
+            removeButtons.forEach(button => {
+                button.style.display = timeSlots.length > 1 ? 'block' : 'none';
+            });
         }
         
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
             Dashboard.modal.closeOnOutsideClick('editModal');
+            // Initialize remove button visibility
+            updateRemoveButtonsVisibility();
         });
     </script>
 </body>
