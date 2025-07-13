@@ -201,18 +201,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <!-- Frequency-specific options inline -->
-                        <div id="weekly-options-inline" class="hidden min-w-[200px]">
+                        <div id="weekly-options-inline" class="hidden min-w-[280px]">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Days of Week
                             </label>
-                            <div class="flex gap-1">
+                            <div class="flex gap-2">
                                 <?php 
-                                $dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                                $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                $dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                                 for ($i = 1; $i <= 7; $i++): 
                                 ?>
-                                    <label class="flex items-center justify-center w-8 h-8 border rounded cursor-pointer hover:bg-gray-50 day-checkbox text-xs">
+                                    <label class="flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 day-checkbox text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md" title="<?php echo $dayNames[$i-1]; ?>">
                                         <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
-                                        <span class="font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                        <span class="select-none"><?php echo $dayShort[$i-1]; ?></span>
                                     </label>
                                 <?php endfor; ?>
                             </div>
@@ -501,9 +502,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function toggleDaySelection(checkbox) {
             const label = checkbox.parentElement;
             if (checkbox.checked) {
-                label.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-900');
+                label.classList.remove('border-gray-300', 'hover:border-blue-400', 'hover:bg-blue-50');
+                label.classList.add('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-lg');
             } else {
-                label.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-900');
+                label.classList.remove('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-lg');
+                label.classList.add('border-gray-300', 'hover:border-blue-400', 'hover:bg-blue-50');
             }
         }
         
