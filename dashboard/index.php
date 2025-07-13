@@ -117,26 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
-            case 'delete_newsletter':
-                $newsletterId = (int)$_POST['newsletter_id'];
-                $newsletter = $user->getNewsletter($newsletterId);
-                
-                if ($newsletter) {
-                    if (count($newsletters) <= 1) {
-                        $error = 'Cannot delete your last newsletter. You must have at least one newsletter.';
-                    } else {
-                        if ($newsletter->delete()) {
-                            $success = 'Newsletter deleted successfully!';
-                            // Refresh newsletters
-                            $newsletters = $user->getNewsletters();
-                        } else {
-                            $error = 'Failed to delete newsletter.';
-                        }
-                    }
-                } else {
-                    $error = 'Newsletter not found.';
-                }
-                break;
         }
     }
 }
@@ -397,12 +377,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
-                                        <?php if (count($newsletters) > 1): ?>
-                                            <button onclick="event.stopPropagation(); deleteNewsletter(<?php echo $newsletter->getId(); ?>)" 
-                                                    class="text-gray-400 hover:text-red-600 p-1">
-                                                <i class="fas fa-trash text-sm"></i>
-                                            </button>
-                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 
@@ -542,16 +516,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Dashboard.modal.close('editModal');
         }
         
-        function deleteNewsletter(newsletterId) {
-            const newsletter = newsletters.find(n => n.id == newsletterId);
-            if (!newsletter) return;
-            
-            Dashboard.form.submitWithConfirmation({
-                csrf_token: '<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>',
-                action: 'delete_newsletter',
-                newsletter_id: newsletterId
-            }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
-        }
         
         // Update schedule options visibility based on frequency
         function updateScheduleOptions() {
