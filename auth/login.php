@@ -119,7 +119,7 @@ $csrfToken = $auth->generateCSRFToken();
             </div>
 
             <div class="mt-6">
-                <button type="submit" class="auth-button">
+                <button type="submit" class="auth-button bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                     Sign in
                     <span class="auth-button-icon">
                         <i class="fas fa-sign-in-alt"></i>
