@@ -200,22 +200,18 @@ const Dashboard = {
             // Clear form
             const titleInput = document.getElementById('title');
             const timezoneInput = document.getElementById('timezone');
-            const sendTimeInput = document.getElementById('send_time');
             const frequencySelect = document.getElementById('frequency');
             
             if (titleInput) titleInput.value = '';
             if (timezoneInput) timezoneInput.value = 'UTC';
-            if (sendTimeInput) sendTimeInput.value = '06:00';
             if (frequencySelect) frequencySelect.value = 'daily';
             
             // Clear frequency-specific options
             this.clearFrequencyOptions();
             
             // Hide frequency-specific sections
-            const multipleDailyOptions = document.getElementById('multiple-daily-options');
             const weeklyOptions = document.getElementById('weekly-options');
             const monthlyOptions = document.getElementById('monthly-options');
-            if (multipleDailyOptions) multipleDailyOptions.classList.add('hidden');
             if (weeklyOptions) weeklyOptions.classList.add('hidden');
             if (monthlyOptions) monthlyOptions.classList.add('hidden');
         },
@@ -235,13 +231,27 @@ const Dashboard = {
         },
 
         clearFrequencyOptions: function() {
-            // Clear multiple daily times (reset to single default time)
+            // Reset daily times to single 6:00 AM option
             const dailyTimesContainer = document.getElementById('daily-times-container');
             if (dailyTimesContainer) {
+                // Generate time options for 15-minute intervals
+                let timeOptions = '';
+                for (let h = 0; h < 24; h++) {
+                    for (let m = 0; m < 60; m += 15) {
+                        const timeValue = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                        const timeObj = new Date('2000-01-01 ' + timeValue);
+                        const timeDisplay = timeObj.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', hour12: true});
+                        const selected = (timeValue === '06:00') ? 'selected' : '';
+                        timeOptions += `<option value="${timeValue}" ${selected}>${timeDisplay}</option>`;
+                    }
+                }
+                
                 dailyTimesContainer.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <input type="time" name="daily_times[]" value="06:00" 
-                               class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <select name="daily_times[]" 
+                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            ${timeOptions}
+                        </select>
                         <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
                             <i class="fas fa-times"></i>
                         </button>

@@ -45,8 +45,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'create_newsletter':
                 $title = trim($_POST['title'] ?? '');
                 $timezone = $_POST['timezone'] ?? 'UTC';
-                $sendTime = $_POST['send_time'] ?? '06:00';
                 $frequency = $_POST['frequency'] ?? 'daily';
+                
+                // Handle send times - always use daily_times array
+                $dailyTimes = $_POST['daily_times'] ?? ['06:00'];
+                $dailyTimes = array_filter($dailyTimes); // Remove empty values
+                
+                if (empty($dailyTimes)) {
+                    $dailyTimes = ['06:00']; // Fallback to default
+                }
+                
+                $sendTime = $dailyTimes[0]; // Use first time as primary send_time
                 
                 if (empty($title)) {
                     $error = 'Newsletter title is required.';
@@ -57,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($newsletterId) {
                             $newsletter = $user->getNewsletter($newsletterId);
                             
-                            // Handle frequency-specific settings
-                            if ($frequency === 'multiple_daily' && isset($_POST['daily_times'])) {
-                                $dailyTimes = array_filter($_POST['daily_times']);
+                            // Set daily times for all frequencies
+                            if (!empty($dailyTimes)) {
                                 $newsletter->setDailyTimes($dailyTimes);
                             }
                             
+                            // Handle frequency-specific settings
                             if ($frequency === 'weekly' && isset($_POST['days_of_week'])) {
                                 $daysOfWeek = array_map('intval', $_POST['days_of_week']);
                                 $newsletter->setDaysOfWeek($daysOfWeek);
@@ -210,30 +219,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="daily">Daily</option>
-                                <option value="multiple_daily">Multiple per Day</option>
                                 <option value="weekly">Weekly</option>
                                 <option value="monthly">Monthly</option>
                             </select>
                         </div>
                         
-                        <div>
-                            <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">
-                                Send Time
-                            </label>
-                            <input type="time" name="send_time" id="send_time" value="06:00" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
                     </div>
                     
-                    <!-- Multiple Daily Options -->
-                    <div id="multiple-daily-options" class="hidden mt-4">
+                    <!-- Send Times (multiple times always enabled) -->
+                    <div id="send-times-section" class="mt-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Send Times (multiple times per day)
+                            Send Times (15-minute intervals only)
                         </label>
+                        
                         <div id="daily-times-container" class="space-y-2">
                             <div class="flex items-center gap-2">
-                                <input type="time" name="daily_times[]" value="06:00" 
-                                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <select name="daily_times[]" 
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php for ($h = 0; $h < 24; $h++): ?>
+                                        <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                            <?php 
+                                            $timeValue = sprintf('%02d:%02d', $h, $m);
+                                            $timeDisplay = date('g:i A', strtotime($timeValue));
+                                            $selected = ($timeValue === '06:00') ? 'selected' : '';
+                                            ?>
+                                            <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                <?php echo $timeDisplay; ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    <?php endfor; ?>
+                                </select>
                                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
                                     <i class="fas fa-times"></i>
                                 </button>
@@ -242,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
                             <i class="fas fa-plus mr-1"></i> Add another time
                         </button>
-                        <p class="text-xs text-gray-500 mt-1">Add multiple send times throughout the day</p>
+                        <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
                     </div>
                     
                     <!-- Weekly Schedule Options -->
@@ -508,20 +523,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update schedule options visibility based on frequency
         function updateScheduleOptions() {
             const frequency = document.getElementById('frequency').value;
-            const multipleDailyOptions = document.getElementById('multiple-daily-options');
             const weeklyOptions = document.getElementById('weekly-options');
             const monthlyOptions = document.getElementById('monthly-options');
             
             // Hide all options first
-            multipleDailyOptions.classList.add('hidden');
             weeklyOptions.classList.add('hidden');
             monthlyOptions.classList.add('hidden');
             
             // Show relevant options based on frequency
             switch (frequency) {
-                case 'multiple_daily':
-                    multipleDailyOptions.classList.remove('hidden');
-                    break;
                 case 'weekly':
                     weeklyOptions.classList.remove('hidden');
                     break;
@@ -530,6 +540,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
             }
         }
+        
         
         // Toggle day selection styling
         function toggleDaySelection(checkbox) {
@@ -546,9 +557,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const container = document.getElementById('daily-times-container');
             const newTimeDiv = document.createElement('div');
             newTimeDiv.className = 'flex items-center gap-2';
+            
+            // Generate time options for 15-minute intervals
+            let timeOptions = '';
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 15) {
+                    const timeValue = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                    const timeObj = new Date('2000-01-01 ' + timeValue);
+                    const timeDisplay = timeObj.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', hour12: true});
+                    const selected = (timeValue === '12:00') ? 'selected' : '';
+                    timeOptions += `<option value="${timeValue}" ${selected}>${timeDisplay}</option>`;
+                }
+            }
+            
             newTimeDiv.innerHTML = `
-                <input type="time" name="daily_times[]" value="12:00" 
-                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select name="daily_times[]" 
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    ${timeOptions}
+                </select>
                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
                     <i class="fas fa-times"></i>
                 </button>

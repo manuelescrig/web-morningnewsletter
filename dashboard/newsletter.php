@@ -172,19 +172,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateData = [
                     'title' => trim($_POST['title'] ?? ''),
                     'timezone' => $_POST['timezone'] ?? 'UTC',
-                    'send_time' => $_POST['send_time'] ?? '06:00',
                     'frequency' => $_POST['frequency'] ?? 'daily',
                     'is_paused' => isset($_POST['is_paused']) ? 1 : 0
                 ];
                 
-                // Handle daily_times for multiple daily frequency
-                if ($updateData['frequency'] === 'multiple_daily') {
-                    $dailyTimes = $_POST['daily_times'] ?? [];
-                    $dailyTimes = array_filter($dailyTimes); // Remove empty values
-                    $updateData['daily_times'] = !empty($dailyTimes) ? json_encode($dailyTimes) : json_encode([$updateData['send_time']]);
+                // Handle send times - always use daily_times array
+                $dailyTimes = $_POST['daily_times'] ?? [];
+                $dailyTimes = array_filter($dailyTimes); // Remove empty values
+                
+                if (empty($dailyTimes)) {
+                    // Fallback to legacy send_time or default
+                    $sendTime = $_POST['send_time'] ?? '06:00';
+                    $dailyTimes = [$sendTime];
                 } else {
-                    $updateData['daily_times'] = '';
+                    $sendTime = $dailyTimes[0]; // Use first time as primary
                 }
+                
+                $updateData['send_time'] = $sendTime;
+                $updateData['daily_times'] = json_encode($dailyTimes);
                 
                 // Handle days_of_week for weekly frequency
                 if ($updateData['frequency'] === 'weekly') {

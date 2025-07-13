@@ -510,6 +510,16 @@ class Database {
                 error_log("Database migration: Added 'history_id' column to email_logs table");
             }
             
+            // Check and add scheduled_send_time to newsletter_history if it doesn't exist
+            $stmt = $this->pdo->query("PRAGMA table_info(newsletter_history)");
+            $historyColumns = $stmt->fetchAll();
+            $historyColumnNames = array_column($historyColumns, 'name');
+            
+            if (!in_array('scheduled_send_time', $historyColumnNames)) {
+                $this->pdo->exec("ALTER TABLE newsletter_history ADD COLUMN scheduled_send_time TIME");
+                error_log("Database migration: Added 'scheduled_send_time' column to newsletter_history table");
+            }
+            
             error_log("Database migration: Newsletter history and scheduling migrations completed successfully");
             
         } catch (Exception $e) {

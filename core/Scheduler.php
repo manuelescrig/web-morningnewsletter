@@ -41,13 +41,34 @@ class Scheduler {
             if (!$user || $newsletter->isPaused()) continue;
             
             $newsletterTime = $this->getNewsletterCurrentTime($newsletter);
-            $newsletterSendTime = $this->getNewsletterSendDateTime($newsletter, $newsletterTime);
             
-            // Check if newsletter's send time falls within our window
-            if ($this->isTimeInWindow($newsletterSendTime, $windowStart, $windowEnd)) {
-                // Check if newsletter should be sent based on frequency and last send
-                if ($this->shouldSendNewsletter($newsletter, $newsletterTime)) {
-                    $newslettersToSend[] = ['newsletter' => $newsletter, 'user' => $user];
+            // Always check daily_times array (even for single times)
+            $dailyTimes = $newsletter->getDailyTimes();
+            
+            if (!empty($dailyTimes)) {
+                // Handle all times from daily_times array
+                foreach ($dailyTimes as $time) {
+                    $newsletterSendTime = $this->getNewsletterSendDateTimeForTime($newsletter, $newsletterTime, $time);
+                    
+                    if ($this->isTimeInWindow($newsletterSendTime, $windowStart, $windowEnd)) {
+                        if ($this->shouldSendNewsletterAtTime($newsletter, $newsletterTime, $time)) {
+                            $newslettersToSend[] = [
+                                'newsletter' => $newsletter, 
+                                'user' => $user, 
+                                'send_time' => $time
+                            ];
+                            break; // Only add once per window
+                        }
+                    }
+                }
+            } else {
+                // Fallback to single time (for legacy newsletters)
+                $newsletterSendTime = $this->getNewsletterSendDateTime($newsletter, $newsletterTime);
+                
+                if ($this->isTimeInWindow($newsletterSendTime, $windowStart, $windowEnd)) {
+                    if ($this->shouldSendNewsletter($newsletter, $newsletterTime)) {
+                        $newslettersToSend[] = ['newsletter' => $newsletter, 'user' => $user];
+                    }
                 }
             }
         }
@@ -79,6 +100,18 @@ class Scheduler {
     
     private function getNewsletterSendDateTime(Newsletter $newsletter, DateTime $newsletterTime) {
         $sendTime = $newsletter->getSendTime(); // Format: "06:00"
+        list($hour, $minute) = explode(':', $sendTime);
+        
+        $sendDateTime = clone $newsletterTime;
+        $sendDateTime->setTime((int)$hour, (int)$minute, 0);
+        
+        // Convert to UTC for comparison
+        $sendDateTime->setTimezone(new DateTimeZone('UTC'));
+        
+        return $sendDateTime;
+    }
+    
+    private function getNewsletterSendDateTimeForTime(Newsletter $newsletter, DateTime $newsletterTime, $sendTime) {
         list($hour, $minute) = explode(':', $sendTime);
         
         $sendDateTime = clone $newsletterTime;
@@ -130,6 +163,27 @@ class Scheduler {
         return $result['count'] > 0;
     }
     
+    private function wasNewsletterSentAtTimeToday($newsletterId, $sendTime) {
+        $today = date('Y-m-d');
+        
+        // Create time window around the send time (30 minutes)
+        $startTime = date('H:i:s', strtotime($sendTime . ' -15 minutes'));
+        $endTime = date('H:i:s', strtotime($sendTime . ' +15 minutes'));
+        
+        $stmt = $this->db->prepare("
+            SELECT COUNT(*) as count 
+            FROM newsletter_history 
+            WHERE newsletter_id = ? 
+            AND email_sent = 1 
+            AND DATE(sent_at) = ?
+            AND TIME(sent_at) BETWEEN ? AND ?
+        ");
+        $stmt->execute([$newsletterId, $today, $startTime, $endTime]);
+        $result = $stmt->fetch();
+        
+        return $result['count'] > 0;
+    }
+    
     // Backward compatibility method
     private function wasEmailSentToday($userId) {
         $today = date('Y-m-d');
@@ -158,9 +212,10 @@ class Scheduler {
         foreach ($newslettersToSend as $item) {
             $newsletter = $item['newsletter'];
             $user = $item['user'];
+            $sendTime = $item['send_time'] ?? null; // For multiple daily sends
             
             try {
-                $this->sendNewsletterToUser($newsletter, $user);
+                $this->sendNewsletterToUser($newsletter, $user, $sendTime);
                 $results['sent']++;
             } catch (Exception $e) {
                 $results['failed']++;
@@ -178,9 +233,9 @@ class Scheduler {
         return $results;
     }
     
-    private function sendNewsletterToUser(Newsletter $newsletter, User $user) {
+    private function sendNewsletterToUser(Newsletter $newsletter, User $user, $sendTime = null) {
         // Send newsletter with history and view-in-browser functionality
-        $success = $this->emailSender->sendNewsletterWithHistory($user, $newsletter);
+        $success = $this->emailSender->sendNewsletterWithHistory($user, $newsletter, $sendTime);
         
         if (!$success) {
             throw new Exception("Failed to send email to " . $user->getEmail());
@@ -211,20 +266,28 @@ class Scheduler {
      */
     private function calculateNextSendTime(Newsletter $newsletter) {
         $currentTime = $this->getNewsletterCurrentTime($newsletter);
-        $sendTime = $newsletter->getSendTime();
-        list($hour, $minute) = explode(':', $sendTime);
+        $dailyTimes = $newsletter->getDailyTimes();
         
-        switch ($newsletter->getFrequency()) {
-            case 'daily':
-                return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
-            case 'weekly':
-                return $this->getNextWeeklySendTime($newsletter, $currentTime, $hour, $minute);
-            case 'monthly':
-                return $this->getNextMonthlySendTime($newsletter, $currentTime, $hour, $minute);
-            case 'quarterly':
-                return $this->getNextQuarterlySendTime($newsletter, $currentTime, $hour, $minute);
-            default:
-                return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+        if (!empty($dailyTimes)) {
+            // Always use daily_times array approach
+            return $this->getNextMultipleTimesSendTime($newsletter, $currentTime);
+        } else {
+            // Fallback to single time for legacy newsletters
+            $sendTime = $newsletter->getSendTime();
+            list($hour, $minute) = explode(':', $sendTime);
+            
+            switch ($newsletter->getFrequency()) {
+                case 'daily':
+                    return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+                case 'weekly':
+                    return $this->getNextWeeklySendTime($newsletter, $currentTime, $hour, $minute);
+                case 'monthly':
+                    return $this->getNextMonthlySendTime($newsletter, $currentTime, $hour, $minute);
+                case 'quarterly':
+                    return $this->getNextQuarterlySendTime($newsletter, $currentTime, $hour, $minute);
+                default:
+                    return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+            }
         }
     }
     
@@ -238,6 +301,68 @@ class Scheduler {
         }
         
         return $nextSend;
+    }
+    
+    private function getNextMultipleTimesSendTime(Newsletter $newsletter, DateTime $currentTime) {
+        $dailyTimes = $newsletter->getDailyTimes();
+        if (empty($dailyTimes)) {
+            // Fallback to regular logic if no times configured
+            $sendTime = $newsletter->getSendTime();
+            list($hour, $minute) = explode(':', $sendTime);
+            return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+        }
+        
+        // Sort times for easier processing
+        sort($dailyTimes);
+        
+        $currentTimeStr = $currentTime->format('H:i');
+        $currentTimeStamp = strtotime($currentTimeStr);
+        
+        // For daily frequency, check today first
+        if ($newsletter->getFrequency() === 'daily') {
+            // Find the next send time today
+            foreach ($dailyTimes as $time) {
+                $timeStamp = strtotime($time);
+                if ($timeStamp > $currentTimeStamp) {
+                    // Check if not already sent at this time
+                    if (!$this->wasNewsletterSentAtTimeToday($newsletter->getId(), $time)) {
+                        $nextSend = clone $currentTime;
+                        list($hour, $minute) = explode(':', $time);
+                        $nextSend->setTime((int)$hour, (int)$minute, 0);
+                        return $nextSend;
+                    }
+                }
+            }
+            
+            // No more sends today, get first time tomorrow
+            $nextSend = clone $currentTime;
+            $nextSend->add(new DateInterval('P1D'));
+            list($hour, $minute) = explode(':', $dailyTimes[0]);
+            $nextSend->setTime((int)$hour, (int)$minute, 0);
+            return $nextSend;
+        } else {
+            // For weekly/monthly, find the next scheduled date, then earliest time
+            $baseNextSend = $this->getBaseNextSendDate($newsletter, $currentTime);
+            list($hour, $minute) = explode(':', $dailyTimes[0]); // Use earliest time
+            $baseNextSend->setTime((int)$hour, (int)$minute, 0);
+            return $baseNextSend;
+        }
+    }
+    
+    private function getBaseNextSendDate(Newsletter $newsletter, DateTime $currentTime) {
+        $sendTime = $newsletter->getSendTime();
+        list($hour, $minute) = explode(':', $sendTime);
+        
+        switch ($newsletter->getFrequency()) {
+            case 'weekly':
+                return $this->getNextWeeklySendTime($newsletter, $currentTime, $hour, $minute);
+            case 'monthly':
+                return $this->getNextMonthlySendTime($newsletter, $currentTime, $hour, $minute);
+            case 'quarterly':
+                return $this->getNextQuarterlySendTime($newsletter, $currentTime, $hour, $minute);
+            default:
+                return $this->getNextDailySendTime($newsletter, $currentTime, $hour, $minute);
+        }
     }
     
     private function getNextWeeklySendTime(Newsletter $newsletter, DateTime $currentTime, $hour, $minute) {
@@ -408,10 +533,50 @@ class Scheduler {
     }
     
     /**
+     * Check if newsletter should be sent at a specific time (for any frequency with multiple times)
+     */
+    private function shouldSendNewsletterAtTime(Newsletter $newsletter, DateTime $currentTime, $sendTime) {
+        // First check if already sent at this time today
+        if ($this->wasNewsletterSentAtTimeToday($newsletter->getId(), $sendTime)) {
+            return false;
+        }
+        
+        // Then check frequency-specific rules
+        switch ($newsletter->getFrequency()) {
+            case 'daily':
+                return true; // Daily can send every day
+                
+            case 'weekly':
+                return $this->shouldSendWeekly($newsletter, $currentTime);
+                
+            case 'monthly':
+                return $this->shouldSendMonthly($newsletter, $currentTime);
+                
+            case 'quarterly':
+                return $this->shouldSendQuarterly($newsletter, $currentTime);
+                
+            default:
+                return true; // Default to daily behavior
+        }
+    }
+    
+    /**
      * Check if daily newsletter should be sent (original logic)
      */
     private function shouldSendDaily(Newsletter $newsletter) {
         return !$this->wasNewsletterSentToday($newsletter->getId());
+    }
+    
+    
+    /**
+     * Check if two times are within a tolerance window
+     */
+    private function isTimeNear($time1, $time2, $toleranceMinutes = 15) {
+        $timestamp1 = strtotime($time1);
+        $timestamp2 = strtotime($time2);
+        $diff = abs($timestamp1 - $timestamp2);
+        
+        return $diff <= ($toleranceMinutes * 60);
     }
     
     /**

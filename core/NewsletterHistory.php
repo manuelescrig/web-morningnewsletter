@@ -11,14 +11,14 @@ class NewsletterHistory {
     /**
      * Save a newsletter to history
      */
-    public function saveToHistory($newsletterId, $userId, $title, $content, $sourcesData = null) {
+    public function saveToHistory($newsletterId, $userId, $title, $content, $sourcesData = null, $scheduledSendTime = null) {
         try {
             $issueNumber = $this->getNextIssueNumber($newsletterId);
             
             $stmt = $this->db->prepare("
                 INSERT INTO newsletter_history 
-                (newsletter_id, user_id, title, content, sources_data, sent_at, issue_number)
-                VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?)
+                (newsletter_id, user_id, title, content, sources_data, sent_at, issue_number, scheduled_send_time)
+                VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?)
             ");
             
             $stmt->execute([
@@ -27,12 +27,14 @@ class NewsletterHistory {
                 $title,
                 $content,
                 $sourcesData ? json_encode($sourcesData) : null,
-                $issueNumber
+                $issueNumber,
+                $scheduledSendTime
             ]);
             
             $historyId = $this->db->lastInsertId();
             
-            error_log("Newsletter history: Saved newsletter $newsletterId as issue #$issueNumber (history ID: $historyId)");
+            $timeStr = $scheduledSendTime ? " at $scheduledSendTime" : "";
+            error_log("Newsletter history: Saved newsletter $newsletterId as issue #$issueNumber (history ID: $historyId)$timeStr");
             
             return $historyId;
             

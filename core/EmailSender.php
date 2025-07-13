@@ -62,7 +62,7 @@ class EmailSender {
         }
     }
     
-    public function sendNewsletterWithHistory(User $user, Newsletter $newsletter) {
+    public function sendNewsletterWithHistory(User $user, Newsletter $newsletter, $scheduledSendTime = null) {
         $subject = $newsletter->getTitle() . " - " . date('F j, Y');
         $historyTitle = date('F j, Y'); // Only date for history
         $historyId = null;
@@ -80,7 +80,8 @@ class EmailSender {
                 $user->getId(),
                 $historyTitle,
                 '', // Placeholder content - will be updated below
-                $initialResult['sources_data']
+                $initialResult['sources_data'],
+                $scheduledSendTime
             );
             
             if (!$historyId) {
