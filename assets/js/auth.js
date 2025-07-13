@@ -58,15 +58,19 @@ const AuthManager = {
     initPasswordToggle() {
         const passwordInputs = document.querySelectorAll('input[type="password"]');
         passwordInputs.forEach(input => {
-            const toggleButton = this.createPasswordToggle(input);
-            if (toggleButton) {
-                input.parentNode.style.position = 'relative';
-                input.parentNode.appendChild(toggleButton);
-            }
+            this.createPasswordToggle(input);
         });
     },
 
     createPasswordToggle(input) {
+        // Create a wrapper div for the input and button
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative';
+        
+        // Insert wrapper before the input
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600';
@@ -78,7 +82,8 @@ const AuthManager = {
             button.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
         });
         
-        return button;
+        wrapper.appendChild(button);
+        return null; // Return null since we're not appending to parent anymore
     },
 
     // Form submission handling
