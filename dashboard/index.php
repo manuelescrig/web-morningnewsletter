@@ -266,7 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     
                     <!-- Spacer -->
-                    <div style="height: 2rem;"></div>
+                    <div style="height: 1px;"></div>
                     
                     <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3">
