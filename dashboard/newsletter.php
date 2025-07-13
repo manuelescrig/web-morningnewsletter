@@ -1105,9 +1105,24 @@ $canAddSource = count($sources) < $maxSources;
             const container = document.getElementById('daily-times-container');
             const newTimeDiv = document.createElement('div');
             newTimeDiv.className = 'flex items-center gap-2';
+            
+            // Generate time options for 15-minute intervals
+            let timeOptions = '';
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 15) {
+                    const timeValue = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                    const timeObj = new Date('2000-01-01 ' + timeValue);
+                    const timeDisplay = timeObj.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', hour12: true});
+                    const selected = (timeValue === '12:00') ? 'selected' : '';
+                    timeOptions += `<option value="${timeValue}" ${selected}>${timeDisplay}</option>`;
+                }
+            }
+            
             newTimeDiv.innerHTML = `
-                <input type="time" name="daily_times[]" value="12:00" 
-                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select name="daily_times[]" 
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    ${timeOptions}
+                </select>
                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
                     <i class="fas fa-times"></i>
                 </button>

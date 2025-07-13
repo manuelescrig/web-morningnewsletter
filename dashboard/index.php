@@ -202,70 +202,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                     <input type="hidden" name="action" value="create_newsletter">
                     
-                    <!-- Compact single-line form -->
                     <div class="space-y-4">
-                        <!-- Main fields in one row -->
-                        <div class="flex flex-wrap items-end gap-4">
-                            <div class="flex-1 min-w-[200px]">
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Newsletter Title *
-                                </label>
-                                <input type="text" name="title" id="title" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="e.g., Work Brief, Personal Digest">
-                            </div>
-                            
-                            <div class="min-w-[120px]">
-                                <label for="frequency" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Frequency
-                                </label>
-                                <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="daily">Daily</option>
-                                    <option value="weekly">Weekly</option>
-                                    <option value="monthly">Monthly</option>
-                                </select>
-                            </div>
-                            
-                            <div class="min-w-[120px]">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">
-                                    Send Time
-                                </label>
-                                <select name="daily_times[]" 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <?php for ($h = 0; $h < 24; $h++): ?>
-                                        <?php for ($m = 0; $m < 60; $m += 15): ?>
-                                            <?php 
-                                            $timeValue = sprintf('%02d:%02d', $h, $m);
-                                            $timeDisplay = date('g:i A', strtotime($timeValue));
-                                            $selected = ($timeValue === '06:00') ? 'selected' : '';
-                                            ?>
-                                            <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
-                                                <?php echo $timeDisplay; ?>
-                                            </option>
-                                        <?php endfor; ?>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <button type="button" onclick="showMoreTimes()" id="add-time-btn" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                                Newsletter Title *
+                            </label>
+                            <input type="text" name="title" id="title" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="e.g., Work Brief, Personal Digest">
                         </div>
                         
-                        <!-- Additional times (hidden by default) -->
-                        <div id="additional-times" class="hidden">
+                        <div>
+                            <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
+                                Frequency
+                            </label>
+                            <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Send Times (always visible, 15-minute intervals) -->
+                        <div id="send-times-section">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Additional Send Times (15-minute intervals)
+                                Send Times (15-minute intervals only)
                             </label>
                             <div id="daily-times-container" class="space-y-2">
-                                <!-- Additional times will be added here -->
+                                <div class="flex items-center gap-2">
+                                    <select name="daily_times[]" 
+                                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <?php for ($h = 0; $h < 24; $h++): ?>
+                                            <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                                <?php 
+                                                $timeValue = sprintf('%02d:%02d', $h, $m);
+                                                $timeDisplay = date('g:i A', strtotime($timeValue));
+                                                $selected = ($timeValue === '06:00') ? 'selected' : '';
+                                                ?>
+                                                <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                    <?php echo $timeDisplay; ?>
+                                                </option>
+                                            <?php endfor; ?>
+                                        <?php endfor; ?>
+                                    </select>
+                                    <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
                             </div>
                             <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
                                 <i class="fas fa-plus mr-1"></i> Add another time
                             </button>
+                            <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
                         </div>
                     </div>
                     
@@ -596,24 +585,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const container = document.getElementById('daily-times-container');
             const timeDiv = button.parentElement;
             
-            // Always allow removing from additional times container
-            timeDiv.remove();
-            
-            // If no more additional times, hide the section
-            if (container.children.length === 0) {
-                document.getElementById('additional-times').classList.add('hidden');
-            }
-        }
-        
-        // Show additional times section
-        function showMoreTimes() {
-            const additionalTimesSection = document.getElementById('additional-times');
-            additionalTimesSection.classList.remove('hidden');
-            
-            // Add first additional time if container is empty
-            const container = document.getElementById('daily-times-container');
-            if (container.children.length === 0) {
-                addDailyTime();
+            // Don't allow removing the last time slot
+            if (container.children.length > 1) {
+                timeDiv.remove();
             }
         }
         
