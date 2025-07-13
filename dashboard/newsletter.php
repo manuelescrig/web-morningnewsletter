@@ -599,32 +599,22 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             
                             <div>
-                                <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Send Time
-                                </label>
-                                <input type="time" name="send_time" id="send_time" required
-                                       value="<?php echo $newsletter->getSendTime(); ?>"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-                            
-                            <div>
                                 <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
                                     Frequency
                                 </label>
                                 <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
-                                    <option value="multiple_daily" <?php echo $newsletter->getFrequency() === 'multiple_daily' ? 'selected' : ''; ?>>Multiple per Day</option>
                                     <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
                                     <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
                                     <option value="quarterly" <?php echo $newsletter->getFrequency() === 'quarterly' ? 'selected' : ''; ?>>Quarterly</option>
                                 </select>
                             </div>
                             
-                            <!-- Multiple Daily Options -->
-                            <div id="multiple-daily-options" class="<?php echo $newsletter->getFrequency() !== 'multiple_daily' ? 'hidden' : ''; ?>">
+                            <!-- Send Times (always visible, 15-minute intervals) -->
+                            <div id="send-times-section">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Send Times (multiple times per day)
+                                    Send Times (15-minute intervals only)
                                 </label>
                                 <div id="daily-times-container" class="space-y-2">
                                     <?php 
@@ -635,22 +625,31 @@ $canAddSource = count($sources) < $maxSources;
                                     foreach ($dailyTimes as $index => $time): 
                                     ?>
                                         <div class="flex items-center gap-2">
-                                            <input type="time" name="daily_times[]" value="<?php echo htmlspecialchars($time); ?>" 
-                                                   class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                            <?php if (count($dailyTimes) > 1): ?>
-                                                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            <?php else: ?>
-                                                <div class="px-2 w-8"></div> <!-- Spacer for alignment -->
-                                            <?php endif; ?>
+                                            <select name="daily_times[]" 
+                                                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                <?php for ($h = 0; $h < 24; $h++): ?>
+                                                    <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                                        <?php 
+                                                        $timeValue = sprintf('%02d:%02d', $h, $m);
+                                                        $timeDisplay = date('g:i A', strtotime($timeValue));
+                                                        $selected = ($timeValue === $time) ? 'selected' : '';
+                                                        ?>
+                                                        <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                            <?php echo $timeDisplay; ?>
+                                                        </option>
+                                                    <?php endfor; ?>
+                                                <?php endfor; ?>
+                                            </select>
+                                            <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                                 <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
                                     <i class="fas fa-plus mr-1"></i> Add another time
                                 </button>
-                                <p class="text-xs text-gray-500 mt-1">Add multiple send times throughout the day</p>
+                                <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
                             </div>
                             
                             <!-- Weekly Schedule Options -->
