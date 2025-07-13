@@ -406,63 +406,21 @@ $canAddSource = count($sources) < $maxSources;
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Column: Data Sources -->
             <div class="lg:col-span-2">
-                <!-- Add New Source -->
+                <!-- Add New Source Button -->
                 <?php if ($canAddSource): ?>
                     <div class="bg-white rounded-lg shadow mb-6">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                                <i class="fas fa-plus-circle text-blue-600 mr-2"></i>
-                                Add Data Source
-                            </h2>
-                            <p class="text-sm text-gray-600 mt-1">
-                                You can add <?php echo $maxSources - count($sources); ?> more source<?php echo ($maxSources - count($sources)) !== 1 ? 's' : ''; ?> 
-                                (<?php echo count($sources); ?>/<?php echo $maxSources; ?> used)
-                            </p>
-                        </div>
                         <div class="p-6">
-                            <form method="POST" id="addSourceForm" class="space-y-4">
-                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                                <input type="hidden" name="action" value="add_source">
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="source_type" class="block text-sm font-medium text-gray-700 mb-2">
-                                            Source Type
-                                        </label>
-                                        <select name="source_type" id="source_type" required onchange="showSourceConfig(this.value)"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                            <option value="">Select a source...</option>
-                                            <?php foreach ($availableModules as $type => $module): ?>
-                                                <option value="<?php echo $type; ?>"><?php echo $module->getTitle(); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="source_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                            Display Name (Optional)
-                                        </label>
-                                        <input type="text" name="source_name" id="source_name" 
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                               placeholder="Custom name for this source">
-                                    </div>
-                                </div>
-                                
-                                <!-- Dynamic configuration fields -->
-                                <div id="sourceConfig" class="hidden">
-                                    <div class="border-t pt-4">
-                                        <h3 class="text-md font-medium text-gray-900 mb-3">Source Configuration</h3>
-                                        <div id="configFields" class="space-y-3"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex justify-end">
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                                        <i class="fas fa-plus mr-2"></i>
-                                        Add Source
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="text-center">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-2">Add Data Source</h2>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    You can add <?php echo $maxSources - count($sources); ?> more source<?php echo ($maxSources - count($sources)) !== 1 ? 's' : ''; ?> 
+                                    (<?php echo count($sources); ?>/<?php echo $maxSources; ?> used)
+                                </p>
+                                <button onclick="openAddSourceModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Browse & Add Sources
+                                </button>
+                            </div>
                         </div>
                     </div>
                 <?php else: ?>
@@ -1170,7 +1128,299 @@ $canAddSource = count($sources) < $maxSources;
                 timeDiv.remove();
             }
         }
+        
+        // Add Source Modal Functions
+        function openAddSourceModal() {
+            Dashboard.modal.open('addSourceModal');
+            // Reset search and filters
+            document.getElementById('sourceSearch').value = '';
+            filterByCategory('all');
+            hideSelectedSourceForm();
+        }
+        
+        function filterSources(searchTerm) {
+            const cards = document.querySelectorAll('.source-card');
+            const term = searchTerm.toLowerCase();
+            
+            cards.forEach(card => {
+                const title = card.dataset.title;
+                const type = card.dataset.type;
+                const visible = title.includes(term) || type.includes(term);
+                card.style.display = visible ? 'block' : 'none';
+            });
+        }
+        
+        function filterByCategory(category) {
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            
+            // Filter source cards
+            const cards = document.querySelectorAll('.source-card');
+            cards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                const visible = category === 'all' || cardCategory === category;
+                card.style.display = visible ? 'block' : 'none';
+            });
+        }
+        
+        function selectSource(sourceType, sourceTitle) {
+            // Update form
+            document.getElementById('selectedSourceType').value = sourceType;
+            document.getElementById('selectedSourceName').placeholder = `e.g., My ${sourceTitle}`;
+            
+            // Generate configuration fields
+            generateSourceConfigFields(sourceType);
+            
+            // Show form
+            showSelectedSourceForm();
+        }
+        
+        function showSelectedSourceForm() {
+            document.getElementById('selectedSourceForm').classList.remove('hidden');
+            // Scroll to form
+            document.getElementById('selectedSourceForm').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function hideSelectedSourceForm() {
+            document.getElementById('selectedSourceForm').classList.add('hidden');
+        }
+        
+        function generateSourceConfigFields(sourceType) {
+            const configDiv = document.getElementById('selectedSourceConfig');
+            let fieldsHtml = '';
+            
+            switch(sourceType) {
+                case 'weather':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                            <input type="text" name="config[api_key]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Your OpenWeatherMap API key">
+                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://openweathermap.org/api" target="_blank" class="text-blue-600">OpenWeatherMap</a></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                            <input type="text" name="config[city]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="e.g., New York, London, Tokyo">
+                        </div>
+                    `;
+                    break;
+                case 'news':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
+                            <input type="text" name="config[api_key]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Your NewsAPI key">
+                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://newsapi.org" target="_blank" class="text-blue-600">NewsAPI</a></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                            <select name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="us">United States</option>
+                                <option value="gb">United Kingdom</option>
+                                <option value="ca">Canada</option>
+                                <option value="au">Australia</option>
+                                <option value="de">Germany</option>
+                                <option value="fr">France</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                            <select name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="general">General</option>
+                                <option value="business">Business</option>
+                                <option value="technology">Technology</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                                <option value="science">Science</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
+                            <input type="number" name="config[limit]" min="1" max="20" value="5"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    `;
+                    break;
+                case 'stripe':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Secret API Key *</label>
+                            <input type="text" name="config[api_key]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="sk_live_... or sk_test_...">
+                            <p class="text-xs text-gray-500 mt-1">Found in your Stripe Dashboard under Developers > API keys</p>
+                        </div>
+                    `;
+                    break;
+                case 'sp500':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Alpha Vantage API Key *</label>
+                            <input type="text" name="config[api_key]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Your Alpha Vantage API key">
+                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://www.alphavantage.co/support/#api-key" target="_blank" class="text-blue-600">Alpha Vantage</a></p>
+                        </div>
+                    `;
+                    break;
+                case 'bitcoin':
+                    fieldsHtml = `
+                        <div class="bg-green-50 border border-green-200 rounded-md p-3">
+                            <div class="flex">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                <p class="text-sm text-green-800">No configuration required! Bitcoin price data is provided free by CoinGecko.</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'appstore':
+                    fieldsHtml = `
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3">
+                            <div class="flex">
+                                <i class="fas fa-info-circle text-yellow-500 mr-2 mt-0.5"></i>
+                                <p class="text-sm text-yellow-800">App Store analytics integration is coming soon. This source is currently in development.</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                default:
+                    fieldsHtml = '<p class="text-sm text-gray-500">No configuration required for this source.</p>';
+            }
+            
+            configDiv.innerHTML = fieldsHtml;
+        }
     </script>
+
+    <!-- Add Source Modal -->
+    <div id="addSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-medium text-gray-900">Add Data Source</h3>
+                    <button onclick="Dashboard.modal.close('addSourceModal')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type="text" id="sourceSearch" placeholder="Search for data sources..." 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               oninput="filterSources(this.value)">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Source Categories -->
+                <div class="mb-6">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterByCategory('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white">
+                            All Sources
+                        </button>
+                        <button onclick="filterByCategory('finance')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            Finance
+                        </button>
+                        <button onclick="filterByCategory('news')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            News & Media
+                        </button>
+                        <button onclick="filterByCategory('weather')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            Weather
+                        </button>
+                        <button onclick="filterByCategory('business')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            Business
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sources Grid -->
+                <div id="sourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <?php foreach ($availableModules as $type => $module): ?>
+                        <?php
+                        $sourceInfo = [
+                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'finance', 'description' => 'Real-time Bitcoin price and market data'],
+                            'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
+                            'news' => ['icon' => 'fas fa-newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
+                            'sp500' => ['icon' => 'fas fa-chart-line', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],
+                            'stripe' => ['icon' => 'fab fa-stripe', 'category' => 'business', 'description' => 'Revenue and payment analytics'],
+                            'appstore' => ['icon' => 'fab fa-app-store', 'category' => 'business', 'description' => 'App Store metrics and analytics']
+                        ];
+                        $info = $sourceInfo[$type] ?? ['icon' => 'fas fa-cube', 'category' => 'other', 'description' => 'Data source'];
+                        ?>
+                        <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer" 
+                             data-type="<?php echo $type; ?>" 
+                             data-category="<?php echo $info['category']; ?>"
+                             data-title="<?php echo strtolower($module->getTitle()); ?>"
+                             onclick="selectSource('<?php echo $type; ?>', '<?php echo htmlspecialchars($module->getTitle()); ?>')">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="<?php echo $info['icon']; ?> text-blue-600 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($module->getTitle()); ?></h4>
+                                    <p class="text-xs text-gray-500 mt-1"><?php echo $info['description']; ?></p>
+                                    <div class="mt-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            <?php echo ucfirst($info['category']); ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-plus text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <!-- Selected Source Form -->
+                <div id="selectedSourceForm" class="hidden mt-6 border-t pt-6">
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                        <input type="hidden" name="action" value="add_source">
+                        <input type="hidden" id="selectedSourceType" name="source_type">
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
+                                <input type="text" name="source_name" id="selectedSourceName"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                       placeholder="Custom name for this source">
+                            </div>
+                            
+                            <!-- Dynamic configuration fields will be inserted here -->
+                            <div id="selectedSourceConfig"></div>
+                            
+                            <div class="flex justify-end space-x-3 pt-4">
+                                <button type="button" onclick="Dashboard.modal.close('addSourceModal')" 
+                                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
+                                    Cancel
+                                </button>
+                                <button type="submit" 
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                    <i class="fas fa-plus mr-2"></i>
+                                    Add Source
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Edit Source Modal -->
     <div id="editSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
