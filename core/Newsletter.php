@@ -17,6 +17,7 @@ class Newsletter {
     private $days_of_week;
     private $day_of_month;
     private $months;
+    private $daily_times;
     private $is_paused;
     
     public function __construct($newsletterData = null) {
@@ -37,6 +38,7 @@ class Newsletter {
             $this->days_of_week = $newsletterData['days_of_week'] ?? '';
             $this->day_of_month = $newsletterData['day_of_month'] ?? 1;
             $this->months = $newsletterData['months'] ?? '';
+            $this->daily_times = $newsletterData['daily_times'] ?? '';
             $this->is_paused = $newsletterData['is_paused'] ?? 0;
         }
     }
@@ -99,7 +101,7 @@ class Newsletter {
     
     public function update($data) {
         try {
-            $allowedFields = ['title', 'timezone', 'send_time', 'frequency', 'days_of_week', 'day_of_month', 'months', 'is_paused'];
+            $allowedFields = ['title', 'timezone', 'send_time', 'frequency', 'days_of_week', 'day_of_month', 'months', 'daily_times', 'is_paused'];
             $updates = [];
             $values = [];
             
@@ -314,9 +316,29 @@ class Newsletter {
     public function getMonths() { 
         return $this->months ? json_decode($this->months, true) : []; 
     }
+    public function getDailyTimes() { 
+        return $this->daily_times ? json_decode($this->daily_times, true) : []; 
+    }
     public function isPaused() { return (bool)$this->is_paused; }
+    
+    // Setter methods for scheduling
+    public function setDailyTimes($dailyTimes) {
+        $this->daily_times = is_array($dailyTimes) ? json_encode($dailyTimes) : $dailyTimes;
+        return $this->update(['daily_times' => $this->daily_times]);
+    }
+    
+    public function setDaysOfWeek($daysOfWeek) {
+        $this->days_of_week = is_array($daysOfWeek) ? json_encode($daysOfWeek) : $daysOfWeek;
+        return $this->update(['days_of_week' => $this->days_of_week]);
+    }
+    
+    public function setDayOfMonth($dayOfMonth) {
+        $this->day_of_month = $dayOfMonth;
+        return $this->update(['day_of_month' => $this->day_of_month]);
+    }
     
     // Helper methods for scheduling
     public function getDaysOfWeekString() { return $this->days_of_week ?? ''; }
     public function getMonthsString() { return $this->months ?? ''; }
+    public function getDailyTimesString() { return $this->daily_times ?? ''; }
 }

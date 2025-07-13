@@ -212,8 +212,10 @@ const Dashboard = {
             this.clearFrequencyOptions();
             
             // Hide frequency-specific sections
+            const multipleDailyOptions = document.getElementById('multiple-daily-options');
             const weeklyOptions = document.getElementById('weekly-options');
             const monthlyOptions = document.getElementById('monthly-options');
+            if (multipleDailyOptions) multipleDailyOptions.classList.add('hidden');
             if (weeklyOptions) weeklyOptions.classList.add('hidden');
             if (monthlyOptions) monthlyOptions.classList.add('hidden');
         },
@@ -233,6 +235,20 @@ const Dashboard = {
         },
 
         clearFrequencyOptions: function() {
+            // Clear multiple daily times (reset to single default time)
+            const dailyTimesContainer = document.getElementById('daily-times-container');
+            if (dailyTimesContainer) {
+                dailyTimesContainer.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <input type="time" name="daily_times[]" value="06:00" 
+                               class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            
             // Clear weekly checkboxes
             const weeklyCheckboxes = document.querySelectorAll('input[name="days_of_week[]"]');
             weeklyCheckboxes.forEach(checkbox => {

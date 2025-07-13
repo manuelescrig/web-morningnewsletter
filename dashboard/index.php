@@ -58,6 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $newsletter = $user->getNewsletter($newsletterId);
                             
                             // Handle frequency-specific settings
+                            if ($frequency === 'multiple_daily' && isset($_POST['daily_times'])) {
+                                $dailyTimes = array_filter($_POST['daily_times']);
+                                $newsletter->setDailyTimes($dailyTimes);
+                            }
+                            
                             if ($frequency === 'weekly' && isset($_POST['days_of_week'])) {
                                 $daysOfWeek = array_map('intval', $_POST['days_of_week']);
                                 $newsletter->setDaysOfWeek($daysOfWeek);
@@ -205,6 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="daily">Daily</option>
+                                <option value="multiple_daily">Multiple per Day</option>
                                 <option value="weekly">Weekly</option>
                                 <option value="monthly">Monthly</option>
                             </select>
@@ -217,6 +223,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="time" name="send_time" id="send_time" value="06:00" required
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
+                    </div>
+                    
+                    <!-- Multiple Daily Options -->
+                    <div id="multiple-daily-options" class="hidden mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Send Times (multiple times per day)
+                        </label>
+                        <div id="daily-times-container" class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <input type="time" name="daily_times[]" value="06:00" 
+                                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                            <i class="fas fa-plus mr-1"></i> Add another time
+                        </button>
+                        <p class="text-xs text-gray-500 mt-1">Add multiple send times throughout the day</p>
                     </div>
                     
                     <!-- Weekly Schedule Options -->
@@ -482,15 +508,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update schedule options visibility based on frequency
         function updateScheduleOptions() {
             const frequency = document.getElementById('frequency').value;
+            const multipleDailyOptions = document.getElementById('multiple-daily-options');
             const weeklyOptions = document.getElementById('weekly-options');
             const monthlyOptions = document.getElementById('monthly-options');
             
             // Hide all options first
+            multipleDailyOptions.classList.add('hidden');
             weeklyOptions.classList.add('hidden');
             monthlyOptions.classList.add('hidden');
             
             // Show relevant options based on frequency
             switch (frequency) {
+                case 'multiple_daily':
+                    multipleDailyOptions.classList.remove('hidden');
+                    break;
                 case 'weekly':
                     weeklyOptions.classList.remove('hidden');
                     break;
@@ -507,6 +538,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 label.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-900');
             } else {
                 label.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-900');
+            }
+        }
+        
+        // Add daily time slot
+        function addDailyTime() {
+            const container = document.getElementById('daily-times-container');
+            const newTimeDiv = document.createElement('div');
+            newTimeDiv.className = 'flex items-center gap-2';
+            newTimeDiv.innerHTML = `
+                <input type="time" name="daily_times[]" value="12:00" 
+                       class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(newTimeDiv);
+        }
+        
+        // Remove daily time slot
+        function removeDailyTime(button) {
+            const container = document.getElementById('daily-times-container');
+            const timeDiv = button.parentElement;
+            
+            // Don't allow removing the last time slot
+            if (container.children.length > 1) {
+                timeDiv.remove();
             }
         }
         

@@ -482,6 +482,7 @@ class Database {
                 'days_of_week' => 'ALTER TABLE newsletters ADD COLUMN days_of_week TEXT DEFAULT \'\'',
                 'day_of_month' => 'ALTER TABLE newsletters ADD COLUMN day_of_month INTEGER DEFAULT 1',
                 'months' => 'ALTER TABLE newsletters ADD COLUMN months TEXT DEFAULT \'\'',
+                'daily_times' => 'ALTER TABLE newsletters ADD COLUMN daily_times TEXT DEFAULT \'\'',
                 'is_paused' => 'ALTER TABLE newsletters ADD COLUMN is_paused INTEGER DEFAULT 0'
             ];
             
