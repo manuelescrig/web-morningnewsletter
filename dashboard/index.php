@@ -266,7 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     
                     <!-- Second row for buttons -->
-                    <div class="flex justify-end space-x-3 mt-4">
+                    <div class="flex justify-end space-x-3 mt-8">
                         <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
                             Cancel
                         </button>
