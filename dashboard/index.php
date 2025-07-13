@@ -223,20 +223,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="space-y-6">
             <?php if (empty($newsletters)): ?>
                 <!-- Empty State with Personalized Message -->
-                <div class="text-center py-12">
+                <div id="emptyStateSection" class="text-center py-12">
                     <div class="max-w-md mx-auto">
-                        <div class="text-6xl mb-6">👋</div>
+                        <div class="text-4xl mb-6">👋</div>
                         <h2 class="text-3xl font-bold text-gray-900 mb-4">
                             Hey <?php echo htmlspecialchars($user->getName() ?: explode('@', $user->getEmail())[0]); ?>!
                         </h2>
                         <h3 class="text-xl font-semibold text-gray-700 mb-4">
                             Create your first Newsletter
                         </h3>
-                        <p class="text-gray-600 mb-8 leading-relaxed">
+                        <p class="text-gray-600 mb-8 text-sm leading-relaxed">
                             Get started with personalized morning briefings tailored just for you. 
                             Add your favorite data sources and never miss what matters most.
                         </p>
-                        <button onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                        <button id="createButtonEmpty" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                             <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold text-gray-900">
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
-                    <button onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
+                    <button id="createButtonHeader" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-plus mr-2"></i>
                         Add Newsletter
                     </button>
@@ -436,6 +436,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             section.classList.remove('hidden');
             section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             
+            // Hide create buttons
+            const emptyButton = document.getElementById('createButtonEmpty');
+            const headerButton = document.getElementById('createButtonHeader');
+            if (emptyButton) emptyButton.style.display = 'none';
+            if (headerButton) headerButton.style.display = 'none';
+            
             // Focus on the title input
             setTimeout(() => {
                 document.getElementById('title').focus();
@@ -445,6 +451,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function hideCreateForm() {
             const section = document.getElementById('createNewsletterSection');
             section.classList.add('hidden');
+            
+            // Show create buttons again
+            const emptyButton = document.getElementById('createButtonEmpty');
+            const headerButton = document.getElementById('createButtonHeader');
+            if (emptyButton) emptyButton.style.display = 'inline-block';
+            if (headerButton) headerButton.style.display = 'inline-block';
             
             // Clear form
             document.getElementById('title').value = '';
