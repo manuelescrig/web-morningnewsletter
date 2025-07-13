@@ -807,7 +807,14 @@ $canAddSource = count($sources) < $maxSources;
 
         // Delegate to external newsletter editor
         function editSource(sourceId) {
-            NewsletterEditor.sources.editSource(sourceId);
+            // Find the source data from the sources array
+            const sources = <?php echo json_encode($sources); ?>;
+            const source = sources.find(s => s.id == sourceId);
+            
+            if (source) {
+                const config = source.config ? JSON.parse(source.config) : {};
+                NewsletterEditor.sources.edit(sourceId, source.type, config);
+            }
         }
         
         function populateEditConfigFields(source) {
@@ -945,7 +952,14 @@ $canAddSource = count($sources) < $maxSources;
 
         // Delegate to external newsletter editor
         function deleteSource(sourceId) {
-            NewsletterEditor.sources.deleteSource(sourceId);
+            // Find the source data from the sources array
+            const sources = <?php echo json_encode($sources); ?>;
+            const source = sources.find(s => s.id == sourceId);
+            
+            if (source) {
+                const sourceName = source.name || source.type;
+                NewsletterEditor.sources.delete(sourceId, sourceName);
+            }
         }
 
         function setupLocationSearch() {

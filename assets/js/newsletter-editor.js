@@ -51,7 +51,7 @@ const NewsletterEditor = {
             Dashboard.form.submitWithConfirmation({
                 action: 'delete_source',
                 source_id: sourceId,
-                csrf_token: Dashboard.csrf.getToken()
+                csrf_token: window.csrfToken || Dashboard.csrf.getToken()
             }, message);
         },
 
