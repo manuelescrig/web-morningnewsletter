@@ -771,7 +771,45 @@ $canAddSource = count($sources) < $maxSources;
             
             if (source) {
                 const config = source.config ? JSON.parse(source.config) : {};
-                NewsletterEditor.sources.edit(sourceId, source.type, config);
+                
+                // Populate the form
+                document.getElementById('editSourceId').value = sourceId;
+                document.getElementById('editSourceType').value = source.type;
+                document.getElementById('editSourceName').value = source.name || '';
+                
+                // Hide all config sections
+                document.querySelectorAll('[id^="editConfig"]').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                // Show relevant config section and populate fields
+                const configSection = document.getElementById(`editConfig${source.type.charAt(0).toUpperCase() + source.type.slice(1)}`);
+                if (configSection) {
+                    configSection.classList.remove('hidden');
+                    
+                    // Populate config fields based on source type
+                    if (source.type === 'weather') {
+                        document.getElementById('edit_weather_location_search').value = config.location || '';
+                        document.getElementById('edit_weather_location').value = config.location || '';
+                        document.getElementById('edit_weather_latitude').value = config.latitude || '';
+                        document.getElementById('edit_weather_longitude').value = config.longitude || '';
+                        
+                        // Set up location search
+                        setupEditLocationSearch();
+                    } else if (source.type === 'news') {
+                        document.getElementById('edit_news_api_key').value = config.api_key || '';
+                        document.getElementById('edit_news_country').value = config.country || 'us';
+                        document.getElementById('edit_news_category').value = config.category || 'general';
+                        document.getElementById('edit_news_limit').value = config.limit || '5';
+                    } else if (source.type === 'stripe') {
+                        document.getElementById('edit_stripe_api_key').value = config.api_key || '';
+                    } else if (source.type === 'sp500') {
+                        document.getElementById('edit_sp500_api_key').value = config.api_key || '';
+                    }
+                }
+                
+                // Open the modal
+                Dashboard.modal.open('editSourceModal');
             }
         }
         
@@ -829,7 +867,7 @@ $canAddSource = count($sources) < $maxSources;
         }
         
         function setupEditLocationSearch() {
-            const searchInput = document.getElementById('edit_config_location_search');
+            const searchInput = document.getElementById('edit_weather_location_search');
             const resultsDiv = document.getElementById('edit_location_results');
             
             if (!searchInput || !resultsDiv) return;
@@ -894,10 +932,10 @@ $canAddSource = count($sources) < $maxSources;
         }
         
         function selectEditLocation(name, lat, lon) {
-            document.getElementById('edit_config_location_search').value = name;
-            document.getElementById('edit_config_location').value = name;
-            document.getElementById('edit_config_latitude').value = lat;
-            document.getElementById('edit_config_longitude').value = lon;
+            document.getElementById('edit_weather_location_search').value = name;
+            document.getElementById('edit_weather_location').value = name;
+            document.getElementById('edit_weather_latitude').value = lat;
+            document.getElementById('edit_weather_longitude').value = lon;
             document.getElementById('edit_location_results').classList.add('hidden');
         }
         
@@ -1198,17 +1236,17 @@ $canAddSource = count($sources) < $maxSources;
                 case 'weather':
                     fieldsHtml = `
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                            <input type="text" name="config[api_key]" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="Your OpenWeatherMap API key">
-                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://openweathermap.org/api" target="_blank" class="text-blue-600">OpenWeatherMap</a></p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                            <input type="text" name="config[city]" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="e.g., New York, London, Tokyo">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                            <div class="relative">
+                                <input type="text" id="config_location_search" 
+                                       placeholder="Search for a city or location..."
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <div id="location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                            </div>
+                            <input type="hidden" id="config_location" name="config_location">
+                            <input type="hidden" id="config_latitude" name="config_latitude">
+                            <input type="hidden" id="config_longitude" name="config_longitude">
+                            <p class="text-xs text-gray-500 mt-1">Search and select your city for accurate weather data</p>
                         </div>
                     `;
                     break;
@@ -1297,6 +1335,84 @@ $canAddSource = count($sources) < $maxSources;
             }
             
             configDiv.innerHTML = fieldsHtml;
+            
+            // Set up location search for weather sources
+            if (sourceType === 'weather') {
+                setupAddLocationSearch();
+            }
+        }
+        
+        function setupAddLocationSearch() {
+            const searchInput = document.getElementById('config_location_search');
+            const resultsDiv = document.getElementById('location_results');
+            
+            if (!searchInput || !resultsDiv) return;
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                
+                if (query.length < 2) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchAddLocations(query);
+                }, 300);
+            });
+        }
+        
+        function searchAddLocations(query) {
+            const resultsDiv = document.getElementById('location_results');
+            
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
+            resultsDiv.classList.remove('hidden');
+            
+            const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`;
+            
+            fetch(apiUrl, {
+                headers: {
+                    'User-Agent': 'MorningNewsletter/1.0'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No locations found</div>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = '';
+                data.forEach(location => {
+                    const locationDiv = document.createElement('div');
+                    locationDiv.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                    
+                    locationDiv.innerHTML = `
+                        <div class="font-medium text-gray-900">${location.name}</div>
+                        <div class="text-sm text-gray-600">${location.display_name}</div>
+                    `;
+                    
+                    locationDiv.addEventListener('click', function() {
+                        selectAddLocation(location.name, location.lat, location.lon);
+                    });
+                    
+                    resultsDiv.appendChild(locationDiv);
+                });
+            })
+            .catch(error => {
+                resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching locations</div>';
+            });
+        }
+        
+        function selectAddLocation(name, lat, lon) {
+            document.getElementById('config_location_search').value = name;
+            document.getElementById('config_location').value = name;
+            document.getElementById('config_latitude').value = lat;
+            document.getElementById('config_longitude').value = lon;
+            document.getElementById('location_results').classList.add('hidden');
         }
     </script>
 
@@ -1436,21 +1552,23 @@ $canAddSource = count($sources) < $maxSources;
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                            <input type="text" id="editSourceName" name="name" 
+                            <input type="text" id="editSourceName" name="source_name" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         
                         <!-- Weather Config -->
                         <div id="editConfigWeather" class="hidden">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                                <input type="text" id="edit_weather_api_key" name="config[api_key]" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                                <input type="text" id="edit_weather_city" name="config[city]" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                                <div class="relative">
+                                    <input type="text" id="edit_weather_location_search" name="config_location_search" 
+                                           placeholder="Search for a city or location..."
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <div id="edit_location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                                </div>
+                                <input type="hidden" id="edit_weather_location" name="config_location">
+                                <input type="hidden" id="edit_weather_latitude" name="config_latitude">
+                                <input type="hidden" id="edit_weather_longitude" name="config_longitude">
                             </div>
                         </div>
                         
