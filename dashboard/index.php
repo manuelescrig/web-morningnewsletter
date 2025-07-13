@@ -242,48 +242,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Send Time
                             </label>
                             <div id="daily-times-container" class="flex gap-2">
-                                <div class="flex gap-1">
-                                    <select name="daily_times[]" 
-                                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                        <?php for ($h = 0; $h < 24; $h++): ?>
-                                            <?php for ($m = 0; $m < 60; $m += 15): ?>
-                                                <?php 
-                                                $timeValue = sprintf('%02d:%02d', $h, $m);
-                                                $timeDisplay = date('g:i A', strtotime($timeValue));
-                                                $selected = ($timeValue === '06:00') ? 'selected' : '';
-                                                ?>
-                                                <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
-                                                    <?php echo $timeDisplay; ?>
-                                                </option>
-                                            <?php endfor; ?>
+                                <select name="daily_times[]" 
+                                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php for ($h = 0; $h < 24; $h++): ?>
+                                        <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                            <?php 
+                                            $timeValue = sprintf('%02d:%02d', $h, $m);
+                                            $timeDisplay = date('g:i A', strtotime($timeValue));
+                                            $selected = ($timeValue === '06:00') ? 'selected' : '';
+                                            ?>
+                                            <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                <?php echo $timeDisplay; ?>
+                                            </option>
                                         <?php endfor; ?>
-                                    </select>
-                                    <button type="button" onclick="removeDailyTimeHorizontal(this)" class="px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50" style="display: none;">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
+                                    <?php endfor; ?>
+                                </select>
                                 <button type="button" onclick="addDailyTime()" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        
-                        <div>
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
-                                <i class="fas fa-plus mr-2"></i>
-                                Create
-                            </button>
-                        </div>
                     </div>
                     
-                    <!-- Hidden timezone field - auto-detected -->
-                    <input type="hidden" id="timezone" name="timezone" value="UTC">
-                    
+                    <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3 mt-4">
                         <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
                             Cancel
                         </button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                            <i class="fas fa-plus mr-2"></i>
+                            Create Newsletter
+                        </button>
                     </div>
+                    
+                    <!-- Hidden timezone field - auto-detected -->
+                    <input type="hidden" id="timezone" name="timezone" value="UTC">
                 </form>
             </div>
         </div>
@@ -530,61 +523,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Create new time select element with remove button
-            const timeWrapper = document.createElement('div');
-            timeWrapper.className = 'flex gap-1';
-            
+            // Create new time select element (no remove button)
             const newSelect = document.createElement('select');
             newSelect.name = 'daily_times[]';
             newSelect.className = 'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
             newSelect.innerHTML = timeOptions;
             
-            const removeButton = document.createElement('button');
-            removeButton.type = 'button';
-            removeButton.className = 'px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50';
-            removeButton.innerHTML = '<i class="fas fa-times"></i>';
-            removeButton.onclick = function() { removeDailyTimeHorizontal(this); };
-            
-            timeWrapper.appendChild(newSelect);
-            timeWrapper.appendChild(removeButton);
-            
             // Insert before the + button
             const addButton = container.querySelector('button[onclick*="addDailyTime"]');
-            container.insertBefore(timeWrapper, addButton);
-            
-            // Update visibility of remove buttons
-            updateRemoveButtonsVisibility();
-        }
-        
-        // Remove daily time slot (horizontal layout)
-        function removeDailyTimeHorizontal(button) {
-            const container = document.getElementById('daily-times-container');
-            const timeWrapper = button.parentElement;
-            const timeSelects = container.querySelectorAll('select[name="daily_times[]"]');
-            
-            // Don't allow removing the last time slot
-            if (timeSelects.length > 1) {
-                timeWrapper.remove();
-                updateRemoveButtonsVisibility();
-            }
-        }
-        
-        // Update remove button visibility based on number of time slots
-        function updateRemoveButtonsVisibility() {
-            const container = document.getElementById('daily-times-container');
-            const timeSelects = container.querySelectorAll('select[name="daily_times[]"]');
-            const removeButtons = container.querySelectorAll('button[onclick*="removeDailyTimeHorizontal"]');
-            
-            removeButtons.forEach(button => {
-                button.style.display = timeSelects.length > 1 ? 'block' : 'none';
-            });
+            container.insertBefore(newSelect, addButton);
         }
         
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
             Dashboard.modal.closeOnOutsideClick('editModal');
-            // Initialize remove button visibility
-            updateRemoveButtonsVisibility();
         });
     </script>
 </body>
