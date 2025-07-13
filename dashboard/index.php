@@ -549,7 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             timeWrapper.appendChild(removeButton);
             
             // Insert before the + button
-            const addButton = container.querySelector('button');
+            const addButton = container.querySelector('button[onclick*="addDailyTime"]');
             container.insertBefore(timeWrapper, addButton);
             
             // Update visibility of remove buttons
