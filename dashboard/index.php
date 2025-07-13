@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             <?php else: ?>
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-start">
                     <h2 class="text-2xl font-bold text-gray-900">
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
