@@ -233,8 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Create your first Newsletter
                         </h3>
                         <p class="text-gray-600 mb-8 text-sm leading-relaxed">
-                            Get started with personalized morning briefings tailored just for you. 
-                            Add your favorite data sources and never miss what matters most.
+                            Get started with personalized morning briefings tailored just for you.
                         </p>
                         <button id="createButtonEmpty" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                             <i class="fas fa-plus mr-3"></i>
