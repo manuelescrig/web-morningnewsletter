@@ -607,8 +607,44 @@ $canAddSource = count($sources) < $maxSources;
                                     <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
                                     <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
                                     <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
-                                    <option value="quarterly" <?php echo $newsletter->getFrequency() === 'quarterly' ? 'selected' : ''; ?>>Quarterly</option>
                                 </select>
+                            </div>
+                            
+                            <!-- Weekly Schedule Options -->
+                            <div id="weekly-options" class="<?php echo $newsletter->getFrequency() !== 'weekly' ? 'hidden' : ''; ?>">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Days of Week
+                                </label>
+                                <div class="grid grid-cols-7 gap-2">
+                                    <?php 
+                                    $daysOfWeek = $newsletter->getDaysOfWeek();
+                                    $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                    for ($i = 1; $i <= 7; $i++): 
+                                    ?>
+                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
+                                            <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" 
+                                                   <?php echo in_array($i, $daysOfWeek) ? 'checked' : ''; ?>
+                                                   class="sr-only" onchange="toggleDaySelection(this)">
+                                            <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <!-- Monthly Day Options -->
+                            <div id="monthly-options" class="<?php echo $newsletter->getFrequency() !== 'monthly' ? 'hidden' : ''; ?>">
+                                <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Day of Month
+                                </label>
+                                <select name="day_of_month" id="day_of_month"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <?php for ($day = 1; $day <= 31; $day++): ?>
+                                        <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
+                                            <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
                             </div>
                             
                             <!-- Send Times (always visible, 15-minute intervals) -->
@@ -640,9 +676,13 @@ $canAddSource = count($sources) < $maxSources;
                                                     <?php endfor; ?>
                                                 <?php endfor; ?>
                                             </select>
-                                            <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                                                <i class="fas fa-times"></i>
-                                            </button>
+                                            <?php if (count($dailyTimes) > 1): ?>
+                                                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            <?php else: ?>
+                                                <div class="px-2 w-8"></div> <!-- Spacer for alignment -->
+                                            <?php endif; ?>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -650,43 +690,6 @@ $canAddSource = count($sources) < $maxSources;
                                     <i class="fas fa-plus mr-1"></i> Add another time
                                 </button>
                                 <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
-                            </div>
-                            
-                            <!-- Weekly Schedule Options -->
-                            <div id="weekly-options" class="<?php echo $newsletter->getFrequency() !== 'weekly' ? 'hidden' : ''; ?>">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Days of Week
-                                </label>
-                                <div class="grid grid-cols-7 gap-2">
-                                    <?php 
-                                    $daysOfWeek = $newsletter->getDaysOfWeek();
-                                    $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                    for ($i = 1; $i <= 7; $i++): 
-                                    ?>
-                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50">
-                                            <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" 
-                                                   <?php echo in_array($i, $daysOfWeek) ? 'checked' : ''; ?>
-                                                   class="sr-only">
-                                            <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
-                                        </label>
-                                    <?php endfor; ?>
-                                </div>
-                            </div>
-                            
-                            <!-- Monthly/Quarterly Day Options -->
-                            <div id="monthly-options" class="<?php echo !in_array($newsletter->getFrequency(), ['monthly', 'quarterly']) ? 'hidden' : ''; ?>">
-                                <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Day of Month
-                                </label>
-                                <select name="day_of_month" id="day_of_month"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <?php for ($day = 1; $day <= 31; $day++): ?>
-                                        <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
-                                            <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
-                                        </option>
-                                    <?php endfor; ?>
-                                </select>
-                                <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
                             </div>
                             
                             <!-- Quarterly Month Options -->

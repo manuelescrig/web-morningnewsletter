@@ -252,9 +252,10 @@ const Dashboard = {
                                 class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             ${timeOptions}
                         </select>
-                        <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                        <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
                             <i class="fas fa-times"></i>
                         </button>
+                        <div class="px-2 w-8 spacer"></div>
                     </div>
                 `;
             }

@@ -224,6 +224,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </select>
                         </div>
                         
+                        <!-- Weekly Schedule Options -->
+                        <div id="weekly-options" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Days of Week
+                            </label>
+                            <div class="grid grid-cols-7 gap-2">
+                                <?php 
+                                $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                for ($i = 1; $i <= 7; $i++): 
+                                ?>
+                                    <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
+                                        <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
+                                        <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                    </label>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Day Options -->
+                        <div id="monthly-options" class="hidden">
+                            <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
+                                Day of Month
+                            </label>
+                            <select name="day_of_month" id="day_of_month"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <?php for ($day = 1; $day <= 31; $day++): ?>
+                                    <option value="<?php echo $day; ?>" <?php echo $day == 1 ? 'selected' : ''; ?>>
+                                        <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
+                        </div>
+                        
                         <!-- Send Times (always visible, 15-minute intervals) -->
                         <div id="send-times-section">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -246,9 +280,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <?php endfor; ?>
                                         <?php endfor; ?>
                                     </select>
-                                    <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                    <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
                                         <i class="fas fa-times"></i>
                                     </button>
+                                    <div class="px-2 w-8 spacer"></div> <!-- Spacer for alignment when only one time -->
                                 </div>
                             </div>
                             <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
@@ -576,8 +611,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
                     <i class="fas fa-times"></i>
                 </button>
+                <div class="px-2 w-8 spacer" style="display: none;"></div>
             `;
             container.appendChild(newTimeDiv);
+            // Update button visibility after adding
+            updateDailyTimeButtons();
         }
         
         // Remove daily time slot
@@ -588,6 +626,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Don't allow removing the last time slot
             if (container.children.length > 1) {
                 timeDiv.remove();
+                // Update remaining X buttons visibility
+                updateDailyTimeButtons();
+            }
+        }
+        
+        // Update X button visibility based on number of time slots
+        function updateDailyTimeButtons() {
+            const container = document.getElementById('daily-times-container');
+            const timeSlots = container.children;
+            
+            for (let i = 0; i < timeSlots.length; i++) {
+                const timeSlot = timeSlots[i];
+                const button = timeSlot.querySelector('button[onclick*="removeDailyTime"]');
+                const spacer = timeSlot.querySelector('.spacer');
+                
+                if (timeSlots.length > 1) {
+                    // Show X button, hide spacer
+                    if (button) button.style.display = 'block';
+                    if (spacer) spacer.style.display = 'none';
+                } else {
+                    // Hide X button, show spacer
+                    if (button) button.style.display = 'none';
+                    if (spacer) spacer.style.display = 'block';
+                }
             }
         }
         
