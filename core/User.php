@@ -226,9 +226,9 @@ class User {
         return null;
     }
     
-    public function createNewsletter($title, $timezone = 'UTC', $sendTime = '06:00') {
+    public function createNewsletter($title, $timezone = 'UTC', $sendTime = '06:00', $frequency = 'daily') {
         $newsletter = new Newsletter();
-        return $newsletter->create($this->id, $title, $timezone, $sendTime);
+        return $newsletter->create($this->id, $title, $timezone, $sendTime, $frequency);
     }
     
     public function getDefaultNewsletter() {

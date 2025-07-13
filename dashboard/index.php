@@ -46,12 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $title = trim($_POST['title'] ?? '');
                 $timezone = $_POST['timezone'] ?? 'UTC';
                 $sendTime = $_POST['send_time'] ?? '06:00';
+                $frequency = $_POST['frequency'] ?? 'daily';
                 
                 if (empty($title)) {
                     $error = 'Newsletter title is required.';
                 } else {
                     try {
-                        $newsletterId = $user->createNewsletter($title, $timezone, $sendTime);
+                        $newsletterId = $user->createNewsletter($title, $timezone, $sendTime, $frequency);
                         if ($newsletterId) {
                             $success = "Newsletter '$title' created successfully!";
                             // Refresh newsletters
@@ -184,16 +185,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <div>
-                            <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
-                                Timezone
+                            <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
+                                Frequency
                             </label>
-                            <select name="timezone" id="timezone" 
+                            <select name="frequency" id="frequency" 
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <?php foreach ($timezones as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>" <?php echo $value === 'UTC' ? 'selected' : ''; ?>>
-                                        <?php echo $label; ?>
-                                    </option>
-                                <?php endforeach; ?>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
                             </select>
                         </div>
                         
@@ -205,6 +205,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                     </div>
+                    
+                    <!-- Hidden timezone field - auto-detected -->
+                    <input type="hidden" id="timezone" name="timezone" value="UTC">
                     
                     <div class="flex justify-end space-x-3">
                         <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">

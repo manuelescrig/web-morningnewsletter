@@ -175,6 +175,9 @@ const Dashboard = {
             if (emptyStateSection) emptyStateSection.style.display = 'none';
             if (headerButton) headerButton.style.display = 'none';
             
+            // Auto-detect and set timezone
+            this.detectAndSetTimezone();
+            
             // Focus on the title input
             setTimeout(() => {
                 const titleInput = document.getElementById('title');
@@ -196,12 +199,28 @@ const Dashboard = {
             
             // Clear form
             const titleInput = document.getElementById('title');
-            const timezoneSelect = document.getElementById('timezone');
+            const timezoneInput = document.getElementById('timezone');
             const sendTimeInput = document.getElementById('send_time');
+            const frequencySelect = document.getElementById('frequency');
             
             if (titleInput) titleInput.value = '';
-            if (timezoneSelect) timezoneSelect.value = 'UTC';
+            if (timezoneInput) timezoneInput.value = 'UTC';
             if (sendTimeInput) sendTimeInput.value = '06:00';
+            if (frequencySelect) frequencySelect.value = 'daily';
+        },
+
+        detectAndSetTimezone: function() {
+            const timezoneInput = document.getElementById('timezone');
+            if (timezoneInput) {
+                try {
+                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    timezoneInput.value = timezone;
+                    console.log('Auto-detected timezone:', timezone);
+                } catch (error) {
+                    console.warn('Could not detect timezone, using UTC:', error);
+                    timezoneInput.value = 'UTC';
+                }
+            }
         }
     },
 
