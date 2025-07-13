@@ -153,13 +153,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <!-- Create New Newsletter Section -->
-        <div class="bg-white rounded-lg shadow mb-8">
+        <!-- Create New Newsletter Section (Hidden by default) -->
+        <div id="createNewsletterSection" class="bg-white rounded-lg shadow mb-8 hidden">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-900">
-                    Create New Newsletter
-                </h2>
-                <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">
+                            Create New Newsletter
+                        </h2>
+                        <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
+                    </div>
+                    <button onclick="hideCreateForm()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
             </div>
             <div class="p-6">
                 <form method="POST" class="space-y-4">
@@ -199,7 +206,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <div class="flex justify-end">
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                            Cancel
+                        </button>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
                             <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
@@ -211,17 +221,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Existing Newsletters -->
         <div class="space-y-6">
-            <h2 class="text-2xl font-bold text-gray-900">
-                Your Newsletters (<?php echo count($newsletters); ?>)
-            </h2>
-            
             <?php if (empty($newsletters)): ?>
-                <div class="bg-white rounded-lg shadow p-8 text-center">
-                    <div class="text-gray-400 text-6xl mb-4">📰</div>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">No newsletters yet</h3>
-                    <p class="text-gray-600">Create your first newsletter to get started with personalized morning briefings.</p>
+                <!-- Empty State with Personalized Message -->
+                <div class="text-center py-12">
+                    <div class="max-w-md mx-auto">
+                        <div class="text-6xl mb-6">👋</div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                            Hey <?php echo htmlspecialchars($user->getName() ?: explode('@', $user->getEmail())[0]); ?>!
+                        </h2>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">
+                            Create your first Newsletter
+                        </h3>
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            Get started with personalized morning briefings tailored just for you. 
+                            Add your favorite data sources and never miss what matters most.
+                        </p>
+                        <button onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-plus mr-3"></i>
+                            Create Newsletter
+                        </button>
+                    </div>
                 </div>
             <?php else: ?>
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900">
+                        Your Newsletters (<?php echo count($newsletters); ?>)
+                    </h2>
+                    <button onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Newsletter
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     <?php foreach ($newsletters as $newsletter): ?>
                         <?php 
@@ -398,6 +428,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 action: 'delete_newsletter',
                 newsletter_id: newsletterId
             }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
+        }
+        
+        // Show/hide create newsletter form
+        function showCreateForm() {
+            const section = document.getElementById('createNewsletterSection');
+            section.classList.remove('hidden');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Focus on the title input
+            setTimeout(() => {
+                document.getElementById('title').focus();
+            }, 300);
+        }
+        
+        function hideCreateForm() {
+            const section = document.getElementById('createNewsletterSection');
+            section.classList.add('hidden');
+            
+            // Clear form
+            document.getElementById('title').value = '';
+            document.getElementById('timezone').value = 'UTC';
+            document.getElementById('send_time').value = '06:00';
         }
         
         // Initialize modal functionality
