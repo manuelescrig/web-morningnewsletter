@@ -163,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </h2>
                         <p class="text-gray-600 mt-1">Add another personalized newsletter with different sources and schedule</p>
                     </div>
-                    <button onclick="hideCreateForm()" class="text-gray-400 hover:text-gray-600">
+                    <button onclick="Dashboard.newsletter.hideCreateForm()" class="text-gray-400 hover:text-gray-600">
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
@@ -207,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                        <button type="button" onclick="Dashboard.newsletter.hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
                             Cancel
                         </button>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
@@ -236,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Get started with personalized morning briefings tailored just for you. 
                             Add your favorite data sources and never miss what matters most.
                         </p>
-                        <button id="createButtonEmpty" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                        <button id="createButtonEmpty" onclick="Dashboard.newsletter.showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                             <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold text-gray-900">
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
-                    <button id="createButtonHeader" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
+                    <button id="createButtonHeader" onclick="Dashboard.newsletter.showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-plus mr-2"></i>
                         Add Newsletter
                     </button>
@@ -428,40 +428,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 action: 'delete_newsletter',
                 newsletter_id: newsletterId
             }, `Are you sure you want to delete "${newsletter.title}"? This action cannot be undone and will delete all associated sources.`);
-        }
-        
-        // Show/hide create newsletter form
-        function showCreateForm() {
-            const section = document.getElementById('createNewsletterSection');
-            section.classList.remove('hidden');
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
-            // Hide create buttons
-            const emptyButton = document.getElementById('createButtonEmpty');
-            const headerButton = document.getElementById('createButtonHeader');
-            if (emptyButton) emptyButton.style.display = 'none';
-            if (headerButton) headerButton.style.display = 'none';
-            
-            // Focus on the title input
-            setTimeout(() => {
-                document.getElementById('title').focus();
-            }, 300);
-        }
-        
-        function hideCreateForm() {
-            const section = document.getElementById('createNewsletterSection');
-            section.classList.add('hidden');
-            
-            // Show create buttons again
-            const emptyButton = document.getElementById('createButtonEmpty');
-            const headerButton = document.getElementById('createButtonHeader');
-            if (emptyButton) emptyButton.style.display = 'inline-block';
-            if (headerButton) headerButton.style.display = 'inline-block';
-            
-            // Clear form
-            document.getElementById('title').value = '';
-            document.getElementById('timezone').value = 'UTC';
-            document.getElementById('send_time').value = '06:00';
         }
         
         // Initialize modal functionality

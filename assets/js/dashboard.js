@@ -159,6 +159,53 @@ const Dashboard = {
     },
 
     /**
+     * Newsletter creation utilities
+     */
+    newsletter: {
+        showCreateForm: function() {
+            const section = document.getElementById('createNewsletterSection');
+            if (!section) return;
+            
+            section.classList.remove('hidden');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Hide the entire empty state section and header button
+            const emptyStateSection = document.getElementById('emptyStateSection');
+            const headerButton = document.getElementById('createButtonHeader');
+            if (emptyStateSection) emptyStateSection.style.display = 'none';
+            if (headerButton) headerButton.style.display = 'none';
+            
+            // Focus on the title input
+            setTimeout(() => {
+                const titleInput = document.getElementById('title');
+                if (titleInput) titleInput.focus();
+            }, 300);
+        },
+
+        hideCreateForm: function() {
+            const section = document.getElementById('createNewsletterSection');
+            if (!section) return;
+            
+            section.classList.add('hidden');
+            
+            // Show the empty state section and header button again
+            const emptyStateSection = document.getElementById('emptyStateSection');
+            const headerButton = document.getElementById('createButtonHeader');
+            if (emptyStateSection) emptyStateSection.style.display = 'block';
+            if (headerButton) headerButton.style.display = 'inline-block';
+            
+            // Clear form
+            const titleInput = document.getElementById('title');
+            const timezoneSelect = document.getElementById('timezone');
+            const sendTimeInput = document.getElementById('send_time');
+            
+            if (titleInput) titleInput.value = '';
+            if (timezoneSelect) timezoneSelect.value = 'UTC';
+            if (sendTimeInput) sendTimeInput.value = '06:00';
+        }
+    },
+
+    /**
      * Initialize dashboard functionality
      */
     init: function() {
