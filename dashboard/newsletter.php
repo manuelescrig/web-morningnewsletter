@@ -785,15 +785,25 @@ $canAddSource = count($sources) < $maxSources;
                 document.getElementById('editSourceType').value = source.type;
                 document.getElementById('editSourceName').value = source.name || '';
                 
-                // Hide all config sections
+                // Hide all config sections and disable their required fields
                 document.querySelectorAll('[id^="editConfig"]').forEach(section => {
                     section.classList.add('hidden');
+                    // Disable all required fields in hidden sections
+                    section.querySelectorAll('input[required], select[required]').forEach(field => {
+                        field.removeAttribute('required');
+                        field.setAttribute('data-was-required', 'true');
+                    });
                 });
                 
                 // Show relevant config section and populate fields
                 const configSection = document.getElementById(`editConfig${source.type.charAt(0).toUpperCase() + source.type.slice(1)}`);
                 if (configSection) {
                     configSection.classList.remove('hidden');
+                    
+                    // Re-enable required fields for the visible section
+                    configSection.querySelectorAll('input[data-was-required], select[data-was-required]').forEach(field => {
+                        field.setAttribute('required', 'required');
+                    });
                     
                     // Populate config fields based on source type
                     if (source.type === 'weather') {
