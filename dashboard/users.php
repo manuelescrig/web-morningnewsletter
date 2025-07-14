@@ -467,41 +467,41 @@ $csrfToken = $auth->generateCSRFToken();
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sources</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discovery</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sources</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discovery</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                                    <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <?php foreach ($users as $userData): ?>
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
-                                                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                                    <i class="fas fa-user text-blue-600"></i>
+                                            <div class="flex-shrink-0 h-8 w-8">
+                                                <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                    <i class="fas fa-user text-blue-600 text-sm"></i>
                                                 </div>
                                             </div>
-                                            <div class="ml-4">
+                                            <div class="ml-3">
                                                 <div class="text-sm font-medium text-gray-900">
                                                     <?php echo htmlspecialchars($userData['email']); ?>
                                                     <?php if ($userData['id'] == $user->getId()): ?>
-                                                        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                                             You
                                                         </span>
                                                     <?php endif; ?>
                                                 </div>
-                                                <div class="text-sm text-gray-500">ID: <?php echo $userData['id']; ?></div>
+                                                <div class="text-xs text-gray-500">ID: <?php echo $userData['id']; ?></div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                    <td class="px-2 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium 
                                             <?php 
                                             switch($userData['plan']) {
                                                 case 'unlimited': echo 'bg-purple-100 text-purple-800'; break;
@@ -513,7 +513,7 @@ $csrfToken = $auth->generateCSRFToken();
                                             <?php echo ucfirst($userData['plan']); ?>
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <?php 
                                         $limits = ['free' => 1, 'starter' => 5, 'pro' => 15, 'unlimited' => PHP_INT_MAX];
                                         $limit = $limits[$userData['plan']] ?? 1;
@@ -527,23 +527,23 @@ $csrfToken = $auth->generateCSRFToken();
                                             <i class="fas fa-exclamation-triangle text-red-500 ml-1" title="Source limit reached"></i>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $userData['email_verified'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
+                                    <td class="px-2 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium <?php echo $userData['email_verified'] ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
                                             <?php echo $userData['email_verified'] ? 'Verified' : 'Unverified'; ?>
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <?php 
                                         if (!empty($userData['discovery_source'])) {
                                             $sources = [
                                                 'chatgpt' => 'ChatGPT',
                                                 'friend' => 'Friend',
-                                                'google_search' => 'Google Search',
+                                                'google_search' => 'Google',
                                                 'newsletter' => 'Newsletter',
                                                 'podcast' => 'Podcast',
                                                 'product_hunt' => 'Product Hunt',
                                                 'reddit' => 'Reddit',
-                                                'teammate' => 'Teammate / Co-worker',
+                                                'teammate' => 'Teammate',
                                                 'x_twitter' => 'X/Twitter',
                                                 'other' => 'Other',
                                                 // Legacy options for backward compatibility
@@ -558,22 +558,22 @@ $csrfToken = $auth->generateCSRFToken();
                                         }
                                         ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <?php echo date('M j, Y', strtotime($userData['created_at'])); ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-2 py-4 whitespace-nowrap">
                                         <?php if ($userData['is_admin']): ?>
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                 <i class="fas fa-crown mr-1"></i>
                                                 Admin
                                             </span>
                                         <?php else: ?>
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                 User
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserActionDropdown(<?php echo $userData['id']; ?>)">
                                                 <i class="fas fa-ellipsis-v"></i>
