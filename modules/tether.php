@@ -1,15 +1,16 @@
 <?php
 require_once __DIR__ . '/../core/SourceModule.php';
 
-class BitcoinModule extends BaseSourceModule {
+class TetherModule extends BaseSourceModule {
     public function getTitle(): string {
-        return 'Bitcoin (BTC)';
+        return 'Tether (USDT)';
     }
     
     public function getData(): array {
         try {
-            // Get current price from Binance API
-            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+            // For USDT, we'll use USDTUSD pair to show Tether's peg to USD
+            // Since Tether should be close to $1, we'll show more decimal places
+            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=USDTUSD';
             $currentResponse = $this->makeHttpRequest($currentPriceUrl);
             $currentData = json_decode($currentResponse, true);
             
@@ -20,7 +21,7 @@ class BitcoinModule extends BaseSourceModule {
             $currentPrice = floatval($currentData['price']);
             
             // Get 24h stats from Binance API
-            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT';
+            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=USDTUSD';
             $statsResponse = $this->makeHttpRequest($statsUrl);
             $statsData = json_decode($statsResponse, true);
             
@@ -32,15 +33,15 @@ class BitcoinModule extends BaseSourceModule {
             $priceChange = $currentPrice - $price24hAgo;
             $percentageChange = ($priceChange / $price24hAgo) * 100;
             
-            // Format current price
-            $formattedCurrentPrice = '$' . $this->formatNumber($currentPrice, 2);
-            $formatted24hPrice = '$' . $this->formatNumber($price24hAgo, 2);
+            // Format current price with more precision for USDT
+            $formattedCurrentPrice = '$' . number_format($currentPrice, 4);
+            $formatted24hPrice = '$' . number_format($price24hAgo, 4);
             
             // Format price change
             $symbol = $priceChange >= 0 ? '↑' : '↓';
             $color = $priceChange >= 0 ? 'green' : 'red';
-            $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . $this->formatNumber(abs($priceChange), 2);
-            $formattedPercentChange = ($percentageChange >= 0 ? '+' : '') . number_format($percentageChange, 2) . '%';
+            $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . number_format(abs($priceChange), 4);
+            $formattedPercentChange = ($percentageChange >= 0 ? '+' : '') . number_format($percentageChange, 3) . '%';
             
             $delta = [
                 'value' => $symbol . ' ' . $formattedPercentChange . ' (' . $formattedPriceChange . ')',
@@ -64,10 +65,10 @@ class BitcoinModule extends BaseSourceModule {
             ];
             
         } catch (Exception $e) {
-            error_log('Bitcoin module error: ' . $e->getMessage());
+            error_log('Tether module error: ' . $e->getMessage());
             return [
                 [
-                    'label' => 'Bitcoin Price',
+                    'label' => 'Tether Price',
                     'value' => 'Data unavailable',
                     'delta' => null
                 ]
@@ -76,7 +77,7 @@ class BitcoinModule extends BaseSourceModule {
     }
     
     public function getConfigFields(): array {
-        return []; // No configuration needed for Bitcoin price
+        return []; // No configuration needed for Tether price
     }
     
     public function validateConfig(array $config): bool {

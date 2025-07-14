@@ -13,6 +13,10 @@ require_once __DIR__ . '/../config/database.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
+require_once __DIR__ . '/../modules/ethereum.php';
+require_once __DIR__ . '/../modules/tether.php';
+require_once __DIR__ . '/../modules/xrp.php';
+require_once __DIR__ . '/../modules/binancecoin.php';
 require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
@@ -152,6 +156,10 @@ $timezones = [
 // Available source modules
 $availableModules = [
     'bitcoin' => new BitcoinModule(),
+    'ethereum' => new EthereumModule(),
+    'tether' => new TetherModule(),
+    'xrp' => new XrpModule(),
+    'binancecoin' => new BinancecoinModule(),
     'weather' => new WeatherModule(),
     'news' => new NewsModule(),
     'sp500' => new SP500Module(),
@@ -1311,11 +1319,15 @@ $canAddSource = count($sources) < $maxSources;
                     `;
                     break;
                 case 'bitcoin':
+                case 'ethereum':
+                case 'tether':
+                case 'xrp':
+                case 'binancecoin':
                     fieldsHtml = `
                         <div class="bg-green-50 border border-green-200 rounded-md p-3">
                             <div class="flex">
                                 <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
-                                <p class="text-sm text-green-800">No configuration required! Bitcoin price data is provided free by CoinGecko.</p>
+                                <p class="text-sm text-green-800">No configuration required! Cryptocurrency price data is provided free by Binance API with 24-hour comparison.</p>
                             </div>
                         </div>
                     `;
@@ -1468,7 +1480,11 @@ $canAddSource = count($sources) < $maxSources;
                     <?php foreach ($availableModules as $type => $module): ?>
                         <?php
                         $sourceInfo = [
-                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price and market data'],
+                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price with 24h comparison'],
+                            'ethereum' => ['icon' => 'fab fa-ethereum', 'category' => 'crypto', 'description' => 'Real-time Ethereum price with 24h comparison'],
+                            'tether' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Tether (USDT) stablecoin price tracking'],
+                            'xrp' => ['icon' => 'fas fa-circle', 'category' => 'crypto', 'description' => 'XRP (Ripple) price with 24h comparison'],
+                            'binancecoin' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Binance Coin (BNB) price with 24h comparison'],
                             'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
                             'news' => ['icon' => 'fas fa-newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
                             'sp500' => ['icon' => 'fas fa-chart-line', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],

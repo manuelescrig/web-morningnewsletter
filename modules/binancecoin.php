@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__ . '/../core/SourceModule.php';
 
-class BitcoinModule extends BaseSourceModule {
+class BinancecoinModule extends BaseSourceModule {
     public function getTitle(): string {
-        return 'Bitcoin (BTC)';
+        return 'Binance Coin (BNB)';
     }
     
     public function getData(): array {
         try {
             // Get current price from Binance API
-            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT';
             $currentResponse = $this->makeHttpRequest($currentPriceUrl);
             $currentData = json_decode($currentResponse, true);
             
@@ -20,7 +20,7 @@ class BitcoinModule extends BaseSourceModule {
             $currentPrice = floatval($currentData['price']);
             
             // Get 24h stats from Binance API
-            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT';
+            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BNBUSDT';
             $statsResponse = $this->makeHttpRequest($statsUrl);
             $statsData = json_decode($statsResponse, true);
             
@@ -64,10 +64,10 @@ class BitcoinModule extends BaseSourceModule {
             ];
             
         } catch (Exception $e) {
-            error_log('Bitcoin module error: ' . $e->getMessage());
+            error_log('Binance Coin module error: ' . $e->getMessage());
             return [
                 [
-                    'label' => 'Bitcoin Price',
+                    'label' => 'Binance Coin Price',
                     'value' => 'Data unavailable',
                     'delta' => null
                 ]
@@ -76,7 +76,7 @@ class BitcoinModule extends BaseSourceModule {
     }
     
     public function getConfigFields(): array {
-        return []; // No configuration needed for Bitcoin price
+        return []; // No configuration needed for BNB price
     }
     
     public function validateConfig(array $config): bool {
