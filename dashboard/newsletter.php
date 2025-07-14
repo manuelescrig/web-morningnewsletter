@@ -396,7 +396,7 @@ $canAddSource = count($sources) < $maxSources;
         <?php if ($error): ?>
             <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200">
                 <div class="flex">
-                    <i class="fas fa-exclamation-triangle mr-2 mt-0.5"></i>
+                    <i data-lucide="alert-triangle" class="mr-2 mt-0.5 w-5 h-5 text-red-500"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
                 </div>
             </div>
@@ -405,7 +405,7 @@ $canAddSource = count($sources) < $maxSources;
         <?php if ($success): ?>
             <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200">
                 <div class="flex">
-                    <i class="fas fa-check-circle mr-2 mt-0.5"></i>
+                    <i data-lucide="check-circle" class="mr-2 mt-0.5 w-5 h-5 text-green-500"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
                 </div>
             </div>
@@ -425,7 +425,7 @@ $canAddSource = count($sources) < $maxSources;
                                     (<?php echo count($sources); ?>/<?php echo $maxSources; ?> used)
                                 </p>
                                 <button onclick="openAddSourceModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
-                                    <i class="fas fa-plus mr-2"></i>
+                                    <i data-lucide="plus" class="mr-2 w-4 h-4"></i>
                                     Browse & Add Sources
                                 </button>
                             </div>
@@ -434,7 +434,7 @@ $canAddSource = count($sources) < $maxSources;
                 <?php else: ?>
                     <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
                         <div class="flex">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-2 mt-0.5"></i>
+                            <i data-lucide="alert-triangle" class="text-yellow-600 mr-2 mt-0.5 w-5 h-5"></i>
                             <div>
                                 <p class="text-yellow-800">
                                     You've reached your source limit (<?php echo count($sources); ?>/<?php echo $maxSources; ?>). 
@@ -449,7 +449,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="bg-white rounded-lg shadow">
                     <div class="p-6 border-b border-gray-200">
                         <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-list text-blue-600 mr-2"></i>
+                            <i data-lucide="list" class="text-blue-600 mr-2 w-5 h-5"></i>
                             Current Sources (<?php echo count($sources); ?>)
                         </h2>
                         <?php if (count($sources) > 1): ?>
@@ -471,7 +471,7 @@ $canAddSource = count($sources) < $maxSources;
                                             <div class="flex-1">
                                                 <div class="flex items-center">
                                                     <div class="cursor-move mr-3 text-gray-400 hover:text-gray-600">
-                                                        <i class="fas fa-grip-vertical"></i>
+                                                        <i data-lucide="grip-vertical" class="w-4 h-4"></i>
                                                     </div>
                                                     <div>
                                                         <h3 class="font-medium text-gray-900">
@@ -484,11 +484,11 @@ $canAddSource = count($sources) < $maxSources;
                                             <div class="flex items-center space-x-2">
                                                 <button onclick="editSource(<?php echo $source['id']; ?>)" 
                                                         class="text-gray-400 hover:text-blue-600 p-1">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i data-lucide="edit" class="w-4 h-4"></i>
                                                 </button>
                                                 <button onclick="deleteSource(<?php echo $source['id']; ?>)" 
                                                         class="text-gray-400 hover:text-red-600 p-1">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -532,7 +532,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="bg-white rounded-lg shadow mb-6">
                     <div class="p-6 border-b border-gray-200">
                         <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-cog text-blue-600 mr-2"></i>
+                            <i data-lucide="settings" class="text-blue-600 mr-2 w-5 h-5"></i>
                             Newsletter Settings
                         </h2>
                     </div>
@@ -644,7 +644,7 @@ $canAddSource = count($sources) < $maxSources;
                                             </select>
                                             <?php if (count($dailyTimes) > 1): ?>
                                                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                                                    <i class="fas fa-times"></i>
+                                                    <i data-lucide="x" class="w-4 h-4"></i>
                                                 </button>
                                             <?php else: ?>
                                                 <div class="px-2 w-8"></div> <!-- Spacer for alignment -->
@@ -653,7 +653,7 @@ $canAddSource = count($sources) < $maxSources;
                                     <?php endforeach; ?>
                                 </div>
                                 <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
-                                    <i class="fas fa-plus mr-1"></i> Add another time
+                                    <i data-lucide="plus" class="mr-1 w-4 h-4"></i> Add another time
                                 </button>
                                 <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
                             </div>
@@ -703,7 +703,7 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             
                             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                                <i class="fas fa-save mr-2"></i>
+                                <i data-lucide="save" class="mr-2 w-4 h-4"></i>
                                 Update Settings
                             </button>
                         </form>
@@ -714,7 +714,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="bg-white rounded-lg shadow">
                     <div class="p-6 border-b border-gray-200">
                         <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-clock text-green-600 mr-2"></i>
+                            <i data-lucide="clock" class="text-green-600 mr-2 w-5 h-5"></i>
                             Schedule Status
                         </h2>
                     </div>
@@ -732,9 +732,9 @@ $canAddSource = count($sources) < $maxSources;
                                 <span class="text-gray-600">Sent Today:</span>
                                 <span class="font-medium">
                                     <?php if ($scheduleStatus['sent_today']): ?>
-                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Yes</span>
+                                        <span class="text-green-600"><i data-lucide="check-circle" class="mr-1 w-4 h-4"></i>Yes</span>
                                     <?php else: ?>
-                                        <span class="text-gray-500"><i class="fas fa-times-circle mr-1"></i>No</span>
+                                        <span class="text-gray-500"><i data-lucide="x-circle" class="mr-1 w-4 h-4"></i>No</span>
                                     <?php endif; ?>
                                 </span>
                             </div>
@@ -1174,7 +1174,7 @@ $canAddSource = count($sources) < $maxSources;
                     ${timeOptions}
                 </select>
                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                    <i class="fas fa-times"></i>
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             `;
             container.appendChild(newTimeDiv);
@@ -1342,7 +1342,7 @@ $canAddSource = count($sources) < $maxSources;
                     fieldsHtml = `
                         <div class="bg-green-50 border border-green-200 rounded-md p-3">
                             <div class="flex">
-                                <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
+                                <i data-lucide="check-circle" class="text-green-500 mr-2 mt-0.5 w-5 h-5"></i>
                                 <p class="text-sm text-green-800">No configuration required! Cryptocurrency price data is provided free by Binance API with 24-hour comparison.</p>
                             </div>
                         </div>
@@ -1352,7 +1352,7 @@ $canAddSource = count($sources) < $maxSources;
                     fieldsHtml = `
                         <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3">
                             <div class="flex">
-                                <i class="fas fa-info-circle text-yellow-500 mr-2 mt-0.5"></i>
+                                <i data-lucide="info" class="text-yellow-500 mr-2 mt-0.5 w-5 h-5"></i>
                                 <p class="text-sm text-yellow-800">App Store analytics integration is coming soon. This source is currently in development.</p>
                             </div>
                         </div>
@@ -1451,7 +1451,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-medium text-gray-900">Add Data Source</h3>
                     <button onclick="Dashboard.modal.close('addSourceModal')" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-lg"></i>
+                        <i data-lucide="x" class="text-lg w-5 h-5"></i>
                     </button>
                 </div>
                 
@@ -1462,7 +1462,7 @@ $canAddSource = count($sources) < $maxSources;
                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                oninput="filterSources(this.value)">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
+                            <i data-lucide="search" class="text-gray-400 w-4 h-4"></i>
                         </div>
                     </div>
                 </div>
@@ -1530,7 +1530,7 @@ $canAddSource = count($sources) < $maxSources;
                                     </div>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-plus text-gray-400"></i>
+                                    <i data-lucide="plus" class="text-gray-400 w-4 h-4"></i>
                                 </div>
                             </div>
                         </div>
@@ -1562,7 +1562,7 @@ $canAddSource = count($sources) < $maxSources;
                                 </button>
                                 <button type="submit" 
                                         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                                    <i class="fas fa-plus mr-2"></i>
+                                    <i data-lucide="plus" class="mr-2 w-4 h-4"></i>
                                     Add Source
                                 </button>
                             </div>

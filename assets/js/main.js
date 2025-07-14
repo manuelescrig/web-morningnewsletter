@@ -215,12 +215,17 @@ const MorningNewsletter = {
                 } mr-2"></i>
                 <span class="text-sm">${message}</span>
                 <button class="ml-auto text-sm opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
-                    <i class="fas fa-times"></i>
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
         `;
         
         document.body.appendChild(alertDiv);
+        
+        // Reinitialize Lucide icons for dynamic content
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
         
         // Auto remove after 5 seconds
         setTimeout(() => {

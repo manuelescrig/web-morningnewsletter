@@ -236,7 +236,7 @@ $csrfToken = $auth->generateCSRFToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -253,7 +253,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                        <i data-lucide="users" class="text-blue-600 w-8 h-8"></i>
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Total Users</div>
@@ -265,7 +265,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                        <i data-lucide="check-circle" class="text-green-600 w-8 h-8"></i>
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Verified Users</div>
@@ -279,7 +279,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-crown text-red-600 text-2xl"></i>
+                        <i data-lucide="crown" class="text-red-600 w-8 h-8"></i>
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Admin Users</div>
@@ -340,14 +340,14 @@ $csrfToken = $auth->generateCSRFToken();
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <i data-lucide="alert-triangle" class="mr-2 w-5 h-5"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
         <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
+            <i data-lucide="check-circle" class="mr-2 w-5 h-5"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
         <?php endif; ?>
@@ -394,11 +394,11 @@ $csrfToken = $auth->generateCSRFToken();
                 <!-- Filter Actions -->
                 <div class="sm:w-1/4 flex space-x-2">
                     <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <i class="fas fa-filter mr-2"></i>
+                        <i data-lucide="filter" class="mr-2 w-4 h-4"></i>
                         Apply Filters
                     </button>
                     <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <i class="fas fa-times mr-2"></i>
+                        <i data-lucide="x" class="mr-2 w-4 h-4"></i>
                         Clear
                     </a>
                 </div>
@@ -408,7 +408,7 @@ $csrfToken = $auth->generateCSRFToken();
             <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
             <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
                 <div class="flex items-center">
-                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <i data-lucide="info" class="text-blue-400 mr-2 w-4 h-4"></i>
                     <span class="text-sm text-blue-700">
                         Showing <?php echo number_format($totalUsers); ?> of <?php echo number_format(count($allUsers)); ?> users
                         <?php
@@ -447,7 +447,7 @@ $csrfToken = $auth->generateCSRFToken();
                 
                 <?php if (empty($users)): ?>
                     <div class="text-center py-8">
-                        <i class="fas fa-users text-gray-300 text-4xl mb-4"></i>
+                        <i data-lucide="users" class="text-gray-300 w-16 h-16 mb-4"></i>
                         <p class="text-gray-500">
                             <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
                                 No users found matching the selected filters.
@@ -457,7 +457,7 @@ $csrfToken = $auth->generateCSRFToken();
                         </p>
                         <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
                             <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="mt-2 inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
-                                <i class="fas fa-times mr-1"></i>
+                                <i data-lucide="x" class="mr-1 w-4 h-4"></i>
                                 Clear all filters
                             </a>
                         <?php endif; ?>
@@ -484,7 +484,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-8 w-8">
                                                 <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                                    <i class="fas fa-user text-blue-600 text-sm"></i>
+                                                    <i data-lucide="user" class="text-blue-600 w-4 h-4"></i>
                                                 </div>
                                             </div>
                                             <div class="ml-3">
@@ -524,7 +524,7 @@ $csrfToken = $auth->generateCSRFToken();
                                             <?php echo $userData['source_count']; ?>/<?php echo $limitText; ?>
                                         </span>
                                         <?php if ($isAtLimit): ?>
-                                            <i class="fas fa-exclamation-triangle text-red-500 ml-1" title="Source limit reached"></i>
+                                            <i data-lucide="alert-triangle" class="text-red-500 ml-1 w-4 h-4" title="Source limit reached"></i>
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap">
@@ -564,7 +564,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     <td class="px-2 py-4 whitespace-nowrap">
                                         <?php if ($userData['is_admin']): ?>
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                <i class="fas fa-crown mr-1"></i>
+                                                <i data-lucide="crown" class="mr-1 w-3 h-3"></i>
                                                 Admin
                                             </span>
                                         <?php else: ?>
@@ -576,7 +576,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserActionDropdown(<?php echo $userData['id']; ?>)">
-                                                <i class="fas fa-ellipsis-v"></i>
+                                                <i data-lucide="more-vertical" class="w-4 h-4"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right top-full mt-2">
                                                     <div class="py-1">
@@ -593,7 +593,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="promote_plan">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center">
-                                                                    <i class="fas fa-arrow-up mr-2"></i>
+                                                                    <i data-lucide="arrow-up" class="mr-2 w-4 h-4"></i>
                                                                     Promote to <?php echo ucfirst($planHierarchy[$currentIndex + 1]); ?>
                                                                 </button>
                                                             </form>
@@ -605,7 +605,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="demote_plan">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-orange-700 hover:bg-orange-50 flex items-center">
-                                                                    <i class="fas fa-arrow-down mr-2"></i>
+                                                                    <i data-lucide="arrow-down" class="mr-2 w-4 h-4"></i>
                                                                     Demote to <?php echo ucfirst($planHierarchy[$currentIndex - 1]); ?>
                                                                 </button>
                                                             </form>
@@ -623,7 +623,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="demote">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-orange-700 hover:bg-orange-50 flex items-center">
-                                                                    <i class="fas fa-user-minus mr-2"></i>
+                                                                    <i data-lucide="user-minus" class="mr-2 w-4 h-4"></i>
                                                                     Remove Admin
                                                                 </button>
                                                             </form>
@@ -633,7 +633,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="promote">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 flex items-center">
-                                                                    <i class="fas fa-crown mr-2"></i>
+                                                                    <i data-lucide="crown" class="mr-2 w-4 h-4"></i>
                                                                     Make Admin
                                                                 </button>
                                                             </form>
@@ -645,7 +645,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="resend_verification">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center">
-                                                                    <i class="fas fa-envelope mr-2"></i>
+                                                                    <i data-lucide="mail" class="mr-2 w-4 h-4"></i>
                                                                     Resend Verification
                                                                 </button>
                                                             </form>
@@ -658,14 +658,14 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
                                                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 flex items-center">
-                                                                    <i class="fas fa-trash mr-2"></i>
+                                                                    <i data-lucide="trash-2" class="mr-2 w-4 h-4"></i>
                                                                     Delete User
                                                                 </button>
                                                             </form>
                                                         <?php else: ?>
                                                             <div class="border-t border-gray-100"></div>
                                                             <div class="px-4 py-2 text-xs text-blue-600 bg-blue-50">
-                                                                <i class="fas fa-info-circle mr-1"></i>
+                                                                <i data-lucide="info" class="mr-1 w-3 h-3"></i>
                                                                 This is your account
                                                             </div>
                                                         <?php endif; ?>
@@ -708,11 +708,11 @@ $csrfToken = $auth->generateCSRFToken();
                                     <!-- Previous button -->
                                     <?php if ($page > 1): ?>
                                         <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                            <i class="fas fa-chevron-left h-5 w-5"></i>
+                                            <i data-lucide="chevron-left" class="h-5 w-5"></i>
                                         </a>
                                     <?php else: ?>
                                         <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
-                                            <i class="fas fa-chevron-left h-5 w-5"></i>
+                                            <i data-lucide="chevron-left" class="h-5 w-5"></i>
                                         </span>
                                     <?php endif; ?>
                                     
@@ -749,11 +749,11 @@ $csrfToken = $auth->generateCSRFToken();
                                     <!-- Next button -->
                                     <?php if ($page < $totalPages): ?>
                                         <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                                            <i class="fas fa-chevron-right h-5 w-5"></i>
+                                            <i data-lucide="chevron-right" class="h-5 w-5"></i>
                                         </a>
                                     <?php else: ?>
                                         <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
-                                            <i class="fas fa-chevron-right h-5 w-5"></i>
+                                            <i data-lucide="chevron-right" class="h-5 w-5"></i>
                                         </span>
                                     <?php endif; ?>
                                 </nav>
@@ -824,6 +824,11 @@ $csrfToken = $auth->generateCSRFToken();
                     d.classList.add('hidden');
                 });
             }
+        });
+        
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
         });
     </script>
 </body>
