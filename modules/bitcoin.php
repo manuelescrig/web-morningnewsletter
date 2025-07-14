@@ -8,29 +8,21 @@ class BitcoinModule extends BaseSourceModule {
     
     public function getData(): array {
         try {
-            // Get current price from Binance API
-            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
-            $currentResponse = $this->makeHttpRequest($currentPriceUrl);
-            $currentData = json_decode($currentResponse, true);
+            // Use CoinGecko API - more globally accessible than Binance
+            $apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_last_updated_at=true';
+            $response = $this->makeHttpRequest($apiUrl);
+            $data = json_decode($response, true);
             
-            if (!$currentData || !isset($currentData['price'])) {
-                throw new Exception('Invalid current price response from Binance API');
+            if (!$data || !isset($data['bitcoin']['usd'])) {
+                throw new Exception('Invalid API response from CoinGecko');
             }
             
-            $currentPrice = floatval($currentData['price']);
+            $currentPrice = $data['bitcoin']['usd'];
+            $change24h = $data['bitcoin']['usd_24h_change'] ?? null;
             
-            // Get 24h stats from Binance API
-            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT';
-            $statsResponse = $this->makeHttpRequest($statsUrl);
-            $statsData = json_decode($statsResponse, true);
-            
-            if (!$statsData || !isset($statsData['openPrice'])) {
-                throw new Exception('Invalid 24h stats response from Binance API');
-            }
-            
-            $price24hAgo = floatval($statsData['openPrice']);
+            // Calculate 24h ago price from current price and percentage change
+            $price24hAgo = $change24h ? $currentPrice / (1 + ($change24h / 100)) : $currentPrice;
             $priceChange = $currentPrice - $price24hAgo;
-            $percentageChange = ($priceChange / $price24hAgo) * 100;
             
             // Format current price
             $formattedCurrentPrice = '$' . $this->formatNumber($currentPrice, 2);
@@ -40,12 +32,12 @@ class BitcoinModule extends BaseSourceModule {
             $symbol = $priceChange >= 0 ? '↑' : '↓';
             $color = $priceChange >= 0 ? 'green' : 'red';
             $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . $this->formatNumber(abs($priceChange), 2);
-            $formattedPercentChange = ($percentageChange >= 0 ? '+' : '') . number_format($percentageChange, 2) . '%';
+            $formattedPercentChange = ($change24h >= 0 ? '+' : '') . number_format($change24h, 2) . '%';
             
             $delta = [
                 'value' => $symbol . ' ' . $formattedPercentChange . ' (' . $formattedPriceChange . ')',
                 'color' => $color,
-                'raw_delta' => $percentageChange
+                'raw_delta' => $change24h
             ];
             
             return [
@@ -65,11 +57,10 @@ class BitcoinModule extends BaseSourceModule {
             
         } catch (Exception $e) {
             error_log('Bitcoin module error: ' . $e->getMessage());
-            error_log('Bitcoin module error trace: ' . $e->getTraceAsString());
             return [
                 [
                     'label' => 'Bitcoin Price',
-                    'value' => 'Data unavailable (Error: ' . $e->getMessage() . ')',
+                    'value' => 'Data unavailable',
                     'delta' => null
                 ]
             ];
