@@ -33,8 +33,8 @@ abstract class BaseSourceModule implements SourceModule {
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => 3,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => 0,
             CURLOPT_USERAGENT => 'MorningNewsletter/1.0',
             CURLOPT_HTTPHEADER => $headers
         ]);
@@ -65,9 +65,9 @@ abstract class BaseSourceModule implements SourceModule {
                 'user_agent' => 'MorningNewsletter/1.0'
             ],
             'ssl' => [
-                'verify_peer' => true,
-                'verify_peer_name' => true,
-                'allow_self_signed' => false
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
             ]
         ]);
         

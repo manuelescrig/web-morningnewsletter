@@ -8,9 +8,9 @@ class TetherModule extends BaseSourceModule {
     
     public function getData(): array {
         try {
-            // For USDT, we'll use USDTUSD pair to show Tether's peg to USD
-            // Since Tether should be close to $1, we'll show more decimal places
-            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=USDTUSD';
+            // For USDT, we'll use USDCUSDT pair to show Tether vs USDC (both stablecoins)
+            // Since both should be close to $1, we'll show more decimal places
+            $currentPriceUrl = 'https://api.binance.com/api/v3/ticker/price?symbol=USDCUSDT';
             $currentResponse = $this->makeHttpRequest($currentPriceUrl);
             $currentData = json_decode($currentResponse, true);
             
@@ -21,7 +21,7 @@ class TetherModule extends BaseSourceModule {
             $currentPrice = floatval($currentData['price']);
             
             // Get 24h stats from Binance API
-            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=USDTUSD';
+            $statsUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=USDCUSDT';
             $statsResponse = $this->makeHttpRequest($statsUrl);
             $statsData = json_decode($statsResponse, true);
             
