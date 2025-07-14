@@ -790,12 +790,6 @@ $canAddSource = count($sources) < $maxSources;
                     section.classList.add('hidden');
                 });
                 
-                // Remove any previous crypto config message
-                const existingMessage = document.querySelector('.text-sm.text-gray-500.bg-gray-50');
-                if (existingMessage && existingMessage.textContent.includes('no additional configuration')) {
-                    existingMessage.remove();
-                }
-                
                 // Show relevant config section and populate fields
                 const configSection = document.getElementById(`editConfig${source.type.charAt(0).toUpperCase() + source.type.slice(1)}`);
                 if (configSection) {
@@ -820,15 +814,6 @@ $canAddSource = count($sources) < $maxSources;
                     } else if (source.type === 'sp500') {
                         document.getElementById('edit_sp500_api_key').value = config.api_key || '';
                     }
-                } else if (['bitcoin', 'ethereum', 'tether', 'xrp', 'binancecoin'].includes(source.type)) {
-                    // Crypto sources don't need configuration, just show a message
-                    const configDiv = document.createElement('div');
-                    configDiv.className = 'text-sm text-gray-500 bg-gray-50 p-3 rounded-md';
-                    configDiv.innerHTML = '<i class="fas fa-info-circle mr-2"></i>This source requires no additional configuration.';
-                    
-                    // Insert after the name field
-                    const nameField = document.getElementById('editSourceName').parentElement;
-                    nameField.parentElement.insertBefore(configDiv, nameField.nextSibling);
                 }
                 
                 // Open the modal
@@ -1610,12 +1595,12 @@ $canAddSource = count($sources) < $maxSources;
                         <div id="editConfigNews" class="hidden">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                                <input type="text" id="edit_news_api_key" name="config[api_key]" required
+                                <input type="text" id="edit_news_api_key" name="config_api_key" required
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                                <select id="edit_news_country" name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="edit_news_country" name="config_country" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option value="us">United States</option>
                                     <option value="gb">United Kingdom</option>
                                     <option value="ca">Canada</option>
@@ -1623,7 +1608,7 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                <select id="edit_news_category" name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="edit_news_category" name="config_category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option value="general">General</option>
                                     <option value="business">Business</option>
                                     <option value="technology">Technology</option>
@@ -1632,7 +1617,7 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
-                                <input type="number" id="edit_news_limit" name="config[limit]" min="1" max="20" value="5"
+                                <input type="number" id="edit_news_limit" name="config_limit" min="1" max="20" value="5"
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
@@ -1641,7 +1626,7 @@ $canAddSource = count($sources) < $maxSources;
                         <div id="editConfigStripe" class="hidden">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                                <input type="text" id="edit_stripe_api_key" name="config[api_key]" required
+                                <input type="text" id="edit_stripe_api_key" name="config_api_key" required
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
@@ -1650,7 +1635,7 @@ $canAddSource = count($sources) < $maxSources;
                         <div id="editConfigSp500" class="hidden">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
-                                <input type="text" id="edit_sp500_api_key" name="config[api_key]" required
+                                <input type="text" id="edit_sp500_api_key" name="config_api_key" required
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             </div>
                         </div>
@@ -1658,6 +1643,26 @@ $canAddSource = count($sources) < $maxSources;
                         <!-- Bitcoin Config (no config needed) -->
                         <div id="editConfigBitcoin" class="hidden">
                             <p class="text-sm text-gray-500">No configuration required for Bitcoin price data.</p>
+                        </div>
+                        
+                        <!-- Ethereum Config (no config needed) -->
+                        <div id="editConfigEthereum" class="hidden">
+                            <p class="text-sm text-gray-500">No configuration required for Ethereum price data.</p>
+                        </div>
+                        
+                        <!-- Tether Config (no config needed) -->
+                        <div id="editConfigTether" class="hidden">
+                            <p class="text-sm text-gray-500">No configuration required for Tether price data.</p>
+                        </div>
+                        
+                        <!-- XRP Config (no config needed) -->
+                        <div id="editConfigXrp" class="hidden">
+                            <p class="text-sm text-gray-500">No configuration required for XRP price data.</p>
+                        </div>
+                        
+                        <!-- Binance Coin Config (no config needed) -->
+                        <div id="editConfigBinancecoin" class="hidden">
+                            <p class="text-sm text-gray-500">No configuration required for Binance Coin price data.</p>
                         </div>
                         
                         <!-- AppStore Config -->
