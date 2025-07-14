@@ -75,14 +75,14 @@ $csrfToken = $auth->generateCSRFToken();
         <!-- Alerts -->
         <?php if ($error): ?>
             <div class="auth-alert auth-alert-error">
-                <i class="fas fa-exclamation-triangle"></i>
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
                 <span><?php echo htmlspecialchars($error); ?></span>
             </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
             <div class="auth-alert auth-alert-success">
-                <i class="fas fa-check-circle"></i>
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
                 <div>
                     <div><?php echo htmlspecialchars($success); ?></div>
                     <div class="mt-3 text-sm">
@@ -115,14 +115,14 @@ $csrfToken = $auth->generateCSRFToken();
                     <button type="submit" class="auth-button bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-lg hover:shadow-xl">
                         Send Reset Link
                         <span class="auth-button-icon">
-                            <i class="fas fa-paper-plane"></i>
+                            <i data-lucide="send" class="w-4 h-4"></i>
                         </span>
                     </button>
                 </div>
 
                 <div class="text-center mt-4">
                     <a href="/auth/login.php" class="auth-link">
-                        <i class="fas fa-arrow-left mr-2"></i>
+                        <i data-lucide="arrow-left" class="mr-2 w-4 h-4"></i>
                         Back to Sign In
                     </a>
                 </div>
@@ -131,5 +131,11 @@ $csrfToken = $auth->generateCSRFToken();
     </div>
     
     <script src="/assets/js/auth.js"></script>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>

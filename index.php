@@ -29,7 +29,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MorningNewsletter.com - Your Personalized Morning Brief</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body class="bg-white">
@@ -42,7 +42,7 @@ try {
                 <!-- Badge -->
                 <div class="mb-8">
                     <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                        <i class="fas fa-sparkles mr-2" aria-hidden="true"></i>
+                        <i data-lucide="sparkles" class="mr-2 w-4 h-4" aria-hidden="true"></i>
                         AI-Powered Content Curation
                     </span>
                 </div>
@@ -65,22 +65,22 @@ try {
                     <a href="/auth/register.php" 
                        class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
                         Start for Free
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
+                        <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
                     </a>
                 </div>
                 
                 <!-- Benefits List -->
                 <div class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-gray-600">
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <i data-lucide="check-circle" class="text-green-500 mr-2 w-4 h-4" aria-hidden="true"></i>
                         <span>7-day free trial</span>
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <i data-lucide="check-circle" class="text-green-500 mr-2 w-4 h-4" aria-hidden="true"></i>
                         <span>Plans starting at $5/mo</span>
                     </div>
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
+                        <i data-lucide="check-circle" class="text-green-500 mr-2 w-4 h-4" aria-hidden="true"></i>
                         <span>Cancel anytime</span>
                     </div>
                 </div>
@@ -109,21 +109,21 @@ try {
             <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div class="bg-gray-50 rounded-2xl p-8">
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-clock text-xl"></i>
+                        <i data-lucide="clock" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Wasting Precious Time</h3>
                     <p class="text-gray-600">Spending 30+ minutes every morning checking multiple apps and platforms for updates.</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Missing Important Updates</h3>
                     <p class="text-gray-600">Critical information gets lost in the noise of countless notifications and messages.</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-bolt text-xl"></i>
+                        <i data-lucide="zap" class="w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Starting Your Day Stressed</h3>
                     <p class="text-gray-600">Feeling overwhelmed before your day even begins, affecting your productivity.</p>
@@ -148,15 +148,15 @@ try {
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Before MorningNewsletter</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <i data-lucide="x" class="text-red-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">Scattered information across multiple platforms</p>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <i data-lucide="x" class="text-red-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">Missed important updates and messages</p>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
+                            <i data-lucide="x" class="text-red-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">Wasted time checking different apps</p>
                         </li>
                     </ul>
@@ -165,15 +165,15 @@ try {
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">After MorningNewsletter</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <i data-lucide="check" class="text-green-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">One concise email with everything you need</p>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <i data-lucide="check" class="text-green-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">Never miss important updates</p>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <i data-lucide="check" class="text-green-500 mt-1 mr-3 w-4 h-4"></i>
                             <p class="text-gray-600">Start your day focused and productive</p>
                         </li>
                     </ul>
@@ -190,7 +190,7 @@ try {
                 <p class="text-gray-500 mb-2">Trusted by <?php echo $displayCount; ?> professionals worldwide</p>
                 <?php if ($todayCount > 0): ?>
                     <p class="text-sm text-blue-600 font-medium">
-                        <i class="fas fa-user-plus mr-1"></i>
+                        <i data-lucide="user-plus" class="mr-1 w-4 h-4"></i>
                         <?php echo $todayCount; ?> <?php echo $todayCount === 1 ? 'professional joined' : 'professionals joined'; ?> today
                     </p>
                 <?php endif; ?>
@@ -224,7 +224,7 @@ try {
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-                                    <i class="fas fa-chart-line text-xl"></i>
+                                    <i data-lucide="trending-up" class="w-6 h-6"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -241,7 +241,7 @@ try {
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-                                    <i class="fas fa-coins text-xl"></i>
+                                    <i data-lucide="coins" class="w-6 h-6"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -258,7 +258,7 @@ try {
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-                                    <i class="fas fa-cloud-sun text-xl"></i>
+                                    <i data-lucide="cloud-sun" class="w-6 h-6"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -275,7 +275,7 @@ try {
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
                                 <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
-                                    <i class="fas fa-comments text-xl"></i>
+                                    <i data-lucide="message-circle" class="w-6 h-6"></i>
                                 </div>
                             </div>
                             <div class="ml-4">
@@ -316,26 +316,26 @@ try {
                         </p>
                         <div class="mt-3 mb-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-gift mr-1"></i>
+                                <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
                                 7-day free trial
                             </span>
                         </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Up to 5 sources</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Basic scheduling & customization</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Daily newsletter delivery</p>
                             </li>
@@ -364,32 +364,32 @@ try {
                         </p>
                         <div class="mt-3 mb-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-gift mr-1"></i>
+                                <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
                                 7-day free trial
                             </span>
                         </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Up to 15 sources</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Advanced scheduling</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Custom layouts</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Priority email support</p>
                             </li>
@@ -413,32 +413,32 @@ try {
                         </p>
                         <div class="mt-3 mb-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-gift mr-1"></i>
+                                <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
                                 7-day free trial
                             </span>
                         </div>
                         <ul class="mt-6 space-y-4 flex-1">
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Unlimited sources</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">All features included</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Priority support</p>
                             </li>
                             <li class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-check text-purple-600"></i>
+                                    <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                                 </div>
                                 <p class="ml-3 text-base text-gray-500">Team collaboration</p>
                             </li>
@@ -521,7 +521,7 @@ try {
                     <div class="bg-gray-50 rounded-lg">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</span>
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                            <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-200 w-4 h-4"></i>
                         </button>
                         <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             The newsletter is delivered to your inbox every morning at 6 AM in your local timezone.
@@ -531,7 +531,7 @@ try {
                     <div class="bg-gray-50 rounded-lg">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I customize what information I receive?</span>
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                            <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-200 w-4 h-4"></i>
                         </button>
                         <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             Yes! You can customize your preferences in your dashboard to receive exactly the information that matters to you.
@@ -541,7 +541,7 @@ try {
                     <div class="bg-gray-50 rounded-lg">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">How do you handle my data?</span>
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                            <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-200 w-4 h-4"></i>
                         </button>
                         <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             We take data security seriously. All your data is encrypted and we never share it with third parties. Read our privacy policy for more details.
@@ -551,7 +551,7 @@ try {
                     <div class="bg-gray-50 rounded-lg">
                         <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</span>
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
+                            <i data-lucide="chevron-down" class="text-gray-500 transition-transform duration-200 w-4 h-4"></i>
                         </button>
                         <div class="faq-answer px-6 pt-2 pb-4 text-gray-600" style="display: none;">
                             Yes, you can cancel your subscription at any time. There are no long-term commitments required.
@@ -573,7 +573,7 @@ try {
             </p>
             <div class="mt-8">
                 <a href="/register" class="inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    Start for Free<i class="fas fa-arrow-right ml-2"></i>
+                    Start for Free<i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
                 </a>
             </div>
         </div>
@@ -584,6 +584,11 @@ try {
     <script>
         // Pass PHP variables to JavaScript
         const isLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
+        
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
     </script>
     <script src="/assets/js/main.js"></script>
 </body>
