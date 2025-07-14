@@ -790,6 +790,12 @@ $canAddSource = count($sources) < $maxSources;
                     section.classList.add('hidden');
                 });
                 
+                // Remove any previous crypto config message
+                const existingMessage = document.querySelector('.text-sm.text-gray-500.bg-gray-50');
+                if (existingMessage && existingMessage.textContent.includes('no additional configuration')) {
+                    existingMessage.remove();
+                }
+                
                 // Show relevant config section and populate fields
                 const configSection = document.getElementById(`editConfig${source.type.charAt(0).toUpperCase() + source.type.slice(1)}`);
                 if (configSection) {
@@ -814,6 +820,15 @@ $canAddSource = count($sources) < $maxSources;
                     } else if (source.type === 'sp500') {
                         document.getElementById('edit_sp500_api_key').value = config.api_key || '';
                     }
+                } else if (['bitcoin', 'ethereum', 'tether', 'xrp', 'binancecoin'].includes(source.type)) {
+                    // Crypto sources don't need configuration, just show a message
+                    const configDiv = document.createElement('div');
+                    configDiv.className = 'text-sm text-gray-500 bg-gray-50 p-3 rounded-md';
+                    configDiv.innerHTML = '<i class="fas fa-info-circle mr-2"></i>This source requires no additional configuration.';
+                    
+                    // Insert after the name field
+                    const nameField = document.getElementById('editSourceName').parentElement;
+                    nameField.parentElement.insertBefore(configDiv, nameField.nextSibling);
                 }
                 
                 // Open the modal
