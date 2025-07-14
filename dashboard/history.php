@@ -53,7 +53,7 @@ if ($newsletterId) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>History - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -77,7 +77,7 @@ if ($newsletterId) {
                     <?php if ($newsletterId): ?>
                         <a href="/dashboard/history.php" 
                            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                            <i class="fas fa-list mr-2"></i>
+                            <i data-lucide="list" class="mr-2 w-4 h-4"></i>
                             All History
                         </a>
                     <?php endif; ?>
@@ -117,7 +117,7 @@ if ($newsletterId) {
                     <div class="flex items-end">
                         <button type="submit" 
                                 class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
-                            <i class="fas fa-search mr-2"></i>
+                            <i data-lucide="search" class="mr-2 w-4 h-4"></i>
                             Search
                         </button>
                     </div>
@@ -168,12 +168,12 @@ if ($newsletterId) {
                                         <div class="ml-3">
                                             <?php if ($entry['email_status'] === 'sent'): ?>
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    <i class="fas fa-check-circle mr-1"></i>
+                                                    <i data-lucide="check-circle" class="mr-1 w-4 h-4"></i>
                                                     Sent
                                                 </span>
                                             <?php elseif ($entry['email_status'] === 'failed'): ?>
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                    <i class="fas fa-times-circle mr-1"></i>
+                                                    <i data-lucide="x-circle" class="mr-1 w-4 h-4"></i>
                                                     Failed
                                                 </span>
                                             <?php endif; ?>
@@ -182,13 +182,13 @@ if ($newsletterId) {
                                     </div>
                                     
                                     <div class="mt-2 flex items-center text-sm text-gray-600">
-                                        <i class="fas fa-calendar mr-2"></i>
+                                        <i data-lucide="calendar" class="mr-2 w-4 h-4"></i>
                                         <span><?php echo date('F j, Y g:i A', strtotime($entry['sent_at'])); ?></span>
                                         
                                         <?php if ($entry['email_status'] === 'failed' && $entry['error_message']): ?>
                                             <span class="mx-2">•</span>
                                             <span class="text-red-600">
-                                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                                <i data-lucide="alert-triangle" class="mr-1 w-4 h-4"></i>
                                                 <?php echo htmlspecialchars($entry['error_message']); ?>
                                             </span>
                                         <?php endif; ?>
@@ -235,5 +235,11 @@ if ($newsletterId) {
             </div>
         <?php endif; ?>
     </div>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>

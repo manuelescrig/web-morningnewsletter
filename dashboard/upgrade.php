@@ -115,31 +115,31 @@ $currentPage = 'upgrade';
                     <ul class="mt-6 space-y-4 flex-1">
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-check text-purple-600"></i>
+                                <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Up to 15 sources</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-check text-purple-600"></i>
+                                <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Advanced scheduling</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-check text-purple-600"></i>
+                                <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Custom layouts & themes</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-check text-purple-600"></i>
+                                <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Priority email support</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-check text-purple-600"></i>
+                                <i data-lucide="check" class="text-purple-600 w-4 h-4"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Advanced analytics</p>
                         </li>

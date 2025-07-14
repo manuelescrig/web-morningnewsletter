@@ -49,7 +49,7 @@ if ($plan) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful! 🎉</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         .celebration-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -102,7 +102,7 @@ if ($plan) {
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div class="bounce-in">
                 <div class="mb-8">
-                    <i class="fas fa-check-circle text-6xl text-white mb-4"></i>
+                    <i data-lucide="check-circle" class="text-6xl text-white mb-4 w-24 h-24"></i>
                 </div>
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
                     Payment Successful! 🎉
@@ -112,7 +112,7 @@ if ($plan) {
                 </p>
                 <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto">
                     <p class="text-white/80 text-lg">
-                        <i class="fas fa-credit-card mr-2"></i>
+                        <i data-lucide="credit-card" class="mr-2 w-4 h-4"></i>
                         <?php if ($plan && $planDetails): ?>
                             <?php echo ucfirst($planDetails['name']); ?> subscription activated for <strong><?php echo htmlspecialchars($user->getEmail()); ?></strong>
                         <?php else: ?>
@@ -140,7 +140,7 @@ if ($plan) {
                 <!-- Step 1 -->
                 <div class="text-center">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-cog text-2xl"></i>
+                        <i data-lucide="settings" class="text-2xl w-8 h-8"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">1. Set Up Your Preferences</h3>
                     <p class="text-gray-600">
@@ -151,7 +151,7 @@ if ($plan) {
                 <!-- Step 2 -->
                 <div class="text-center">
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-envelope text-2xl"></i>
+                        <i data-lucide="mail" class="text-2xl w-8 h-8"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">2. Receive Your First Newsletter</h3>
                     <p class="text-gray-600">
@@ -308,6 +308,12 @@ if ($plan) {
         
         // Start confetti on page load
         window.addEventListener('load', createConfetti);
+    </script>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>
