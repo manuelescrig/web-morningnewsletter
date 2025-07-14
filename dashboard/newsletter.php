@@ -1445,6 +1445,9 @@ $canAddSource = count($sources) < $maxSources;
                         <button onclick="filterByCategory('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white">
                             All Sources
                         </button>
+                        <button onclick="filterByCategory('crypto')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            Crypto
+                        </button>
                         <button onclick="filterByCategory('finance')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
                             Finance
                         </button>
@@ -1465,7 +1468,7 @@ $canAddSource = count($sources) < $maxSources;
                     <?php foreach ($availableModules as $type => $module): ?>
                         <?php
                         $sourceInfo = [
-                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'finance', 'description' => 'Real-time Bitcoin price and market data'],
+                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price and market data'],
                             'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
                             'news' => ['icon' => 'fas fa-newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
                             'sp500' => ['icon' => 'fas fa-chart-line', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],
