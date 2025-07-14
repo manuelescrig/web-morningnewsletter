@@ -24,14 +24,14 @@ class EthereumModule extends BaseSourceModule {
             $price24hAgo = $change24h ? $currentPrice / (1 + ($change24h / 100)) : $currentPrice;
             $priceChange = $currentPrice - $price24hAgo;
             
-            // Format current price
-            $formattedCurrentPrice = '$' . $this->formatNumber($currentPrice, 2);
-            $formatted24hPrice = '$' . $this->formatNumber($price24hAgo, 2);
+            // Format current price (show full numbers for crypto)
+            $formattedCurrentPrice = '$' . number_format($currentPrice, 2);
+            $formatted24hPrice = '$' . number_format($price24hAgo, 2);
             
             // Format price change
             $symbol = $priceChange >= 0 ? '↑' : '↓';
             $color = $priceChange >= 0 ? 'green' : 'red';
-            $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . $this->formatNumber(abs($priceChange), 2);
+            $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . number_format(abs($priceChange), 2);
             $formattedPercentChange = ($change24h >= 0 ? '+' : '') . number_format($change24h, 2) . '%';
             
             $delta = [

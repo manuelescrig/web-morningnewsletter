@@ -245,10 +245,18 @@ class NewsletterBuilder {
                                     <span style='color: #1f2937; font-weight: 600;'>$value</span>";
                     
                     if ($delta !== null) {
-                        $deltaValue = (float)$delta;
-                        $deltaColor = $deltaValue >= 0 ? '#10b981' : '#ef4444';
-                        $deltaSymbol = $deltaValue >= 0 ? '+' : '';
-                        $html .= "<br><span style='color: $deltaColor; font-size: 12px;'>$deltaSymbol$delta</span>";
+                        if (is_array($delta) && isset($delta['value'], $delta['color'])) {
+                            // New format with formatted value and color
+                            $deltaText = htmlspecialchars($delta['value']);
+                            $deltaColor = $delta['color'] === 'green' ? '#10b981' : '#ef4444';
+                            $html .= "<br><span style='color: $deltaColor; font-size: 12px;'>$deltaText</span>";
+                        } else {
+                            // Legacy format - numeric value
+                            $deltaValue = (float)$delta;
+                            $deltaColor = $deltaValue >= 0 ? '#10b981' : '#ef4444';
+                            $deltaSymbol = $deltaValue >= 0 ? '+' : '';
+                            $html .= "<br><span style='color: $deltaColor; font-size: 12px;'>$deltaSymbol$delta</span>";
+                        }
                     }
                     
                     $html .= "</div></div>";
