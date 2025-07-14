@@ -349,7 +349,7 @@ $canAddSource = count($sources) < $maxSources;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($newsletter->getTitle()); ?> - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -369,7 +369,7 @@ $canAddSource = count($sources) < $maxSources;
                     </li>
                     <li>
                         <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <i data-lucide="chevron-right" class="text-gray-400 mx-2 w-4 h-4"></i>
                             <span class="text-gray-500"><?php echo htmlspecialchars($newsletter->getTitle()); ?></span>
                         </div>
                     </li>
@@ -385,7 +385,7 @@ $canAddSource = count($sources) < $maxSources;
                     <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
                        target="_blank">
-                        <i class="fas fa-eye mr-2"></i>
+                        <i data-lucide="eye" class="mr-2 w-4 h-4"></i>
                         Preview Newsletter
                     </a>
                 </div>
@@ -1496,18 +1496,18 @@ $canAddSource = count($sources) < $maxSources;
                     <?php foreach ($availableModules as $type => $module): ?>
                         <?php
                         $sourceInfo = [
-                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price with 24h comparison'],
-                            'ethereum' => ['icon' => 'fab fa-ethereum', 'category' => 'crypto', 'description' => 'Real-time Ethereum price with 24h comparison'],
-                            'tether' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Tether (USDT) stablecoin price tracking'],
-                            'xrp' => ['icon' => 'fas fa-circle', 'category' => 'crypto', 'description' => 'XRP (Ripple) price with 24h comparison'],
-                            'binancecoin' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Binance Coin (BNB) price with 24h comparison'],
-                            'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
-                            'news' => ['icon' => 'fas fa-newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
-                            'sp500' => ['icon' => 'fas fa-chart-line', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],
-                            'stripe' => ['icon' => 'fab fa-stripe', 'category' => 'business', 'description' => 'Revenue and payment analytics'],
-                            'appstore' => ['icon' => 'fab fa-app-store', 'category' => 'business', 'description' => 'App Store metrics and analytics']
+                            'bitcoin' => ['icon' => 'bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price with 24h comparison'],
+                            'ethereum' => ['icon' => 'coins', 'category' => 'crypto', 'description' => 'Real-time Ethereum price with 24h comparison'],
+                            'tether' => ['icon' => 'dollar-sign', 'category' => 'crypto', 'description' => 'Tether (USDT) stablecoin price tracking'],
+                            'xrp' => ['icon' => 'circle-dot', 'category' => 'crypto', 'description' => 'XRP (Ripple) price with 24h comparison'],
+                            'binancecoin' => ['icon' => 'coins', 'category' => 'crypto', 'description' => 'Binance Coin (BNB) price with 24h comparison'],
+                            'weather' => ['icon' => 'cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
+                            'news' => ['icon' => 'newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
+                            'sp500' => ['icon' => 'trending-up', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],
+                            'stripe' => ['icon' => 'credit-card', 'category' => 'business', 'description' => 'Revenue and payment analytics'],
+                            'appstore' => ['icon' => 'smartphone', 'category' => 'business', 'description' => 'App Store metrics and analytics']
                         ];
-                        $info = $sourceInfo[$type] ?? ['icon' => 'fas fa-cube', 'category' => 'other', 'description' => 'Data source'];
+                        $info = $sourceInfo[$type] ?? ['icon' => 'cube', 'category' => 'other', 'description' => 'Data source'];
                         ?>
                         <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer" 
                              data-type="<?php echo $type; ?>" 
@@ -1517,7 +1517,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div class="flex items-start space-x-3">
                                 <div class="flex-shrink-0">
                                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <i class="<?php echo $info['icon']; ?> text-blue-600 text-xl"></i>
+                                        <i data-lucide="<?php echo $info['icon']; ?>" class="text-blue-600 w-6 h-6"></i>
                                     </div>
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -1705,5 +1705,11 @@ $canAddSource = count($sources) < $maxSources;
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
     <script src="/assets/js/newsletter-editor.js"></script>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
