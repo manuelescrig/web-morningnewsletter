@@ -785,13 +785,16 @@ $canAddSource = count($sources) < $maxSources;
                 document.getElementById('editSourceType').value = source.type;
                 document.getElementById('editSourceName').value = source.name || '';
                 
-                // Hide all config sections and disable their required fields
+                // Hide all config sections and disable ALL their fields
                 document.querySelectorAll('[id^="editConfig"]').forEach(section => {
                     section.classList.add('hidden');
-                    // Disable all required fields in hidden sections
-                    section.querySelectorAll('input[required], select[required]').forEach(field => {
-                        field.removeAttribute('required');
-                        field.setAttribute('data-was-required', 'true');
+                    // Disable ALL fields in hidden sections so they don't get submitted
+                    section.querySelectorAll('input, select, textarea').forEach(field => {
+                        field.disabled = true;
+                        if (field.hasAttribute('required')) {
+                            field.removeAttribute('required');
+                            field.setAttribute('data-was-required', 'true');
+                        }
                     });
                 });
                 
@@ -800,9 +803,12 @@ $canAddSource = count($sources) < $maxSources;
                 if (configSection) {
                     configSection.classList.remove('hidden');
                     
-                    // Re-enable required fields for the visible section
-                    configSection.querySelectorAll('input[data-was-required], select[data-was-required]').forEach(field => {
-                        field.setAttribute('required', 'required');
+                    // Re-enable ALL fields for the visible section
+                    configSection.querySelectorAll('input, select, textarea').forEach(field => {
+                        field.disabled = false;
+                        if (field.hasAttribute('data-was-required')) {
+                            field.setAttribute('required', 'required');
+                        }
                     });
                     
                     // Populate config fields based on source type
