@@ -77,7 +77,7 @@ if (empty($token)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unsubscribe - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full space-y-8 p-8">
@@ -88,7 +88,7 @@ if (empty($token)) {
 
         <?php if ($success): ?>
         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
+            <i data-lucide="check-circle" class="mr-2 w-4 h-4"></i>
             <?php if ($action === 'resubscribe'): ?>
                 You have been successfully resubscribed to MorningNewsletter. You will start receiving daily newsletters again.
             <?php else: ?>
@@ -97,14 +97,14 @@ if (empty($token)) {
         </div>
         <?php else: ?>
         <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">
-            <i class="fas fa-info-circle mr-2"></i>
+            <i data-lucide="info" class="mr-2 w-4 h-4"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
         
         <div class="text-center">
             <a href="/" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                <i class="fas fa-arrow-left mr-2"></i>
+                <i data-lucide="arrow-left" class="mr-2 w-4 h-4"></i>
                 Return to Homepage
             </a>
         </div>
@@ -113,5 +113,11 @@ if (empty($token)) {
             <p>Need help? Contact us at <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-800">hello@morningnewsletter.com</a></p>
         </div>
     </div>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
