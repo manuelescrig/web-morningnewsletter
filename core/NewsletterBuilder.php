@@ -6,6 +6,10 @@ require_once __DIR__ . '/../config/database.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
+require_once __DIR__ . '/../modules/ethereum.php';
+require_once __DIR__ . '/../modules/tether.php';
+require_once __DIR__ . '/../modules/xrp.php';
+require_once __DIR__ . '/../modules/binancecoin.php';
 require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
@@ -123,6 +127,10 @@ class NewsletterBuilder {
     private function getModuleClass($type) {
         $moduleMap = [
             'bitcoin' => 'BitcoinModule',
+            'ethereum' => 'EthereumModule',
+            'tether' => 'TetherModule',
+            'xrp' => 'XrpModule',
+            'binancecoin' => 'BinancecoinModule',
             'sp500' => 'SP500Module',
             'weather' => 'WeatherModule',
             'news' => 'NewsModule',
