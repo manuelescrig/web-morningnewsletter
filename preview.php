@@ -26,12 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin) {
             require_once __DIR__ . '/core/NewsletterHistory.php';
             require_once __DIR__ . '/core/Newsletter.php';
             
-            // Get the user's default newsletter
-            $newsletters = Newsletter::findByUser($user->getId());
-            if (empty($newsletters)) {
-                throw new Exception("No newsletters found for user");
+            // Get the specific newsletter by ID or default to first newsletter
+            $newsletterId = $_POST['newsletter_id'] ?? $_GET['newsletter_id'] ?? null;
+            if ($newsletterId) {
+                $newsletter = $user->getNewsletter((int)$newsletterId);
+                if (!$newsletter) {
+                    throw new Exception("Newsletter not found or access denied");
+                }
+            } else {
+                $newsletters = Newsletter::findByUser($user->getId());
+                if (empty($newsletters)) {
+                    throw new Exception("No newsletters found for user");
+                }
+                $newsletter = $newsletters[0];
             }
-            $newsletter = $newsletters[0];
             
             // Create a temporary history entry for the preview
             $historyManager = new NewsletterHistory();
@@ -84,12 +92,20 @@ try {
     require_once __DIR__ . '/core/Newsletter.php';
     require_once __DIR__ . '/core/NewsletterHistory.php';
     
-    // Get the user's default newsletter
-    $newsletters = Newsletter::findByUser($user->getId());
-    if (empty($newsletters)) {
-        throw new Exception("No newsletters found for user");
+    // Get the specific newsletter by ID or default to first newsletter
+    $newsletterId = $_GET['newsletter_id'] ?? null;
+    if ($newsletterId) {
+        $newsletter = $user->getNewsletter((int)$newsletterId);
+        if (!$newsletter) {
+            throw new Exception("Newsletter not found or access denied");
+        }
+    } else {
+        $newsletters = Newsletter::findByUser($user->getId());
+        if (empty($newsletters)) {
+            throw new Exception("No newsletters found for user");
+        }
+        $newsletter = $newsletters[0];
     }
-    $newsletter = $newsletters[0];
     
     // Create a temporary history entry for the preview display
     $historyManager = new NewsletterHistory();
@@ -134,7 +150,7 @@ try {
                         <div class="h-6 border-l border-gray-300"></div>
                         <h1 class="text-xl font-semibold text-gray-900">Newsletter Preview</h1>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            <?php echo htmlspecialchars($user->getNewsletterTitle()); ?>
+                            <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                         </span>
                     </div>
                     
@@ -143,6 +159,7 @@ try {
                             <form method="POST" class="inline-flex">
                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                                 <input type="hidden" name="action" value="send_preview">
+                                <input type="hidden" name="newsletter_id" value="<?php echo $newsletter->getId(); ?>">
                                 <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     <i class="fas fa-paper-plane mr-2"></i>
                                     Send Preview Email
