@@ -94,7 +94,7 @@ $csrfToken = $auth->generateCSRFToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Source Configuration - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -110,14 +110,14 @@ $csrfToken = $auth->generateCSRFToken();
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <i data-lucide="alert-triangle" class="mr-2 w-4 h-4"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
         <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i class="fas fa-check-circle mr-2"></i>
+            <i data-lucide="check-circle" class="mr-2 w-4 h-4"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
         <?php endif; ?>
@@ -132,17 +132,17 @@ $csrfToken = $auth->generateCSRFToken();
                                 <div class="flex items-center space-x-3 mb-4">
                                     <div class="flex-shrink-0">
                                         <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-<?php 
+                                            <i data-lucide="<?php 
                                                 $icons = [
                                                     'bitcoin' => 'bitcoin',
-                                                    'sp500' => 'chart-line',
+                                                    'sp500' => 'trending-up',
                                                     'weather' => 'cloud-sun',
                                                     'news' => 'newspaper',
-                                                    'appstore' => 'mobile-alt',
+                                                    'appstore' => 'smartphone',
                                                     'stripe' => 'credit-card'
                                                 ];
                                                 echo $icons[$config['type']] ?? 'plug';
-                                            ?> text-blue-600"></i>
+                                            ?>" class="text-blue-600 w-5 h-5"></i>
                                         </div>
                                     </div>
                                     <div class="flex-1">
@@ -153,7 +153,7 @@ $csrfToken = $auth->generateCSRFToken();
                                             Type: <?php echo htmlspecialchars($config['type']); ?>
                                             <?php if ($config['api_required']): ?>
                                                 <span class="inline-flex items-center ml-2 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                    <i class="fas fa-key mr-1"></i>
+                                                    <i data-lucide="key" class="mr-1 w-3 h-3"></i>
                                                     API Required
                                                 </span>
                                             <?php endif; ?>
@@ -176,7 +176,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <!-- Status Toggle -->
                                         <div class="flex items-center">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $config['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
-                                                <i class="fas fa-<?php echo $config['is_enabled'] ? 'check' : 'times'; ?> mr-1"></i>
+                                                <i data-lucide="<?php echo $config['is_enabled'] ? 'check' : 'x'; ?>" class="mr-1 w-3 h-3"></i>
                                                 <?php echo $config['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
                                             </span>
                                         </div>
@@ -228,7 +228,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     <div class="flex justify-end">
                                         <button type="submit" 
                                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fas fa-save mr-2"></i>
+                                            <i data-lucide="save" class="mr-2 w-4 h-4"></i>
                                             Save Changes
                                         </button>
                                     </div>
@@ -282,5 +282,11 @@ $csrfToken = $auth->generateCSRFToken();
             </div>
         </div>
     </div>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
