@@ -18,7 +18,7 @@ $currentPage = 'upgrade';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -33,7 +33,7 @@ $currentPage = 'upgrade';
         <!-- Current Plan Notice -->
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
             <div class="flex items-center">
-                <i data-lucide="info" class="text-blue-500 text-xl mr-3 w-6 h-6"></i>
+                <i class="fas fa-info-circle text-blue-500 text-xl mr-3"></i>
                 <div>
                     <h3 class="text-lg font-medium text-blue-900">You're currently on the Free plan</h3>
                     <p class="text-blue-700 mt-1">Upgrade to unlock more sources, advanced features, and priority support. All plans include a 7-day free trial!</p>
@@ -54,32 +54,32 @@ $currentPage = 'upgrade';
                     </p>
                     <div class="mt-3 mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
+                            <i class="fas fa-gift mr-1"></i>
                             7-day free trial
                         </span>
                     </div>
                     <ul class="mt-6 space-y-4 flex-1">
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Up to 5 sources</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Basic scheduling & customization</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Daily newsletter delivery</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Email support</p>
                         </li>
@@ -108,7 +108,7 @@ $currentPage = 'upgrade';
                     </p>
                     <div class="mt-3 mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
+                            <i class="fas fa-gift mr-1"></i>
                             7-day free trial
                         </span>
                     </div>
@@ -163,38 +163,38 @@ $currentPage = 'upgrade';
                     </p>
                     <div class="mt-3 mb-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
+                            <i class="fas fa-gift mr-1"></i>
                             7-day free trial
                         </span>
                     </div>
                     <ul class="mt-6 space-y-4 flex-1">
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Unlimited sources</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">All premium features</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Team collaboration</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Priority support</p>
                         </li>
                         <li class="flex items-start">
                             <div class="flex-shrink-0">
-                                <i data-lucide="check" class="text-green-500 w-4 h-4"></i>
+                                <i class="fas fa-check text-green-500"></i>
                             </div>
                             <p class="ml-3 text-base text-gray-500">Custom integrations</p>
                         </li>
@@ -263,12 +263,6 @@ $currentPage = 'upgrade';
                 // Auto-start the subscription flow for the selected plan
                 subscribeToPlan(selectedPlan);
             }
-        });
-    </script>
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
         });
     </script>
 </body>
