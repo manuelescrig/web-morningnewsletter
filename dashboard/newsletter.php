@@ -14,7 +14,6 @@ require_once __DIR__ . '/../config/database.php';
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
 require_once __DIR__ . '/../modules/ethereum.php';
-require_once __DIR__ . '/../modules/tether.php';
 require_once __DIR__ . '/../modules/xrp.php';
 require_once __DIR__ . '/../modules/binancecoin.php';
 require_once __DIR__ . '/../modules/sp500.php';
@@ -157,7 +156,6 @@ $timezones = [
 $availableModules = [
     'bitcoin' => new BitcoinModule(),
     'ethereum' => new EthereumModule(),
-    'tether' => new TetherModule(),
     'xrp' => new XrpModule(),
     'binancecoin' => new BinancecoinModule(),
     'weather' => new WeatherModule(),
@@ -1340,7 +1338,6 @@ $canAddSource = count($sources) < $maxSources;
                     break;
                 case 'bitcoin':
                 case 'ethereum':
-                case 'tether':
                 case 'xrp':
                 case 'binancecoin':
                     fieldsHtml = `
@@ -1502,7 +1499,6 @@ $canAddSource = count($sources) < $maxSources;
                         $sourceInfo = [
                             'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price with 24h comparison'],
                             'ethereum' => ['icon' => 'fab fa-ethereum', 'category' => 'crypto', 'description' => 'Real-time Ethereum price with 24h comparison'],
-                            'tether' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Tether (USDT) stablecoin price tracking'],
                             'xrp' => ['icon' => 'fas fa-circle', 'category' => 'crypto', 'description' => 'XRP (Ripple) price with 24h comparison'],
                             'binancecoin' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Binance Coin (BNB) price with 24h comparison'],
                             'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
