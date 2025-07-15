@@ -24,8 +24,8 @@ if (!empty($_SERVER['HTTP_USER_AGENT'])) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Change to script directory to ensure relative paths work
-chdir(__DIR__);
+// Change to project root directory to ensure relative paths work
+chdir(__DIR__ . '/..');
 
 try {
     require_once __DIR__ . '/../config/database.php';
