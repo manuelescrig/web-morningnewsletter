@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <?php for ($m = 0; $m < 60; $m += 15): ?>
                                                 <?php 
                                                 $timeValue = sprintf('%02d:%02d', $h, $m);
-                                                $timeDisplay = date('g:i A', strtotime($timeValue));
+                                                $timeDisplay = date('H:i', strtotime($timeValue));
                                                 $selected = ($timeValue === '06:00') ? 'selected' : '';
                                                 ?>
                                                 <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </p>
                                     <p class="flex items-center">
                                         <i class="fas fa-calendar mr-2 text-green-500"></i>
-                                        Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?>
+                                        Next: <?php echo $scheduleStatus['next_send_object']->format('M j, H:i'); ?>
                                     </p>
                                     <p class="flex items-center">
                                         <i class="fas fa-plug mr-2 text-purple-500"></i>

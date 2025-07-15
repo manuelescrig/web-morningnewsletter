@@ -243,7 +243,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 Please check your new email inbox for the verification link.
                             </p>
                             <p class="text-xs text-yellow-600 mt-2">
-                                Expires: <?php echo date('M j, Y g:i A', strtotime($pendingEmailChange['expires_at'])); ?>
+                                Expires: <?php echo date('M j, Y H:i', strtotime($pendingEmailChange['expires_at'])); ?>
                             </p>
                         </div>
                         <div class="ml-4 flex-shrink-0">

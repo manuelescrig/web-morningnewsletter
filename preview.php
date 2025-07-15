@@ -172,7 +172,7 @@ try {
                             <?php 
                                 $userTimezone = new DateTimeZone($user->getTimezone());
                                 $currentTime = new DateTime('now', $userTimezone);
-                                echo $currentTime->format('F j, Y g:i A'); 
+                                echo $currentTime->format('F j, Y H:i'); 
                             ?>
                         </div>
                     </div>
