@@ -8,50 +8,26 @@ class EthereumModule extends BaseSourceModule {
     
     public function getData(): array {
         try {
-            // Use Binance API - more reliable and better rate limits
-            $apiUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT';
+            // Use Binance US API - accessible from US locations
+            $apiUrl = 'https://api.binance.us/api/v3/ticker/price?symbol=ETHUSDT';
             $response = $this->makeHttpRequest($apiUrl);
             $data = json_decode($response, true);
             
-            if (!$data || !isset($data['lastPrice'])) {
-                throw new Exception('Invalid API response from Binance');
+            if (!$data || !isset($data['price'])) {
+                throw new Exception('Invalid API response from Binance US');
             }
             
-            $currentPrice = (float)$data['lastPrice'];
-            $change24h = (float)$data['priceChangePercent'];
-            
-            // Calculate 24h ago price from current price and percentage change
-            $price24hAgo = $change24h ? $currentPrice / (1 + ($change24h / 100)) : $currentPrice;
-            $priceChange = $currentPrice - $price24hAgo;
+            $currentPrice = (float)$data['price'];
             
             // Format current price (show full numbers for crypto)
             $formattedCurrentPrice = '$' . number_format($currentPrice, 2);
-            $formatted24hPrice = '$' . number_format($price24hAgo, 2);
-            
-            // Format price change
-            $symbol = $priceChange >= 0 ? '↑' : '↓';
-            $color = $priceChange >= 0 ? 'green' : 'red';
-            $formattedPriceChange = ($priceChange >= 0 ? '+' : '') . '$' . number_format(abs($priceChange), 2);
-            $formattedPercentChange = ($change24h >= 0 ? '+' : '') . number_format($change24h, 2) . '%';
-            
-            $delta = [
-                'value' => $symbol . ' ' . $formattedPercentChange . ' (' . $formattedPriceChange . ')',
-                'color' => $color,
-                'raw_delta' => $change24h
-            ];
             
             return [
                 [
                     'label' => 'Current Price',
                     'value' => $formattedCurrentPrice,
-                    'delta' => $delta,
-                    'timestamp' => $this->formatTimestamp()
-                ],
-                [
-                    'label' => '24h Ago Price',
-                    'value' => $formatted24hPrice,
                     'delta' => null,
-                    'timestamp' => $this->formatTimestamp(strtotime('-24 hours'))
+                    'timestamp' => $this->formatTimestamp()
                 ]
             ];
             
