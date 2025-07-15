@@ -318,5 +318,8 @@ $timezones = [
         document.getElementById('timezone').addEventListener('change', updateNextSendTime);
         document.getElementById('send_time').addEventListener('change', updateNextSendTime);
     </script>
+
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
 </body>
 </html>
