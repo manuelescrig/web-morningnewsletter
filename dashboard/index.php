@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Newsletters - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200">
                 <div class="flex">
-                    <i data-lucide="alert-triangle" class="mr-2 mt-0.5 w-5 h-5 text-red-500"></i>
+                    <i class="fas fa-exclamation-triangle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
                 </div>
             </div>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($success): ?>
             <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200">
                 <div class="flex">
-                    <i data-lucide="check-circle" class="mr-2 mt-0.5 w-5 h-5 text-green-500"></i>
+                    <i class="fas fa-check-circle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
                 </div>
             </div>
@@ -255,11 +255,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <?php endfor; ?>
                                     </select>
                                     <button type="button" onclick="removeDailyTime(this)" class="px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn" style="display: none;">
-                                        <i data-lucide="x" class="w-4 h-4"></i>
+                                        <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                                 <button type="button" onclick="addDailyTime()" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
-                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                    <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -274,7 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Cancel
                         </button>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
-                            <i data-lucide="plus" class="mr-2 w-4 h-4"></i>
+                            <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -302,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Get started with personalized morning briefings tailored just for you.
                         </p>
                         <button id="createButtonEmpty" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
-                            <i data-lucide="plus" class="mr-3 w-5 h-5"></i>
+                            <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -313,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
                     <button id="createButtonHeader" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
-                        <i data-lucide="plus" class="mr-2 w-4 h-4"></i>
+                        <i class="fas fa-plus mr-2"></i>
                         Add Newsletter
                     </button>
                 </div>
@@ -336,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                            target="_blank"
                                            onclick="event.stopPropagation();"
                                            class="inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors duration-200">
-                                            <i data-lucide="eye" class="mr-1 w-3 h-3"></i>
+                                            <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
                                     </div>
@@ -344,22 +344,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 
                                 <div class="space-y-2 text-sm text-gray-600">
                                     <p class="flex items-center">
-                                        <i data-lucide="clock" class="mr-2 w-4 h-4 text-blue-500"></i>
+                                        <i class="fas fa-clock mr-2 text-blue-500"></i>
                                         <?php echo $newsletter->getSendTime(); ?> (<?php echo $newsletter->getTimezone(); ?>)
                                     </p>
                                     <p class="flex items-center">
-                                        <i data-lucide="calendar" class="mr-2 w-4 h-4 text-green-500"></i>
+                                        <i class="fas fa-calendar mr-2 text-green-500"></i>
                                         Next: <?php echo date('M j, g:i A', strtotime($scheduleStatus['next_send'])); ?>
                                     </p>
                                     <p class="flex items-center">
-                                        <i data-lucide="zap" class="mr-2 w-4 h-4 text-purple-500"></i>
+                                        <i class="fas fa-plug mr-2 text-purple-500"></i>
                                         <?php echo $sourceCount; ?> source<?php echo $sourceCount !== 1 ? 's' : ''; ?> configured
                                     </p>
                                 </div>
                                 
                                 <?php if ($scheduleStatus['sent_today']): ?>
                                     <div class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        <i data-lucide="check-circle" class="mr-1 w-3 h-3"></i>
+                                        <i class="fas fa-check-circle mr-1"></i>
                                         Sent today
                                     </div>
                                 <?php endif; ?>
@@ -387,7 +387,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php else: ?>
                                     <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                                         <p class="text-sm text-yellow-800">
-                                            <i data-lucide="alert-triangle" class="mr-1 w-4 h-4"></i>
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>
                                             No sources configured yet
                                         </p>
                                     </div>
@@ -541,7 +541,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.className = 'px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn';
-            removeButton.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i>';
+            removeButton.innerHTML = '<i class="fas fa-times"></i>';
             removeButton.onclick = function() { removeDailyTime(this); };
             
             timeSlotWrapper.appendChild(newSelect);
@@ -553,9 +553,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Update remove button visibility
             updateRemoveButtonsVisibility();
-            
-            // Reinitialize icons for new elements
-            lucide.createIcons();
         }
         
         // Remove daily time slot
@@ -587,8 +584,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Dashboard.modal.closeOnOutsideClick('editModal');
             // Initialize remove button visibility
             updateRemoveButtonsVisibility();
-            // Initialize Lucide icons
-            lucide.createIcons();
         });
     </script>
 </body>

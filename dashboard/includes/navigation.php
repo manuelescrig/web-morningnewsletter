@@ -60,7 +60,7 @@ function getNavClass($page, $currentPage) {
                                 </div>
                                 <!-- Dropdown arrow -->
                                 <div class="hidden lg:ml-2 lg:flex-shrink-0 lg:block">
-                                    <i data-lucide="chevron-down" class="text-gray-400 w-3 h-3"></i>
+                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                                 </div>
                             </div>
                         </button>
@@ -78,19 +78,19 @@ function getNavClass($page, $currentPage) {
                         
                         <!-- Account option -->
                         <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="user" class="mr-2 w-4 h-4 text-blue-500"></i>
+                            <i class="fas fa-user mr-2 text-blue-500"></i>
                             Account
                         </a>
                         
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
                         <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="crown" class="mr-2 w-4 h-4 text-blue-500"></i>
+                            <i class="fas fa-crown mr-2 text-blue-500"></i>
                             Upgrade Plan
                         </a>
                         <?php else: ?>
                         <a href="/billing" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="credit-card" class="mr-2 w-4 h-4 text-blue-500"></i>
+                            <i class="fas fa-credit-card mr-2 text-blue-500"></i>
                             Billing
                         </a>
                         <?php endif; ?>
@@ -101,15 +101,15 @@ function getNavClass($page, $currentPage) {
                         <div class="border-t border-gray-200 my-1"></div>
                         
                         <a href="/dashboard/users.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="users" class="mr-2 w-4 h-4 text-purple-500"></i>
+                            <i class="fas fa-users mr-2 text-purple-500"></i>
                             Users
                         </a>
                         <a href="/dashboard/sources.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="zap" class="mr-2 w-4 h-4 text-purple-500"></i>
+                            <i class="fas fa-plug mr-2 text-purple-500"></i>
                             Source Config
                         </a>
                         <a href="/dashboard/cron_status.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i data-lucide="server" class="mr-2 w-4 h-4 text-purple-500"></i>
+                            <i class="fas fa-server mr-2 text-purple-500"></i>
                             Cron Status
                         </a>
                         <?php endif; ?>
@@ -119,7 +119,7 @@ function getNavClass($page, $currentPage) {
                         
                         <!-- Logout option -->
                         <a href="/auth/logout.php" class="block px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900" role="menuitem" tabindex="-1">
-                            <i data-lucide="log-out" class="mr-2 w-4 h-4 text-red-500"></i>
+                            <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>
                             Sign out
                         </a>
                     </div>
