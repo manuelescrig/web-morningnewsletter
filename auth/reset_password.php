@@ -70,7 +70,7 @@ $csrfToken = $auth->generateCSRFToken();
 
         <?php if ($error): ?>
         <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i data-lucide="alert-triangle" class="mr-2 w-4 h-4"></i>
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
             <div class="mt-3 text-sm">
                 <a href="/auth/forgot_password.php" class="font-medium text-red-600 hover:text-red-500">
@@ -82,11 +82,11 @@ $csrfToken = $auth->generateCSRFToken();
 
         <?php if ($success): ?>
         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i data-lucide="check-circle" class="mr-2 w-4 h-4"></i>
+            <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
             <div class="mt-3 text-sm">
                 <a href="/auth/login.php" class="font-medium text-green-600 hover:text-green-500">
-                    <i data-lucide="log-in" class="mr-1 w-4 h-4"></i>
+                    <i class="fas fa-sign-in-alt mr-1"></i>
                     Sign In Now
                 </a>
             </div>
@@ -124,7 +124,7 @@ $csrfToken = $auth->generateCSRFToken();
                 <button type="submit"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <i data-lucide="key" class="text-blue-500 group-hover:text-blue-400 w-4 h-4"></i>
+                        <i class="fas fa-key text-blue-500 group-hover:text-blue-400"></i>
                     </span>
                     Reset Password
                 </button>
@@ -132,7 +132,7 @@ $csrfToken = $auth->generateCSRFToken();
 
             <div class="text-center">
                 <a href="/auth/login.php" class="font-medium text-blue-600 hover:text-blue-500">
-                    <i data-lucide="arrow-left" class="mr-2 w-4 h-4"></i>
+                    <i class="fas fa-arrow-left mr-2"></i>
                     Back to Sign In
                 </a>
             </div>
@@ -158,11 +158,6 @@ $csrfToken = $auth->generateCSRFToken();
             if (confirmPassword.value) {
                 confirmPassword.dispatchEvent(new Event('input'));
             }
-        });
-        
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
         });
     </script>
 </body>
