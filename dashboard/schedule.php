@@ -103,7 +103,7 @@ $timezones = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -117,14 +117,14 @@ $timezones = [
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i data-lucide="alert-triangle" class="mr-2 w-5 h-5"></i>
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
         <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i data-lucide="check-circle" class="mr-2 w-5 h-5"></i>
+            <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
         <?php endif; ?>
@@ -138,7 +138,7 @@ $timezones = [
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i data-lucide="clock" class="text-blue-600 w-6 h-6"></i>
+                                <i class="fas fa-clock text-blue-600 text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Send Time</p>
@@ -148,7 +148,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i data-lucide="globe" class="text-blue-600 w-6 h-6"></i>
+                                <i class="fas fa-globe text-blue-600 text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Timezone</p>
@@ -158,7 +158,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i data-lucide="calendar" class="text-blue-600 w-6 h-6"></i>
+                                <i class="fas fa-calendar text-blue-600 text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Next Newsletter</p>
@@ -168,17 +168,17 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i data-lucide="mail" class="text-blue-600 w-6 h-6"></i>
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Today's Status</p>
                                 <p class="text-lg">
                                     <?php if ($user->isUnsubscribed()): ?>
-                                        <span class="text-red-600"><i data-lucide="ban" class="mr-1 w-4 h-4"></i>Unsubscribed</span>
+                                        <span class="text-red-600"><i class="fas fa-ban mr-1"></i>Unsubscribed</span>
                                     <?php elseif ($scheduleStatus['sent_today']): ?>
-                                        <span class="text-green-600"><i data-lucide="check-circle" class="mr-1 w-4 h-4"></i>Sent</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Sent</span>
                                     <?php else: ?>
-                                        <span class="text-yellow-600"><i data-lucide="clock" class="mr-1 w-4 h-4"></i>Pending</span>
+                                        <span class="text-yellow-600"><i class="fas fa-clock mr-1"></i>Pending</span>
                                     <?php endif; ?>
                                 </p>
                             </div>
@@ -186,15 +186,15 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i data-lucide="bell" class="text-blue-600 w-6 h-6"></i>
+                                <i class="fas fa-bell text-blue-600 text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Subscription Status</p>
                                 <p class="text-lg">
                                     <?php if ($user->isUnsubscribed()): ?>
-                                        <span class="text-red-600"><i data-lucide="x-circle" class="mr-1 w-4 h-4"></i>Unsubscribed</span>
+                                        <span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Unsubscribed</span>
                                     <?php else: ?>
-                                        <span class="text-green-600"><i data-lucide="check-circle" class="mr-1 w-4 h-4"></i>Active</span>
+                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Active</span>
                                     <?php endif; ?>
                                 </p>
                             </div>
@@ -214,7 +214,7 @@ $timezones = [
                         <!-- Resubscribe Section -->
                         <div class="text-center">
                             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
-                                <i data-lucide="bell-off" class="text-red-600 w-8 h-8"></i>
+                                <i class="fas fa-bell-slash text-red-600 text-2xl"></i>
                             </div>
                             <h4 class="text-lg font-medium text-gray-900 mb-2">You're Currently Unsubscribed</h4>
                             <p class="text-sm text-gray-600 mb-6">You won't receive any newsletters until you resubscribe. Click the button below to start receiving your morning brief again.</p>
@@ -224,7 +224,7 @@ $timezones = [
                                 <input type="hidden" name="action" value="resubscribe">
                                 <button type="submit"
                                         class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                    <i data-lucide="bell" class="mr-2 w-4 h-4"></i>
+                                    <i class="fas fa-bell mr-2"></i>
                                     Resubscribe to Newsletter
                                 </button>
                             </form>
@@ -259,7 +259,7 @@ $timezones = [
                         <div class="flex items-center justify-between">
                             <button type="submit"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                <i data-lucide="save" class="mr-2 w-4 h-4"></i>
+                                <i class="fas fa-save mr-2"></i>
                                 Update Schedule
                             </button>
                         </div>
@@ -277,7 +277,7 @@ $timezones = [
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="text-center">
                         <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
-                            <i data-lucide="clock" class="w-6 h-6"></i>
+                            <i class="fas fa-clock text-xl"></i>
                         </div>
                         <h4 class="text-lg font-medium text-gray-900 mb-2">Daily Delivery</h4>
                         <p class="text-sm text-gray-600">Your newsletter is automatically generated and sent every day at your chosen time.</p>
@@ -285,7 +285,7 @@ $timezones = [
                     
                     <div class="text-center">
                         <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white mb-4">
-                            <i data-lucide="globe" class="w-6 h-6"></i>
+                            <i class="fas fa-globe text-xl"></i>
                         </div>
                         <h4 class="text-lg font-medium text-gray-900 mb-2">Timezone Aware</h4>
                         <p class="text-sm text-gray-600">Delivery time is calculated based on your local timezone, so you always get it when expected.</p>
@@ -293,7 +293,7 @@ $timezones = [
                     
                     <div class="text-center">
                         <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white mb-4">
-                            <i data-lucide="refresh-cw" class="w-6 h-6"></i>
+                            <i class="fas fa-sync text-xl"></i>
                         </div>
                         <h4 class="text-lg font-medium text-gray-900 mb-2">Fresh Data</h4>
                         <p class="text-sm text-gray-600">All your data sources are refreshed just before sending to ensure you get the latest information.</p>
@@ -317,11 +317,6 @@ $timezones = [
 
         document.getElementById('timezone').addEventListener('change', updateNextSendTime);
         document.getElementById('send_time').addEventListener('change', updateNextSendTime);
-        
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
     </script>
 </body>
 </html>

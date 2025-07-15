@@ -23,7 +23,7 @@ $currentPage = 'billing';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Billing - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -44,7 +44,7 @@ $currentPage = 'billing';
                     <div class="flex items-center justify-between">
                         <div>
                             <div class="flex items-center">
-                                <i data-lucide="crown" class="text-yellow-500 w-8 h-8 mr-3"></i>
+                                <i class="fas fa-crown text-yellow-500 text-2xl mr-3"></i>
                                 <div>
                                     <h4 class="text-xl font-bold text-gray-900 capitalize">
                                         <?php echo htmlspecialchars($planInfo['plan']); ?> Plan
@@ -73,7 +73,7 @@ $currentPage = 'billing';
                                                 ?>">
                                                 <?php echo ucfirst($planInfo['subscription_status']); ?>
                                                 <?php if ($planInfo['subscription_status'] === 'trialing'): ?>
-                                                    <i data-lucide="gift" class="ml-1 w-4 h-4"></i>
+                                                    <i class="fas fa-gift ml-1"></i>
                                                 <?php endif; ?>
                                             </span>
                                         </p>
@@ -91,25 +91,25 @@ $currentPage = 'billing';
                         <div class="flex flex-col space-y-2">
                             <?php if ($planInfo['plan'] === 'free'): ?>
                                 <a href="/#pricing" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                    <i data-lucide="arrow-up" class="mr-2 w-4 h-4"></i>
+                                    <i class="fas fa-arrow-up mr-2"></i>
                                     Upgrade Plan
                                 </a>
                             <?php else: ?>
                                 <?php if ($planInfo['stripe_customer_id']): ?>
                                     <button onclick="manageBilling()" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                        <i data-lucide="settings" class="mr-2 w-4 h-4"></i>
+                                        <i class="fas fa-cog mr-2"></i>
                                         Manage Billing
                                     </button>
                                 <?php endif; ?>
                                 
                                 <?php if (!$planInfo['cancel_at_period_end'] && $planInfo['subscription_status'] === 'active'): ?>
                                     <button onclick="cancelSubscription()" class="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
-                                        <i data-lucide="x" class="mr-2 w-4 h-4"></i>
+                                        <i class="fas fa-times mr-2"></i>
                                         Cancel Subscription
                                     </button>
                                 <?php elseif ($planInfo['cancel_at_period_end']): ?>
                                     <div class="text-sm text-red-600">
-                                        <i data-lucide="info" class="mr-1 w-4 h-4"></i>
+                                        <i class="fas fa-info-circle mr-1"></i>
                                         Subscription will cancel on <?php echo date('F j, Y', strtotime($planInfo['current_period_end'])); ?>
                                     </div>
                                 <?php endif; ?>
@@ -152,20 +152,20 @@ $currentPage = 'billing';
                                 </div>
                                 <div class="mt-2">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        <i data-lucide="gift" class="mr-1 w-4 h-4"></i>
+                                        <i class="fas fa-gift mr-1"></i>
                                         7-day free trial
                                     </span>
                                 </div>
                                 
                                 <ul class="mt-4 space-y-2 text-sm text-gray-600">
-                                    <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i><?php echo $plan['sources']; ?> sources</li>
-                                    <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Daily newsletter</li>
-                                    <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Custom scheduling</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i><?php echo $plan['sources']; ?> sources</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Daily newsletter</li>
+                                    <li><i class="fas fa-check text-green-500 mr-2"></i>Custom scheduling</li>
                                     <?php if ($planKey !== 'starter'): ?>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Priority support</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
                                     <?php endif; ?>
                                     <?php if ($planKey === 'unlimited'): ?>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Team features</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Team features</li>
                                     <?php endif; ?>
                                 </ul>
                                 
@@ -188,7 +188,7 @@ $currentPage = 'billing';
                 
                 <?php if (empty($payments)): ?>
                     <div class="text-center py-8">
-                        <i data-lucide="receipt" class="text-gray-300 w-16 h-16 mb-4"></i>
+                        <i class="fas fa-receipt text-gray-300 text-4xl mb-4"></i>
                         <p class="text-gray-500">No payment history available</p>
                     </div>
                 <?php else: ?>
@@ -379,11 +379,6 @@ $currentPage = 'billing';
                 alert('Error cancelling subscription. Please try again.');
             }
         }
-        
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
     </script>
 </body>
 </html>

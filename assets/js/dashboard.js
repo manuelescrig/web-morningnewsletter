@@ -253,7 +253,7 @@ const Dashboard = {
                             ${timeOptions}
                         </select>
                         <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
-                            <i data-lucide="x" class="w-4 h-4"></i>
+                            <i class="fas fa-times"></i>
                         </button>
                         <div class="px-2 w-8 spacer"></div>
                     </div>

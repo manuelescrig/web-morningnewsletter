@@ -74,21 +74,15 @@ const AuthManager = {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600';
-        button.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+        button.innerHTML = '<i class="fas fa-eye"></i>';
         
         button.addEventListener('click', () => {
             const isPassword = input.type === 'password';
             input.type = isPassword ? 'text' : 'password';
-            button.innerHTML = isPassword ? '<i data-lucide="eye-off" class="w-4 h-4"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+            button.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
         });
         
         wrapper.appendChild(button);
-        
-        // Reinitialize Lucide icons for dynamic content
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        
         return null; // Return null since we're not appending to parent anymore
     },
 
@@ -232,17 +226,12 @@ const AuthManager = {
                 } mr-2"></i>
                 <span class="text-sm">${message}</span>
                 <button class="ml-auto text-sm opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
-                    <i data-lucide="x" class="w-4 h-4"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
         `;
         
         document.body.appendChild(toast);
-        
-        // Reinitialize Lucide icons for dynamic content
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
         
         // Animate in
         setTimeout(() => {

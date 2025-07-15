@@ -56,7 +56,7 @@ $csrfToken = $auth->generateCSRFToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -70,14 +70,14 @@ $csrfToken = $auth->generateCSRFToken();
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i data-lucide="alert-triangle" class="mr-2 w-5 h-5"></i>
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
         <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i data-lucide="check-circle" class="mr-2 w-5 h-5"></i>
+            <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
         <?php endif; ?>
@@ -94,9 +94,9 @@ $csrfToken = $auth->generateCSRFToken();
                             <p class="mt-1 text-sm text-gray-900"><?php echo htmlspecialchars($user->getEmail()); ?></p>
                             <p class="mt-1 text-xs text-gray-500">
                                 <?php if ($user->isEmailVerified()): ?>
-                                    <i data-lucide="check-circle" class="text-green-500 mr-1 w-4 h-4"></i>Verified
+                                    <i class="fas fa-check-circle text-green-500 mr-1"></i>Verified
                                 <?php else: ?>
-                                    <i data-lucide="alert-triangle" class="text-yellow-500 mr-1 w-4 h-4"></i>Not verified
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i>Not verified
                                 <?php endif; ?>
                             </p>
                         </div>
@@ -119,7 +119,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <?php if ($user->isAdmin()): ?>
                                     <div class="relative inline-block text-left">
                                         <button type="button" class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="togglePlanDropdown()">
-                                            <i data-lucide="settings" class="mr-1 w-4 h-4"></i>
+                                            <i class="fas fa-cog mr-1"></i>
                                             Change
                                         </button>
                                         <div id="plan-dropdown" class="hidden origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
@@ -135,7 +135,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                         <input type="hidden" name="plan" value="<?php echo $plan; ?>">
                                                         <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                                                                 onclick="return confirm('Change your plan to <?php echo ucfirst($plan); ?>?')">
-                                                            <i data-lucide="arrow-right" class="mr-2 w-4 h-4"></i>
+                                                            <i class="fas fa-arrow-right mr-2"></i>
                                                             Switch to <?php echo ucfirst($plan); ?>
                                                         </button>
                                                     </form>
@@ -150,7 +150,7 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <p class="mt-1 text-xs text-gray-500">
                                 <?php if ($subscriptionInfo['subscription_status']): ?>
-                                    <i data-lucide="circle" class="text-green-400 mr-1 w-4 h-4"></i>Active subscription
+                                    <i class="fas fa-circle text-green-400 mr-1"></i>Active subscription
                                     <?php if ($subscriptionInfo['cancel_at_period_end']): ?>
                                         <span class="text-yellow-600">(Cancels <?php echo date('M j, Y', strtotime($subscriptionInfo['current_period_end'])); ?>)</span>
                                     <?php elseif ($subscriptionInfo['current_period_end']): ?>
@@ -192,7 +192,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <!-- Active Subscription -->
                         <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                             <div class="flex items-center">
-                                <i data-lucide="check-circle" class="text-green-500 mr-3 w-5 h-5"></i>
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
                                 <div>
                                     <h4 class="text-lg font-medium text-green-900">Active <?php echo ucfirst($subscriptionInfo['plan']); ?> Subscription</h4>
                                     <p class="text-green-700">
@@ -210,7 +210,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <?php if (!$subscriptionInfo['cancel_at_period_end']): ?>
                                 <button onclick="cancelSubscription()" 
                                         class="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                    <i data-lucide="x" class="mr-2 w-4 h-4"></i>
+                                    <i class="fas fa-times mr-2"></i>
                                     Cancel Subscription
                                 </button>
                             <?php endif; ?>
@@ -218,7 +218,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <?php if ($subscriptionInfo['stripe_customer_id']): ?>
                                 <button onclick="manageBilling()" 
                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    <i data-lucide="credit-card" class="mr-2 w-4 h-4"></i>
+                                    <i class="fas fa-credit-card mr-2"></i>
                                     Manage Billing
                                 </button>
                             <?php endif; ?>
@@ -227,7 +227,7 @@ $csrfToken = $auth->generateCSRFToken();
                     <?php else: ?>
                         <!-- No Active Subscription -->
                         <div class="text-center py-8">
-                            <i data-lucide="crown" class="w-16 h-16 text-gray-300 mb-4"></i>
+                            <i class="fas fa-crown text-4xl text-gray-300 mb-4"></i>
                             <h4 class="text-lg font-medium text-gray-900 mb-2">Upgrade Your Plan</h4>
                             <p class="text-gray-600 mb-6">Get access to more features with a premium subscription</p>
                             
@@ -237,9 +237,9 @@ $csrfToken = $auth->generateCSRFToken();
                                     <h5 class="font-medium text-gray-900 mb-2">Starter</h5>
                                     <p class="text-2xl font-bold text-gray-900 mb-2">$5<span class="text-sm font-normal">/month</span></p>
                                     <ul class="text-sm text-gray-600 space-y-1 mb-4">
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Up to 5 sources</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Basic scheduling</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Daily delivery</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Up to 5 sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Basic scheduling</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Daily delivery</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('starter')" 
                                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
@@ -255,10 +255,10 @@ $csrfToken = $auth->generateCSRFToken();
                                     <h5 class="font-medium text-gray-900 mb-2">Pro</h5>
                                     <p class="text-2xl font-bold text-gray-900 mb-2">$15<span class="text-sm font-normal">/month</span></p>
                                     <ul class="text-sm text-gray-600 space-y-1 mb-4">
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Up to 15 sources</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Advanced scheduling</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Custom layouts</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Priority support</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Up to 15 sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Advanced scheduling</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Custom layouts</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('pro')" 
                                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
@@ -271,10 +271,10 @@ $csrfToken = $auth->generateCSRFToken();
                                     <h5 class="font-medium text-gray-900 mb-2">Unlimited</h5>
                                     <p class="text-2xl font-bold text-gray-900 mb-2">$19<span class="text-sm font-normal">/month</span></p>
                                     <ul class="text-sm text-gray-600 space-y-1 mb-4">
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Unlimited sources</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>All features</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Priority support</li>
-                                        <li><i data-lucide="check" class="text-green-500 mr-2 w-4 h-4"></i>Team collaboration</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Unlimited sources</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>All features</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
+                                        <li><i class="fas fa-check text-green-500 mr-2"></i>Team collaboration</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('unlimited')" 
                                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
@@ -359,13 +359,13 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg border-l-4 border-blue-500">
                 <div class="px-4 py-5 sm:p-6">
                     <h3 class="text-lg leading-6 font-medium text-blue-900 mb-4">
-                        <i data-lucide="crown" class="mr-2 w-5 h-5"></i>
+                        <i class="fas fa-crown mr-2"></i>
                         Admin Plan Management
                     </h3>
                     
                     <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                         <div class="flex items-center">
-                            <i data-lucide="info" class="text-blue-500 mr-3 w-5 h-5"></i>
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
                             <div>
                                 <h4 class="text-sm font-medium text-blue-900">Admin Privileges</h4>
                                 <p class="text-blue-700 text-sm">As an admin, you can change your plan freely without payment processing. This is for testing and administration purposes.</p>
@@ -421,7 +421,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="mt-4 text-center">
                         <a href="/dashboard/users.php" class="inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
-                            <i data-lucide="users" class="mr-2 w-4 h-4"></i>
+                            <i class="fas fa-users mr-2"></i>
                             Manage All Users
                         </a>
                     </div>
@@ -441,7 +441,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <p class="text-sm text-gray-600">Temporarily stop receiving newsletters without losing your configuration.</p>
                             </div>
                             <button class="inline-flex items-center px-3 py-2 border border-yellow-300 shadow-sm text-sm leading-4 font-medium rounded-md text-yellow-700 bg-yellow-50 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
-                                <i data-lucide="pause" class="mr-2 w-4 h-4"></i>
+                                <i class="fas fa-pause mr-2"></i>
                                 Pause
                             </button>
                         </div>
@@ -455,7 +455,7 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <button class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                     onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
-                                <i data-lucide="trash-2" class="mr-2 w-4 h-4"></i>
+                                <i class="fas fa-trash mr-2"></i>
                                 Delete Account
                             </button>
                         </div>
@@ -566,11 +566,6 @@ $csrfToken = $auth->generateCSRFToken();
             if (!button && !dropdown?.contains(event.target)) {
                 dropdown?.classList.add('hidden');
             }
-        });
-        
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
         });
     </script>
 </body>
