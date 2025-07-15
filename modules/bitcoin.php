@@ -59,11 +59,12 @@ class BitcoinModule extends BaseSourceModule {
             ];
             
         } catch (Exception $e) {
-            error_log('Bitcoin module error: ' . $e->getMessage());
+            error_log('BITCOIN ERROR: ' . $e->getMessage());
+            error_log('BITCOIN ERROR TRACE: ' . $e->getTraceAsString());
             return [
                 [
                     'label' => 'Bitcoin Price',
-                    'value' => 'Data unavailable',
+                    'value' => 'Data unavailable - ' . $e->getMessage(),
                     'delta' => null
                 ]
             ];

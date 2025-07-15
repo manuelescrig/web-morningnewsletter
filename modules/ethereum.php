@@ -56,11 +56,11 @@ class EthereumModule extends BaseSourceModule {
             ];
             
         } catch (Exception $e) {
-            error_log('Ethereum module error: ' . $e->getMessage());
+            error_log('ETHEREUM ERROR: ' . $e->getMessage());
             return [
                 [
                     'label' => 'Ethereum Price',
-                    'value' => 'Data unavailable',
+                    'value' => 'Data unavailable - ' . $e->getMessage(),
                     'delta' => null
                 ]
             ];
