@@ -10,8 +10,11 @@ class BitcoinModule extends BaseSourceModule {
         try {
             // Use CoinGecko API - more globally accessible than Binance
             $apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_last_updated_at=true';
+            error_log("BITCOIN DEBUG: Starting API call to: $apiUrl");
             $response = $this->makeHttpRequest($apiUrl);
+            error_log("BITCOIN DEBUG: Got response, length: " . strlen($response));
             $data = json_decode($response, true);
+            error_log("BITCOIN DEBUG: Decoded JSON: " . print_r($data, true));
             
             if (!$data || !isset($data['bitcoin']['usd'])) {
                 throw new Exception('Invalid API response from CoinGecko');

@@ -89,8 +89,7 @@ class EmailSender {
             }
             
             // Now rebuild the newsletter with the history ID for the "View in Browser" link
-            // Reuse the existing source data to avoid making duplicate API calls
-            $finalResult = $builder->buildWithExistingSourceDataAndHistoryId($initialResult['sources_data'], $historyId);
+            $finalResult = $builder->buildWithSourceDataAndHistoryId($historyId);
             
             // Update the history entry with the final content that includes the view link
             $this->updateHistoryContent($historyId, $finalResult['content']);

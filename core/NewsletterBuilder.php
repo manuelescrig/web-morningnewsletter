@@ -67,16 +67,6 @@ class NewsletterBuilder {
         ];
     }
     
-    public function buildWithExistingSourceDataAndHistoryId($sourceData, $historyId) {
-        $secretKey = 'unsubscribe_secret_key_2025'; // In production, use env variable
-        $unsubscribeToken = hash('sha256', $this->user->getId() . $secretKey);
-        $content = $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken, $historyId);
-        
-        return [
-            'content' => $content,
-            'sources_data' => $sourceData
-        ];
-    }
     
     public function buildForPreview() {
         $sourceData = $this->buildSourceData(false); // false = don't update source results for preview
@@ -100,11 +90,19 @@ class NewsletterBuilder {
                 }
                 
                 $module = new $moduleClass($config, $this->user->getTimezone());
+                error_log("CRYPTO DEBUG: About to call getData() for {$source['type']} - updateResults: " . ($updateResults ? 'true' : 'false'));
                 $data = $module->getData();
+                error_log("CRYPTO DEBUG: getData() successful for {$source['type']}, got " . count($data) . " data items");
                 
                 // Update the source with latest data only if not preview
                 if ($updateResults) {
-                    $this->updateSourceResult($source['id'], $data);
+                    try {
+                        $this->updateSourceResult($source['id'], $data);
+                        error_log("CRYPTO DEBUG: Successfully updated source {$source['id']} with data");
+                    } catch (Exception $dbError) {
+                        error_log("CRYPTO DEBUG: Failed to update source {$source['id']}: " . $dbError->getMessage());
+                        // Don't fail the entire process if database update fails
+                    }
                 }
                 
                 $sourceData[] = [
