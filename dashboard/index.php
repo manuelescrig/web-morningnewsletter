@@ -344,25 +344,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 
                                 <div class="space-y-2 text-sm text-gray-600">
                                     <p class="flex items-center">
-                                        <i class="fas fa-clock mr-2 text-blue-500"></i>
-                                        <?php echo $newsletter->getSendTime(); ?> (<?php echo $newsletter->getTimezone(); ?>)
-                                    </p>
-                                    <p class="flex items-center">
                                         <i class="fas fa-calendar mr-2 text-green-500"></i>
-                                        Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?>
+                                        Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?> (<?php echo $newsletter->getTimezone(); ?>)
                                     </p>
                                     <p class="flex items-center">
-                                        <i class="fas fa-plug mr-2 text-purple-500"></i>
-                                        <?php echo $sourceCount; ?> source<?php echo $sourceCount !== 1 ? 's' : ''; ?> configured
+                                        <i class="fas fa-clock mr-2 text-blue-500"></i>
+                                        Last: <?php 
+                                            if ($scheduleStatus['last_sent']) {
+                                                echo $scheduleStatus['last_sent']->format('M j, g:i A');
+                                            } else {
+                                                echo 'Never';
+                                            }
+                                        ?>
                                     </p>
                                 </div>
                                 
-                                <?php if ($scheduleStatus['sent_today']): ?>
-                                    <div class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        <i class="fas fa-check-circle mr-1"></i>
-                                        Sent today
-                                    </div>
-                                <?php endif; ?>
                             </div>
                             
                             <!-- Newsletter Content -->
