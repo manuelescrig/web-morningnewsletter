@@ -229,35 +229,6 @@ try {
                 </div>
             </div>
             
-            <!-- Additional info panel -->
-            <div class="mt-6 bg-white rounded-lg shadow p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-blue-600"><?php echo count($user->getSources()); ?></div>
-                        <div class="text-sm text-gray-600">Active Sources</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-green-600"><?php echo $user->getTimezone(); ?></div>
-                        <div class="text-sm text-gray-600">Timezone</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-purple-600"><?php echo $user->getSendTime(); ?></div>
-                        <div class="text-sm text-gray-600">Send Time</div>
-                    </div>
-                </div>
-                
-                <?php if (!$isAdmin): ?>
-                    <div class="mt-4 p-4 bg-blue-50 rounded-lg">
-                        <div class="flex items-start">
-                            <i class="fas fa-info-circle text-blue-500 mr-2 mt-0.5"></i>
-                            <div class="text-sm text-blue-700">
-                                <strong>Preview Mode:</strong> This shows how your newsletter will look when delivered. 
-                                The actual email will be sent automatically at your scheduled time (<?php echo $user->getSendTime(); ?> <?php echo $user->getTimezone(); ?>).
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
         </div>
 
         <script>
