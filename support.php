@@ -59,7 +59,7 @@ $csrfToken = $auth->generateCSRFToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         html {
             scroll-behavior: smooth;
@@ -102,7 +102,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                 <div class="text-center">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="mail" class="text-2xl w-8 h-8"></i>
+                        <i class="fas fa-envelope text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Email Support</h3>
                     <p class="text-gray-600 mb-4">Send us an email and we'll respond within 24 hours.</p>
@@ -113,7 +113,7 @@ $csrfToken = $auth->generateCSRFToken();
                 
                 <div class="text-center">
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="help-circle" class="text-2xl w-8 h-8"></i>
+                        <i class="fas fa-question-circle text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Common Questions</h3>
                     <p class="text-gray-600 mb-4">Check our FAQ section for quick answers to common questions.</p>
@@ -124,7 +124,7 @@ $csrfToken = $auth->generateCSRFToken();
                 
                 <div class="text-center">
                     <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="message-circle" class="text-2xl w-8 h-8"></i>
+                        <i class="fas fa-comments text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Contact Form</h3>
                     <p class="text-gray-600 mb-4">Fill out the form below and we'll get back to you quickly.</p>
@@ -147,7 +147,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <?php if ($success): ?>
                 <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
-                    <i data-lucide="check-circle" class="mr-2 w-4 h-4"></i>
+                    <i class="fas fa-check-circle mr-2"></i>
                     <?php echo htmlspecialchars($success); ?>
                 </div>
                 <?php endif; ?>
@@ -249,11 +249,5 @@ $csrfToken = $auth->generateCSRFToken();
     </div>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
-    </script>
 </body>
 </html>

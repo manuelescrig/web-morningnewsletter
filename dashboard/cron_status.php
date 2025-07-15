@@ -68,7 +68,7 @@ $csrfToken = $auth->generateCSRFToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cron Status - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta http-equiv="refresh" content="60"> <!-- Auto refresh every minute -->
 </head>
 <body class="bg-gray-50">
@@ -83,21 +83,21 @@ $csrfToken = $auth->generateCSRFToken();
                     <p class="mt-2 text-gray-600">Monitor automated newsletter sending</p>
                 </div>
                 <div class="text-sm text-gray-500">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Auto-refresh every 60 seconds
+                    <i class="fas fa-sync-alt"></i> Auto-refresh every 60 seconds
                 </div>
             </div>
         </div>
 
         <?php if ($error): ?>
         <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-            <i data-lucide="alert-triangle" class="mr-2 w-4 h-4"></i>
+            <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
         <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-            <i data-lucide="check-circle" class="mr-2 w-4 h-4"></i>
+            <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
         <?php endif; ?>
@@ -156,7 +156,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                             <input type="hidden" name="action" value="test_cron">
                             <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                <i data-lucide="play" class="mr-2 w-4 h-4"></i>
+                                <i class="fas fa-play mr-2"></i>
                                 Run Cron Job Now
                             </button>
                         </form>
@@ -181,13 +181,13 @@ $csrfToken = $auth->generateCSRFToken();
                             <p class="mb-2"><strong>Test Links:</strong></p>
                             <div class="space-y-1">
                                 <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=health-check" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
-                                    <i data-lucide="heart" class="mr-1 w-4 h-4"></i>Health Check
+                                    <i class="fas fa-heart mr-1"></i>Health Check
                                 </a><br>
                                 <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=dry-run" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
-                                    <i data-lucide="eye" class="mr-1 w-4 h-4"></i>Dry Run (Preview)
+                                    <i class="fas fa-eye mr-1"></i>Dry Run (Preview)
                                 </a><br>
                                 <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
-                                    <i data-lucide="play" class="mr-1 w-4 h-4"></i>Manual Run
+                                    <i class="fas fa-play mr-1"></i>Manual Run
                                 </a>
                             </div>
                             <p class="mt-2 text-xs text-gray-500">Click these links to test the cron script manually.</p>
@@ -251,11 +251,5 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
         <?php endif; ?>
     </div>
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
-    </script>
 </body>
 </html>

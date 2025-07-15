@@ -32,7 +32,7 @@ $currentPage = 'history';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($historyEntry['title']); ?> - Newsletter History</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -45,7 +45,7 @@ $currentPage = 'history';
             <div class="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <i data-lucide="info" class="text-blue-400 w-4 h-4"></i>
+                        <i class="fas fa-info-circle text-blue-400"></i>
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-blue-700">
@@ -66,7 +66,7 @@ $currentPage = 'history';
                         </a>
                     </li>
                     <li class="inline-flex items-center">
-                        <i data-lucide="chevron-right" class="text-gray-400 mx-2 text-sm w-4 h-4"></i>
+                        <i class="fas fa-chevron-right text-gray-400 mx-2 text-sm"></i>
                         <span class="text-gray-500">Issue #<?php echo $historyEntry['issue_number']; ?></span>
                     </li>
                 </ol>
@@ -82,7 +82,7 @@ $currentPage = 'history';
                     </h1>
                     
                     <div class="mt-2 flex items-center text-sm text-gray-600">
-                        <i data-lucide="calendar" class="mr-2 w-4 h-4"></i>
+                        <i class="fas fa-calendar mr-2"></i>
                         <span><?php echo date('F j, Y g:i A', strtotime($historyEntry['sent_at'])); ?></span>
                         
                         <?php if ($historyEntry['email_status'] === 'sent' || $historyEntry['email_status'] === 'failed'): ?>
@@ -90,12 +90,12 @@ $currentPage = 'history';
                         <div>
                             <?php if ($historyEntry['email_status'] === 'sent'): ?>
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <i data-lucide="check-circle" class="mr-1 w-4 h-4"></i>
+                                    <i class="fas fa-check-circle mr-1"></i>
                                     Sent
                                 </span>
                             <?php elseif ($historyEntry['email_status'] === 'failed'): ?>
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    <i data-lucide="x-circle" class="mr-1 w-4 h-4"></i>
+                                    <i class="fas fa-times-circle mr-1"></i>
                                     Failed
                                 </span>
                             <?php endif; ?>
@@ -106,7 +106,7 @@ $currentPage = 'history';
                     <?php if ($historyEntry['email_status'] === 'failed' && $historyEntry['error_message']): ?>
                         <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
                             <div class="flex">
-                                <i data-lucide="alert-triangle" class="text-red-500 mr-2 mt-0.5 w-4 h-4"></i>
+                                <i class="fas fa-exclamation-triangle text-red-500 mr-2 mt-0.5"></i>
                                 <div>
                                     <p class="text-sm text-red-800">
                                         <strong>Email delivery failed:</strong> <?php echo htmlspecialchars($historyEntry['error_message']); ?>
@@ -120,13 +120,13 @@ $currentPage = 'history';
                 <div class="flex space-x-3">
                     <button onclick="printNewsletter()" 
                             class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                        <i data-lucide="printer" class="mr-2 w-4 h-4"></i>
+                        <i class="fas fa-print mr-2"></i>
                         Print
                     </button>
                     
                     <a href="/dashboard/history.php?newsletter_id=<?php echo $historyEntry['newsletter_id']; ?>" 
                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
-                        <i data-lucide="list" class="mr-2 w-4 h-4"></i>
+                        <i class="fas fa-list mr-2"></i>
                         All Issues
                     </a>
                 </div>
@@ -209,12 +209,6 @@ $currentPage = 'history';
         function printNewsletter() {
             Dashboard.print.hideElementsAndPrint(['nav', '.max-w-4xl > .mb-6']);
         }
-    </script>
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
     </script>
 </body>
 </html>

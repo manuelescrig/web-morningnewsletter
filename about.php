@@ -12,7 +12,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         html {
             scroll-behavior: smooth;
@@ -107,7 +107,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
                             <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
-                                <i data-lucide="lightbulb" class="text-xl w-6 h-6"></i>
+                                <i class="fas fa-lightbulb text-xl"></i>
                             </div>
                         </div>
                         <div class="ml-6">
@@ -124,7 +124,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
                             <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
-                                <i data-lucide="settings" class="text-xl w-6 h-6"></i>
+                                <i class="fas fa-cogs text-xl"></i>
                             </div>
                         </div>
                         <div class="ml-6">
@@ -141,7 +141,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
                             <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
-                                <i data-lucide="rocket" class="text-xl w-6 h-6"></i>
+                                <i class="fas fa-rocket text-xl"></i>
                             </div>
                         </div>
                         <div class="ml-6">
@@ -168,7 +168,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="clock" class="text-2xl w-8 h-8"></i>
+                        <i class="fas fa-clock text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Respect Your Time</h3>
                     <p class="text-gray-600">
@@ -220,11 +220,5 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     </div>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
-    </script>
 </body>
 </html>
