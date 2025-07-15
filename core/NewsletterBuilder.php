@@ -67,6 +67,17 @@ class NewsletterBuilder {
         ];
     }
     
+    public function buildWithExistingSourceDataAndHistoryId($sourceData, $historyId) {
+        $secretKey = 'unsubscribe_secret_key_2025'; // In production, use env variable
+        $unsubscribeToken = hash('sha256', $this->user->getId() . $secretKey);
+        $content = $this->renderNewsletter($sourceData, $this->user->getEmail(), $unsubscribeToken, $historyId);
+        
+        return [
+            'content' => $content,
+            'sources_data' => $sourceData
+        ];
+    }
+    
     public function buildForPreview() {
         $sourceData = $this->buildSourceData(false); // false = don't update source results for preview
         return $this->renderNewsletter($sourceData, $this->user->getEmail(), 'preview-token', null, true);
@@ -100,7 +111,7 @@ class NewsletterBuilder {
                     'title' => !empty($source['name']) ? $source['name'] : $module->getTitle(),
                     'type' => $source['type'],
                     'data' => $data,
-                    'last_updated' => date('Y-m-d H:i:s')
+                    'last_updated' => $this->formatDateInUserTimezone('Y-m-d H:i:s')
                 ];
                 
             } catch (Exception $e) {
@@ -192,13 +203,13 @@ class NewsletterBuilder {
         }
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
-        $html = str_replace('{{DATE}}', date('F j, Y'), $html);
+        $html = str_replace('{{DATE}}', $this->formatDateInUserTimezone('F j, Y'), $html);
         $html = str_replace('{{NEWSLETTER_TITLE}}', $this->newsletter->getTitle(), $html);
         $html = str_replace('{{NEWSLETTER_ID}}', $this->newsletter->getId(), $html);
         $html = str_replace('{{USER_ID}}', $this->user->getId(), $html);
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
-        $html = str_replace('{{CURRENT_YEAR}}', date('Y'), $html);
+        $html = str_replace('{{CURRENT_YEAR}}', $this->formatDateInUserTimezone('Y'), $html);
         $html = str_replace('{{VIEW_IN_BROWSER_SECTION}}', $viewInBrowserSection, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
@@ -277,6 +288,18 @@ class NewsletterBuilder {
         $html .= "</div>";
         
         return $html;
+    }
+    
+    private function formatDateInUserTimezone($format) {
+        try {
+            // Get the user's timezone or fallback to newsletter timezone
+            $userTimezone = $this->user->getTimezone() ?? $this->newsletter->getTimezone() ?? 'UTC';
+            $dateTime = new DateTime('now', new DateTimeZone($userTimezone));
+            return $dateTime->format($format);
+        } catch (Exception $e) {
+            // Fallback to server timezone if user timezone is invalid
+            return date($format);
+        }
     }
     
     private function getEmailTemplate() {
