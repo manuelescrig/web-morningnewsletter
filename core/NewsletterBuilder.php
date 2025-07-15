@@ -85,6 +85,8 @@ class NewsletterBuilder {
     
     private function buildSourceData($updateResults = true) {
         $sourceData = [];
+        $coinGeckoSources = ['bitcoin', 'ethereum', 'tether', 'xrp', 'binancecoin'];
+        $coinGeckoCallCount = 0;
         
         foreach ($this->sources as $source) {
             try {
@@ -100,6 +102,16 @@ class NewsletterBuilder {
                 }
                 
                 $module = new $moduleClass($config, $this->user->getTimezone());
+                
+                // Add delay between CoinGecko API calls to prevent rate limiting
+                if (in_array($source['type'], $coinGeckoSources) && $updateResults) {
+                    if ($coinGeckoCallCount > 0) {
+                        // Wait 5 seconds between CoinGecko API calls (free tier: 5-15 calls/minute)
+                        sleep(5);
+                    }
+                    $coinGeckoCallCount++;
+                }
+                
                 $data = $module->getData();
                 
                 // Update the source with latest data only if not preview
@@ -116,19 +128,36 @@ class NewsletterBuilder {
                 
             } catch (Exception $e) {
                 error_log("Error loading source {$source['type']}: " . $e->getMessage());
+                error_log("Source error trace: " . $e->getTraceAsString());
                 
-                $sourceData[] = [
-                    'title' => (!empty($source['name']) ? $source['name'] : ucfirst($source['type'])) . ' (Error)',
-                    'type' => $source['type'],
-                    'data' => [
-                        [
-                            'label' => 'Status',
-                            'value' => 'Failed to load data: ' . $e->getMessage(),
-                            'delta' => null
-                        ]
-                    ],
-                    'last_updated' => $source['last_updated']
-                ];
+                // Try to use cached data if available
+                $cachedData = null;
+                if (!empty($source['last_result'])) {
+                    $cachedData = json_decode($source['last_result'], true);
+                }
+                
+                if ($cachedData && is_array($cachedData)) {
+                    error_log("Using cached data for source {$source['type']}");
+                    $sourceData[] = [
+                        'title' => !empty($source['name']) ? $source['name'] : ucfirst($source['type']),
+                        'type' => $source['type'],
+                        'data' => $cachedData,
+                        'last_updated' => $source['last_updated'] ?? 'Unknown'
+                    ];
+                } else {
+                    $sourceData[] = [
+                        'title' => (!empty($source['name']) ? $source['name'] : ucfirst($source['type'])) . ' (Error)',
+                        'type' => $source['type'],
+                        'data' => [
+                            [
+                                'label' => 'Status',
+                                'value' => 'Failed to load data: ' . $e->getMessage(),
+                                'delta' => null
+                            ]
+                        ],
+                        'last_updated' => $source['last_updated'] ?? 'Unknown'
+                    ];
+                }
             }
         }
         

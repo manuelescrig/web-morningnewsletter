@@ -31,13 +31,33 @@ abstract class BaseSourceModule implements SourceModule {
     }
     
     protected function makeHttpRequest($url, $headers = []) {
-        // Try cURL first (more reliable for HTTPS)
-        if (extension_loaded('curl')) {
-            return $this->makeHttpRequestWithCurl($url, $headers);
-        }
+        error_log("Making HTTP request to: $url");
         
-        // Fallback to file_get_contents
-        return $this->makeHttpRequestWithFileGetContents($url, $headers);
+        $maxRetries = 3;
+        $retryDelay = 1; // seconds
+        
+        for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+            try {
+                // Try cURL first (more reliable for HTTPS)
+                if (extension_loaded('curl')) {
+                    return $this->makeHttpRequestWithCurl($url, $headers);
+                }
+                
+                // Fallback to file_get_contents
+                return $this->makeHttpRequestWithFileGetContents($url, $headers);
+                
+            } catch (Exception $e) {
+                error_log("HTTP request attempt $attempt failed for $url: " . $e->getMessage());
+                
+                if ($attempt === $maxRetries) {
+                    throw $e; // Re-throw the exception if all retries failed
+                }
+                
+                // Wait before retrying
+                sleep($retryDelay);
+                $retryDelay *= 2; // Exponential backoff
+            }
+        }
     }
     
     private function makeHttpRequestWithCurl($url, $headers = []) {
@@ -52,7 +72,7 @@ abstract class BaseSourceModule implements SourceModule {
             CURLOPT_MAXREDIRS => 3,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_USERAGENT => 'MorningNewsletter/1.0',
+            CURLOPT_USERAGENT => 'MorningNewsletter/1.0 (https://morningnewsletter.com)',
             CURLOPT_HTTPHEADER => $headers
         ]);
         
@@ -67,9 +87,13 @@ abstract class BaseSourceModule implements SourceModule {
         }
         
         if ($httpCode !== 200) {
+            if ($httpCode === 429) {
+                throw new Exception("Rate limit exceeded (HTTP 429). Please wait before making more requests.");
+            }
             throw new Exception("HTTP error: $httpCode");
         }
         
+        error_log("HTTP request successful for: $url");
         return $response;
     }
     
@@ -79,7 +103,7 @@ abstract class BaseSourceModule implements SourceModule {
                 'method' => 'GET',
                 'header' => implode("\r\n", $headers),
                 'timeout' => 10,
-                'user_agent' => 'MorningNewsletter/1.0'
+                'user_agent' => 'MorningNewsletter/1.0 (https://morningnewsletter.com)'
             ],
             'ssl' => [
                 'verify_peer' => false,
@@ -95,6 +119,7 @@ abstract class BaseSourceModule implements SourceModule {
             throw new Exception("Failed to fetch data from: $url" . ($error ? " - " . $error['message'] : ""));
         }
         
+        error_log("HTTP request successful for: $url");
         return $response;
     }
     
