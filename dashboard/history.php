@@ -183,7 +183,7 @@ if ($newsletterId) {
                                     
                                     <div class="mt-2 flex items-center text-sm text-gray-600">
                                         <i class="fas fa-calendar mr-2"></i>
-                                        <span><?php echo date('F j, Y H:i', strtotime($entry['sent_at'])); ?></span>
+                                        <span><?php echo date('F j, Y g:i A', strtotime($entry['sent_at'])); ?></span>
                                         
                                         <?php if ($entry['email_status'] === 'failed' && $entry['error_message']): ?>
                                             <span class="mx-2">•</span>

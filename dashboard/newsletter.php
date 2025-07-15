@@ -633,7 +633,7 @@ $canAddSource = count($sources) < $maxSources;
                                                     <?php for ($m = 0; $m < 60; $m += 15): ?>
                                                         <?php 
                                                         $timeValue = sprintf('%02d:%02d', $h, $m);
-                                                        $timeDisplay = date('H:i', strtotime($timeValue));
+                                                        $timeDisplay = date('g:i A', strtotime($timeValue));
                                                         $selected = ($timeValue === $time) ? 'selected' : '';
                                                         ?>
                                                         <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
@@ -722,17 +722,21 @@ $canAddSource = count($sources) < $maxSources;
                         <div class="space-y-4">
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Current Time:</span>
-                                <span class="font-medium"><?php echo date('M j, H:i'); ?></span>
+                                <span class="font-medium"><?php 
+                                    $userTimezone = new DateTimeZone($newsletter->getTimezone());
+                                    $currentTime = new DateTime('now', $userTimezone);
+                                    echo $currentTime->format('M j, g:i A'); 
+                                ?></span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Next Send:</span>
-                                <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, H:i'); ?></span>
+                                <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Last Sent:</span>
                                 <span class="font-medium">
                                     <?php if ($scheduleStatus['last_sent']): ?>
-                                        <span class="text-blue-600"><?php echo $scheduleStatus['last_sent']->format('M j, H:i'); ?></span>
+                                        <span class="text-blue-600"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
                                     <?php else: ?>
                                         <span class="text-gray-500">Never</span>
                                     <?php endif; ?>

@@ -135,7 +135,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <span class="text-sm text-gray-900">
                                 <?php 
                                 if (file_exists($logFile)) {
-                                    echo date('M j, Y H:i', filemtime($logFile));
+                                    echo date('M j, Y g:i A', filemtime($logFile));
                                 } else {
                                     echo 'No logs yet';
                                 }
@@ -219,7 +219,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <?php foreach ($recentLogs as $log): ?>
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <?php echo date('M j, H:i', strtotime($log['sent_at'])); ?>
+                                        <?php echo date('M j, g:i A', strtotime($log['sent_at'])); ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <?php echo htmlspecialchars($log['email']); ?>

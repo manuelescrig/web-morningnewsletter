@@ -83,7 +83,7 @@ $currentPage = 'history';
                     
                     <div class="mt-2 flex items-center text-sm text-gray-600">
                         <i class="fas fa-calendar mr-2"></i>
-                        <span><?php echo date('F j, Y H:i', strtotime($historyEntry['sent_at'])); ?></span>
+                        <span><?php echo date('F j, Y g:i A', strtotime($historyEntry['sent_at'])); ?></span>
                         
                         <?php if ($historyEntry['email_status'] === 'sent' || $historyEntry['email_status'] === 'failed'): ?>
                         <span class="mx-3">•</span>
