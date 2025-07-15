@@ -8,9 +8,26 @@ interface SourceModule {
 
 abstract class BaseSourceModule implements SourceModule {
     protected $config;
+    protected $timezone;
     
-    public function __construct(array $config = []) {
+    public function __construct(array $config = [], $timezone = 'UTC') {
         $this->config = $config;
+        $this->timezone = $timezone;
+    }
+    
+    protected function formatTimestamp($timestamp = null) {
+        if ($timestamp === null) {
+            $timestamp = time();
+        }
+        
+        try {
+            $dateTime = new DateTime('@' . $timestamp);
+            $dateTime->setTimezone(new DateTimeZone($this->timezone));
+            return $dateTime->format('Y-m-d H:i:s');
+        } catch (Exception $e) {
+            // Fallback to UTC if timezone is invalid
+            return date('Y-m-d H:i:s', $timestamp);
+        }
     }
     
     protected function makeHttpRequest($url, $headers = []) {

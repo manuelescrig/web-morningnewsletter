@@ -88,7 +88,7 @@ class NewsletterBuilder {
                     throw new Exception("Module class not found: $moduleClass");
                 }
                 
-                $module = new $moduleClass($config);
+                $module = new $moduleClass($config, $this->user->getTimezone());
                 $data = $module->getData();
                 
                 // Update the source with latest data only if not preview

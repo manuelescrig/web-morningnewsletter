@@ -45,13 +45,13 @@ class EthereumModule extends BaseSourceModule {
                     'label' => 'Current Price',
                     'value' => $formattedCurrentPrice,
                     'delta' => $delta,
-                    'timestamp' => date('Y-m-d H:i:s')
+                    'timestamp' => $this->formatTimestamp()
                 ],
                 [
                     'label' => '24h Ago Price',
                     'value' => $formatted24hPrice,
                     'delta' => null,
-                    'timestamp' => date('Y-m-d H:i:s', strtotime('-24 hours'))
+                    'timestamp' => $this->formatTimestamp(strtotime('-24 hours'))
                 ]
             ];
             
