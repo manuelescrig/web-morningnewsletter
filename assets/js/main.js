@@ -54,8 +54,10 @@ const MorningNewsletter = {
             });
         }
 
-        // Initialize user dropdown functionality
-        this.initUserDropdown();
+        // Initialize user dropdown functionality (only if Dashboard is not available)
+        if (typeof Dashboard === 'undefined') {
+            this.initUserDropdown();
+        }
     },
 
     // User dropdown functionality

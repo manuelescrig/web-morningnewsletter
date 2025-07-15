@@ -281,10 +281,40 @@ const Dashboard = {
         this.dropdown.initializeOutsideClick();
         this.dropdown.initializeEscapeKey();
         
+        // Initialize user dropdown specifically
+        this.initUserDropdown();
+        
         // Initialize modal escape key handling
         this.modal.closeOnEscape();
         
         console.log('Dashboard core functionality initialized');
+    },
+
+    /**
+     * Initialize user dropdown functionality
+     */
+    initUserDropdown: function() {
+        const dropdown = document.getElementById('dropdown-menu');
+        const button = document.getElementById('user-menu-button');
+        
+        if (!dropdown || !button) {
+            console.log('User dropdown elements not found');
+            return;
+        }
+        
+        // Add click event listener to button
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            Dashboard.dropdown.toggle('dropdown-menu', 'user-menu-button');
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+        
+        console.log('User dropdown initialized');
     }
 };
 
