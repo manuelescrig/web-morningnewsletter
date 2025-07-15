@@ -12,7 +12,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Press - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         html {
             scroll-behavior: smooth;
@@ -105,13 +105,13 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <h3 class="text-xl font-bold text-gray-900 mb-4">Media Inquiries</h3>
                         <div class="space-y-3">
                             <div class="flex items-center">
-                                <i data-lucide="mail" class="text-blue-600 w-5 h-5 mr-3"></i>
+                                <i class="fas fa-envelope text-blue-600 w-5 mr-3"></i>
                                 <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-700">
                                     hello@morningnewsletter.com
                                 </a>
                             </div>
                             <div class="flex items-center">
-                                <i data-lucide="clock" class="text-blue-600 w-5 h-5 mr-3"></i>
+                                <i class="fas fa-clock text-blue-600 w-5 mr-3"></i>
                                 <span class="text-gray-600">Response within 24 hours</span>
                             </div>
                         </div>
@@ -121,11 +121,11 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <h3 class="text-xl font-bold text-gray-900 mb-4">Social Media</h3>
                         <div class="space-y-3">
                             <div class="flex items-center">
-                                <i data-lucide="twitter" class="text-blue-600 w-5 h-5 mr-3"></i>
+                                <i class="fab fa-twitter text-blue-600 w-5 mr-3"></i>
                                 <a href="#" class="text-blue-600 hover:text-blue-700">@MorningNewsletter</a>
                             </div>
                             <div class="flex items-center">
-                                <i data-lucide="linkedin" class="text-blue-600 w-5 h-5 mr-3"></i>
+                                <i class="fab fa-linkedin text-blue-600 w-5 mr-3"></i>
                                 <a href="#" class="text-blue-600 hover:text-blue-700">LinkedIn</a>
                             </div>
                         </div>
@@ -146,37 +146,37 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-gray-50 rounded-2xl p-6 text-center">
                     <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="image" class="w-6 h-6"></i>
+                        <i class="fas fa-image text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Brand Assets</h3>
                     <p class="text-gray-600 mb-6">High-resolution logos, brand colors, and style guidelines</p>
                     <a href="mailto:hello@morningnewsletter.com?subject=Brand Assets Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
-                        <i data-lucide="download" class="w-4 h-4 mr-2"></i>Request Assets
+                        <i class="fas fa-download mr-2"></i>Request Assets
                     </a>
                 </div>
                 
                 <div class="bg-gray-50 rounded-2xl p-6 text-center">
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                        <i class="fas fa-file-alt text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Fact Sheet</h3>
                     <p class="text-gray-600 mb-6">Company overview, key metrics, and executive bios</p>
                     <a href="mailto:hello@morningnewsletter.com?subject=Fact Sheet Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
-                        <i data-lucide="download" class="w-4 h-4 mr-2"></i>Download PDF
+                        <i class="fas fa-download mr-2"></i>Download PDF
                     </a>
                 </div>
                 
                 <div class="bg-gray-50 rounded-2xl p-6 text-center">
                     <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="camera" class="w-6 h-6"></i>
+                        <i class="fas fa-camera text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Screenshots</h3>
                     <p class="text-gray-600 mb-6">Product screenshots and interface examples</p>
                     <a href="mailto:hello@morningnewsletter.com?subject=Screenshots Request" 
                        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
-                        <i data-lucide="download" class="w-4 h-4 mr-2"></i>Request Images
+                        <i class="fas fa-download mr-2"></i>Request Images
                     </a>
                 </div>
             </div>
@@ -239,19 +239,12 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             </p>
             <a href="mailto:hello@morningnewsletter.com" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
-                <i data-lucide="mail" class="w-5 h-5 mr-3"></i>
+                <i class="fas fa-envelope mr-3"></i>
                 Contact Press Team
             </a>
         </div>
     </div>
 
     <?php include __DIR__ . '/includes/footer.php'; ?>
-
-    <script>
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', function() {
-            lucide.createIcons();
-        });
-    </script>
 </body>
 </html>
