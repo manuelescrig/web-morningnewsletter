@@ -8,17 +8,17 @@ class XrpModule extends BaseSourceModule {
     
     public function getData(): array {
         try {
-            // Use CoinGecko API - more globally accessible than Binance
-            $apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ripple&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true&include_last_updated_at=true';
+            // Use Binance API for XRP price data
+            $apiUrl = 'https://api.binance.com/api/v3/ticker/24hr?symbol=XRPUSDT';
             $response = $this->makeHttpRequest($apiUrl);
             $data = json_decode($response, true);
             
-            if (!$data || !isset($data['ripple']['usd'])) {
-                throw new Exception('Invalid API response from CoinGecko');
+            if (!$data || !isset($data['lastPrice'])) {
+                throw new Exception('Invalid API response from Binance');
             }
             
-            $currentPrice = $data['ripple']['usd'];
-            $change24h = $data['ripple']['usd_24h_change'] ?? null;
+            $currentPrice = (float)$data['lastPrice'];
+            $change24h = (float)$data['priceChangePercent'];
             
             // Calculate 24h ago price from current price and percentage change
             $price24hAgo = $change24h ? $currentPrice / (1 + ($change24h / 100)) : $currentPrice;

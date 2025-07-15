@@ -75,8 +75,6 @@ class NewsletterBuilder {
     
     private function buildSourceData($updateResults = true) {
         $sourceData = [];
-        $coinGeckoSources = ['bitcoin', 'ethereum', 'tether', 'xrp', 'binancecoin'];
-        $coinGeckoCallCount = 0;
         
         foreach ($this->sources as $source) {
             try {
@@ -92,28 +90,14 @@ class NewsletterBuilder {
                 }
                 
                 $module = new $moduleClass($config, $this->user->getTimezone());
-                
-                // Add delay between CoinGecko API calls to prevent rate limiting
-                if (in_array($source['type'], $coinGeckoSources)) {
-                    if ($coinGeckoCallCount > 0) {
-                        // Wait 5 seconds between CoinGecko calls (free tier: 5-15 calls/minute)
-                        error_log("CRYPTO DEBUG: Waiting 5 seconds before calling {$source['type']} API to prevent rate limiting");
-                        sleep(5);
-                    }
-                    $coinGeckoCallCount++;
-                }
-                
-                error_log("CRYPTO DEBUG: About to call getData() for {$source['type']} - updateResults: " . ($updateResults ? 'true' : 'false'));
                 $data = $module->getData();
-                error_log("CRYPTO DEBUG: getData() successful for {$source['type']}, got " . count($data) . " data items");
                 
                 // Update the source with latest data only if not preview
                 if ($updateResults) {
                     try {
                         $this->updateSourceResult($source['id'], $data);
-                        error_log("CRYPTO DEBUG: Successfully updated source {$source['id']} with data");
                     } catch (Exception $dbError) {
-                        error_log("CRYPTO DEBUG: Failed to update source {$source['id']}: " . $dbError->getMessage());
+                        error_log("Failed to update source {$source['id']}: " . $dbError->getMessage());
                         // Don't fail the entire process if database update fails
                     }
                 }
@@ -127,8 +111,6 @@ class NewsletterBuilder {
                 
             } catch (Exception $e) {
                 error_log("Error loading source {$source['type']}: " . $e->getMessage());
-                error_log("Working directory: " . getcwd());
-                error_log("Source config: " . print_r($config, true));
                 
                 $sourceData[] = [
                     'title' => (!empty($source['name']) ? $source['name'] : ucfirst($source['type'])) . ' (Error)',
