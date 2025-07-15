@@ -729,12 +729,12 @@ $canAddSource = count($sources) < $maxSources;
                                 <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Sent Today:</span>
+                                <span class="text-gray-600">Last Sent:</span>
                                 <span class="font-medium">
-                                    <?php if ($scheduleStatus['sent_today']): ?>
-                                        <span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Yes</span>
+                                    <?php if ($scheduleStatus['last_sent']): ?>
+                                        <span class="text-blue-600"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
                                     <?php else: ?>
-                                        <span class="text-gray-500"><i class="fas fa-times-circle mr-1"></i>No</span>
+                                        <span class="text-gray-500">Never</span>
                                     <?php endif; ?>
                                 </span>
                             </div>

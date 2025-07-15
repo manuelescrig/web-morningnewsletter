@@ -162,6 +162,31 @@ class Scheduler {
         
         return $result['count'] > 0;
     }
+
+    /**
+     * Get the last sent time for a newsletter
+     */
+    private function getLastSentTime($newsletterId, $timezone) {
+        $stmt = $this->db->prepare("
+            SELECT sent_at 
+            FROM newsletter_history 
+            WHERE newsletter_id = ? 
+            AND email_sent = 1 
+            ORDER BY sent_at DESC 
+            LIMIT 1
+        ");
+        $stmt->execute([$newsletterId]);
+        $result = $stmt->fetch();
+        
+        if ($result) {
+            // Convert to user's timezone
+            $lastSent = new DateTime($result['sent_at'], new DateTimeZone('UTC'));
+            $lastSent->setTimezone(new DateTimeZone($timezone));
+            return $lastSent;
+        }
+        
+        return null;
+    }
     
     private function wasNewsletterSentAtTimeToday($newsletterId, $sendTime) {
         $today = date('Y-m-d');
@@ -490,6 +515,7 @@ class Scheduler {
             $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
             $timezone = $newsletter->getTimezone();
             $sendTime = $newsletter->getSendTime();
+            $lastSentTime = $this->getLastSentTime($newsletter->getId(), $timezone);
         } else if ($object instanceof User) {
             $user = $object;
             $newsletter = $user->getDefaultNewsletter();
@@ -500,6 +526,7 @@ class Scheduler {
             $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
             $timezone = $newsletter->getTimezone();
             $sendTime = $newsletter->getSendTime();
+            $lastSentTime = $this->getLastSentTime($newsletter->getId(), $timezone);
         } else {
             throw new Exception("Invalid object type for getScheduleStatus");
         }
@@ -509,6 +536,7 @@ class Scheduler {
             'next_send_formatted' => $nextSend->format('F j, Y g:i A T'),
             'next_send_object' => $nextSend,
             'sent_today' => $wasEmailSentToday,
+            'last_sent' => $lastSentTime,
             'timezone' => $timezone,
             'send_time' => $sendTime
         ];
