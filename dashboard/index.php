@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </p>
                                     <p class="flex items-center">
                                         <i class="fas fa-calendar mr-2 text-green-500"></i>
-                                        Next: <?php echo date('M j, g:i A', strtotime($scheduleStatus['next_send'])); ?>
+                                        Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?>
                                     </p>
                                     <p class="flex items-center">
                                         <i class="fas fa-plug mr-2 text-purple-500"></i>

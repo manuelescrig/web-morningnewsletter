@@ -169,7 +169,11 @@ try {
                         
                         <div class="text-sm text-gray-500">
                             <i class="fas fa-calendar mr-1"></i>
-                            <?php echo date('F j, Y g:i A'); ?>
+                            <?php 
+                                $userTimezone = new DateTimeZone($user->getTimezone());
+                                $currentTime = new DateTime('now', $userTimezone);
+                                echo $currentTime->format('F j, Y g:i A'); 
+                            ?>
                         </div>
                     </div>
                 </div>

@@ -726,7 +726,7 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Next Send:</span>
-                                <span class="font-medium"><?php echo date('M j, g:i A', strtotime($scheduleStatus['next_send'])); ?></span>
+                                <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Sent Today:</span>
