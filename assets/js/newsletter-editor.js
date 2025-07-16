@@ -50,8 +50,8 @@ const NewsletterEditor = {
                         All
                     </button>
                     <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
-                            data-category="cryptocurrency" onclick="NewsletterEditor.filter.byCategory('cryptocurrency')">
-                        Cryptocurrency
+                            data-category="crypto" onclick="NewsletterEditor.filter.byCategory('crypto')">
+                        Crypto
                     </button>
                     <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
                             data-category="finance" onclick="NewsletterEditor.filter.byCategory('finance')">

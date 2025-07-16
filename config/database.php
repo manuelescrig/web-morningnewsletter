@@ -383,7 +383,7 @@ class Database {
                         'type' => 'bitcoin',
                         'name' => 'Bitcoin Price',
                         'description' => 'Track Bitcoin price and 24-hour changes',
-                        'category' => 'cryptocurrency',
+                        'category' => 'crypto',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -392,7 +392,7 @@ class Database {
                         'type' => 'ethereum',
                         'name' => 'Ethereum Price',
                         'description' => 'Track Ethereum price and market performance',
-                        'category' => 'cryptocurrency',
+                        'category' => 'crypto',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -401,7 +401,7 @@ class Database {
                         'type' => 'xrp',
                         'name' => 'XRP Price',
                         'description' => 'Track XRP (Ripple) price and market trends',
-                        'category' => 'cryptocurrency',
+                        'category' => 'crypto',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -410,7 +410,7 @@ class Database {
                         'type' => 'binancecoin',
                         'name' => 'Binance Coin Price',
                         'description' => 'Track BNB (Binance Coin) price and performance',
-                        'category' => 'cryptocurrency',
+                        'category' => 'crypto',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -512,7 +512,7 @@ class Database {
                     'type' => 'bitcoin',
                     'name' => 'Bitcoin Price',
                     'description' => 'Track Bitcoin price and 24-hour changes',
-                    'category' => 'cryptocurrency',
+                    'category' => 'crypto',
                     'is_enabled' => 1,
                     'api_required' => 0,
                     'default_config' => json_encode([])
@@ -521,7 +521,7 @@ class Database {
                     'type' => 'ethereum',
                     'name' => 'Ethereum Price',
                     'description' => 'Track Ethereum price and market performance',
-                    'category' => 'cryptocurrency',
+                    'category' => 'crypto',
                     'is_enabled' => 1,
                     'api_required' => 0,
                     'default_config' => json_encode([])
@@ -530,7 +530,7 @@ class Database {
                     'type' => 'xrp',
                     'name' => 'XRP Price',
                     'description' => 'Track XRP (Ripple) price and market trends',
-                    'category' => 'cryptocurrency',
+                    'category' => 'crypto',
                     'is_enabled' => 1,
                     'api_required' => 0,
                     'default_config' => json_encode([])
@@ -539,7 +539,7 @@ class Database {
                     'type' => 'binancecoin',
                     'name' => 'Binance Coin Price',
                     'description' => 'Track BNB (Binance Coin) price and performance',
-                    'category' => 'cryptocurrency',
+                    'category' => 'crypto',
                     'is_enabled' => 1,
                     'api_required' => 0,
                     'default_config' => json_encode([])

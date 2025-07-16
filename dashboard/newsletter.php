@@ -1470,41 +1470,7 @@ $canAddSource = count($sources) < $maxSources;
                     </button>
                 </div>
                 
-                <!-- Search Bar -->
-                <div class="mb-6">
-                    <div class="relative">
-                        <input type="text" id="sourceSearch" placeholder="Search for data sources..." 
-                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                               oninput="filterSources(this.value)">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
-                        </div>
-                    </div>
-                </div>
                 
-                <!-- Source Categories -->
-                <div class="mb-6">
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="filterByCategory('all')" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white">
-                            All Sources
-                        </button>
-                        <button onclick="filterByCategory('crypto')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            Crypto
-                        </button>
-                        <button onclick="filterByCategory('finance')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            Finance
-                        </button>
-                        <button onclick="filterByCategory('news')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            News & Media
-                        </button>
-                        <button onclick="filterByCategory('weather')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            Weather
-                        </button>
-                        <button onclick="filterByCategory('business')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            Business
-                        </button>
-                    </div>
-                </div>
                 
                 <!-- Sources by Category -->
                 <div id="sourcesGrid" class="space-y-6">
@@ -1527,7 +1493,7 @@ $canAddSource = count($sources) < $maxSources;
                     }
                     
                     $categoryNames = [
-                        'cryptocurrency' => 'Cryptocurrency',
+                        'crypto' => 'Crypto',
                         'finance' => 'Finance', 
                         'lifestyle' => 'Lifestyle',
                         'news' => 'News',
@@ -1536,7 +1502,7 @@ $canAddSource = count($sources) < $maxSources;
                     ];
                     
                     $categoryIcons = [
-                        'cryptocurrency' => 'fas fa-coins',
+                        'crypto' => 'fas fa-coins',
                         'finance' => 'fas fa-chart-line',
                         'lifestyle' => 'fas fa-home',
                         'news' => 'fas fa-newspaper',

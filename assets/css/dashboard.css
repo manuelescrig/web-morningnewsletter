@@ -354,7 +354,7 @@ button,
     font-weight: 500;
 }
 
-.category-badge.cryptocurrency {
+.category-badge.crypto {
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
     color: #92400e;
     border: 1px solid #f59e0b;
