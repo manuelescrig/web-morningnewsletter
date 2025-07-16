@@ -124,6 +124,7 @@ class Database {
                 type TEXT UNIQUE NOT NULL,
                 name TEXT NOT NULL,
                 description TEXT,
+                category TEXT DEFAULT 'general',
                 is_enabled INTEGER DEFAULT 1,
                 api_required INTEGER DEFAULT 0,
                 default_config TEXT,
@@ -281,6 +282,9 @@ class Database {
             // Populate source configs table with default data
             $this->populateSourceConfigs();
             
+            // Ensure all source types are in database and add category column
+            $this->ensureAllSourceTypesExist();
+            
             // Run newsletter history and scheduling migrations
             $this->runNewsletterHistoryMigrations();
             
@@ -379,6 +383,34 @@ class Database {
                         'type' => 'bitcoin',
                         'name' => 'Bitcoin Price',
                         'description' => 'Track Bitcoin price and 24-hour changes',
+                        'category' => 'cryptocurrency',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'ethereum',
+                        'name' => 'Ethereum Price',
+                        'description' => 'Track Ethereum price and market performance',
+                        'category' => 'cryptocurrency',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'xrp',
+                        'name' => 'XRP Price',
+                        'description' => 'Track XRP (Ripple) price and market trends',
+                        'category' => 'cryptocurrency',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'binancecoin',
+                        'name' => 'Binance Coin Price',
+                        'description' => 'Track BNB (Binance Coin) price and performance',
+                        'category' => 'cryptocurrency',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -387,6 +419,7 @@ class Database {
                         'type' => 'sp500',
                         'name' => 'S&P 500 Index',
                         'description' => 'Monitor S&P 500 index performance and trends',
+                        'category' => 'finance',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -395,6 +428,7 @@ class Database {
                         'type' => 'weather',
                         'name' => 'Weather',
                         'description' => 'Weather forecast using Norwegian Meteorological Institute',
+                        'category' => 'lifestyle',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode(['city' => 'New York'])
@@ -403,6 +437,7 @@ class Database {
                         'type' => 'news',
                         'name' => 'News Headlines',
                         'description' => 'Top headlines from trusted news sources',
+                        'category' => 'news',
                         'is_enabled' => 1,
                         'api_required' => 0,
                         'default_config' => json_encode([])
@@ -411,6 +446,7 @@ class Database {
                         'type' => 'appstore',
                         'name' => 'App Store Sales',
                         'description' => 'App Store Connect revenue and sales tracking',
+                        'category' => 'business',
                         'is_enabled' => 1,
                         'api_required' => 1,
                         'default_config' => json_encode(['api_key' => '', 'app_id' => ''])
@@ -419,6 +455,7 @@ class Database {
                         'type' => 'stripe',
                         'name' => 'Stripe Revenue',
                         'description' => 'Track your Stripe payments and revenue',
+                        'category' => 'business',
                         'is_enabled' => 1,
                         'api_required' => 1,
                         'default_config' => json_encode(['api_key' => ''])
@@ -426,8 +463,8 @@ class Database {
                 ];
                 
                 $stmt = $this->pdo->prepare("
-                    INSERT INTO source_configs (type, name, description, is_enabled, api_required, default_config) 
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO source_configs (type, name, description, category, is_enabled, api_required, default_config) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 ");
                 
                 foreach ($defaultSources as $source) {
@@ -435,6 +472,7 @@ class Database {
                         $source['type'],
                         $source['name'],
                         $source['description'],
+                        $source['category'],
                         $source['is_enabled'],
                         $source['api_required'],
                         $source['default_config']
@@ -446,6 +484,157 @@ class Database {
             
         } catch (Exception $e) {
             error_log("Database migration error during source configs population: " . $e->getMessage());
+        }
+    }
+    
+    private function ensureAllSourceTypesExist() {
+        try {
+            // Add category column if it doesn't exist
+            $stmt = $this->pdo->query("PRAGMA table_info(source_configs)");
+            $columns = $stmt->fetchAll();
+            $hasCategoryColumn = false;
+            
+            foreach ($columns as $column) {
+                if ($column['name'] === 'category') {
+                    $hasCategoryColumn = true;
+                    break;
+                }
+            }
+            
+            if (!$hasCategoryColumn) {
+                $this->pdo->exec("ALTER TABLE source_configs ADD COLUMN category TEXT DEFAULT 'general'");
+                error_log("Database migration: Added 'category' column to source_configs table");
+            }
+            
+            // Define all available source types with their details
+            $allSourceTypes = [
+                [
+                    'type' => 'bitcoin',
+                    'name' => 'Bitcoin Price',
+                    'description' => 'Track Bitcoin price and 24-hour changes',
+                    'category' => 'cryptocurrency',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'ethereum',
+                    'name' => 'Ethereum Price',
+                    'description' => 'Track Ethereum price and market performance',
+                    'category' => 'cryptocurrency',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'xrp',
+                    'name' => 'XRP Price',
+                    'description' => 'Track XRP (Ripple) price and market trends',
+                    'category' => 'cryptocurrency',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'binancecoin',
+                    'name' => 'Binance Coin Price',
+                    'description' => 'Track BNB (Binance Coin) price and performance',
+                    'category' => 'cryptocurrency',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'sp500',
+                    'name' => 'S&P 500 Index',
+                    'description' => 'Monitor S&P 500 index performance and trends',
+                    'category' => 'finance',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'weather',
+                    'name' => 'Weather',
+                    'description' => 'Weather forecast using Norwegian Meteorological Institute',
+                    'category' => 'lifestyle',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode(['city' => 'New York'])
+                ],
+                [
+                    'type' => 'news',
+                    'name' => 'News Headlines',
+                    'description' => 'Top headlines from trusted news sources',
+                    'category' => 'news',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'appstore',
+                    'name' => 'App Store Sales',
+                    'description' => 'App Store Connect revenue and sales tracking',
+                    'category' => 'business',
+                    'is_enabled' => 1,
+                    'api_required' => 1,
+                    'default_config' => json_encode(['api_key' => '', 'app_id' => ''])
+                ],
+                [
+                    'type' => 'stripe',
+                    'name' => 'Stripe Revenue',
+                    'description' => 'Track your Stripe payments and revenue',
+                    'category' => 'business',
+                    'is_enabled' => 1,
+                    'api_required' => 1,
+                    'default_config' => json_encode(['api_key' => ''])
+                ]
+            ];
+            
+            // Check which source types already exist
+            $stmt = $this->pdo->query("SELECT type FROM source_configs");
+            $existingTypes = array_column($stmt->fetchAll(), 'type');
+            
+            // Insert missing source types
+            $insertStmt = $this->pdo->prepare("
+                INSERT INTO source_configs (type, name, description, category, is_enabled, api_required, default_config) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ");
+            
+            $addedCount = 0;
+            foreach ($allSourceTypes as $source) {
+                if (!in_array($source['type'], $existingTypes)) {
+                    $insertStmt->execute([
+                        $source['type'],
+                        $source['name'],
+                        $source['description'],
+                        $source['category'],
+                        $source['is_enabled'],
+                        $source['api_required'],
+                        $source['default_config']
+                    ]);
+                    $addedCount++;
+                    error_log("Database migration: Added missing source type '{$source['type']}'");
+                }
+            }
+            
+            // Update existing records to set category if it's null or empty
+            if ($hasCategoryColumn) {
+                $updateStmt = $this->pdo->prepare("UPDATE source_configs SET category = ? WHERE type = ? AND (category IS NULL OR category = '')");
+                foreach ($allSourceTypes as $source) {
+                    if (in_array($source['type'], $existingTypes)) {
+                        $updateStmt->execute([$source['category'], $source['type']]);
+                    }
+                }
+                error_log("Database migration: Updated categories for existing source types");
+            }
+            
+            if ($addedCount > 0) {
+                error_log("Database migration: Successfully added $addedCount missing source types");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Database migration error during source types check: " . $e->getMessage());
         }
     }
     

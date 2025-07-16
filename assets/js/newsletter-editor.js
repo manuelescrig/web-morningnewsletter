@@ -5,6 +5,76 @@
 
 const NewsletterEditor = {
     /**
+     * Filter functionality for source categories
+     */
+    filter: {
+        /**
+         * Filter sources by category
+         */
+        byCategory: function(category) {
+            const categories = document.querySelectorAll('.source-category');
+            categories.forEach(cat => {
+                if (category === 'all' || cat.dataset.category === category) {
+                    cat.style.display = 'block';
+                } else {
+                    cat.style.display = 'none';
+                }
+            });
+            
+            // Update filter buttons
+            const filterButtons = document.querySelectorAll('.category-filter');
+            filterButtons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.add('bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-gray-100', 'text-gray-700');
+                } else {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                }
+            });
+        },
+        
+        /**
+         * Initialize category filter buttons
+         */
+        init: function() {
+            // Add filter buttons to the sources section
+            const sourcesGrid = document.getElementById('sourcesGrid');
+            if (sourcesGrid) {
+                const filterContainer = document.createElement('div');
+                filterContainer.className = 'mb-6 flex flex-wrap gap-2';
+                filterContainer.innerHTML = `
+                    <span class="text-sm font-medium text-gray-700 mr-3 py-2">Filter by category:</span>
+                    <button class="category-filter bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
+                            data-category="all" onclick="NewsletterEditor.filter.byCategory('all')">
+                        All
+                    </button>
+                    <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
+                            data-category="cryptocurrency" onclick="NewsletterEditor.filter.byCategory('cryptocurrency')">
+                        Cryptocurrency
+                    </button>
+                    <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
+                            data-category="finance" onclick="NewsletterEditor.filter.byCategory('finance')">
+                        Finance
+                    </button>
+                    <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
+                            data-category="lifestyle" onclick="NewsletterEditor.filter.byCategory('lifestyle')">
+                        Lifestyle
+                    </button>
+                    <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
+                            data-category="news" onclick="NewsletterEditor.filter.byCategory('news')">
+                        News
+                    </button>
+                    <button class="category-filter bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors duration-200" 
+                            data-category="business" onclick="NewsletterEditor.filter.byCategory('business')">
+                        Business
+                    </button>
+                `;
+                sourcesGrid.parentNode.insertBefore(filterContainer, sourcesGrid);
+            }
+        }
+    },
+    /**
      * Source management functionality
      */
     sources: {
@@ -297,6 +367,9 @@ const NewsletterEditor = {
      * Initialize newsletter editor functionality
      */
     init: function() {
+        // Initialize category filtering
+        this.filter.init();
+        
         // Initialize drag and drop
         this.dragDrop.init();
         

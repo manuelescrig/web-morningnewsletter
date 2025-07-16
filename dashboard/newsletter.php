@@ -153,17 +153,31 @@ $timezones = [
 ];
 
 // Available source modules
-$availableModules = [
-    'bitcoin' => new BitcoinModule(),
-    'ethereum' => new EthereumModule(),
-    'xrp' => new XrpModule(),
-    'binancecoin' => new BinancecoinModule(),
-    'weather' => new WeatherModule(),
-    'news' => new NewsModule(),
-    'sp500' => new SP500Module(),
-    'stripe' => new StripeModule(),
-    'appstore' => new AppStoreModule()
+// Get enabled modules from database
+$db = Database::getInstance()->getConnection();
+$stmt = $db->query("SELECT * FROM source_configs WHERE is_enabled = 1 ORDER BY category, name");
+$enabledSourceConfigs = $stmt->fetchAll();
+
+// Create available modules array based on enabled sources
+$availableModules = [];
+$moduleClasses = [
+    'bitcoin' => 'BitcoinModule',
+    'ethereum' => 'EthereumModule', 
+    'xrp' => 'XrpModule',
+    'binancecoin' => 'BinancecoinModule',
+    'weather' => 'WeatherModule',
+    'news' => 'NewsModule',
+    'sp500' => 'SP500Module',
+    'stripe' => 'StripeModule',
+    'appstore' => 'AppStoreModule'
 ];
+
+foreach ($enabledSourceConfigs as $config) {
+    $type = $config['type'];
+    if (isset($moduleClasses[$type]) && class_exists($moduleClasses[$type])) {
+        $availableModules[$type] = new $moduleClasses[$type]();
+    }
+}
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -1492,22 +1506,91 @@ $canAddSource = count($sources) < $maxSources;
                     </div>
                 </div>
                 
-                <!-- Sources Grid -->
-                <div id="sourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <?php foreach ($availableModules as $type => $module): ?>
+                <!-- Sources by Category -->
+                <div id="sourcesGrid" class="space-y-6">
+                    <?php 
+                    // Group available modules by category
+                    $modulesByCategory = [];
+                    foreach ($availableModules as $type => $module) {
+                        $sourceConfig = null;
+                        foreach ($enabledSourceConfigs as $config) {
+                            if ($config['type'] === $type) {
+                                $sourceConfig = $config;
+                                break;
+                            }
+                        }
+                        $category = $sourceConfig ? $sourceConfig['category'] : 'general';
+                        if (!isset($modulesByCategory[$category])) {
+                            $modulesByCategory[$category] = [];
+                        }
+                        $modulesByCategory[$category][$type] = $module;
+                    }
+                    
+                    $categoryNames = [
+                        'cryptocurrency' => 'Cryptocurrency',
+                        'finance' => 'Finance', 
+                        'lifestyle' => 'Lifestyle',
+                        'news' => 'News',
+                        'business' => 'Business',
+                        'general' => 'General'
+                    ];
+                    
+                    $categoryIcons = [
+                        'cryptocurrency' => 'fas fa-coins',
+                        'finance' => 'fas fa-chart-line',
+                        'lifestyle' => 'fas fa-home',
+                        'news' => 'fas fa-newspaper',
+                        'business' => 'fas fa-briefcase',
+                        'general' => 'fas fa-cog'
+                    ];
+                    ?>
+                    
+                    <?php foreach ($modulesByCategory as $category => $modules): ?>
+                        <div class="source-category" data-category="<?php echo $category; ?>">
+                            <!-- Category Header -->
+                            <div class="flex items-center mb-3">
+                                <div class="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center mr-2">
+                                    <i class="<?php echo $categoryIcons[$category] ?? 'fas fa-cog'; ?> text-gray-600 text-sm"></i>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900">
+                                    <?php echo $categoryNames[$category] ?? ucfirst($category); ?>
+                                </h3>
+                                <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                    <?php echo count($modules); ?>
+                                </span>
+                            </div>
+                            
+                            <!-- Category Sources Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <?php foreach ($modules as $type => $module): ?>
                         <?php
-                        $sourceInfo = [
-                            'bitcoin' => ['icon' => 'fab fa-bitcoin', 'category' => 'crypto', 'description' => 'Real-time Bitcoin price with 24h comparison'],
-                            'ethereum' => ['icon' => 'fab fa-ethereum', 'category' => 'crypto', 'description' => 'Real-time Ethereum price with 24h comparison'],
-                            'xrp' => ['icon' => 'fas fa-circle', 'category' => 'crypto', 'description' => 'XRP (Ripple) price with 24h comparison'],
-                            'binancecoin' => ['icon' => 'fas fa-coins', 'category' => 'crypto', 'description' => 'Binance Coin (BNB) price with 24h comparison'],
-                            'weather' => ['icon' => 'fas fa-cloud-sun', 'category' => 'weather', 'description' => 'Current weather conditions and forecasts'],
-                            'news' => ['icon' => 'fas fa-newspaper', 'category' => 'news', 'description' => 'Latest news headlines from various sources'],
-                            'sp500' => ['icon' => 'fas fa-chart-line', 'category' => 'finance', 'description' => 'S&P 500 index data and market trends'],
-                            'stripe' => ['icon' => 'fab fa-stripe', 'category' => 'business', 'description' => 'Revenue and payment analytics'],
-                            'appstore' => ['icon' => 'fab fa-app-store', 'category' => 'business', 'description' => 'App Store metrics and analytics']
+                        // Get source config from database
+                        $sourceConfig = null;
+                        foreach ($enabledSourceConfigs as $config) {
+                            if ($config['type'] === $type) {
+                                $sourceConfig = $config;
+                                break;
+                            }
+                        }
+                        
+                        // Default icons for each source type
+                        $iconMap = [
+                            'bitcoin' => 'fab fa-bitcoin',
+                            'ethereum' => 'fab fa-ethereum',
+                            'xrp' => 'fas fa-coins',
+                            'binancecoin' => 'fas fa-coins',
+                            'weather' => 'fas fa-cloud-sun',
+                            'news' => 'fas fa-newspaper',
+                            'sp500' => 'fas fa-chart-line',
+                            'stripe' => 'fab fa-stripe',
+                            'appstore' => 'fab fa-app-store'
                         ];
-                        $info = $sourceInfo[$type] ?? ['icon' => 'fas fa-cube', 'category' => 'other', 'description' => 'Data source'];
+                        
+                        $info = [
+                            'icon' => $iconMap[$type] ?? 'fas fa-cube',
+                            'category' => $sourceConfig ? $sourceConfig['category'] : 'general',
+                            'description' => $sourceConfig ? $sourceConfig['description'] : 'Data source'
+                        ];
                         ?>
                         <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer" 
                              data-type="<?php echo $type; ?>" 
@@ -1532,6 +1615,9 @@ $canAddSource = count($sources) < $maxSources;
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-plus text-gray-400"></i>
                                 </div>
+                            </div>
+                        </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     <?php endforeach; ?>

@@ -44,16 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $sourceId = $_POST['source_id'] ?? '';
                 $name = $_POST['name'] ?? '';
                 $description = $_POST['description'] ?? '';
+                $category = $_POST['category'] ?? '';
                 $isEnabled = isset($_POST['is_enabled']) ? 1 : 0;
                 
                 try {
                     $stmt = $db->prepare("
                         UPDATE source_configs 
-                        SET name = ?, description = ?, is_enabled = ?, updated_at = CURRENT_TIMESTAMP 
+                        SET name = ?, description = ?, category = ?, is_enabled = ?, updated_at = CURRENT_TIMESTAMP 
                         WHERE id = ?
                     ");
                     
-                    if ($stmt->execute([$name, $description, $isEnabled, $sourceId])) {
+                    if ($stmt->execute([$name, $description, $category, $isEnabled, $sourceId])) {
                         $success = 'Source configuration updated successfully';
                     } else {
                         $error = 'Failed to update source configuration';
@@ -66,10 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get all source configurations
+// Get all source configurations grouped by category
 $db = Database::getInstance()->getConnection();
-$stmt = $db->query("SELECT * FROM source_configs ORDER BY type");
+$stmt = $db->query("SELECT * FROM source_configs ORDER BY category, type");
 $sourceConfigs = $stmt->fetchAll();
+
+// Group sources by category
+$sourcesByCategory = [];
+foreach ($sourceConfigs as $config) {
+    $category = $config['category'] ?? 'general';
+    if (!isset($sourcesByCategory[$category])) {
+        $sourcesByCategory[$category] = [];
+    }
+    $sourcesByCategory[$category][] = $config;
+}
 
 // Get usage statistics for each source type
 $usageStats = [];
@@ -121,123 +132,182 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
         <?php endif; ?>
 
-        <!-- Source Configuration Grid -->
-        <div class="grid grid-cols-1 gap-6">
-            <?php foreach ($sourceConfigs as $config): ?>
-                <div class="bg-white shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-3 mb-4">
-                                    <div class="flex-shrink-0">
-                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-<?php 
-                                                $icons = [
-                                                    'bitcoin' => 'bitcoin',
-                                                    'sp500' => 'chart-line',
-                                                    'weather' => 'cloud-sun',
-                                                    'news' => 'newspaper',
-                                                    'appstore' => 'mobile-alt',
-                                                    'stripe' => 'credit-card'
-                                                ];
-                                                echo $icons[$config['type']] ?? 'plug';
-                                            ?> text-blue-600"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-lg font-medium text-gray-900">
-                                            <?php echo htmlspecialchars($config['name']); ?>
-                                        </h3>
-                                        <p class="text-sm text-gray-500">
-                                            Type: <?php echo htmlspecialchars($config['type']); ?>
-                                            <?php if ($config['api_required']): ?>
-                                                <span class="inline-flex items-center ml-2 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                    <i class="fas fa-key mr-1"></i>
-                                                    API Required
-                                                </span>
-                                            <?php endif; ?>
-                                        </p>
-                                    </div>
-                                    <div class="flex items-center space-x-4">
-                                        <!-- Usage Statistics -->
-                                        <div class="text-center">
-                                            <div class="text-lg font-semibold text-gray-900">
-                                                <?php echo $usageStats[$config['type']]['user_count'] ?? 0; ?>
-                                            </div>
-                                            <div class="text-xs text-gray-500">Total Uses</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="text-lg font-semibold text-gray-900">
-                                                <?php echo $usageStats[$config['type']]['unique_users'] ?? 0; ?>
-                                            </div>
-                                            <div class="text-xs text-gray-500">Users</div>
-                                        </div>
-                                        <!-- Status Toggle -->
-                                        <div class="flex items-center">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $config['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
-                                                <i class="fas fa-<?php echo $config['is_enabled'] ? 'check' : 'times'; ?> mr-1"></i>
-                                                <?php echo $config['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Configuration Form -->
-                                <form method="POST" class="space-y-4">
-                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
-                                    <input type="hidden" name="action" value="update_source">
-                                    <input type="hidden" name="source_id" value="<?php echo $config['id']; ?>">
-                                    
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label for="name_<?php echo $config['id']; ?>" class="block text-sm font-medium text-gray-700 mb-1">
-                                                Display Name
-                                            </label>
-                                            <input type="text" 
-                                                   id="name_<?php echo $config['id']; ?>" 
-                                                   name="name" 
-                                                   value="<?php echo htmlspecialchars($config['name']); ?>"
-                                                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                        </div>
-                                        
-                                        <div class="flex items-end">
-                                            <label class="flex items-center">
-                                                <input type="checkbox" 
-                                                       name="is_enabled" 
-                                                       <?php echo $config['is_enabled'] ? 'checked' : ''; ?>
-                                                       class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                                <span class="ml-2 text-sm font-medium text-gray-700">
-                                                    Available to users
-                                                </span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="description_<?php echo $config['id']; ?>" class="block text-sm font-medium text-gray-700 mb-1">
-                                            Description
-                                        </label>
-                                        <textarea id="description_<?php echo $config['id']; ?>" 
-                                                  name="description" 
-                                                  rows="2"
-                                                  class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                                  placeholder="Brief description of what this source provides"><?php echo htmlspecialchars($config['description']); ?></textarea>
-                                    </div>
-                                    
-                                    <div class="flex justify-end">
-                                        <button type="submit" 
-                                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fas fa-save mr-2"></i>
-                                            Save Changes
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+        <!-- Source Configuration by Category -->
+        <?php 
+        $categoryIcons = [
+            'cryptocurrency' => 'coins',
+            'finance' => 'chart-line',
+            'lifestyle' => 'home',
+            'news' => 'newspaper',
+            'business' => 'briefcase',
+            'general' => 'cog'
+        ];
+        
+        $categoryNames = [
+            'cryptocurrency' => 'Cryptocurrency',
+            'finance' => 'Finance',
+            'lifestyle' => 'Lifestyle',
+            'news' => 'News',
+            'business' => 'Business',
+            'general' => 'General'
+        ];
+        ?>
+        
+        <?php foreach ($sourcesByCategory as $category => $configs): ?>
+            <div class="mb-8">
+                <!-- Category Header -->
+                <div class="flex items-center mb-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-<?php echo $categoryIcons[$category] ?? 'cog'; ?> text-gray-600"></i>
                         </div>
+                        <h2 class="text-xl font-semibold text-gray-900">
+                            <?php echo htmlspecialchars($categoryNames[$category] ?? ucfirst($category)); ?>
+                        </h2>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                            <?php echo count($configs); ?> source<?php echo count($configs) === 1 ? '' : 's'; ?>
+                        </span>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                
+                <!-- Sources in Category -->
+                <div class="grid grid-cols-1 gap-6">
+                    <?php foreach ($configs as $config): ?>
+                        <div class="bg-white shadow rounded-lg">
+                            <div class="px-4 py-5 sm:p-6">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <div class="flex-shrink-0">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-<?php 
+                                                        $icons = [
+                                                            'bitcoin' => 'bitcoin',
+                                                            'ethereum' => 'ethereum',
+                                                            'xrp' => 'coins',
+                                                            'binancecoin' => 'coins',
+                                                            'sp500' => 'chart-line',
+                                                            'weather' => 'cloud-sun',
+                                                            'news' => 'newspaper',
+                                                            'appstore' => 'mobile-alt',
+                                                            'stripe' => 'credit-card'
+                                                        ];
+                                                        echo $icons[$config['type']] ?? 'plug';
+                                                    ?> text-blue-600"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h3 class="text-lg font-medium text-gray-900">
+                                                    <?php echo htmlspecialchars($config['name']); ?>
+                                                </h3>
+                                                <p class="text-sm text-gray-500">
+                                                    Type: <?php echo htmlspecialchars($config['type']); ?>
+                                                    <?php if ($config['api_required']): ?>
+                                                        <span class="inline-flex items-center ml-2 px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                            <i class="fas fa-key mr-1"></i>
+                                                            API Required
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center space-x-4">
+                                                <!-- Usage Statistics -->
+                                                <div class="text-center">
+                                                    <div class="text-lg font-semibold text-gray-900">
+                                                        <?php echo $usageStats[$config['type']]['user_count'] ?? 0; ?>
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">Total Uses</div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="text-lg font-semibold text-gray-900">
+                                                        <?php echo $usageStats[$config['type']]['unique_users'] ?? 0; ?>
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">Users</div>
+                                                </div>
+                                                <!-- Status Toggle -->
+                                                <div class="flex items-center">
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $config['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
+                                                        <i class="fas fa-<?php echo $config['is_enabled'] ? 'check' : 'times'; ?> mr-1"></i>
+                                                        <?php echo $config['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Configuration Form -->
+                                        <form method="POST" class="space-y-4">
+                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                                            <input type="hidden" name="action" value="update_source">
+                                            <input type="hidden" name="source_id" value="<?php echo $config['id']; ?>">
+                                            
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div>
+                                                    <label for="name_<?php echo $config['id']; ?>" class="block text-sm font-medium text-gray-700 mb-1">
+                                                        Display Name
+                                                    </label>
+                                                    <input type="text" 
+                                                           id="name_<?php echo $config['id']; ?>" 
+                                                           name="name" 
+                                                           value="<?php echo htmlspecialchars($config['name']); ?>"
+                                                           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                                </div>
+                                                
+                                                <div>
+                                                    <label for="category_<?php echo $config['id']; ?>" class="block text-sm font-medium text-gray-700 mb-1">
+                                                        Category
+                                                    </label>
+                                                    <select id="category_<?php echo $config['id']; ?>" 
+                                                            name="category"
+                                                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                                        <option value="cryptocurrency" <?php echo ($config['category'] === 'cryptocurrency') ? 'selected' : ''; ?>>Cryptocurrency</option>
+                                                        <option value="finance" <?php echo ($config['category'] === 'finance') ? 'selected' : ''; ?>>Finance</option>
+                                                        <option value="lifestyle" <?php echo ($config['category'] === 'lifestyle') ? 'selected' : ''; ?>>Lifestyle</option>
+                                                        <option value="news" <?php echo ($config['category'] === 'news') ? 'selected' : ''; ?>>News</option>
+                                                        <option value="business" <?php echo ($config['category'] === 'business') ? 'selected' : ''; ?>>Business</option>
+                                                        <option value="general" <?php echo ($config['category'] === 'general') ? 'selected' : ''; ?>>General</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="flex items-end">
+                                                    <label class="flex items-center">
+                                                        <input type="checkbox" 
+                                                               name="is_enabled" 
+                                                               <?php echo $config['is_enabled'] ? 'checked' : ''; ?>
+                                                               class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                                        <span class="ml-2 text-sm font-medium text-gray-700">
+                                                            Available to users
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <label for="description_<?php echo $config['id']; ?>" class="block text-sm font-medium text-gray-700 mb-1">
+                                                    Description
+                                                </label>
+                                                <textarea id="description_<?php echo $config['id']; ?>" 
+                                                          name="description" 
+                                                          rows="2"
+                                                          class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                          placeholder="Brief description of what this source provides"><?php echo htmlspecialchars($config['description']); ?></textarea>
+                                            </div>
+                                            
+                                            <div class="flex justify-end">
+                                                <button type="submit" 
+                                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    <i class="fas fa-save mr-2"></i>
+                                                    Save Changes
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
 
         <!-- Summary Statistics -->
         <div class="mt-8 bg-white shadow rounded-lg">
