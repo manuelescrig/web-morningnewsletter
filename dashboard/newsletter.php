@@ -1237,13 +1237,72 @@ $canAddSource = count($sources) < $maxSources;
             event.target.classList.add('active', 'bg-blue-600', 'text-white');
             event.target.classList.remove('bg-gray-200', 'text-gray-700');
             
-            // Filter source cards
+            const categories = document.querySelectorAll('.source-category');
             const cards = document.querySelectorAll('.source-card');
-            cards.forEach(card => {
-                const cardCategory = card.dataset.category;
-                const visible = category === 'all' || cardCategory === category;
-                card.style.display = visible ? 'block' : 'none';
-            });
+            
+            if (category === 'all') {
+                // Hide all category sections
+                categories.forEach(categorySection => {
+                    categorySection.style.display = 'none';
+                });
+                
+                // Show all source cards directly without sections
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                
+                // Create a flat grid for all sources
+                const sourcesGrid = document.getElementById('sourcesGrid');
+                const allSourcesContainer = document.getElementById('allSourcesContainer');
+                
+                if (!allSourcesContainer) {
+                    // Create container for all sources
+                    const container = document.createElement('div');
+                    container.id = 'allSourcesContainer';
+                    container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+                    sourcesGrid.appendChild(container);
+                }
+                
+                // Move all cards to the flat container
+                const container = document.getElementById('allSourcesContainer');
+                container.innerHTML = '';
+                cards.forEach(card => {
+                    const clonedCard = card.cloneNode(true);
+                    // Preserve onclick functionality
+                    const sourceType = card.dataset.type;
+                    const sourceTitle = card.querySelector('h4').textContent;
+                    clonedCard.onclick = function() {
+                        selectSource(sourceType, sourceTitle);
+                    };
+                    container.appendChild(clonedCard);
+                });
+                
+                // Show the container
+                document.getElementById('allSourcesContainer').style.display = 'grid';
+            } else {
+                // Show category sections
+                categories.forEach(categorySection => {
+                    const sectionCategory = categorySection.dataset.category;
+                    if (sectionCategory === category) {
+                        categorySection.style.display = 'block';
+                    } else {
+                        categorySection.style.display = 'none';
+                    }
+                });
+                
+                // Hide the all sources container
+                const allSourcesContainer = document.getElementById('allSourcesContainer');
+                if (allSourcesContainer) {
+                    allSourcesContainer.style.display = 'none';
+                }
+                
+                // Filter source cards within sections
+                cards.forEach(card => {
+                    const cardCategory = card.dataset.category;
+                    const visible = cardCategory === category;
+                    card.style.display = visible ? 'block' : 'none';
+                });
+            }
         }
         
         function selectSource(sourceType, sourceTitle) {
@@ -1470,7 +1529,32 @@ $canAddSource = count($sources) < $maxSources;
                     </button>
                 </div>
                 
-                
+                <!-- Filter Buttons -->
+                <div class="mb-6">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterByCategory('all')" class="filter-btn bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            All
+                        </button>
+                        <button onclick="filterByCategory('crypto')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Crypto
+                        </button>
+                        <button onclick="filterByCategory('finance')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Finance
+                        </button>
+                        <button onclick="filterByCategory('lifestyle')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Lifestyle
+                        </button>
+                        <button onclick="filterByCategory('news')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            News
+                        </button>
+                        <button onclick="filterByCategory('business')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            Business
+                        </button>
+                        <button onclick="filterByCategory('general')" class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                            General
+                        </button>
+                    </div>
+                </div>
                 
                 <!-- Sources by Category -->
                 <div id="sourcesGrid" class="space-y-6">
