@@ -176,7 +176,7 @@ if ($selectedTag) {
                             Get your personalized morning brief delivered daily. Never miss what matters.
                         </p>
                         <a href="/register" 
-                           class="block w-full bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                           class="btn-pill block w-full bg-blue-600 text-white text-center py-2 px-4 hover:bg-blue-700 transition-colors font-medium">
                             Start for Free
                         </a>
                     </div>

@@ -275,7 +275,7 @@ try {
                 Get personalized insights delivered to your inbox every morning. Join thousands of professionals who start their day informed.
             </p>
             <a href="/register" 
-               class="inline-flex items-center bg-white text-blue-600 font-semibold px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center bg-white text-blue-600 font-semibold px-8 py-4 hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 Start Your Free Trial
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>

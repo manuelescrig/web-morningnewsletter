@@ -71,7 +71,7 @@ html {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* Pill Button Styles */
+/* Pill Button Styles - Comprehensive Override */
 .btn-pill {
     border-radius: 9999px !important;
 }
@@ -88,7 +88,83 @@ input.btn-pill {
 .btn-pill.rounded-lg,
 .btn-pill.rounded,
 .btn-pill.rounded-sm,
-.btn-pill.rounded-xl {
+.btn-pill.rounded-xl,
+.btn-pill.rounded-2xl,
+.btn-pill.rounded-3xl,
+.btn-pill.rounded-full {
+    border-radius: 9999px !important;
+}
+
+/* Override all possible conflicting classes with maximum specificity */
+.btn-pill[class*="rounded"] {
+    border-radius: 9999px !important;
+}
+
+/* Target specific element combinations */
+button.btn-pill[class*="rounded"],
+a.btn-pill[class*="rounded"],
+input.btn-pill[class*="rounded"] {
+    border-radius: 9999px !important;
+}
+
+/* Override form button styles */
+form button.btn-pill,
+form input.btn-pill {
+    border-radius: 9999px !important;
+}
+
+/* Override all Tailwind utility classes that might conflict */
+.btn-pill.border,
+.btn-pill.border-gray-300,
+.btn-pill.border-blue-600,
+.btn-pill.shadow,
+.btn-pill.shadow-sm,
+.btn-pill.shadow-lg,
+.btn-pill.bg-blue-600,
+.btn-pill.bg-white,
+.btn-pill.bg-gray-50,
+.btn-pill.hover\:bg-blue-700,
+.btn-pill.hover\:bg-gray-100 {
+    border-radius: 9999px !important;
+}
+
+/* Ultimate override for CDN processing issues */
+.btn-pill,
+.btn-pill.btn-primary,
+.btn-pill.btn-secondary,
+.btn-pill.auth-button,
+.btn-pill.inline-flex,
+.btn-pill.block,
+.btn-pill.w-full,
+.btn-pill.relative,
+.btn-pill.group,
+.btn-pill.text-white,
+.btn-pill.text-gray-700,
+.btn-pill.bg-gradient-to-r,
+.btn-pill.from-blue-600,
+.btn-pill.to-purple-600,
+.btn-pill.from-purple-600,
+.btn-pill.to-blue-600,
+.btn-pill.hover\:from-purple-700,
+.btn-pill.hover\:to-blue-700,
+.btn-pill.focus\:outline-none,
+.btn-pill.focus\:ring-2,
+.btn-pill.focus\:ring-offset-2,
+.btn-pill.focus\:ring-blue-500,
+.btn-pill.transition-all,
+.btn-pill.duration-200,
+.btn-pill.duration-300 {
+    border-radius: 9999px !important;
+}
+
+/* Force override after any dynamic CSS processing */
+html body .btn-pill {
+    border-radius: 9999px !important;
+}
+
+html body button.btn-pill,
+html body a.btn-pill,
+html body input.btn-pill {
     border-radius: 9999px !important;
 }
 

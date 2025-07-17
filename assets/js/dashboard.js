@@ -278,9 +278,13 @@ const Dashboard = {
      */
     userActions: {
         toggle: function(userId) {
+            console.log('Dashboard.userActions.toggle called for user:', userId);
             const dropdown = document.getElementById('dropdown-' + userId);
             const button = document.querySelector(`[onclick="Dashboard.userActions.toggle(${userId})"]`);
             const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+            
+            console.log('Found dropdown:', dropdown);
+            console.log('Found button:', button);
             
             if (!dropdown || !button) {
                 console.error('Dropdown or button not found for user:', userId);
