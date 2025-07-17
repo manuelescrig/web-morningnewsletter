@@ -209,7 +209,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="text-center">
                         <button type="submit" 
-                                class="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-200 hover:scale-105 shadow-lg">
+                                class="btn-pill inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-200 hover:scale-105 shadow-lg">
                             <i class="fas fa-paper-plane mr-3"></i>
                             Send Message
                         </button>

@@ -709,11 +709,11 @@ $csrfToken = $auth->generateCSRFToken();
                                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                                     <!-- Previous button -->
                                     <?php if ($page > 1): ?>
-                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" class="btn-pill relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                             <i class="fas fa-chevron-left h-5 w-5"></i>
                                         </a>
                                     <?php else: ?>
-                                        <span class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
+                                        <span class="btn-pill relative inline-flex items-center px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
                                             <i class="fas fa-chevron-left h-5 w-5"></i>
                                         </span>
                                     <?php endif; ?>
@@ -750,11 +750,11 @@ $csrfToken = $auth->generateCSRFToken();
                                     
                                     <!-- Next button -->
                                     <?php if ($page < $totalPages): ?>
-                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                        <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" class="btn-pill relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                             <i class="fas fa-chevron-right h-5 w-5"></i>
                                         </a>
                                     <?php else: ?>
-                                        <span class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
+                                        <span class="btn-pill relative inline-flex items-center px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300">
                                             <i class="fas fa-chevron-right h-5 w-5"></i>
                                         </span>
                                     <?php endif; ?>

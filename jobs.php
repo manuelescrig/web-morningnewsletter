@@ -107,12 +107,12 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="mailto:hello@morningnewsletter.com" 
-                       class="inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 font-medium">
+                       class="btn-pill inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-300 font-medium">
                         <i class="fas fa-envelope mr-2"></i>
                         Send Us Your Resume
                     </a>
                     <a href="https://linkedin.com/company/morningnewsletter" 
-                       class="inline-flex items-center px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300 font-medium">
+                       class="btn-pill inline-flex items-center px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-300 font-medium">
                         <i class="fab fa-linkedin mr-2"></i>
                         Follow Us on LinkedIn
                     </a>
@@ -191,7 +191,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 Even if there aren't current openings, I'm always interested in connecting with talented individuals who share the vision.
             </p>
             <a href="mailto:hello@morningnewsletter.com" 
-               class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 <i class="fas fa-paper-plane mr-3"></i>
                 Get In Touch
             </a>

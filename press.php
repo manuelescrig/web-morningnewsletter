@@ -238,7 +238,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 morning routines, and the future of personalized information.
             </p>
             <a href="mailto:hello@morningnewsletter.com" 
-               class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 <i class="fas fa-envelope mr-3"></i>
                 Contact Press Team
             </a>

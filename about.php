@@ -212,7 +212,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 Join the professionals who have already streamlined their morning routine with MorningNewsletter.
             </p>
             <a href="#pricing" 
-               class="inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 <i class="fas fa-arrow-right mr-3"></i>
                 Get Started Today
             </a>
