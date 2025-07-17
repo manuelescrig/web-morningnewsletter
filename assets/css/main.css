@@ -168,6 +168,67 @@ html body input.btn-pill {
     border-radius: 9999px !important;
 }
 
+/* Additional overrides for Tailwind CSS conflicts */
+.btn-pill.bg-gradient-to-r,
+.btn-pill.bg-blue-600,
+.btn-pill.bg-white,
+.btn-pill.bg-red-600,
+.btn-pill.hover\:bg-blue-700,
+.btn-pill.hover\:bg-gray-50,
+.btn-pill.hover\:bg-red-700,
+.btn-pill.text-white,
+.btn-pill.text-purple-600,
+.btn-pill.text-gray-700,
+.btn-pill.px-8,
+.btn-pill.py-4,
+.btn-pill.px-6,
+.btn-pill.py-3,
+.btn-pill.px-4,
+.btn-pill.py-2,
+.btn-pill.font-medium,
+.btn-pill.font-semibold,
+.btn-pill.text-lg,
+.btn-pill.text-sm,
+.btn-pill.inline-flex,
+.btn-pill.items-center,
+.btn-pill.justify-center,
+.btn-pill.shadow-lg,
+.btn-pill.shadow-sm,
+.btn-pill.transition-all,
+.btn-pill.transition-colors,
+.btn-pill.duration-200,
+.btn-pill.duration-300,
+.btn-pill.hover\:scale-105,
+.btn-pill.focus\:outline-none,
+.btn-pill.focus\:ring-2,
+.btn-pill.focus\:ring-offset-2,
+.btn-pill.focus\:ring-blue-500,
+.btn-pill.focus\:ring-red-500,
+.btn-pill.border,
+.btn-pill.border-transparent,
+.btn-pill.border-gray-300 {
+    border-radius: 9999px !important;
+}
+
+/* Ultimate override with maximum specificity */
+html body div .btn-pill,
+html body form .btn-pill,
+html body section .btn-pill,
+html body main .btn-pill,
+html body div button.btn-pill,
+html body div a.btn-pill,
+html body form button.btn-pill,
+html body section button.btn-pill,
+html body main button.btn-pill,
+html body div form button.btn-pill {
+    border-radius: 9999px !important;
+}
+
+/* Catch-all for any combination of classes */
+[class*="btn-pill"] {
+    border-radius: 9999px !important;
+}
+
 /* Form Styles */
 .form-input {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;

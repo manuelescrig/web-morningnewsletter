@@ -91,6 +91,23 @@
     border-radius: 9999px !important;
 }
 
+/* Additional comprehensive overrides for dashboard pages */
+html body .btn-pill,
+html body button.btn-pill,
+html body a.btn-pill,
+html body input.btn-pill,
+html body form .btn-pill,
+html body div .btn-pill,
+html body section .btn-pill,
+html body main .btn-pill {
+    border-radius: 9999px !important;
+}
+
+/* Catch-all for dashboard elements */
+[class*="btn-pill"] {
+    border-radius: 9999px !important;
+}
+
 /* Dropdown positioning utilities */
 .dropdown-up {
     bottom: 100%;
