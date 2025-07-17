@@ -237,6 +237,8 @@ $csrfToken = $auth->generateCSRFToken();
     <title>User Management - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -575,7 +577,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserActionDropdown(<?php echo $userData['id']; ?>)">
+                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="Dashboard.userActions.toggle(<?php echo $userData['id']; ?>)">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right top-full mt-2">
@@ -766,66 +768,6 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
     </div>
 
-    <script>
-        function toggleUserActionDropdown(userId) {
-            const dropdown = document.getElementById('dropdown-' + userId);
-            const button = document.querySelector(`[onclick="toggleUserActionDropdown(${userId})"]`);
-            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
-            
-            // Close all other dropdowns
-            allDropdowns.forEach(d => {
-                if (d !== dropdown) {
-                    d.classList.add('hidden');
-                    // Reset position classes for other dropdowns
-                    d.classList.remove('origin-bottom-right', 'mb-2', 'bottom-0');
-                    d.classList.add('origin-top-right', 'mt-2', 'top-full');
-                }
-            });
-            
-            if (dropdown.classList.contains('hidden')) {
-                // Get the table container for boundary checking
-                const table = dropdown.closest('.overflow-x-auto');
-                const tableRect = table ? table.getBoundingClientRect() : null;
-                
-                // Calculate if there's enough space below
-                const buttonRect = button.getBoundingClientRect();
-                const dropdownHeight = 300; // Approximate dropdown height
-                const viewportHeight = window.innerHeight;
-                const tableBottom = tableRect ? tableRect.bottom : viewportHeight;
-                
-                const spaceBelow = Math.min(viewportHeight, tableBottom) - buttonRect.bottom;
-                const spaceAbove = buttonRect.top - (tableRect ? tableRect.top : 0);
-                
-                console.log(`User ${userId}: spaceBelow=${spaceBelow}, spaceAbove=${spaceAbove}, dropdownHeight=${dropdownHeight}`);
-                
-                // Remove existing position classes
-                dropdown.classList.remove('origin-top-right', 'origin-bottom-right', 'mt-2', 'mb-2', 'top-full', 'bottom-0');
-                
-                if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
-                    // Not enough space below, but enough space above - open upward
-                    dropdown.classList.add('origin-bottom-right', 'bottom-0');
-                    console.log(`Opening upward for user ${userId}`);
-                } else {
-                    // Default - open downward
-                    dropdown.classList.add('origin-top-right', 'top-full', 'mt-2');
-                    console.log(`Opening downward for user ${userId}`);
-                }
-                
-                dropdown.classList.remove('hidden');
-            } else {
-                dropdown.classList.add('hidden');
-            }
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('[onclick^="toggleUserActionDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
-                document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
-                    d.classList.add('hidden');
-                });
-            }
-        });
-    </script>
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
