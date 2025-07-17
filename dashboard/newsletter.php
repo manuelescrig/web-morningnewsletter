@@ -395,7 +395,7 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
                 <div class="flex space-x-3">
                     <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200"
+                       class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200"
                        target="_blank">
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
@@ -1609,11 +1609,11 @@ $canAddSource = count($sources) < $maxSources;
                             
                             <div class="flex justify-end space-x-3 pt-4">
                                 <button type="button" onclick="Dashboard.modal.close('addSourceModal')" 
-                                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
+                                        class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
                                     Cancel
                                 </button>
                                 <button type="submit" 
-                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                        class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
                                     <i class="fas fa-plus mr-2"></i>
                                     Add Source
                                 </button>
@@ -1741,11 +1741,11 @@ $canAddSource = count($sources) < $maxSources;
                     
                     <div class="mt-6 flex justify-end space-x-2">
                         <button type="button" onclick="Dashboard.modal.close('editSourceModal')" 
-                                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
+                                class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
                             Update Source
                         </button>
                     </div>
