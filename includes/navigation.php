@@ -46,7 +46,7 @@ require_once __DIR__ . '/logo.php';
                 <div class="flex items-center space-x-4">
                     <?php if ($isLoggedIn): ?>
                         <a href="/dashboard/" 
-                           class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
                             Go to Dashboard
                         </a>
                     <?php else: ?>
@@ -55,7 +55,7 @@ require_once __DIR__ . '/logo.php';
                             Log In
                         </a>
                         <a href="#pricing" 
-                           class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-200">
+                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
                             Get Started
                         </a>
                     <?php endif; ?>
