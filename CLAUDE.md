@@ -436,6 +436,258 @@ interface SourceModule {
 5. **Template Rendering**: Data inserted into HTML email template
 6. **Email Delivery**: `EmailSender` delivers via preferred provider
 
+### Adding New Modules (Step-by-Step Guide)
+
+**IMPORTANT**: Adding new modules currently requires code changes in multiple places. Follow this exact sequence to ensure proper integration.
+
+#### Step 1: Create the Module File
+Create a new PHP file in `/modules/` directory (e.g., `modules/github.php`):
+
+```php
+<?php
+require_once __DIR__ . '/../core/SourceModule.php';
+
+class GitHubModule extends BaseSourceModule {
+    public function getTitle(): string {
+        return 'GitHub Activity';
+    }
+    
+    public function getData(): array {
+        try {
+            $apiKey = $this->config['api_key'] ?? '';
+            $username = $this->config['username'] ?? '';
+            
+            if (empty($apiKey) || empty($username)) {
+                throw new Exception('GitHub API key and username required');
+            }
+            
+            // Make API call using BaseSourceModule::makeHttpRequest()
+            $headers = ['Authorization: Bearer ' . $apiKey];
+            $response = $this->makeHttpRequest("https://api.github.com/users/$username", $headers);
+            $data = json_decode($response, true);
+            
+            return [
+                [
+                    'label' => 'Public Repositories',
+                    'value' => (string)$data['public_repos'],
+                    'delta' => null
+                ],
+                [
+                    'label' => 'Followers',
+                    'value' => (string)$data['followers'],
+                    'delta' => null
+                ]
+            ];
+            
+        } catch (Exception $e) {
+            error_log('GitHub module error: ' . $e->getMessage());
+            return [
+                [
+                    'label' => 'GitHub Activity',
+                    'value' => 'Configuration required',
+                    'delta' => null
+                ]
+            ];
+        }
+    }
+    
+    public function getConfigFields(): array {
+        return [
+            [
+                'name' => 'api_key',
+                'type' => 'password',
+                'label' => 'GitHub API Token',
+                'required' => true,
+                'description' => 'Personal access token from GitHub settings'
+            ],
+            [
+                'name' => 'username',
+                'type' => 'text',
+                'label' => 'GitHub Username',
+                'required' => true,
+                'description' => 'Your GitHub username'
+            ]
+        ];
+    }
+    
+    public function validateConfig(array $config): bool {
+        return !empty($config['api_key']) && !empty($config['username']);
+    }
+}
+```
+
+#### Step 2: Add Database Entry
+Add the module to the `source_configs` table. You can either:
+
+**Option A**: Add to the default sources array in `config/database.php` (around line 380-460):
+```php
+'github' => [
+    'type' => 'github',
+    'name' => 'GitHub Activity',
+    'description' => 'Repository statistics and activity from GitHub',
+    'category' => 'business',
+    'is_enabled' => 1,
+    'api_required' => 1,
+    'default_config' => json_encode(['api_key' => '', 'username' => ''])
+]
+```
+
+**Option B**: Insert directly into database:
+```sql
+INSERT INTO source_configs (type, name, description, category, is_enabled, api_required, default_config) 
+VALUES ('github', 'GitHub Activity', 'Repository statistics and activity from GitHub', 'business', 1, 1, '{"api_key":"","username":""}');
+```
+
+#### Step 3: Add Module Include Statements
+Add the require statement to **ALL** these files:
+
+**Files to update**:
+- `core/NewsletterBuilder.php` (line ~8-16)
+- `dashboard/newsletter.php` (line ~14-23)
+- `dashboard/sources.php` (line ~5-14)
+
+Add this line:
+```php
+require_once __DIR__ . '/../modules/github.php';
+```
+
+#### Step 4: Add to Class Mapping Arrays
+Update the module class mappings in these locations:
+
+**A. In `core/NewsletterBuilder.php`** (lines ~132-145):
+```php
+private function getModuleClass($type) {
+    $moduleMap = [
+        'bitcoin' => 'BitcoinModule',
+        'ethereum' => 'EthereumModule',
+        'xrp' => 'XrpModule',
+        'binancecoin' => 'BinancecoinModule',
+        'sp500' => 'SP500Module',
+        'weather' => 'WeatherModule',
+        'news' => 'NewsModule',
+        'appstore' => 'AppStoreModule',
+        'stripe' => 'StripeModule',
+        'github' => 'GitHubModule'  // ADD THIS LINE
+    ];
+    
+    return $moduleMap[$type] ?? null;
+}
+```
+
+**B. In `dashboard/newsletter.php`** (lines ~189-199):
+```php
+$moduleClasses = [
+    'bitcoin' => 'BitcoinModule',
+    'ethereum' => 'EthereumModule',
+    'xrp' => 'XrpModule',
+    'binancecoin' => 'BinancecoinModule',
+    'weather' => 'WeatherModule',
+    'news' => 'NewsModule',
+    'sp500' => 'SP500Module',
+    'stripe' => 'StripeModule',
+    'appstore' => 'AppStoreModule',
+    'github' => 'GitHubModule'  // ADD THIS LINE
+];
+```
+
+#### Step 5: Add Icon Mapping (Optional)
+In `dashboard/sources.php` (lines ~184-196), add an icon for the admin interface:
+```php
+$icons = [
+    'bitcoin' => 'bitcoin',
+    'ethereum' => 'ethereum',
+    'xrp' => 'coins',
+    'binancecoin' => 'coins',
+    'sp500' => 'chart-line',
+    'weather' => 'cloud-sun',
+    'news' => 'newspaper',
+    'appstore' => 'mobile-alt',
+    'stripe' => 'credit-card',
+    'github' => 'github'  // ADD THIS LINE
+];
+```
+
+#### Step 6: Test the Module
+1. **Clear any caches** (if applicable)
+2. **Test with health check**: `php cron/send_emails.php --health-check`
+3. **Test with dry run**: `php cron/send_emails.php --dry-run`
+4. **Add source in dashboard** and configure it
+5. **Test newsletter generation** with the new source
+
+#### Common Configuration Field Types
+
+**Basic Fields**:
+```php
+[
+    'name' => 'field_name',
+    'type' => 'text|password|email|url|number|textarea',
+    'label' => 'Display Label',
+    'required' => true|false,
+    'description' => 'Help text for users',
+    'placeholder' => 'Placeholder text',
+    'default' => 'default_value'
+]
+```
+
+**Special Field Types**:
+```php
+// Hidden field (populated by JavaScript)
+[
+    'name' => 'latitude',
+    'type' => 'hidden',
+    'label' => 'Latitude',
+    'required' => true,
+    'default' => '40.7128'
+]
+
+// Location search (see WeatherModule for example)
+[
+    'name' => 'location_search',
+    'type' => 'location_search',
+    'label' => 'Location',
+    'required' => true,
+    'description' => 'Search and select your city or location'
+]
+```
+
+#### Best Practices
+
+1. **Error Handling**: Always wrap API calls in try-catch blocks
+2. **Configuration Validation**: Implement robust `validateConfig()` method
+3. **API Rate Limits**: Be mindful of API quotas and implement appropriate delays
+4. **Data Caching**: Consider using `last_result` field for caching (handled automatically)
+5. **Security**: Never log or expose API keys in error messages
+6. **Testing**: Test both success and failure scenarios
+7. **Documentation**: Add clear field descriptions for user configuration
+
+#### Troubleshooting
+
+**Common Issues**:
+- **"Unknown source type"**: Check class mapping arrays in Step 4
+- **"Module class not found"**: Verify require_once includes in Step 3
+- **"Invalid configuration"**: Check `validateConfig()` implementation
+- **Database errors**: Ensure source_configs entry exists (Step 2)
+
+**Debug Commands**:
+```bash
+# Test specific user newsletter generation
+php cron/send_emails.php --force-send USER_ID
+
+# Check system health
+php cron/send_emails.php --health-check
+
+# View error logs
+tail -f /path/to/php/error.log
+```
+
+**Current System Limitations**:
+- Manual registration in multiple files required
+- No auto-discovery of new modules
+- Configuration schema not extensible
+- No dependency management between modules
+
+These limitations will be addressed in a future architectural update to support plugin-based modules with automatic discovery and more flexible configuration systems.
+
 ---
 
 ## 📧 EMAIL SYSTEM ARCHITECTURE
