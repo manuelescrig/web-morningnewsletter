@@ -134,8 +134,10 @@ try {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Newsletter Preview - MorningNewsletter</title>
-        <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/dashboard.css">
     </head>
     <body class="bg-gray-100 min-h-screen">
         <!-- Header with controls -->
@@ -160,7 +162,7 @@ try {
                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                                 <input type="hidden" name="action" value="send_preview">
                                 <input type="hidden" name="newsletter_id" value="<?php echo $newsletter->getId(); ?>">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <button type="submit" class="btn-pill inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     <i class="fas fa-paper-plane mr-2"></i>
                                     Send Preview Email
                                 </button>
@@ -268,8 +270,10 @@ try {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Newsletter Preview - MorningNewsletter</title>
-        <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/dashboard.css">
     </head>
     <body class="bg-gray-50 min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -277,7 +281,7 @@ try {
                 <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
                 <h2 class="text-xl font-semibold text-gray-900 mb-2">Preview Error</h2>
                 <p class="text-gray-600 mb-4"><?php echo htmlspecialchars($e->getMessage()); ?></p>
-                <a href="/dashboard/" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                <a href="/dashboard/" class="btn-pill inline-flex items-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Back to Dashboard
                 </a>

@@ -31,8 +31,8 @@ $currentPage = 'history';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($historyEntry['title']); ?> - Newsletter History</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -125,7 +125,7 @@ $currentPage = 'history';
                     </button>
                     
                     <a href="/dashboard/history.php?newsletter_id=<?php echo $historyEntry['newsletter_id']; ?>" 
-                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+                       class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200">
                         <i class="fas fa-list mr-2"></i>
                         All Issues
                     </a>

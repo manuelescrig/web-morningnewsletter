@@ -52,8 +52,10 @@ if ($newsletterId) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>History - MorningNewsletter</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -76,7 +78,7 @@ if ($newsletterId) {
                 <div class="flex space-x-3">
                     <?php if ($newsletterId): ?>
                         <a href="/dashboard/history.php" 
-                           class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+                           class="btn-pill bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 font-medium transition-colors duration-200">
                             <i class="fas fa-list mr-2"></i>
                             All History
                         </a>
@@ -207,19 +209,19 @@ if ($newsletterId) {
                 <nav class="flex items-center space-x-2">
                     <?php if ($page > 1): ?>
                         <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page - 1])); ?>" 
-                           class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
+                           class="btn-pill px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
                             Previous
                         </a>
                     <?php endif; ?>
                     
                     <?php for ($i = max(1, $page - 2); $i <= min($totalPages, $page + 2); $i++): ?>
                         <?php if ($i == $page): ?>
-                            <span class="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-300 rounded-md">
+                            <span class="btn-pill px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-300">
                                 <?php echo $i; ?>
                             </span>
                         <?php else: ?>
                             <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>" 
-                               class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
+                               class="btn-pill px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
                                 <?php echo $i; ?>
                             </a>
                         <?php endif; ?>
@@ -227,7 +229,7 @@ if ($newsletterId) {
                     
                     <?php if ($page < $totalPages): ?>
                         <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $page + 1])); ?>" 
-                           class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
+                           class="btn-pill px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200">
                             Next
                         </a>
                     <?php endif; ?>
