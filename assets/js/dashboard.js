@@ -274,6 +274,77 @@ const Dashboard = {
     },
 
     /**
+     * User action dropdown functionality for users page
+     */
+    userActions: {
+        toggle: function(userId) {
+            const dropdown = document.getElementById('dropdown-' + userId);
+            const button = document.querySelector(`[onclick="toggleUserActionDropdown(${userId})"]`);
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+            
+            if (!dropdown || !button) {
+                console.error('Dropdown or button not found for user:', userId);
+                return;
+            }
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.add('hidden');
+                    // Reset position classes for other dropdowns
+                    d.classList.remove('origin-bottom-right', 'mb-2', 'bottom-0');
+                    d.classList.add('origin-top-right', 'mt-2', 'top-full');
+                }
+            });
+            
+            if (dropdown.classList.contains('hidden')) {
+                // Get the table container for boundary checking
+                const table = dropdown.closest('.overflow-x-auto');
+                const tableRect = table ? table.getBoundingClientRect() : null;
+                
+                // Calculate if there's enough space below
+                const buttonRect = button.getBoundingClientRect();
+                const dropdownHeight = 300; // Approximate dropdown height
+                const viewportHeight = window.innerHeight;
+                const tableBottom = tableRect ? tableRect.bottom : viewportHeight;
+                
+                const spaceBelow = Math.min(viewportHeight, tableBottom) - buttonRect.bottom;
+                const spaceAbove = buttonRect.top - (tableRect ? tableRect.top : 0);
+                
+                console.log(`User ${userId}: spaceBelow=${spaceBelow}, spaceAbove=${spaceAbove}, dropdownHeight=${dropdownHeight}`);
+                
+                // Remove existing position classes
+                dropdown.classList.remove('origin-top-right', 'origin-bottom-right', 'mt-2', 'mb-2', 'top-full', 'bottom-0');
+                
+                if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                    // Not enough space below, but enough space above - open upward
+                    dropdown.classList.add('origin-bottom-right', 'bottom-0');
+                    console.log(`Opening upward for user ${userId}`);
+                } else {
+                    // Default - open downward
+                    dropdown.classList.add('origin-top-right', 'top-full', 'mt-2');
+                    console.log(`Opening downward for user ${userId}`);
+                }
+                
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
+        },
+
+        initializeOutsideClick: function() {
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('[onclick^="toggleUserActionDropdown"]') && !event.target.closest('[id^="dropdown-"]')) {
+                    document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                        d.classList.add('hidden');
+                    });
+                }
+            });
+        }
+    },
+
+    /**
      * Initialize dashboard functionality
      */
     init: function() {
@@ -283,6 +354,9 @@ const Dashboard = {
         
         // Initialize user dropdown specifically
         this.initUserDropdown();
+        
+        // Initialize user action dropdowns for users page
+        this.userActions.initializeOutsideClick();
         
         // Initialize modal escape key handling
         this.modal.closeOnEscape();
