@@ -210,7 +210,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-user mr-2"></i>
                             Update Name
                         </button>
@@ -290,7 +290,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-envelope mr-2"></i>
                             Send Verification Email
                         </button>
@@ -342,7 +342,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <i class="fas fa-key mr-2"></i>
                             Change Password
                         </button>
@@ -387,7 +387,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                             <i class="fas fa-trash mr-2"></i>
                             Delete Account
                         </button>

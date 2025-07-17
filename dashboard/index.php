@@ -254,11 +254,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <?php endfor; ?>
                                         <?php endfor; ?>
                                     </select>
-                                    <button type="button" onclick="removeDailyTime(this)" class="px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn" style="display: none;">
+                                    <button type="button" onclick="removeDailyTime(this)" class="btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn" style="display: none;">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 rounded-md hover:bg-blue-50">
+                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 hover:bg-blue-50">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -270,10 +270,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideCreateForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                        <button type="button" onclick="hideCreateForm()" class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 font-medium transition-colors duration-200">
                             Cancel
                         </button>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                        <button type="submit" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition-colors duration-200">
                             <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
                         </button>
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p class="text-gray-600 mb-8 text-sm leading-relaxed">
                             Get started with personalized morning briefings tailored just for you.
                         </p>
-                        <button id="createButtonEmpty" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                        <button id="createButtonEmpty" onclick="showCreateForm()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                             <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
@@ -312,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold text-gray-900">
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
-                    <button id="createButtonHeader" onclick="showCreateForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 shadow-sm">
+                    <button id="createButtonHeader" onclick="showCreateForm()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-plus mr-2"></i>
                         Add Newsletter
                     </button>
@@ -335,7 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors duration-200">
+                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200">
                                             <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
@@ -432,11 +432,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <div class="mt-6 flex justify-end space-x-2">
                         <button type="button" onclick="closeEditModal()" 
-                                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200">
+                                class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
                             Update Newsletter
                         </button>
                     </div>
@@ -536,7 +536,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
-            removeButton.className = 'px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 rounded-md hover:bg-red-50 remove-time-btn';
+            removeButton.className = 'btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn';
             removeButton.innerHTML = '<i class="fas fa-times"></i>';
             removeButton.onclick = function() { removeDailyTime(this); };
             

@@ -118,7 +118,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 
                                 <?php if ($user->isAdmin()): ?>
                                     <div class="relative inline-block text-left">
-                                        <button type="button" class="inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="togglePlanDropdown()">
+                                        <button type="button" class="btn-pill inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="togglePlanDropdown()">
                                             <i class="fas fa-cog mr-1"></i>
                                             Change
                                         </button>
@@ -209,7 +209,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <div class="flex flex-col sm:flex-row gap-4">
                             <?php if (!$subscriptionInfo['cancel_at_period_end']): ?>
                                 <button onclick="cancelSubscription()" 
-                                        class="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                        class="btn-pill inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                     <i class="fas fa-times mr-2"></i>
                                     Cancel Subscription
                                 </button>
@@ -217,7 +217,7 @@ $csrfToken = $auth->generateCSRFToken();
                             
                             <?php if ($subscriptionInfo['stripe_customer_id']): ?>
                                 <button onclick="manageBilling()" 
-                                        class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                     <i class="fas fa-credit-card mr-2"></i>
                                     Manage Billing
                                 </button>
@@ -242,7 +242,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Daily delivery</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('starter')" 
-                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
                                         Choose Starter
                                     </button>
                                 </div>
@@ -261,7 +261,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('pro')" 
-                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
                                         Choose Pro
                                     </button>
                                 </div>
@@ -277,7 +277,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Team collaboration</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('unlimited')" 
-                                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
                                         Choose Unlimited
                                     </button>
                                 </div>
@@ -404,13 +404,13 @@ $csrfToken = $auth->generateCSRFToken();
                                         <input type="hidden" name="action" value="update_plan">
                                         <input type="hidden" name="plan" value="<?php echo $planKey; ?>">
                                         <button type="submit" 
-                                                class="w-full bg-<?php echo $details['color']; ?>-600 hover:bg-<?php echo $details['color']; ?>-700 text-white font-medium py-2 px-4 rounded text-sm"
+                                                class="btn-pill w-full bg-<?php echo $details['color']; ?>-600 hover:bg-<?php echo $details['color']; ?>-700 text-white font-medium py-2 px-4 text-sm"
                                                 onclick="return confirm('Switch to <?php echo $details['name']; ?> plan?')">
                                             Switch to <?php echo $details['name']; ?>
                                         </button>
                                     </form>
                                 <?php else: ?>
-                                    <button disabled class="w-full bg-gray-300 text-gray-500 font-medium py-2 px-4 rounded text-sm cursor-not-allowed">
+                                    <button disabled class="btn-pill w-full bg-gray-300 text-gray-500 font-medium py-2 px-4 text-sm cursor-not-allowed">
                                         Current Plan
                                     </button>
                                 <?php endif; ?>
@@ -440,7 +440,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <h4 class="text-sm font-medium text-gray-900">Pause Newsletter</h4>
                                 <p class="text-sm text-gray-600">Temporarily stop receiving newsletters without losing your configuration.</p>
                             </div>
-                            <button class="inline-flex items-center px-3 py-2 border border-yellow-300 shadow-sm text-sm leading-4 font-medium rounded-md text-yellow-700 bg-yellow-50 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+                            <button class="btn-pill inline-flex items-center px-3 py-2 border border-yellow-300 shadow-sm text-sm leading-4 font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                                 <i class="fas fa-pause mr-2"></i>
                                 Pause
                             </button>
@@ -453,7 +453,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <h4 class="text-sm font-medium text-gray-900">Delete Account</h4>
                                 <p class="text-sm text-gray-600">Permanently delete your account and all associated data. This action cannot be undone.</p>
                             </div>
-                            <button class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                            <button class="btn-pill inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                     onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">
                                 <i class="fas fa-trash mr-2"></i>
                                 Delete Account

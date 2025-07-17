@@ -436,7 +436,7 @@ $canAddSource = count($sources) < $maxSources;
                                     You can add <?php echo $maxSources - count($sources); ?> more source<?php echo ($maxSources - count($sources)) !== 1 ? 's' : ''; ?> 
                                     (<?php echo count($sources); ?>/<?php echo $maxSources; ?> used)
                                 </p>
-                                <button onclick="openAddSourceModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
+                                <button onclick="openAddSourceModal()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
                                     <i class="fas fa-plus mr-2"></i>
                                     Browse & Add Sources
                                 </button>
@@ -714,7 +714,7 @@ $canAddSource = count($sources) < $maxSources;
                                 </div>
                             </div>
                             
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+                            <button type="submit" class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200">
                                 <i class="fas fa-save mr-2"></i>
                                 Update Settings
                             </button>

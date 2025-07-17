@@ -116,7 +116,7 @@ if ($newsletterId) {
                     
                     <div class="flex items-end">
                         <button type="submit" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors duration-200">
+                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition-colors duration-200">
                             <i class="fas fa-search mr-2"></i>
                             Search
                         </button>

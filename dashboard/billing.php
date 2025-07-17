@@ -90,20 +90,20 @@ $currentPage = 'billing';
                         
                         <div class="flex flex-col space-y-2">
                             <?php if ($planInfo['plan'] === 'free'): ?>
-                                <a href="/#pricing" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                <a href="/#pricing" class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                                     <i class="fas fa-arrow-up mr-2"></i>
                                     Upgrade Plan
                                 </a>
                             <?php else: ?>
                                 <?php if ($planInfo['stripe_customer_id']): ?>
-                                    <button onclick="manageBilling()" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    <button onclick="manageBilling()" class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                                         <i class="fas fa-cog mr-2"></i>
                                         Manage Billing
                                     </button>
                                 <?php endif; ?>
                                 
                                 <?php if (!$planInfo['cancel_at_period_end'] && $planInfo['subscription_status'] === 'active'): ?>
-                                    <button onclick="cancelSubscription()" class="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50">
+                                    <button onclick="cancelSubscription()" class="btn-pill inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50">
                                         <i class="fas fa-times mr-2"></i>
                                         Cancel Subscription
                                     </button>
@@ -170,7 +170,7 @@ $currentPage = 'billing';
                                 </ul>
                                 
                                 <button onclick="subscribeToPlan('<?php echo $planKey; ?>')" 
-                                        class="mt-4 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                        class="btn-pill mt-4 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                                     Start Free Trial
                                 </button>
                             </div>

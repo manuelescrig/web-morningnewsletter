@@ -169,7 +169,7 @@ $timezones = [
                         </div>
                     </div>
                     
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium">
+                    <button type="submit" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium">
                         Create Newsletter
                     </button>
                 </form>
