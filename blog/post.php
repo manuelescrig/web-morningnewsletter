@@ -127,7 +127,7 @@ try {
                         <div class="flex justify-center flex-wrap gap-2 mb-4">
                             <?php foreach ($post->getTags() as $tag): ?>
                                 <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                                   class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors">
+                                   class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors">
                                     <?php echo htmlspecialchars($tag); ?>
                                 </a>
                             <?php endforeach; ?>

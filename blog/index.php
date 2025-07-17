@@ -156,7 +156,7 @@ if ($selectedTag) {
                             <div class="flex flex-wrap gap-2">
                                 <?php foreach ($allTags as $tag): ?>
                                     <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                                       class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                                       class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium 
                                               <?php echo $selectedTag === $tag ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'; ?> 
                                               transition-colors">
                                         <?php echo htmlspecialchars($tag); ?>
