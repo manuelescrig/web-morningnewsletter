@@ -129,6 +129,11 @@
     color: #bfdbfe;
 }
 
+/* Override for pill buttons */
+.auth-button.btn-pill {
+    border-radius: 9999px !important;
+}
+
 /* Alert Styles */
 .auth-alert {
     padding: 0.75rem 1rem;

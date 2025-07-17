@@ -73,7 +73,23 @@ html {
 
 /* Pill Button Styles */
 .btn-pill {
-    border-radius: 9999px;
+    border-radius: 9999px !important;
+}
+
+/* Ensure all button elements with btn-pill class get proper styling */
+button.btn-pill, 
+a.btn-pill, 
+input.btn-pill {
+    border-radius: 9999px !important;
+}
+
+/* Override Tailwind rounded classes for pill buttons */
+.btn-pill.rounded-md,
+.btn-pill.rounded-lg,
+.btn-pill.rounded,
+.btn-pill.rounded-sm,
+.btn-pill.rounded-xl {
+    border-radius: 9999px !important;
 }
 
 /* Form Styles */

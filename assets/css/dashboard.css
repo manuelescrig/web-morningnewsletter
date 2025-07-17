@@ -85,6 +85,12 @@
     @apply inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200;
 }
 
+/* Override for pill buttons */
+.btn-primary.btn-pill,
+.btn-secondary.btn-pill {
+    border-radius: 9999px !important;
+}
+
 /* Dropdown positioning utilities */
 .dropdown-up {
     bottom: 100%;
