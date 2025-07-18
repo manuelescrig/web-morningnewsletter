@@ -578,6 +578,13 @@ $csrfToken = $auth->generateCSRFToken();
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
                                             <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="
+                                                // Close all other dropdowns first
+                                                var allDropdowns = document.querySelectorAll('[id^=\"dropdown-\"]');
+                                                allDropdowns.forEach(function(d) {
+                                                    d.style.display = 'none';
+                                                });
+                                                
+                                                // Then toggle the current dropdown
                                                 var dropdown = document.getElementById('dropdown-<?php echo $userData['id']; ?>');
                                                 if (dropdown) {
                                                     if (dropdown.style.display === 'none') {
@@ -789,7 +796,7 @@ $csrfToken = $auth->generateCSRFToken();
             if (!event.target.closest('button[onclick*="dropdown"]') && 
                 !event.target.closest('[id^="dropdown-"]')) {
                 document.querySelectorAll('[id^="dropdown-"]').forEach(function(dropdown) {
-                    dropdown.classList.add('hidden');
+                    dropdown.style.display = 'none';
                 });
             }
         });
@@ -798,7 +805,7 @@ $csrfToken = $auth->generateCSRFToken();
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 document.querySelectorAll('[id^="dropdown-"]').forEach(function(dropdown) {
-                    dropdown.classList.add('hidden');
+                    dropdown.style.display = 'none';
                 });
             }
         });
