@@ -577,7 +577,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="Dashboard.userActions.toggle(<?php echo $userData['id']; ?>);">
+                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserDropdown(<?php echo $userData['id']; ?>);">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right top-full mt-2">
@@ -771,5 +771,54 @@ $csrfToken = $auth->generateCSRFToken();
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+    <script>
+        // User dropdown functionality
+        function toggleUserDropdown(userId) {
+            console.log('Toggling dropdown for user:', userId);
+            
+            const dropdown = document.getElementById('dropdown-' + userId);
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+            
+            if (!dropdown) {
+                console.error('Dropdown not found:', 'dropdown-' + userId);
+                return;
+            }
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(d => {
+                if (d !== dropdown && !d.classList.contains('hidden')) {
+                    d.classList.add('hidden');
+                }
+            });
+            
+            // Toggle current dropdown
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                console.log('Dropdown opened for user:', userId);
+            } else {
+                dropdown.classList.add('hidden');
+                console.log('Dropdown closed for user:', userId);
+            }
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('[onclick^="toggleUserDropdown"]') && 
+                !event.target.closest('[id^="dropdown-"]')) {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                    d.classList.add('hidden');
+                });
+            }
+        });
+        
+        // Close dropdowns on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+                    d.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
