@@ -74,6 +74,7 @@ html {
 /* Pill Button Styles - Comprehensive Override */
 .btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Ensure all button elements with btn-pill class get proper styling */
@@ -81,6 +82,7 @@ button.btn-pill,
 a.btn-pill, 
 input.btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Override Tailwind rounded classes for pill buttons */
@@ -160,12 +162,14 @@ form input.btn-pill {
 /* Force override after any dynamic CSS processing */
 html body .btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 html body button.btn-pill,
 html body a.btn-pill,
 html body input.btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Additional overrides for Tailwind CSS conflicts */
@@ -185,6 +189,8 @@ html body input.btn-pill {
 .btn-pill.py-3,
 .btn-pill.px-4,
 .btn-pill.py-2,
+.btn-pill.px-5,
+.btn-pill.py-2\.5,
 .btn-pill.font-medium,
 .btn-pill.font-semibold,
 .btn-pill.text-lg,
@@ -208,6 +214,7 @@ html body input.btn-pill {
 .btn-pill.border-transparent,
 .btn-pill.border-gray-300 {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Ultimate override with maximum specificity */
@@ -222,11 +229,13 @@ html body section button.btn-pill,
 html body main button.btn-pill,
 html body div form button.btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Catch-all for any combination of classes */
 [class*="btn-pill"] {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Form Styles */

@@ -89,6 +89,7 @@
 .btn-primary.btn-pill,
 .btn-secondary.btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Additional comprehensive overrides for dashboard pages */
@@ -101,11 +102,13 @@ html body div .btn-pill,
 html body section .btn-pill,
 html body main .btn-pill {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Catch-all for dashboard elements */
 [class*="btn-pill"] {
     border-radius: 9999px !important;
+    padding: 0.75rem 1.5rem !important; /* py-3 px-6 equivalent */
 }
 
 /* Dropdown positioning utilities */
