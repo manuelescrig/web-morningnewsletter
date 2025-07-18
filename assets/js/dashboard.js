@@ -280,7 +280,7 @@ const Dashboard = {
         toggle: function(userId) {
             console.log('Dashboard.userActions.toggle called for user:', userId);
             const dropdown = document.getElementById('dropdown-' + userId);
-            const button = document.querySelector(`[onclick="Dashboard.userActions.toggle(${userId})"]`);
+            const button = document.querySelector(`[onclick="Dashboard.userActions.toggle(${userId});"]`);
             const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
             
             console.log('Found dropdown:', dropdown);
@@ -339,7 +339,7 @@ const Dashboard = {
         initializeOutsideClick: function() {
             // Close dropdowns when clicking outside
             document.addEventListener('click', function(event) {
-                if (!event.target.closest('[onclick^="Dashboard.userActions.toggle"]') && !event.target.closest('[id^="dropdown-"]')) {
+                if (!event.target.closest('[onclick*="Dashboard.userActions.toggle"]') && !event.target.closest('[id^="dropdown-"]')) {
                     document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
                         d.classList.add('hidden');
                     });
