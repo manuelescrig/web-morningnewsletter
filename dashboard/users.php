@@ -577,7 +577,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="if(window.Dashboard && Dashboard.userActions) Dashboard.userActions.toggle(<?php echo $userData['id']; ?>); else console.error('Dashboard not loaded');">
+                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="Dashboard.userActions.toggle(<?php echo $userData['id']; ?>);">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right top-full mt-2">
