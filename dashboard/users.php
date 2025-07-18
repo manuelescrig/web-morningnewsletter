@@ -577,7 +577,15 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleUserDropdown(<?php echo $userData['id']; ?>)">
+                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="
+                                                var dropdown = document.getElementById('dropdown-<?php echo $userData['id']; ?>');
+                                                var allDropdowns = document.querySelectorAll('[id^=\\'dropdown-\\']');
+                                                allDropdowns.forEach(function(d) { 
+                                                    if (d !== dropdown) d.classList.add('hidden'); 
+                                                });
+                                                dropdown.classList.toggle('hidden');
+                                                console.log('Dropdown toggled for user <?php echo $userData['id']; ?>');
+                                            ">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                                 <div id="dropdown-<?php echo $userData['id']; ?>" class="hidden absolute right-0 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right top-full mt-2">
@@ -773,37 +781,10 @@ $csrfToken = $auth->generateCSRFToken();
     <script src="/assets/js/dashboard.js"></script>
     
     <script>
-        // Simple dropdown functionality that works
-        function toggleUserDropdown(userId) {
-            console.log('Toggle dropdown for user:', userId);
-            
-            // Get the dropdown element
-            const dropdown = document.getElementById('dropdown-' + userId);
-            if (!dropdown) {
-                console.error('Dropdown not found for user:', userId);
-                return;
-            }
-            
-            // Close all other dropdowns first
-            const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
-            allDropdowns.forEach(function(d) {
-                if (d !== dropdown) {
-                    d.classList.add('hidden');
-                }
-            });
-            
-            // Toggle the current dropdown
-            dropdown.classList.toggle('hidden');
-            
-            console.log('Dropdown toggled for user:', userId, 'Hidden:', dropdown.classList.contains('hidden'));
-        }
-        
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(event) {
-            // Check if click is on a dropdown button or inside a dropdown
-            if (!event.target.closest('[onclick*="toggleUserDropdown"]') && 
+            if (!event.target.closest('button[onclick*="dropdown"]') && 
                 !event.target.closest('[id^="dropdown-"]')) {
-                // Close all dropdowns
                 document.querySelectorAll('[id^="dropdown-"]').forEach(function(dropdown) {
                     dropdown.classList.add('hidden');
                 });
@@ -818,8 +799,6 @@ $csrfToken = $auth->generateCSRFToken();
                 });
             }
         });
-        
-        console.log('User dropdown functionality initialized');
     </script>
 </body>
 </html>
