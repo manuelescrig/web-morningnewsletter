@@ -35,7 +35,6 @@ $currentPage = 'history';
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -143,9 +142,10 @@ $currentPage = 'history';
             
             <div id="newsletter-content" class="p-6">
                 <!-- Newsletter HTML Content -->
-                <div class="newsletter-preview">
-                    <?php echo $historyEntry['content']; ?>
-                </div>
+                <iframe srcdoc="<?php echo htmlspecialchars($historyEntry['content']); ?>" 
+                        class="w-full min-h-96 border-none" 
+                        sandbox="allow-same-origin">
+                </iframe>
             </div>
         </div>
 
