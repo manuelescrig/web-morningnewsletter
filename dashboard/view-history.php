@@ -54,6 +54,9 @@ $currentPage = 'history';
                     </div>
                 </div>
             </div>
+        <?php else: ?>
+            <!-- Maintain consistent spacing when no message -->
+            <div class="mb-6" style="height: 0;"></div>
         <?php endif; ?>
         
         <!-- Header -->
