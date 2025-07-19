@@ -9,6 +9,10 @@
     --cool-black: #092F64;
     --eerie-black: #1F1F1F;
     --primary-button: #1d9bf0;
+    --primary-button-hover: #1a8cd8;
+    --primary-dark-hover: #155a82;
+    --primary-darker-hover: #072854;
+    --primary-light-hover: #7aa8e5;
     --text-dark: rgb(15, 20, 25);
     --nav-underline: rgb(29, 155, 240);
 }
@@ -45,11 +49,15 @@
 }
 
 /* Hover Utilities */
-.hover-bg-primary:hover { background-color: var(--primary-button) !important; }
-.hover-bg-primary-dark:hover { background-color: var(--cobalt-blue) !important; }
-.hover-bg-primary-darker:hover { background-color: var(--cool-black) !important; }
+.hover-bg-primary:hover { background-color: var(--primary-button-hover) !important; }
+.hover-bg-primary-dark:hover { background-color: var(--primary-dark-hover) !important; }
+.hover-bg-primary-darker:hover { background-color: var(--primary-darker-hover) !important; }
+.hover-bg-primary-light:hover { background-color: var(--primary-light-hover) !important; }
+.hover-bg-primary-lightest:hover { background-color: #d4e9fe !important; }
 .hover-text-primary:hover { color: var(--tufts-blue) !important; }
 .hover-text-primary-dark:hover { color: var(--cobalt-blue) !important; }
+.hover-text-primary-darker:hover { color: var(--cool-black) !important; }
+.hover-border-primary-light:hover { border-color: var(--jordy-blue) !important; }
 
 /* Dashboard Title Styles */
 .dashboard-title, 

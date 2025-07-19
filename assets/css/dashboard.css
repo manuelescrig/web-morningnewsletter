@@ -34,11 +34,11 @@
 }
 
 .toggle-label:hover .toggle-switch {
-    background-color: #1A5799;
+    background-color: #7aa8e5;
 }
 
 .toggle-checkbox:checked + .toggle-label:hover .toggle-switch {
-    background-color: #092F64;
+    background-color: #3f7ac7;
 }
 
 /* Newsletter preview styling */
@@ -92,7 +92,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #1a91da;
+    background-color: #1a8cd8;
 }
 
 .btn-secondary {
@@ -110,7 +110,7 @@
 }
 
 .btn-secondary:hover {
-    background-color: #93BFEF;
+    background-color: #d4e9fe;
 }
 
 /* Override for pill buttons */
@@ -311,7 +311,7 @@ button,
 
 .checkbox-pill:hover {
     border-color: #468BE6;
-    background-color: #93BFEF;
+    background-color: #d4e9fe;
 }
 
 .checkbox-pill.selected {
@@ -469,7 +469,7 @@ button,
 }
 
 .admin-save-button:hover {
-    background: linear-gradient(135deg, #1A5799 0%, #092F64 100%);
+    background: linear-gradient(135deg, #3f7ac7 0%, #155a82 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(70, 139, 230, 0.3);
 }

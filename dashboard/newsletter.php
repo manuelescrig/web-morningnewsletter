@@ -664,7 +664,7 @@ $canAddSource = count($sources) < $maxSources;
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="mt-2 text-primary hover:text-primary-dark text-sm">
+                                <button type="button" onclick="addDailyTime()" class="mt-2 text-primary hover-text-primary-dark text-sm">
                                     <i class="fas fa-plus mr-1"></i> Add another time
                                 </button>
                                 <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>

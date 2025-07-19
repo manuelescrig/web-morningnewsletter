@@ -125,7 +125,7 @@ $currentPage = 'history';
                     </button>
                     
                     <a href="/dashboard/history.php?newsletter_id=<?php echo $historyEntry['newsletter_id']; ?>" 
-                       class="btn-pill bg-primary hover:bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
+                       class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
                         <i class="fas fa-list mr-2"></i>
                         All Issues
                     </a>

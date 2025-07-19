@@ -99,12 +99,12 @@
 }
 
 .auth-button:hover {
-    background-color: #1a91da;
+    background-color: #1a8cd8;
 }
 
 .auth-button:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.5);
+    box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.3);
 }
 
 .auth-button:disabled {

@@ -377,7 +377,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <?php 
                         $planDetails = [
                             'free' => ['name' => 'Free', 'sources' => '1 source', 'price' => '$0/month', 'color' => 'gray'],
-                            'starter' => ['name' => 'Starter', 'sources' => '5 sources', 'price' => '$5/month', 'color' => 'blue'],
+                            'starter' => ['name' => 'Starter', 'sources' => '5 sources', 'price' => '$5/month', 'color' => 'teal'],
                             'pro' => ['name' => 'Pro', 'sources' => '15 sources', 'price' => '$15/month', 'color' => 'red'],
                             'unlimited' => ['name' => 'Unlimited', 'sources' => 'Unlimited sources', 'price' => '$19/month', 'color' => 'purple']
                         ];

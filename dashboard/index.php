@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                                 for ($i = 1; $i <= 7; $i++): 
                                 ?>
-                                    <label class="flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-primary-light hover:bg-primary-lightest day-checkbox text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md" title="<?php echo $dayNames[$i-1]; ?>">
+                                    <label class="flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-lg cursor-pointer hover-border-primary-light hover-bg-primary-lightest day-checkbox text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md" title="<?php echo $dayNames[$i-1]; ?>">
                                         <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
                                         <span class="select-none"><?php echo $dayShort[$i-1]; ?></span>
                                     </label>
@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-primary hover:text-primary-darker border border-primary-light hover:bg-primary-lightest"
+                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-primary hover-text-primary-darker border border-primary-light hover-bg-primary-lightest"
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -335,7 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover:bg-primary-lightest transition-colors duration-200">
+                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover-bg-primary-light transition-colors duration-200">
                                             <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
@@ -501,11 +501,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function toggleDaySelection(checkbox) {
             const label = checkbox.parentElement;
             if (checkbox.checked) {
-                label.classList.remove('border-gray-300', 'hover:border-primary-light', 'hover:bg-primary-lightest');
+                label.classList.remove('border-gray-300', 'hover-border-primary-light', 'hover-bg-primary-lightest');
                 label.classList.add('bg-primary', 'border-primary', 'text-white', 'shadow-lg');
             } else {
                 label.classList.remove('bg-primary', 'border-primary', 'text-white', 'shadow-lg');
-                label.classList.add('border-gray-300', 'hover:border-primary-light', 'hover:bg-primary-lightest');
+                label.classList.add('border-gray-300', 'hover-border-primary-light', 'hover-bg-primary-lightest');
             }
         }
         
