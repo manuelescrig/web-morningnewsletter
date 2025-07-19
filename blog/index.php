@@ -56,7 +56,7 @@ if ($selectedTag) {
                 </p>
                 <?php if ($selectedTag): ?>
                     <div class="mt-6">
-                        <a href="/blog" class="text-blue-600 hover:text-blue-500 font-medium">
+                        <a href="/blog" class="text-primary hover:text-primary font-medium">
                             <i class="fas fa-arrow-left mr-2"></i>
                             View all posts
                         </a>
@@ -81,7 +81,7 @@ if ($selectedTag) {
                             <?php echo $selectedTag ? "We haven't written about $selectedTag yet." : 'Stay tuned for upcoming insights and updates!'; ?>
                         </p>
                         <?php if ($selectedTag): ?>
-                            <a href="/blog" class="mt-4 inline-block text-blue-600 hover:text-blue-500">
+                            <a href="/blog" class="mt-4 inline-block text-primary hover:text-primary">
                                 Browse all posts
                             </a>
                         <?php endif; ?>
@@ -110,7 +110,7 @@ if ($selectedTag) {
                                     </div>
                                     
                                     <h2 class="text-xl font-bold text-gray-900 mb-3">
-                                        <a href="<?php echo $post->getUrl(); ?>" class="hover:text-blue-600 transition-colors">
+                                        <a href="<?php echo $post->getUrl(); ?>" class="hover:text-primary transition-colors">
                                             <?php echo htmlspecialchars($post->getTitle()); ?>
                                         </a>
                                     </h2>
@@ -125,7 +125,7 @@ if ($selectedTag) {
                                         <div class="flex flex-wrap gap-2 mb-4">
                                             <?php foreach ($post->getTags() as $tag): ?>
                                                 <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                                                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors">
+                                                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-lightest text-primary-darker hover:bg-primary-light transition-colors">
                                                     <?php echo htmlspecialchars($tag); ?>
                                                 </a>
                                             <?php endforeach; ?>
@@ -133,7 +133,7 @@ if ($selectedTag) {
                                     <?php endif; ?>
                                     
                                     <a href="<?php echo $post->getUrl(); ?>" 
-                                       class="inline-flex items-center text-blue-600 hover:text-blue-500 font-medium">
+                                       class="inline-flex items-center text-primary hover:text-primary font-medium">
                                         Read more
                                         <i class="fas fa-arrow-right ml-2 text-sm"></i>
                                     </a>
@@ -151,14 +151,14 @@ if ($selectedTag) {
                     <?php if (!empty($allTags)): ?>
                         <div class="bg-white rounded-2xl p-6 shadow-sm">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                <i class="fas fa-tags mr-2 text-blue-600"></i>
+                                <i class="fas fa-tags mr-2 text-primary"></i>
                                 Topics
                             </h3>
                             <div class="flex flex-wrap gap-2">
                                 <?php foreach ($allTags as $tag): ?>
                                     <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
                                        class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium 
-                                              <?php echo $selectedTag === $tag ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'; ?> 
+                                              <?php echo $selectedTag === $tag ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'; ?> 
                                               transition-colors">
                                         <?php echo htmlspecialchars($tag); ?>
                                     </a>
@@ -168,16 +168,16 @@ if ($selectedTag) {
                     <?php endif; ?>
 
                     <!-- Newsletter CTA -->
-                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-50 rounded-2xl p-6 border border-purple-100">
                         <h3 class="text-lg font-semibold text-gray-900 mb-3">
-                            <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                            <i class="fas fa-envelope mr-2 text-primary"></i>
                             Stay Updated
                         </h3>
                         <p class="text-gray-600 mb-4 text-sm">
                             Get your personalized morning brief delivered daily. Never miss what matters.
                         </p>
                         <a href="/register" 
-                           class="btn-pill block w-full bg-blue-600 text-white text-center py-2 px-4 hover:bg-blue-700 transition-colors font-medium">
+                           class="btn-pill block w-full bg-primary text-white text-center py-2 px-4 hover:bg-primary-dark transition-colors font-medium">
                             Start for Free
                         </a>
                     </div>
@@ -190,14 +190,14 @@ if ($selectedTag) {
                         ?>
                             <div class="bg-white rounded-2xl p-6 shadow-sm">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                                    <i class="fas fa-clock mr-2 text-blue-600"></i>
+                                    <i class="fas fa-clock mr-2 text-primary"></i>
                                     Recent Posts
                                 </h3>
                                 <div class="space-y-3">
                                     <?php foreach ($recentPosts as $recentPost): ?>
                                         <div>
                                             <a href="<?php echo $recentPost->getUrl(); ?>" 
-                                               class="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors line-clamp-2">
+                                               class="text-sm font-medium text-gray-900 hover:text-primary transition-colors line-clamp-2">
                                                 <?php echo htmlspecialchars($recentPost->getTitle()); ?>
                                             </a>
                                             <p class="text-xs text-gray-500 mt-1">

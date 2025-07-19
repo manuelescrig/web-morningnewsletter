@@ -157,7 +157,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <form method="POST" class="inline">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                             <input type="hidden" name="action" value="test_cron">
-                            <button type="submit" class="btn-pill inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <button type="submit" class="btn-pill inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                                 <i class="fas fa-play mr-2"></i>
                                 Run Cron Job Now
                             </button>
@@ -182,13 +182,13 @@ $csrfToken = $auth->generateCSRFToken();
                         <div class="text-sm text-gray-600">
                             <p class="mb-2"><strong>Test Links:</strong></p>
                             <div class="space-y-1">
-                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=health-check" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=health-check" target="_blank" class="text-primary hover:text-primary text-xs">
                                     <i class="fas fa-heart mr-1"></i>Health Check
                                 </a><br>
-                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=dry-run" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>?mode=dry-run" target="_blank" class="text-primary hover:text-primary text-xs">
                                     <i class="fas fa-eye mr-1"></i>Dry Run (Preview)
                                 </a><br>
-                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>" target="_blank" class="text-blue-600 hover:text-blue-500 text-xs">
+                                <a href="<?php echo dirname($_SERVER['REQUEST_URI']) . '/../cron/send_emails.php'; ?>" target="_blank" class="text-primary hover:text-primary text-xs">
                                     <i class="fas fa-play mr-1"></i>Manual Run
                                 </a>
                             </div>

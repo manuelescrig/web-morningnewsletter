@@ -26,15 +26,15 @@ require_once __DIR__ . '/logo.php';
                 <div class="flex justify-center">
                     <div class="flex space-x-8">
                         <a href="/#features" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
                             Features
                         </a>
                         <a href="/#pricing" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
                             Pricing
                         </a>
                         <a href="/blog" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
                             Blog
                         </a>
                     </div>
@@ -46,16 +46,16 @@ require_once __DIR__ . '/logo.php';
                 <div class="flex items-center space-x-4">
                     <?php if ($isLoggedIn): ?>
                         <a href="/dashboard/" 
-                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
+                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-primary hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus-ring-primary font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
                             Go to Dashboard
                         </a>
                     <?php else: ?>
                         <a href="/auth/login.php" 
-                           class="text-gray-700 hover:text-blue-600 px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
                             Log In
                         </a>
                         <a href="#pricing" 
-                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
+                           class="btn-pill text-white bg-gradient-to-br from-purple-600 to-primary hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus-ring-primary font-medium text-sm px-5 py-2.5 text-center transition-all duration-200">
                             Get Started
                         </a>
                     <?php endif; ?>

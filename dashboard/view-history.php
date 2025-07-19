@@ -42,13 +42,13 @@ $currentPage = 'history';
     <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Success message when coming from email -->
         <?php if ($fromEmail): ?>
-            <div class="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+            <div class="mb-6 bg-primary-lightest border border-primary-light rounded-md p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-blue-400"></i>
+                        <i class="fas fa-info-circle text-primary-light"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm text-blue-700">
+                        <p class="text-sm text-primary-dark">
                             You've been redirected from your email's "View in Browser" link. You're now viewing this newsletter in your dashboard history.
                         </p>
                     </div>
@@ -61,7 +61,7 @@ $currentPage = 'history';
             <nav class="flex mb-4" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-2">
                     <li class="inline-flex items-center">
-                        <a href="/dashboard/history.php" class="text-gray-700 hover:text-blue-600">
+                        <a href="/dashboard/history.php" class="text-gray-700 hover:text-primary">
                             History
                         </a>
                     </li>
@@ -125,7 +125,7 @@ $currentPage = 'history';
                     </button>
                     
                     <a href="/dashboard/history.php?newsletter_id=<?php echo $historyEntry['newsletter_id']; ?>" 
-                       class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                       class="btn-pill bg-primary hover:bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
                         <i class="fas fa-list mr-2"></i>
                         All Issues
                     </a>

@@ -26,7 +26,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #468BE6 0%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -37,7 +37,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-50 to-purple-50 py-20 pt-32">
+    <div class="bg-gradient-to-r from-purple-50 to-purple-50 py-20 pt-32">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
@@ -61,7 +61,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-16 h-16 bg-primary-lightest text-primary rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-rocket text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Innovation First</h3>
@@ -108,7 +108,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="mailto:hello@morningnewsletter.com" 
-                       class="btn-pill inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-300 font-medium">
+                       class="btn-pill inline-flex items-center px-6 py-3 text-white bg-gradient-to-r from-purple-600 to-purple-600 hover:from-purple-700 hover:to-purple-700 transition-all duration-300 font-medium">
                         <i class="fas fa-envelope mr-2"></i>
                         Send Us Your Resume
                     </a>
@@ -132,7 +132,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-gray-50 rounded-xl p-6">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+                    <div class="w-12 h-12 bg-primary-lightest text-primary rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-code text-xl"></i>
                     </div>
                     <h3 class="text-lg font-bold text-gray-900 mb-2">Full-Stack Engineers</h3>
@@ -183,7 +183,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     </div>
 
     <!-- CTA Section -->
-    <div class="py-20 bg-gradient-to-r from-purple-600 to-blue-600">
+    <div class="py-20 bg-gradient-to-r from-purple-600 to-purple-600">
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Ready to Make an Impact?

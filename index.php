@@ -41,7 +41,7 @@ try {
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
                 <div class="mb-8">
-                    <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                    <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary-dark ring-1 ring-inset ring-primary-dark/10">
                         <i class="fas fa-sparkles mr-2" aria-hidden="true"></i>
                         AI-Powered Content Curation
                     </span>
@@ -63,7 +63,7 @@ try {
                 <!-- Call to Action Buttons -->
                 <div class="mt-10 flex items-center justify-center">
                     <a href="/auth/register.php" 
-                       class="btn-pill group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                       class="btn-pill group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-primary to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
                         Start for Free
                         <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
                     </a>
@@ -89,9 +89,9 @@ try {
         
         <!-- Mesh overlay elements -->
         <div class="absolute inset-0 -z-10">
-            <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/40 rounded-full blur-3xl"></div>
+            <div class="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-primary-light/40 to-purple-200/40 rounded-full blur-3xl"></div>
             <div class="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-purple-200/40 to-pink-200/40 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-gradient-to-br from-blue-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-gradient-to-br from-primary-light/30 to-purple-100/30 rounded-full blur-3xl"></div>
         </div>
     </div>
 
@@ -189,7 +189,7 @@ try {
                 <p class="text-gray-600 font-medium mb-4">Featured in</p>
                 <p class="text-gray-500 mb-2">Trusted by <?php echo $displayCount; ?> professionals worldwide</p>
                 <?php if ($todayCount > 0): ?>
-                    <p class="text-sm text-blue-600 font-medium">
+                    <p class="text-sm text-primary font-medium">
                         <i class="fas fa-user-plus mr-1"></i>
                         <?php echo $todayCount; ?> <?php echo $todayCount === 1 ? 'professional joined' : 'professionals joined'; ?> today
                     </p>
@@ -211,7 +211,7 @@ try {
     <div id="features" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Features</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Everything you need to start your day
                 </p>
@@ -223,7 +223,7 @@ try {
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
                                     <i class="fas fa-chart-line text-xl"></i>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@ try {
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
                                     <i class="fas fa-coins text-xl"></i>
                                 </div>
                             </div>
@@ -257,7 +257,7 @@ try {
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
                                     <i class="fas fa-cloud-sun text-xl"></i>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@ try {
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
                                     <i class="fas fa-comments text-xl"></i>
                                 </div>
                             </div>
@@ -295,7 +295,7 @@ try {
     <div id="pricing" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Pricing</h2>
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Pricing</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Simple, transparent pricing
                 </p>
@@ -341,7 +341,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Start for Free
                             </a>
                         </div>
@@ -351,7 +351,7 @@ try {
                 <!-- Pro Tier -->
                 <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-purple-400 relative h-full flex flex-col mt-6">
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-                        <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg">
+                        <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-primary px-4 py-2 text-sm font-semibold text-white shadow-lg">
                             Popular
                         </span>
                     </div>
@@ -395,7 +395,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Start for Free
                             </a>
                         </div>
@@ -444,7 +444,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
                                 Start for Free
                             </a>
                         </div>
@@ -458,7 +458,7 @@ try {
     <div id="testimonials" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Testimonials</h2>
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Testimonials</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Loved by professionals worldwide
                 </p>
@@ -510,7 +510,7 @@ try {
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">FAQ</h2>
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase">FAQ</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Frequently Asked Questions
                 </p>
@@ -519,7 +519,7 @@ try {
             <div class="mt-16 max-w-3xl mx-auto">
                 <div class="space-y-4">
                     <div class="bg-gray-50 rounded-lg">
-                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus-ring-primary" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">What time is the newsletter delivered?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
@@ -529,7 +529,7 @@ try {
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg">
-                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus-ring-primary" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I customize what information I receive?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
@@ -539,7 +539,7 @@ try {
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg">
-                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus-ring-primary" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">How do you handle my data?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
@@ -549,7 +549,7 @@ try {
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg">
-                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onclick="toggleFAQ(this)">
+                        <button class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-100 transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus-ring-primary" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I cancel my subscription anytime?</span>
                             <i class="fas fa-chevron-down text-gray-500 transition-transform duration-200"></i>
                         </button>
@@ -572,7 +572,7 @@ try {
                 Join thousands of professionals who start their day with MorningNewsletter.
             </p>
             <div class="mt-8">
-                <a href="/register" class="btn-pill inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
+                <a href="/register" class="btn-pill inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-primary hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus-ring-primary font-medium px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
                     Start for Free<i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>

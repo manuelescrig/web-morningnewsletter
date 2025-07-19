@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // If email sending failed, provide manual verification link
             if (!$result['email_sent'] && isset($result['verification_token'])) {
                 $manualVerificationUrl = "/auth/verify_email.php?token=" . $result['verification_token'];
-                $success .= "<br><br><strong>Manual Verification:</strong> <a href='$manualVerificationUrl' class='text-blue-600 hover:text-blue-500'>Click here to verify your email manually</a>";
+                $success .= "<br><br><strong>Manual Verification:</strong> <a href='$manualVerificationUrl' class='text-primary hover:text-primary-dark'>Click here to verify your email manually</a>";
             }
         } else {
             $error = $result['message'];
@@ -193,7 +193,7 @@ $userTimezone = date_default_timezone_get();
             </div>
 
             <div class="mt-6">
-                <button type="submit" class="btn-pill auth-button bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold transition-colors duration-200 shadow-lg hover:shadow-xl">
+                <button type="submit" class="btn-pill auth-button bg-primary hover-bg-primary-dark text-white px-8 py-3 font-semibold transition-colors duration-200 shadow-lg hover:shadow-xl">
                     Create Account
                     <span class="auth-button-icon">
                         <i class="fas fa-user-plus"></i>

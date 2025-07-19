@@ -98,14 +98,14 @@ if ($newsletterId) {
                                id="search" 
                                value="<?php echo htmlspecialchars($search); ?>"
                                placeholder="Search newsletter content..."
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                     </div>
                     
                     <div class="w-full md:w-64">
                         <label for="newsletter_id" class="block text-sm font-medium text-gray-700 mb-2">Newsletter</label>
                         <select name="newsletter_id" 
                                 id="newsletter_id"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             <option value="">All Newsletters</option>
                             <?php foreach ($newsletters as $newsletter): ?>
                                 <option value="<?php echo $newsletter->getId(); ?>" 
@@ -118,7 +118,7 @@ if ($newsletterId) {
                     
                     <div class="flex items-end">
                         <button type="submit" 
-                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition-colors duration-200">
+                                class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200">
                             <i class="fas fa-search mr-2"></i>
                             Search
                         </button>
@@ -216,7 +216,7 @@ if ($newsletterId) {
                     
                     <?php for ($i = max(1, $page - 2); $i <= min($totalPages, $page + 2); $i++): ?>
                         <?php if ($i == $page): ?>
-                            <span class="btn-pill px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-300">
+                            <span class="btn-pill px-3 py-2 text-sm font-medium text-primary bg-primary-lightest border border-primary-light">
                                 <?php echo $i; ?>
                             </span>
                         <?php else: ?>

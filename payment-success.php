@@ -55,7 +55,7 @@ if ($plan) {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #468BE6 0%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -139,7 +139,7 @@ if ($plan) {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Step 1 -->
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-16 h-16 bg-primary-lightest text-primary rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-cog text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">1. Set Up Your Preferences</h3>
@@ -190,7 +190,7 @@ if ($plan) {
                 <div class="bg-white rounded-xl p-8 shadow-lg">
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-blue-500 text-white rounded-lg flex items-center justify-center">
+                            <div class="w-12 h-12 bg-primary text-white rounded-lg flex items-center justify-center">
                                 <i class="fas fa-chart-line text-xl"></i>
                             </div>
                         </div>
@@ -260,12 +260,12 @@ if ($plan) {
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="/dashboard/" 
-                   class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-blue-600 bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+                   class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary bg-white rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                     <i class="fas fa-tachometer-alt mr-3"></i>
                     Go to Dashboard
                 </a>
                 <a href="/dashboard/sources.php" 
-                   class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-xl hover:bg-white hover:text-blue-600 transition-all duration-200">
+                   class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white rounded-xl hover:bg-white hover:text-primary transition-all duration-200">
                     <i class="fas fa-plus-circle mr-3"></i>
                     Add Sources
                 </a>

@@ -25,10 +25,10 @@ const NewsletterEditor = {
             const filterButtons = document.querySelectorAll('.category-filter');
             filterButtons.forEach(btn => {
                 if (btn.dataset.category === category) {
-                    btn.classList.add('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-primary', 'text-primary-lightest');
                     btn.classList.remove('bg-gray-100', 'text-gray-700');
                 } else {
-                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-primary', 'text-primary-lightest');
                     btn.classList.add('bg-gray-100', 'text-gray-700');
                 }
             });
@@ -45,7 +45,7 @@ const NewsletterEditor = {
                 filterContainer.className = 'mb-6 flex flex-wrap gap-2';
                 filterContainer.innerHTML = `
                     <span class="text-sm font-medium text-gray-700 mr-3 py-2">Filter by category:</span>
-                    <button class="category-filter bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
+                    <button class="category-filter bg-primary text-primary-lightest px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="all" onclick="NewsletterEditor.filter.byCategory('all')">
                         All
                     </button>
@@ -349,11 +349,11 @@ const NewsletterEditor = {
                 
                 const updateStyle = () => {
                     if (checkbox.checked) {
-                        label.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+                        label.classList.add('bg-primary', 'text-primary-lightest', 'border-primary');
                         label.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
                     } else {
                         label.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
-                        label.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                        label.classList.remove('bg-primary', 'text-primary-lightest', 'border-primary');
                     }
                 };
                 

@@ -138,7 +138,7 @@ $timezones = [
                     <div class="space-y-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-clock text-blue-600 text-xl"></i>
+                                <i class="fas fa-clock text-primary text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Send Time</p>
@@ -148,7 +148,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-globe text-blue-600 text-xl"></i>
+                                <i class="fas fa-globe text-primary text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Timezone</p>
@@ -158,7 +158,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-calendar text-blue-600 text-xl"></i>
+                                <i class="fas fa-calendar text-primary text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Next Newsletter</p>
@@ -168,7 +168,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                                <i class="fas fa-envelope text-primary text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Today's Status</p>
@@ -186,7 +186,7 @@ $timezones = [
                         
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-bell text-blue-600 text-xl"></i>
+                                <i class="fas fa-bell text-primary text-xl"></i>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900">Subscription Status</p>
@@ -237,7 +237,7 @@ $timezones = [
                         <div>
                             <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone</label>
                             <select id="timezone" name="timezone" required
-                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus-ring-primary sm:text-sm">
                                 <?php foreach ($timezones as $value => $label): ?>
                                     <option value="<?php echo htmlspecialchars($value); ?>" 
                                             <?php echo $value === $user->getTimezone() ? 'selected' : ''; ?>>
@@ -252,13 +252,13 @@ $timezones = [
                             <label for="send_time" class="block text-sm font-medium text-gray-700">Send Time</label>
                             <input type="time" id="send_time" name="send_time" required
                                    value="<?php echo htmlspecialchars($user->getSendTime()); ?>"
-                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus-ring-primary sm:text-sm">
                             <p class="mt-1 text-sm text-gray-500">Choose what time you want to receive your newsletter</p>
                         </div>
 
                         <div class="flex items-center justify-between">
                             <button type="submit"
-                                    class="btn-pill inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    class="btn-pill inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                                 <i class="fas fa-save mr-2"></i>
                                 Update Schedule
                             </button>
@@ -276,7 +276,7 @@ $timezones = [
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="text-center">
-                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mb-4">
                             <i class="fas fa-clock text-xl"></i>
                         </div>
                         <h4 class="text-lg font-medium text-gray-900 mb-2">Daily Delivery</h4>

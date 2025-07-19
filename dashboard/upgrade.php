@@ -31,12 +31,12 @@ $currentPage = 'upgrade';
         </div>
 
         <!-- Current Plan Notice -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+        <div class="bg-primary-lightest border border-primary-light rounded-lg p-6 mb-8">
             <div class="flex items-center">
-                <i class="fas fa-info-circle text-blue-500 text-xl mr-3"></i>
+                <i class="fas fa-info-circle text-primary text-xl mr-3"></i>
                 <div>
-                    <h3 class="text-lg font-medium text-blue-900">You're currently on the Free plan</h3>
-                    <p class="text-blue-700 mt-1">Upgrade to unlock more sources, advanced features, and priority support. All plans include a 7-day free trial!</p>
+                    <h3 class="text-lg font-medium text-primary-darker">You're currently on the Free plan</h3>
+                    <p class="text-primary-dark mt-1">Upgrade to unlock more sources, advanced features, and priority support. All plans include a 7-day free trial!</p>
                 </div>
             </div>
         </div>

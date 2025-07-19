@@ -53,13 +53,13 @@ if (empty($token)) {
                 
                 <?php if ($type === 'email_change'): ?>
                     <a href="/dashboard/account.php" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                         <i class="fas fa-user-cog mr-2"></i>
                         Go to Account Settings
                     </a>
                 <?php else: ?>
                     <a href="/auth/login.php" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                         <i class="fas fa-sign-in-alt mr-2"></i>
                         Sign In Now
                     </a>
@@ -72,14 +72,14 @@ if (empty($token)) {
                 
                 <div class="space-y-4">
                     <a href="/auth/register.php" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                         <i class="fas fa-user-plus mr-2"></i>
                         Create New Account
                     </a>
                     
                     <div class="text-sm text-gray-600">
                         <p>Already have an account?</p>
-                        <a href="/auth/login.php" class="text-blue-600 hover:text-blue-500">Sign in here</a>
+                        <a href="/auth/login.php" class="text-primary hover:text-primary-dark">Sign in here</a>
                     </div>
                 </div>
             <?php endif; ?>

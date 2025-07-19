@@ -76,7 +76,7 @@ try {
         .prose h2 { @apply text-2xl font-bold text-gray-900 mt-6 mb-3; }
         .prose h3 { @apply text-xl font-bold text-gray-900 mt-5 mb-2; }
         .prose p { @apply text-gray-700 leading-relaxed mb-4; }
-        .prose a { @apply text-blue-600 hover:text-blue-800 underline; }
+        .prose a { @apply text-primary hover:text-primary-darker underline; }
         .prose strong { @apply font-semibold text-gray-900; }
         .prose em { @apply italic; }
         .prose code { @apply bg-gray-100 text-gray-900 px-2 py-1 rounded text-sm font-mono; }
@@ -84,7 +84,7 @@ try {
         .prose pre code { @apply bg-transparent p-0; }
         .prose ul { @apply list-disc list-inside mb-4 space-y-1; }
         .prose ol { @apply list-decimal list-inside mb-4 space-y-1; }
-        .prose blockquote { @apply border-l-4 border-blue-200 pl-4 italic text-gray-600 mb-4; }
+        .prose blockquote { @apply border-l-4 border-primary-light pl-4 italic text-gray-600 mb-4; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -128,7 +128,7 @@ try {
                         <div class="flex justify-center flex-wrap gap-2 mb-4">
                             <?php foreach ($post->getTags() as $tag): ?>
                                 <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                                   class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors">
+                                   class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-primary-lightest text-primary-darker hover:bg-primary-light transition-colors">
                                     <?php echo htmlspecialchars($tag); ?>
                                 </a>
                             <?php endforeach; ?>
@@ -187,23 +187,23 @@ try {
                         <div class="flex space-x-2">
                             <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&text=<?php echo urlencode($post->getTitle()); ?>" 
                                target="_blank" 
-                               class="text-gray-400 hover:text-blue-500 transition-colors">
+                               class="text-gray-400 hover:text-primary transition-colors">
                                 <i class="fab fa-twitter text-lg"></i>
                             </a>
                             <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
                                target="_blank" 
-                               class="text-gray-400 hover:text-blue-600 transition-colors">
+                               class="text-gray-400 hover:text-primary transition-colors">
                                 <i class="fab fa-facebook text-lg"></i>
                             </a>
                             <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
                                target="_blank" 
-                               class="text-gray-400 hover:text-blue-700 transition-colors">
+                               class="text-gray-400 hover:text-primary-dark transition-colors">
                                 <i class="fab fa-linkedin text-lg"></i>
                             </a>
                         </div>
                     </div>
                     
-                    <a href="/blog" class="text-blue-600 hover:text-blue-500 font-medium text-sm">
+                    <a href="/blog" class="text-primary hover:text-primary font-medium text-sm">
                         <i class="fas fa-arrow-left mr-2"></i>
                         Back to Blog
                     </a>
@@ -242,7 +242,7 @@ try {
                                 </div>
                                 
                                 <h3 class="text-lg font-bold text-gray-900 mb-3">
-                                    <a href="<?php echo $relatedPost->getUrl(); ?>" class="hover:text-blue-600 transition-colors">
+                                    <a href="<?php echo $relatedPost->getUrl(); ?>" class="hover:text-primary transition-colors">
                                         <?php echo htmlspecialchars($relatedPost->getTitle()); ?>
                                     </a>
                                 </h3>
@@ -254,7 +254,7 @@ try {
                                 <?php endif; ?>
                                 
                                 <a href="<?php echo $relatedPost->getUrl(); ?>" 
-                                   class="inline-flex items-center text-blue-600 hover:text-blue-500 font-medium text-sm">
+                                   class="inline-flex items-center text-primary hover:text-primary font-medium text-sm">
                                     Read more
                                     <i class="fas fa-arrow-right ml-2 text-xs"></i>
                                 </a>
@@ -267,16 +267,16 @@ try {
     <?php endif; ?>
 
     <!-- Newsletter CTA -->
-    <div class="bg-gradient-to-br from-blue-600 to-purple-600 py-16">
+    <div class="bg-gradient-to-br from-purple-600 to-purple-600 py-16">
         <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-bold text-white mb-4">
                 Stay Updated with MorningNewsletter
             </h2>
-            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
                 Get personalized insights delivered to your inbox every morning. Join thousands of professionals who start their day informed.
             </p>
             <a href="/register" 
-               class="btn-pill inline-flex items-center bg-white text-blue-600 font-semibold px-8 py-4 hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center bg-white text-primary font-semibold px-8 py-4 hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
                 Start Your Free Trial
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>

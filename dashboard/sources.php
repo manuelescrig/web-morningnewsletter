@@ -181,7 +181,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     <div class="flex-1">
                                         <div class="flex items-center space-x-3 mb-4">
                                             <div class="flex-shrink-0">
-                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <div class="w-10 h-10 bg-primary-lightest rounded-lg flex items-center justify-center">
                                                     <i class="fas fa-<?php 
                                                         $icons = [
                                                             'bitcoin' => 'bitcoin',
@@ -195,7 +195,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                             'stripe' => 'credit-card'
                                                         ];
                                                         echo $icons[$config['type']] ?? 'plug';
-                                                    ?> text-blue-600"></i>
+                                                    ?> text-primary"></i>
                                                 </div>
                                             </div>
                                             <div class="flex-1">
@@ -251,7 +251,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                            id="name_<?php echo $config['id']; ?>" 
                                                            name="name" 
                                                            value="<?php echo htmlspecialchars($config['name']); ?>"
-                                                           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                                           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus-ring-primary sm:text-sm">
                                                 </div>
                                                 
                                                 <div>
@@ -260,7 +260,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                     </label>
                                                     <select id="category_<?php echo $config['id']; ?>" 
                                                             name="category"
-                                                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus-ring-primary sm:text-sm">
                                                         <option value="crypto" <?php echo ($config['category'] === 'crypto') ? 'selected' : ''; ?>>Crypto</option>
                                                         <option value="finance" <?php echo ($config['category'] === 'finance') ? 'selected' : ''; ?>>Finance</option>
                                                         <option value="lifestyle" <?php echo ($config['category'] === 'lifestyle') ? 'selected' : ''; ?>>Lifestyle</option>
@@ -275,7 +275,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                         <input type="checkbox" 
                                                                name="is_enabled" 
                                                                <?php echo $config['is_enabled'] ? 'checked' : ''; ?>
-                                                               class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                                               class="rounded border-gray-300 text-primary shadow-sm focus:border-primary-light focus:ring focus:ring-primary-lightest focus:ring-opacity-50">
                                                         <span class="ml-2 text-sm font-medium text-gray-700">
                                                             Available to users
                                                         </span>
@@ -290,13 +290,13 @@ $csrfToken = $auth->generateCSRFToken();
                                                 <textarea id="description_<?php echo $config['id']; ?>" 
                                                           name="description" 
                                                           rows="2"
-                                                          class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                                          class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus-ring-primary sm:text-sm"
                                                           placeholder="Brief description of what this source provides"><?php echo htmlspecialchars($config['description']); ?></textarea>
                                             </div>
                                             
                                             <div class="flex justify-end">
                                                 <button type="submit" 
-                                                        class="btn-pill inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        class="btn-pill inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                                                     <i class="fas fa-save mr-2"></i>
                                                     Save Changes
                                                 </button>
@@ -318,7 +318,7 @@ $csrfToken = $auth->generateCSRFToken();
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-blue-600">
+                        <div class="text-2xl font-bold text-primary">
                             <?php echo count($sourceConfigs); ?>
                         </div>
                         <p class="text-sm text-gray-600">Total Source Types</p>

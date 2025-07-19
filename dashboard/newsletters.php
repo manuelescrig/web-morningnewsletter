@@ -146,14 +146,14 @@ $timezones = [
                         <div>
                             <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Newsletter Title</label>
                             <input type="text" name="title" id="title" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                    placeholder="My Morning Brief">
                         </div>
                         
                         <div>
                             <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
                             <select name="timezone" id="timezone" 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <?php foreach ($timezones as $value => $label): ?>
                                     <option value="<?php echo $value; ?>" <?php echo $value === 'UTC' ? 'selected' : ''; ?>>
                                         <?php echo $label; ?>
@@ -165,11 +165,11 @@ $timezones = [
                         <div>
                             <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">Send Time</label>
                             <input type="time" name="send_time" id="send_time" value="06:00" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium">
+                    <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium">
                         Create Newsletter
                     </button>
                 </form>
@@ -213,7 +213,7 @@ $timezones = [
                                 
                                 <div class="flex space-x-2">
                                     <a href="/dashboard/sources.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                       class="bg-primary hover-bg-primary-dark text-white px-4 py-2 rounded-md text-sm font-medium">
                                         Manage Sources
                                     </a>
                                     <button onclick="editNewsletter(<?php echo $newsletter->getId(); ?>)" 
@@ -264,7 +264,7 @@ $timezones = [
                         <button type="button" onclick="closeEditModal()" 
                                 class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md">Cancel</button>
                         <button type="submit" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">Update</button>
+                                class="bg-primary hover-bg-primary-dark text-white px-4 py-2 rounded-md">Update</button>
                     </div>
                 </form>
             </div>

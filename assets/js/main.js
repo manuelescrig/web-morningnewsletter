@@ -205,7 +205,7 @@ const MorningNewsletter = {
         alertDiv.className = `fixed top-4 right-4 max-w-sm p-4 rounded-md shadow-lg z-50 ${
             type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' :
             type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' :
-            'bg-blue-50 border border-blue-200 text-blue-700'
+            'bg-purple-50 border border-purple-200 text-purple-700'
         }`;
         
         alertDiv.innerHTML = `

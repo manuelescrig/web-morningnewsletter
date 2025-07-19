@@ -102,7 +102,7 @@ $csrfToken = $auth->generateCSRFToken();
                     <label for="password" class="block text-sm font-medium text-gray-700">New Password</label>
                     <div class="mt-1">
                         <input id="password" name="password" type="password" autocomplete="new-password" required
-                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus-ring-primary border-primary sm:text-sm"
                                placeholder="Enter your new password"
                                minlength="8">
                     </div>
@@ -113,7 +113,7 @@ $csrfToken = $auth->generateCSRFToken();
                     <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
                     <div class="mt-1">
                         <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" required
-                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus-ring-primary border-primary sm:text-sm"
                                placeholder="Confirm your new password"
                                minlength="8">
                     </div>
@@ -122,16 +122,16 @@ $csrfToken = $auth->generateCSRFToken();
 
             <div>
                 <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <i class="fas fa-key text-blue-500 group-hover:text-blue-400"></i>
+                        <i class="fas fa-key text-primary group-hover:text-primary-dark"></i>
                     </span>
                     Reset Password
                 </button>
             </div>
 
             <div class="text-center">
-                <a href="/auth/login.php" class="font-medium text-blue-600 hover:text-blue-500">
+                <a href="/auth/login.php" class="font-medium text-primary hover:text-primary-dark">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Back to Sign In
                 </a>

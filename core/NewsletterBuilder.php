@@ -182,7 +182,7 @@ class NewsletterBuilder {
                 $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
                     <p style="margin: 0; font-size: 12px; color: #6b7280;">
                         Having trouble viewing this email? 
-                        <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #0041EC; text-decoration: none; font-weight: 500;">View in browser</a>
+                        <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #468BE6; text-decoration: none; font-weight: 500;">View in browser</a>
                     </p>
                 </div>';
             }
@@ -231,7 +231,7 @@ class NewsletterBuilder {
         $lastUpdated = $source['last_updated'];
         
         $html = "
-        <div style='margin-bottom: 32px; padding: 24px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #3b82f6;'>
+        <div style='margin-bottom: 32px; padding: 24px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #468BE6;'>
             <h2 style='margin: 0 0 16px 0; color: #1f2937; font-size: 20px; font-weight: 600;'>$title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {

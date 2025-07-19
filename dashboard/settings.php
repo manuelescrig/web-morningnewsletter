@@ -109,7 +109,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     switch($user->getPlan()) {
                                         case 'unlimited': echo 'bg-purple-100 text-purple-800'; break;
                                         case 'pro': echo 'bg-red-100 text-red-800'; break;
-                                        case 'starter': echo 'bg-blue-100 text-blue-800'; break;
+                                        case 'starter': echo 'bg-primary-lightest text-primary-dark'; break;
                                         default: echo 'bg-gray-100 text-gray-800';
                                     }
                                     ?>">
@@ -118,7 +118,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 
                                 <?php if ($user->isAdmin()): ?>
                                     <div class="relative inline-block text-left">
-                                        <button type="button" class="btn-pill inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="togglePlanDropdown()">
+                                        <button type="button" class="btn-pill inline-flex items-center px-2 py-1 border border-gray-300 shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary" onclick="togglePlanDropdown()">
                                             <i class="fas fa-cog mr-1"></i>
                                             Change
                                         </button>
@@ -162,7 +162,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     echo $sourceLimit === PHP_INT_MAX ? 'Unlimited sources' : "$sourceLimit source" . ($sourceLimit !== 1 ? 's' : '') . ' allowed';
                                     ?>
                                     <?php if ($user->isAdmin()): ?>
-                                        <span class="text-blue-600 ml-2">(Admin: Can change plan freely)</span>
+                                        <span class="text-primary ml-2">(Admin: Can change plan freely)</span>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </p>
@@ -171,13 +171,13 @@ $csrfToken = $auth->generateCSRFToken();
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Timezone</label>
                             <p class="mt-1 text-sm text-gray-900"><?php echo htmlspecialchars($user->getTimezone()); ?></p>
-                            <a href="/dashboard/schedule.php" class="mt-1 text-xs text-blue-600 hover:text-blue-500">Change timezone</a>
+                            <a href="/dashboard/schedule.php" class="mt-1 text-xs text-primary hover:text-primary">Change timezone</a>
                         </div>
                         
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Send Time</label>
                             <p class="mt-1 text-sm text-gray-900"><?php echo htmlspecialchars($user->getSendTime()); ?></p>
-                            <a href="/dashboard/schedule.php" class="mt-1 text-xs text-blue-600 hover:text-blue-500">Change send time</a>
+                            <a href="/dashboard/schedule.php" class="mt-1 text-xs text-primary hover:text-primary">Change send time</a>
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@ $csrfToken = $auth->generateCSRFToken();
                             
                             <?php if ($subscriptionInfo['stripe_customer_id']): ?>
                                 <button onclick="manageBilling()" 
-                                        class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                                     <i class="fas fa-credit-card mr-2"></i>
                                     Manage Billing
                                 </button>
@@ -242,15 +242,15 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Daily delivery</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('starter')" 
-                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
+                                            class="btn-pill w-full bg-primary hover-bg-primary-dark text-white font-medium py-2 px-4">
                                         Choose Starter
                                     </button>
                                 </div>
 
                                 <!-- Pro Plan -->
-                                <div class="border-2 border-blue-500 rounded-lg p-4 relative">
+                                <div class="border-2 border-primary rounded-lg p-4 relative">
                                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                                        <span class="bg-blue-500 text-white px-3 py-1 text-sm font-medium rounded-full">Popular</span>
+                                        <span class="bg-primary text-white px-3 py-1 text-sm font-medium rounded-full">Popular</span>
                                     </div>
                                     <h5 class="font-medium text-gray-900 mb-2">Pro</h5>
                                     <p class="text-2xl font-bold text-gray-900 mb-2">$15<span class="text-sm font-normal">/month</span></p>
@@ -261,7 +261,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Priority support</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('pro')" 
-                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
+                                            class="btn-pill w-full bg-primary hover-bg-primary-dark text-white font-medium py-2 px-4">
                                         Choose Pro
                                     </button>
                                 </div>
@@ -277,7 +277,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Team collaboration</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('unlimited')" 
-                                            class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4">
+                                            class="btn-pill w-full bg-primary hover-bg-primary-dark text-white font-medium py-2 px-4">
                                         Choose Unlimited
                                     </button>
                                 </div>
@@ -356,19 +356,19 @@ $csrfToken = $auth->generateCSRFToken();
 
             <?php if ($user->isAdmin()): ?>
             <!-- Admin Plan Management -->
-            <div class="bg-white shadow rounded-lg border-l-4 border-blue-500">
+            <div class="bg-white shadow rounded-lg border-l-4 border-primary">
                 <div class="px-4 py-5 sm:p-6">
-                    <h3 class="text-lg leading-6 font-medium text-blue-900 mb-4">
+                    <h3 class="text-lg leading-6 font-medium text-primary-darker mb-4">
                         <i class="fas fa-crown mr-2"></i>
                         Admin Plan Management
                     </h3>
                     
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <div class="bg-primary-lightest border border-primary-light rounded-lg p-4 mb-4">
                         <div class="flex items-center">
-                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            <i class="fas fa-info-circle text-primary mr-3"></i>
                             <div>
-                                <h4 class="text-sm font-medium text-blue-900">Admin Privileges</h4>
-                                <p class="text-blue-700 text-sm">As an admin, you can change your plan freely without payment processing. This is for testing and administration purposes.</p>
+                                <h4 class="text-sm font-medium text-primary-darker">Admin Privileges</h4>
+                                <p class="text-primary-dark text-sm">As an admin, you can change your plan freely without payment processing. This is for testing and administration purposes.</p>
                             </div>
                         </div>
                     </div>
@@ -420,7 +420,7 @@ $csrfToken = $auth->generateCSRFToken();
                     </div>
                     
                     <div class="mt-4 text-center">
-                        <a href="/dashboard/users.php" class="inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
+                        <a href="/dashboard/users.php" class="inline-flex items-center text-sm text-primary hover:text-primary">
                             <i class="fas fa-users mr-2"></i>
                             Manage All Users
                         </a>

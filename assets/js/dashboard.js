@@ -249,7 +249,7 @@ const Dashboard = {
                 dailyTimesContainer.innerHTML = `
                     <div class="flex items-center gap-2">
                         <select name="daily_times[]" 
-                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             ${timeOptions}
                         </select>
                         <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
@@ -264,7 +264,7 @@ const Dashboard = {
             const weeklyCheckboxes = document.querySelectorAll('input[name="days_of_week[]"]');
             weeklyCheckboxes.forEach(checkbox => {
                 checkbox.checked = false;
-                checkbox.parentElement.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-900');
+                checkbox.parentElement.classList.remove('bg-primary-lightest', 'border-primary-light', 'text-primary-darker');
             });
             
             // Reset monthly day selector

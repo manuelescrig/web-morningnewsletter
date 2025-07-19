@@ -255,7 +255,7 @@ $csrfToken = $auth->generateCSRFToken();
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                        <i class="fas fa-users text-primary text-2xl"></i>
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-500">Total Users</div>
@@ -321,7 +321,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 switch($plan) {
                                     case 'unlimited': echo 'text-purple-600'; break;
                                     case 'pro': echo 'text-red-600'; break;
-                                    case 'starter': echo 'text-blue-600'; break;
+                                    case 'starter': echo 'text-primary'; break;
                                     default: echo 'text-gray-600';
                                 }
                                 ?>">
@@ -364,7 +364,7 @@ $csrfToken = $auth->generateCSRFToken();
                 <!-- Verification Status Filter -->
                 <div class="sm:w-1/4">
                     <label for="verified" class="block text-sm font-medium text-gray-700 mb-1">Email Status</label>
-                    <select name="verified" id="verified" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <select name="verified" id="verified" class="block w-full rounded-md border-gray-300 shadow-sm focus-ring-primary sm:text-sm">
                         <option value="">All Users</option>
                         <option value="verified" <?php echo $verifiedFilter === 'verified' ? 'selected' : ''; ?>>Verified</option>
                         <option value="unverified" <?php echo $verifiedFilter === 'unverified' ? 'selected' : ''; ?>>Unverified</option>
@@ -374,7 +374,7 @@ $csrfToken = $auth->generateCSRFToken();
                 <!-- Admin Status Filter -->
                 <div class="sm:w-1/4">
                     <label for="admin" class="block text-sm font-medium text-gray-700 mb-1">User Type</label>
-                    <select name="admin" id="admin" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <select name="admin" id="admin" class="block w-full rounded-md border-gray-300 shadow-sm focus-ring-primary sm:text-sm">
                         <option value="">All Types</option>
                         <option value="admin" <?php echo $adminFilter === 'admin' ? 'selected' : ''; ?>>Admin</option>
                         <option value="user" <?php echo $adminFilter === 'user' ? 'selected' : ''; ?>>Regular User</option>
@@ -384,7 +384,7 @@ $csrfToken = $auth->generateCSRFToken();
                 <!-- Plan Filter -->
                 <div class="sm:w-1/4">
                     <label for="plan" class="block text-sm font-medium text-gray-700 mb-1">Plan</label>
-                    <select name="plan" id="plan" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <select name="plan" id="plan" class="block w-full rounded-md border-gray-300 shadow-sm focus-ring-primary sm:text-sm">
                         <option value="">All Plans</option>
                         <option value="free" <?php echo $planFilter === 'free' ? 'selected' : ''; ?>>Free</option>
                         <option value="starter" <?php echo $planFilter === 'starter' ? 'selected' : ''; ?>>Starter</option>
@@ -395,11 +395,11 @@ $csrfToken = $auth->generateCSRFToken();
 
                 <!-- Filter Actions -->
                 <div class="sm:w-1/4 flex space-x-2">
-                    <button type="submit" class="btn-pill inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="submit" class="btn-pill inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium shadow-sm text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                         <i class="fas fa-filter mr-2"></i>
                         Apply Filters
                     </button>
-                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                         <i class="fas fa-times mr-2"></i>
                         Clear
                     </a>
@@ -408,10 +408,10 @@ $csrfToken = $auth->generateCSRFToken();
             
             <!-- Filter Results Summary -->
             <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
-            <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <div class="mt-4 p-3 bg-primary-lightest border border-primary-light rounded-md">
                 <div class="flex items-center">
-                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
-                    <span class="text-sm text-blue-700">
+                    <i class="fas fa-info-circle text-primary mr-2"></i>
+                    <span class="text-sm text-primary-dark">
                         Showing <?php echo number_format($totalUsers); ?> of <?php echo number_format(count($allUsers)); ?> users
                         <?php
                         $activeFilters = [];
@@ -458,7 +458,7 @@ $csrfToken = $auth->generateCSRFToken();
                             <?php endif; ?>
                         </p>
                         <?php if ($verifiedFilter || $adminFilter || $planFilter): ?>
-                            <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="mt-2 inline-flex items-center text-sm text-blue-600 hover:text-blue-500">
+                            <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="mt-2 inline-flex items-center text-sm text-primary hover:text-primary">
                                 <i class="fas fa-times mr-1"></i>
                                 Clear all filters
                             </a>
@@ -485,15 +485,15 @@ $csrfToken = $auth->generateCSRFToken();
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-8 w-8">
-                                                <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                                    <i class="fas fa-user text-blue-600 text-sm"></i>
+                                                <div class="h-8 w-8 rounded-full bg-primary-lightest flex items-center justify-center">
+                                                    <i class="fas fa-user text-primary text-sm"></i>
                                                 </div>
                                             </div>
                                             <div class="ml-3">
                                                 <div class="text-sm font-medium text-gray-900">
                                                     <?php echo htmlspecialchars($userData['email']); ?>
                                                     <?php if ($userData['id'] == $user->getId()): ?>
-                                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-lightest text-primary-dark">
                                                             You
                                                         </span>
                                                     <?php endif; ?>
@@ -508,7 +508,7 @@ $csrfToken = $auth->generateCSRFToken();
                                             switch($userData['plan']) {
                                                 case 'unlimited': echo 'bg-purple-100 text-purple-800'; break;
                                                 case 'pro': echo 'bg-red-100 text-red-800'; break;
-                                                case 'starter': echo 'bg-blue-100 text-blue-800'; break;
+                                                case 'starter': echo 'bg-primary-lightest text-primary-dark'; break;
                                                 default: echo 'bg-gray-100 text-gray-800';
                                             }
                                             ?>">
@@ -577,7 +577,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="relative inline-block text-left">
-                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="
+                                            <button type="button" class="btn-pill inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary" onclick="
                                                 event.stopPropagation();
                                                 
                                                 // Close all dropdowns first
@@ -649,7 +649,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
                                                                 <input type="hidden" name="action" value="promote">
                                                                 <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
-                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-blue-700 hover:bg-blue-50 flex items-center">
+                                                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-primary-dark hover:bg-primary-lightest flex items-center">
                                                                     <i class="fas fa-crown mr-2"></i>
                                                                     Make Admin
                                                                 </button>
@@ -681,7 +681,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                             </form>
                                                         <?php else: ?>
                                                             <div class="border-t border-gray-100"></div>
-                                                            <div class="px-4 py-2 text-xs text-blue-600 bg-blue-50">
+                                                            <div class="px-4 py-2 text-xs text-primary bg-primary-lightest">
                                                                 <i class="fas fa-info-circle mr-1"></i>
                                                                 This is your account
                                                             </div>
@@ -749,7 +749,7 @@ $csrfToken = $auth->generateCSRFToken();
                                     // Show page range
                                     for ($i = $startPage; $i <= $endPage; $i++):
                                         if ($i == $page): ?>
-                                            <span class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"><?php echo $i; ?></span>
+                                            <span class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><?php echo $i; ?></span>
                                         <?php else: ?>
                                             <a href="?<?php echo http_build_query(array_merge($_GET, ['page' => $i])); ?>" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"><?php echo $i; ?></a>
                                         <?php endif; ?>

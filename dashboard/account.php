@@ -206,13 +206,13 @@ $csrfToken = $auth->generateCSRFToken();
                                name="name" 
                                id="name" 
                                value="<?php echo htmlspecialchars($user->getName() ?? ''); ?>"
-                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus-ring-primary sm:text-sm px-3 py-2"
                                placeholder="Enter your full name">
                     </div>
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                             <i class="fas fa-user mr-2"></i>
                             Update Name
                         </button>
@@ -273,17 +273,17 @@ $csrfToken = $auth->generateCSRFToken();
                                name="email" 
                                id="email" 
                                required
-                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus-ring-primary sm:text-sm px-3 py-2"
                                placeholder="Enter new email address">
                     </div>
                     
-                    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                    <div class="bg-primary-lightest border border-primary-light rounded-md p-4">
                         <div class="flex">
                             <div class="flex-shrink-0">
-                                <i class="fas fa-info-circle text-blue-400"></i>
+                                <i class="fas fa-info-circle text-primary"></i>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm text-blue-700">
+                                <p class="text-sm text-primary-dark">
                                     We'll send a verification email to your new address. Click the link in that email to complete the change.
                                 </p>
                             </div>
@@ -292,7 +292,7 @@ $csrfToken = $auth->generateCSRFToken();
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                             <i class="fas fa-envelope mr-2"></i>
                             Send Verification Email
                         </button>
@@ -316,7 +316,7 @@ $csrfToken = $auth->generateCSRFToken();
                                name="current_password" 
                                id="current_password" 
                                required
-                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus-ring-primary sm:text-sm px-3 py-2">
                     </div>
                     
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -327,7 +327,7 @@ $csrfToken = $auth->generateCSRFToken();
                                    id="new_password" 
                                    required
                                    minlength="8"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus-ring-primary sm:text-sm px-3 py-2">
                             <p class="mt-1 text-sm text-gray-500">Minimum 8 characters</p>
                         </div>
                         
@@ -338,13 +338,13 @@ $csrfToken = $auth->generateCSRFToken();
                                    id="confirm_password" 
                                    required
                                    minlength="8"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus-ring-primary sm:text-sm px-3 py-2">
                         </div>
                     </div>
                     
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                             <i class="fas fa-key mr-2"></i>
                             Change Password
                         </button>

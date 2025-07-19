@@ -25,7 +25,7 @@ function renderLogo($size = 'md', $href = '/', $classes = '') {
     
     $sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
     $sunSizeClass = $sunSizeClasses[$size] ?? $sunSizeClasses['md'];
-    $baseClasses = "$sizeClass font-bold text-blue-600 hover:text-blue-700 transition-colors duration-200";
+    $baseClasses = "$sizeClass font-bold text-primary hover:text-primary-dark transition-colors duration-200";
     $allClasses = trim("$baseClasses $classes");
     
     echo "<a href=\"$href\" class=\"$allClasses flex items-center justify-center\">";

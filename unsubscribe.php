@@ -103,14 +103,14 @@ if (empty($token)) {
         <?php endif; ?>
         
         <div class="text-center">
-            <a href="/" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            <a href="/" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover-bg-primary-dark">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Return to Homepage
             </a>
         </div>
 
         <div class="text-center text-sm text-gray-600">
-            <p>Need help? Contact us at <a href="mailto:hello@morningnewsletter.com" class="text-blue-600 hover:text-blue-800">hello@morningnewsletter.com</a></p>
+            <p>Need help? Contact us at <a href="mailto:hello@morningnewsletter.com" class="text-primary hover:text-primary-darker">hello@morningnewsletter.com</a></p>
         </div>
     </div>
 </body>

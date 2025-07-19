@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Newsletter Title *
                             </label>
                             <input type="text" name="title" id="title" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                    placeholder="e.g., Work Brief, Personal Digest">
                         </div>
                         
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Frequency
                             </label>
                             <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <option value="daily">Daily</option>
                                 <option value="weekly">Weekly</option>
                                 <option value="monthly">Monthly</option>
@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $dayShort = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
                                 for ($i = 1; $i <= 7; $i++): 
                                 ?>
-                                    <label class="flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 day-checkbox text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md" title="<?php echo $dayNames[$i-1]; ?>">
+                                    <label class="flex items-center justify-center w-10 h-10 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-primary-light hover:bg-primary-lightest day-checkbox text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md" title="<?php echo $dayNames[$i-1]; ?>">
                                         <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" class="sr-only" onchange="toggleDaySelection(this)">
                                         <span class="select-none"><?php echo $dayShort[$i-1]; ?></span>
                                     </label>
@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Day of Month
                             </label>
                             <select name="day_of_month" id="day_of_month"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <?php for ($day = 1; $day <= 31; $day++): ?>
                                     <option value="<?php echo $day; ?>" <?php echo $day == 1 ? 'selected' : ''; ?>>
                                         <?php echo $day; ?>
@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div id="daily-times-container" class="flex gap-2">
                                 <div class="flex gap-1 time-slot">
                                     <select name="daily_times[]" 
-                                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                         <?php for ($h = 0; $h < 24; $h++): ?>
                                             <?php for ($m = 0; $m < 60; $m += 15): ?>
                                                 <?php 
@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-blue-600 hover:text-blue-800 border border-blue-300 hover:bg-blue-50">
+                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-primary hover:text-primary-darker border border-primary-light hover:bg-primary-lightest"
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="button" onclick="hideCreateForm()" class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 font-medium transition-colors duration-200">
                             Cancel
                         </button>
-                        <button type="submit" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 font-medium transition-colors duration-200">
+                        <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200">
                             <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
                         </button>
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p class="text-gray-600 mb-8 text-sm leading-relaxed">
                             Get started with personalized morning briefings tailored just for you.
                         </p>
-                        <button id="createButtonEmpty" onclick="showCreateForm()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                        <button id="createButtonEmpty" onclick="showCreateForm()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-8 py-3 font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                             <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
@@ -312,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-2xl font-bold text-gray-900">
                         Your Newsletters (<?php echo count($newsletters); ?>)
                     </h2>
-                    <button id="createButtonHeader" onclick="showCreateForm()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200 shadow-sm">
+                    <button id="createButtonHeader" onclick="showCreateForm()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-plus mr-2"></i>
                         Add Newsletter
                     </button>
@@ -335,7 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200">
+                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover:bg-primary-lightest transition-colors duration-200">
                                             <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
@@ -348,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?> (<?php echo $newsletter->getTimezone(); ?>)
                                     </p>
                                     <p class="flex items-center">
-                                        <i class="fas fa-clock mr-2 text-blue-500"></i>
+                                        <i class="fas fa-clock mr-2 text-primary"></i>
                                         Last: <?php 
                                             if ($scheduleStatus['last_sent']) {
                                                 echo $scheduleStatus['last_sent']->format('M j, g:i A');
@@ -410,13 +410,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div>
                             <label for="editTitle" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
                             <input type="text" name="title" id="editTitle" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                         
                         <div>
                             <label for="editTimezone" class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
                             <select name="timezone" id="editTimezone" 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <?php foreach ($timezones as $value => $label): ?>
                                     <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
                                 <?php endforeach; ?>
@@ -426,7 +426,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div>
                             <label for="editSendTime" class="block text-sm font-medium text-gray-700 mb-2">Send Time</label>
                             <input type="time" name="send_time" id="editSendTime" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                     </div>
                     
@@ -436,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
+                                class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 transition-colors duration-200">
                             Update Newsletter
                         </button>
                     </div>
@@ -501,11 +501,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function toggleDaySelection(checkbox) {
             const label = checkbox.parentElement;
             if (checkbox.checked) {
-                label.classList.remove('border-gray-300', 'hover:border-blue-400', 'hover:bg-blue-50');
-                label.classList.add('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-lg');
+                label.classList.remove('border-gray-300', 'hover:border-primary-light', 'hover:bg-primary-lightest');
+                label.classList.add('bg-primary', 'border-primary', 'text-white', 'shadow-lg');
             } else {
-                label.classList.remove('bg-blue-600', 'border-blue-600', 'text-white', 'shadow-lg');
-                label.classList.add('border-gray-300', 'hover:border-blue-400', 'hover:bg-blue-50');
+                label.classList.remove('bg-primary', 'border-primary', 'text-white', 'shadow-lg');
+                label.classList.add('border-gray-300', 'hover:border-primary-light', 'hover:bg-primary-lightest');
             }
         }
         
@@ -531,7 +531,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             const newSelect = document.createElement('select');
             newSelect.name = 'daily_times[]';
-            newSelect.className = 'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+            newSelect.className = 'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary';
             newSelect.innerHTML = timeOptions;
             
             const removeButton = document.createElement('button');

@@ -26,7 +26,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
+            background: linear-gradient(135deg, #468BE6 0%, #9333ea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -70,10 +70,10 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     </p>
                 </div>
                 <div class="lg:text-center">
-                    <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8">
+                    <div class="bg-gradient-to-br from-primary-lightest to-purple-100 rounded-2xl p-8">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-blue-600 mb-2">2024</div>
+                                <div class="text-3xl font-bold text-primary mb-2">2024</div>
                                 <div class="text-sm text-gray-600">Started</div>
                             </div>
                             <div class="text-center">
@@ -107,7 +107,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                 <div class="bg-white rounded-2xl p-8 shadow-lg">
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                            <div class="w-12 h-12 bg-primary-lightest text-primary rounded-lg flex items-center justify-center">
                                 <i class="fas fa-lightbulb text-xl"></i>
                             </div>
                         </div>
@@ -168,7 +168,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
-                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div class="w-16 h-16 bg-primary-lightest text-primary rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-clock text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Respect Your Time</h3>

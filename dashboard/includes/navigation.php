@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../includes/logo.php';
 
 function getNavClass($page, $currentPage) {
     if ($page === $currentPage) {
-        return 'border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
+        return 'border-primary text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
     }
     return 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
 }
@@ -43,11 +43,11 @@ function getNavClass($page, $currentPage) {
                 <!-- Profile dropdown -->
                 <div class="relative ml-3">
                     <div>
-                        <button type="button" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-md lg:hover:bg-gray-50 transition-colors" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <button type="button" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus-ring-primary focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-md lg:hover:bg-gray-50 transition-colors" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <div class="flex items-center">
                                 <!-- Avatar circle with initial -->
-                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                    <span class="text-sm font-medium text-blue-800">
+                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-primary-lightest flex items-center justify-center">
+                                    <span class="text-sm font-medium text-primary-darker">
                                         <?php echo strtoupper(substr($user->getEmail(), 0, 1)); ?>
                                     </span>
                                 </div>
@@ -78,19 +78,19 @@ function getNavClass($page, $currentPage) {
                         
                         <!-- Account option -->
                         <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="fas fa-user mr-2 text-blue-500"></i>
+                            <i class="fas fa-user mr-2 text-primary"></i>
                             Account
                         </a>
                         
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
                         <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="fas fa-crown mr-2 text-blue-500"></i>
+                            <i class="fas fa-crown mr-2 text-primary"></i>
                             Upgrade Plan
                         </a>
                         <?php else: ?>
                         <a href="/billing" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="fas fa-credit-card mr-2 text-blue-500"></i>
+                            <i class="fas fa-credit-card mr-2 text-primary"></i>
                             Billing
                         </a>
                         <?php endif; ?>
