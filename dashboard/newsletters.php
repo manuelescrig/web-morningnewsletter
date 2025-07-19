@@ -124,10 +124,11 @@ $timezones = [
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
     
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <div class="mb-8">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="px-4 py-6 sm:px-0">
             <h1 class="text-3xl font-bold text-gray-900 dashboard-title">My Newsletters</h1>
-            <p class="text-gray-600 mt-2">Manage your personalized morning briefings</p>
+            <p class="mt-2 text-gray-600">Manage your personalized morning briefings</p>
         </div>
 
         <?php if ($message): ?>

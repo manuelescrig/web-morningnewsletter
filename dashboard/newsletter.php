@@ -369,7 +369,7 @@ $canAddSource = count($sources) < $maxSources;
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
     
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
             <nav class="flex mb-4" aria-label="Breadcrumb">

@@ -60,12 +60,12 @@ if ($newsletterId) {
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
-        <div class="mb-8">
+        <div class="px-4 py-6 sm:px-0">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">History</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 dashboard-title">History</h1>
                     <p class="mt-2 text-gray-600">
                         <?php if ($selectedNewsletter): ?>
                             View past issues of "<?php echo htmlspecialchars($selectedNewsletter->getTitle()); ?>"
