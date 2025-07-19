@@ -57,9 +57,11 @@ $csrfToken = $auth->generateCSRFToken();
     <title>Reset Password - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full space-y-8 p-8">
+<body class="auth-container">
+    <div class="auth-card">
         <div class="text-center">
             <?php renderLogo('md'); ?>
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Reset your password</h2>
