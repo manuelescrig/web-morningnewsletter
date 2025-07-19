@@ -1,5 +1,52 @@
 /* MorningNewsletter - Main Styles */
 
+/* Custom Color Palette Utilities */
+:root {
+    --jordy-blue: #93BFEF;
+    --tufts-blue: #468BE6;
+    --alice-blue: #E9F5FF;
+    --cobalt-blue: #1A5799;
+    --cool-black: #092F64;
+    --eerie-black: #1F1F1F;
+}
+
+/* Background Color Utilities */
+.bg-primary { background-color: var(--tufts-blue) !important; }
+.bg-primary-dark { background-color: var(--cobalt-blue) !important; }
+.bg-primary-darker { background-color: var(--cool-black) !important; }
+.bg-primary-light { background-color: var(--jordy-blue) !important; }
+.bg-primary-lightest { background-color: var(--alice-blue) !important; }
+.bg-dark { background-color: var(--eerie-black) !important; }
+
+/* Text Color Utilities */
+.text-primary { color: var(--tufts-blue) !important; }
+.text-primary-dark { color: var(--cobalt-blue) !important; }
+.text-primary-darker { color: var(--cool-black) !important; }
+.text-primary-light { color: var(--jordy-blue) !important; }
+.text-primary-lightest { color: var(--alice-blue) !important; }
+.text-dark { color: var(--eerie-black) !important; }
+
+/* Border Color Utilities */
+.border-primary { border-color: var(--tufts-blue) !important; }
+.border-primary-dark { border-color: var(--cobalt-blue) !important; }
+.border-primary-darker { border-color: var(--cool-black) !important; }
+.border-primary-light { border-color: var(--jordy-blue) !important; }
+.border-primary-lightest { border-color: var(--alice-blue) !important; }
+
+/* Focus Ring Utilities */
+.focus-ring-primary:focus {
+    outline: none !important;
+    border-color: var(--tufts-blue) !important;
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.1) !important;
+}
+
+/* Hover Utilities */
+.hover-bg-primary:hover { background-color: var(--tufts-blue) !important; }
+.hover-bg-primary-dark:hover { background-color: var(--cobalt-blue) !important; }
+.hover-bg-primary-darker:hover { background-color: var(--cool-black) !important; }
+.hover-text-primary:hover { color: var(--tufts-blue) !important; }
+.hover-text-primary-dark:hover { color: var(--cobalt-blue) !important; }
+
 /* Global Styles */
 html {
     scroll-behavior: smooth;

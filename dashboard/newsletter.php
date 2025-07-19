@@ -375,7 +375,7 @@ $canAddSource = count($sources) < $maxSources;
             <nav class="flex mb-4" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="/dashboard/" class="text-gray-700 hover:text-blue-600 inline-flex items-center">
+                        <a href="/dashboard/" class="text-gray-700 hover:text-primary inline-flex items-center">
                             My Newsletters
                         </a>
                     </li>
@@ -395,7 +395,7 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
                 <div class="flex space-x-3">
                     <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                       class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200"
+                       class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200"
                        target="_blank">
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
@@ -436,7 +436,7 @@ $canAddSource = count($sources) < $maxSources;
                                     You can add <?php echo $maxSources - count($sources); ?> more source<?php echo ($maxSources - count($sources)) !== 1 ? 's' : ''; ?> 
                                     (<?php echo count($sources); ?>/<?php echo $maxSources; ?> used)
                                 </p>
-                                <button onclick="openAddSourceModal()" class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
+                                <button onclick="openAddSourceModal()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-3 font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
                                     <i class="fas fa-plus mr-2"></i>
                                     Browse & Add Sources
                                 </button>
@@ -461,7 +461,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="bg-white rounded-lg shadow">
                     <div class="p-6 border-b border-gray-200">
                         <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-list text-blue-600 mr-2"></i>
+                            <i class="fas fa-list text-primary mr-2"></i>
                             Current Sources (<?php echo count($sources); ?>)
                         </h2>
                         <?php if (count($sources) > 1): ?>
@@ -495,7 +495,7 @@ $canAddSource = count($sources) < $maxSources;
                                             </div>
                                             <div class="flex items-center space-x-2">
                                                 <button onclick="editSource(<?php echo $source['id']; ?>)" 
-                                                        class="text-gray-400 hover:text-blue-600 p-1">
+                                                        class="text-gray-400 hover:text-primary p-1">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button onclick="deleteSource(<?php echo $source['id']; ?>)" 
@@ -544,7 +544,7 @@ $canAddSource = count($sources) < $maxSources;
                 <div class="bg-white rounded-lg shadow mb-6">
                     <div class="p-6 border-b border-gray-200">
                         <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-cog text-blue-600 mr-2"></i>
+                            <i class="fas fa-cog text-primary mr-2"></i>
                             Newsletter Settings
                         </h2>
                     </div>
@@ -559,7 +559,7 @@ $canAddSource = count($sources) < $maxSources;
                                 </label>
                                 <input type="text" name="title" id="title" required 
                                        value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             </div>
                             
                             <div>
@@ -567,7 +567,7 @@ $canAddSource = count($sources) < $maxSources;
                                     Timezone
                                 </label>
                                 <select name="timezone" id="timezone" 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <?php foreach ($timezones as $value => $label): ?>
                                         <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
                                             <?php echo $label; ?>
@@ -581,7 +581,7 @@ $canAddSource = count($sources) < $maxSources;
                                     Frequency
                                 </label>
                                 <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
                                     <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
                                     <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
@@ -615,7 +615,7 @@ $canAddSource = count($sources) < $maxSources;
                                     Day of Month
                                 </label>
                                 <select name="day_of_month" id="day_of_month"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <?php for ($day = 1; $day <= 31; $day++): ?>
                                         <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
                                             <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
@@ -640,7 +640,7 @@ $canAddSource = count($sources) < $maxSources;
                                     ?>
                                         <div class="flex items-center gap-2">
                                             <select name="daily_times[]" 
-                                                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                                 <?php for ($h = 0; $h < 24; $h++): ?>
                                                     <?php for ($m = 0; $m < 60; $m += 15): ?>
                                                         <?php 
@@ -664,7 +664,7 @@ $canAddSource = count($sources) < $maxSources;
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="mt-2 text-blue-600 hover:text-blue-800 text-sm">
+                                <button type="button" onclick="addDailyTime()" class="mt-2 text-primary hover:text-primary-dark text-sm">
                                     <i class="fas fa-plus mr-1"></i> Add another time
                                 </button>
                                 <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
@@ -714,7 +714,7 @@ $canAddSource = count($sources) < $maxSources;
                                 </div>
                             </div>
                             
-                            <button type="submit" class="btn-pill w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                            <button type="submit" class="btn-pill w-full bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
                                 <i class="fas fa-save mr-2"></i>
                                 Update Settings
                             </button>
@@ -748,7 +748,7 @@ $canAddSource = count($sources) < $maxSources;
                                 <span class="text-gray-600">Last Sent:</span>
                                 <span class="font-medium">
                                     <?php if ($scheduleStatus['last_sent']): ?>
-                                        <span class="text-blue-600"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
+                                        <span class="text-primary"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
                                     <?php else: ?>
                                         <span class="text-gray-500">Never</span>
                                     <?php endif; ?>
@@ -876,7 +876,7 @@ $canAddSource = count($sources) < $maxSources;
                             <input type="text" id="edit_config_${field.name}" 
                                    value="${currentValue}"
                                    placeholder="Search for a city or location..."
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             <div id="edit_location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
                         </div>
                     `;
@@ -893,7 +893,7 @@ $canAddSource = count($sources) < $maxSources;
                                ${field.required ? 'required' : ''} 
                                value="${currentValue}"
                                placeholder="${field.placeholder || ''}"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         ${field.description ? `<p class="text-xs text-gray-500 mt-1">${field.description}</p>` : ''}
                     `;
                 }
@@ -1186,7 +1186,7 @@ $canAddSource = count($sources) < $maxSources;
             
             newTimeDiv.innerHTML = `
                 <select name="daily_times[]" 
-                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                     ${timeOptions}
                 </select>
                 <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
@@ -1231,10 +1231,10 @@ $canAddSource = count($sources) < $maxSources;
         function filterByCategory(category) {
             // Update button states
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.remove('active', 'bg-primary', 'text-white');
                 btn.classList.add('bg-gray-200', 'text-gray-700');
             });
-            event.target.classList.add('active', 'bg-blue-600', 'text-white');
+            event.target.classList.add('active', 'bg-primary', 'text-white');
             event.target.classList.remove('bg-gray-200', 'text-gray-700');
             
             // Filter source cards
@@ -1280,7 +1280,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div class="relative">
                                 <input type="text" id="config_location_search" 
                                        placeholder="Search for a city or location..."
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <div id="location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
                             </div>
                             <input type="hidden" id="config_location" name="config_location">
@@ -1295,13 +1295,13 @@ $canAddSource = count($sources) < $maxSources;
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
                             <input type="text" name="config[api_key]" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                    placeholder="Your NewsAPI key">
-                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://newsapi.org" target="_blank" class="text-blue-600">NewsAPI</a></p>
+                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://newsapi.org" target="_blank" class="text-primary">NewsAPI</a></p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                            <select name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select name="config[country]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <option value="us">United States</option>
                                 <option value="gb">United Kingdom</option>
                                 <option value="ca">Canada</option>
@@ -1312,7 +1312,7 @@ $canAddSource = count($sources) < $maxSources;
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                            <select name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select name="config[category]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                 <option value="general">General</option>
                                 <option value="business">Business</option>
                                 <option value="technology">Technology</option>
@@ -1324,7 +1324,7 @@ $canAddSource = count($sources) < $maxSources;
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
                             <input type="number" name="config[limit]" min="1" max="20" value="5"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                     `;
                     break;
@@ -1333,7 +1333,7 @@ $canAddSource = count($sources) < $maxSources;
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Secret API Key *</label>
                             <input type="text" name="config[api_key]" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                    placeholder="sk_live_... or sk_test_...">
                             <p class="text-xs text-gray-500 mt-1">Found in your Stripe Dashboard under Developers > API keys</p>
                         </div>
@@ -1344,9 +1344,9 @@ $canAddSource = count($sources) < $maxSources;
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Alpha Vantage API Key *</label>
                             <input type="text" name="config[api_key]" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                    placeholder="Your Alpha Vantage API key">
-                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://www.alphavantage.co/support/#api-key" target="_blank" class="text-blue-600">Alpha Vantage</a></p>
+                            <p class="text-xs text-gray-500 mt-1">Get your free API key from <a href="https://www.alphavantage.co/support/#api-key" target="_blank" class="text-primary">Alpha Vantage</a></p>
                         </div>
                     `;
                     break;
@@ -1558,15 +1558,15 @@ $canAddSource = count($sources) < $maxSources;
                             'description' => $sourceConfig ? $sourceConfig['description'] : 'Data source'
                         ];
                         ?>
-                        <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer" 
+                        <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-primary-light hover:shadow-md transition-all duration-200 cursor-pointer" 
                              data-type="<?php echo $type; ?>" 
                              data-category="<?php echo $info['category']; ?>"
                              data-title="<?php echo strtolower($module->getTitle()); ?>"
                              onclick="selectSource('<?php echo $type; ?>', '<?php echo htmlspecialchars($module->getTitle()); ?>')">
                             <div class="flex items-start space-x-3">
                                 <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <i class="<?php echo $info['icon']; ?> text-blue-600 text-xl"></i>
+                                    <div class="w-12 h-12 bg-primary-lightest rounded-lg flex items-center justify-center">
+                                        <i class="<?php echo $info['icon']; ?> text-primary text-xl"></i>
                                     </div>
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -1600,7 +1600,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
                                 <input type="text" name="source_name" id="selectedSourceName"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                        placeholder="Custom name for this source">
                             </div>
                             
@@ -1613,7 +1613,7 @@ $canAddSource = count($sources) < $maxSources;
                                     Cancel
                                 </button>
                                 <button type="submit" 
-                                        class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
+                                        class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 transition-colors duration-200">
                                     <i class="fas fa-plus mr-2"></i>
                                     Add Source
                                 </button>
@@ -1640,7 +1640,7 @@ $canAddSource = count($sources) < $maxSources;
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
                             <input type="text" id="editSourceName" name="source_name" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                         
                         <!-- Weather Config -->
@@ -1650,7 +1650,7 @@ $canAddSource = count($sources) < $maxSources;
                                 <div class="relative">
                                     <input type="text" id="edit_weather_location_search" name="config_location_search" 
                                            placeholder="Search for a city or location..."
-                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <div id="edit_location_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
                                 </div>
                                 <input type="hidden" id="edit_weather_location" name="config_location">
@@ -1664,11 +1664,11 @@ $canAddSource = count($sources) < $maxSources;
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
                                 <input type="text" id="edit_news_api_key" name="config_api_key" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                                <select id="edit_news_country" name="config_country" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="edit_news_country" name="config_country" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <option value="us">United States</option>
                                     <option value="gb">United Kingdom</option>
                                     <option value="ca">Canada</option>
@@ -1676,7 +1676,7 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                <select id="edit_news_category" name="config_category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="edit_news_category" name="config_category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                                     <option value="general">General</option>
                                     <option value="business">Business</option>
                                     <option value="technology">Technology</option>
@@ -1686,7 +1686,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
                                 <input type="number" id="edit_news_limit" name="config_limit" min="1" max="20" value="5"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             </div>
                         </div>
                         
@@ -1695,7 +1695,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
                                 <input type="text" id="edit_stripe_api_key" name="config_api_key" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             </div>
                         </div>
                         
@@ -1704,7 +1704,7 @@ $canAddSource = count($sources) < $maxSources;
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">API Key *</label>
                                 <input type="text" id="edit_sp500_api_key" name="config_api_key" required
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             </div>
                         </div>
                         
@@ -1745,7 +1745,7 @@ $canAddSource = count($sources) < $maxSources;
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="btn-pill bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 transition-colors duration-200">
+                                class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 transition-colors duration-200">
                             Update Source
                         </button>
                     </div>
