@@ -61,9 +61,15 @@ h1.dashboard-title,
 }
 
 /* Navigation Underline Styles */
-.nav-underline,
-.border-b-2,
-.border-current {
+.nav-underline {
+    border-bottom: 4px solid var(--nav-underline) !important;
+    border-radius: 2px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: -4px !important;
+}
+
+/* Navigation Hover Underline Styles */
+.hover\:nav-underline:hover {
     border-bottom: 4px solid var(--nav-underline) !important;
     border-radius: 2px !important;
     padding-bottom: 8px !important;

@@ -21,7 +21,7 @@ function getNavClass($page, $currentPage) {
     if ($page === $currentPage) {
         return 'nav-underline text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium';
     }
-    return 'border-transparent text-gray-500 hover:text-gray-700 hover:nav-underline inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
+    return 'border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium';
 }
 ?>
 <!-- Navigation -->
