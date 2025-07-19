@@ -142,10 +142,9 @@ $currentPage = 'history';
             
             <div id="newsletter-content" class="p-6">
                 <!-- Newsletter HTML Content -->
-                <iframe srcdoc="<?php echo htmlspecialchars($historyEntry['content']); ?>" 
-                        class="w-full min-h-96 border-none" 
-                        sandbox="allow-same-origin">
-                </iframe>
+                <div class="newsletter-preview">
+                    <?php echo $historyEntry['content']; ?>
+                </div>
             </div>
         </div>
 
