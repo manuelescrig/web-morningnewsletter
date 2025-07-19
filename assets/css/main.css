@@ -18,22 +18,22 @@ html {
 
 /* Gradient Backgrounds */
 .gradient-bg {
-    background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+    background: linear-gradient(135deg, #E9F5FF 0%, #93BFEF 100%);
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, #0041EC 0%, #9333ea 100%);
+    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .mesh-bg {
-    background: radial-gradient(circle at 25% 25%, #e0e7ff 0%, transparent 50%),
-                radial-gradient(circle at 75% 25%, #f3e8ff 0%, transparent 50%),
-                radial-gradient(circle at 25% 75%, #dbeafe 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, #fce7f3 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, #f8fafc 0%, transparent 50%);
+    background: radial-gradient(circle at 25% 25%, #E9F5FF 0%, transparent 50%),
+                radial-gradient(circle at 75% 25%, #93BFEF 0%, transparent 50%),
+                radial-gradient(circle at 25% 75%, #468BE6 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #1A5799 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #E9F5FF 0%, transparent 50%);
 }
 
 /* Trusted by logos */
@@ -245,8 +245,8 @@ html body div form button.btn-pill {
 
 .form-input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #468BE6;
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.1);
 }
 
 /* Newsletter Subscription */
@@ -255,20 +255,20 @@ html body div form button.btn-pill {
 }
 
 .newsletter-input {
-    background-color: #374151;
-    border: 1px solid #4b5563;
+    background-color: #092F64;
+    border: 1px solid #1A5799;
     color: white;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .newsletter-input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    border-color: #468BE6;
+    box-shadow: 0 0 0 2px rgba(70, 139, 230, 0.5);
 }
 
 .newsletter-input::placeholder {
-    color: #9ca3af;
+    color: #93BFEF;
 }
 
 /* Responsive Design Utilities */
@@ -356,7 +356,7 @@ html body div form button.btn-pill {
 /* Focus States */
 .focus-ring:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.5);
 }
 
 /* Add Source Modal Styles */
@@ -373,42 +373,42 @@ html body div form button.btn-pill {
 }
 
 .source-card {
-    border: 2px solid #e5e7eb;
+    border: 2px solid #93BFEF;
     border-radius: 0.5rem;
     padding: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: white;
+    background: #E9F5FF;
 }
 
 .source-card:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    border-color: #468BE6;
+    box-shadow: 0 4px 12px rgba(70, 139, 230, 0.15);
     transform: translateY(-2px);
 }
 
 .source-card.selected {
-    border-color: #3b82f6;
-    background-color: #eff6ff;
-    box-shadow: 0 0 0 1px #3b82f6;
+    border-color: #468BE6;
+    background-color: #E9F5FF;
+    box-shadow: 0 0 0 1px #468BE6;
 }
 
 .source-card h4 {
     font-weight: 600;
-    color: #1f2937;
+    color: #092F64;
     margin-bottom: 0.5rem;
 }
 
 .source-card p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #1A5799;
     margin-bottom: 0.75rem;
 }
 
 .source-card .source-category {
     display: inline-block;
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: #93BFEF;
+    color: #092F64;
     font-size: 0.75rem;
     font-weight: 500;
     padding: 0.25rem 0.5rem;
@@ -416,8 +416,8 @@ html body div form button.btn-pill {
 }
 
 .source-card.selected .source-category {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #468BE6;
+    color: #E9F5FF;
 }
 
 /* Category Filter Styles */
@@ -430,10 +430,10 @@ html body div form button.btn-pill {
 
 .category-filter {
     padding: 0.5rem 1rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #93BFEF;
     border-radius: 0.375rem;
-    background: white;
-    color: #374151;
+    background: #E9F5FF;
+    color: #092F64;
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
@@ -441,14 +441,14 @@ html body div form button.btn-pill {
 }
 
 .category-filter:hover {
-    border-color: #3b82f6;
-    color: #3b82f6;
+    border-color: #468BE6;
+    color: #468BE6;
 }
 
 .category-filter.active {
-    background-color: #3b82f6;
-    color: white;
-    border-color: #3b82f6;
+    background-color: #468BE6;
+    color: #E9F5FF;
+    border-color: #468BE6;
 }
 
 /* Search Bar Styles */
@@ -460,16 +460,17 @@ html body div form button.btn-pill {
 .source-search input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #93BFEF;
     border-radius: 0.5rem;
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: #E9F5FF;
 }
 
 .source-search input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #468BE6;
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.1);
 }
 
 .source-search .search-icon {
@@ -477,13 +478,13 @@ html body div form button.btn-pill {
     left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
+    color: #1A5799;
     pointer-events: none;
 }
 
 /* Configuration Form Styles */
 .source-config-form {
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #93BFEF;
     padding-top: 1.5rem;
     margin-top: 1.5rem;
 }
@@ -496,7 +497,7 @@ html body div form button.btn-pill {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: #092F64;
     margin-bottom: 0.5rem;
 }
 
@@ -504,22 +505,23 @@ html body div form button.btn-pill {
 .config-field select {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #93BFEF;
     border-radius: 0.375rem;
     font-size: 0.875rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: #E9F5FF;
 }
 
 .config-field input:focus,
 .config-field select:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #468BE6;
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.1);
 }
 
 .config-field .field-hint {
     font-size: 0.75rem;
-    color: #6b7280;
+    color: #1A5799;
     margin-top: 0.25rem;
 }
 
@@ -527,7 +529,7 @@ html body div form button.btn-pill {
 .source-loading {
     text-align: center;
     padding: 2rem;
-    color: #6b7280;
+    color: #1A5799;
 }
 
 .source-error {
@@ -542,7 +544,7 @@ html body div form button.btn-pill {
 .no-sources-found {
     text-align: center;
     padding: 2rem;
-    color: #6b7280;
+    color: #1A5799;
     font-style: italic;
 }
 
@@ -583,19 +585,19 @@ html body div form button.btn-pill {
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
     .auto-dark {
-        background-color: #1f2937;
-        color: #f9fafb;
+        background-color: #092F64;
+        color: #E9F5FF;
     }
     
     .auto-dark .text-gray-900 {
-        color: #f9fafb;
+        color: #E9F5FF;
     }
     
     .auto-dark .text-gray-600 {
-        color: #d1d5db;
+        color: #93BFEF;
     }
     
     .auto-dark .bg-white {
-        background-color: #374151;
+        background-color: #1A5799;
     }
 }
