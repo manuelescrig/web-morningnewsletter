@@ -34,11 +34,11 @@
 }
 
 .toggle-label:hover .toggle-switch {
-    background-color: #85b1ea;
+    background-color: #9bc5ed;
 }
 
 .toggle-checkbox:checked + .toggle-label:hover .toggle-switch {
-    background-color: #5490d1;
+    background-color: #6ba4dd;
 }
 
 /* Newsletter preview styling */
@@ -92,7 +92,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #2aa3f2;
+    background-color: #3db0f4;
 }
 
 .btn-secondary {
