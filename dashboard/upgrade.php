@@ -25,9 +25,9 @@ $currentPage = 'upgrade';
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Page Header -->
-        <div class="px-4 py-6 sm:px-0">
+        <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 dashboard-title">Choose Your Plan</h1>
             <p class="mt-2 text-gray-600">Upgrade your account to unlock premium features and get the most out of your morning routine</p>
         </div>

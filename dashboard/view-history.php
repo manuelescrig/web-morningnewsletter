@@ -39,7 +39,7 @@ $currentPage = 'history';
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Success message when coming from email -->
         <?php if ($fromEmail): ?>
             <div class="mb-6 bg-primary-lightest border border-primary-light rounded-md p-4">
