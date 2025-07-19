@@ -58,16 +58,27 @@ $currentPage = 'history';
         
         <!-- Header -->
         <div class="mb-6">
-            <nav class="flex mb-4" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-2">
+            <nav class="flex mb-6" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1">
                     <li class="inline-flex items-center">
-                        <a href="/dashboard/history.php" class="text-gray-700 hover:text-primary">
-                            History
+                        <a href="/dashboard/" class="breadcrumb-link inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary">
+                            <i class="fas fa-home mr-2"></i>
+                            My Newsletters
                         </a>
                     </li>
-                    <li class="inline-flex items-center">
-                        <i class="fas fa-chevron-right text-gray-400 mx-2 text-sm"></i>
-                        <span class="text-gray-500">Issue #<?php echo $historyEntry['issue_number']; ?></span>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-3 text-sm"></i>
+                            <a href="/dashboard/history.php" class="breadcrumb-link text-sm font-medium text-gray-600 hover:text-primary">
+                                History
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-3 text-sm"></i>
+                            <span class="text-sm font-medium text-gray-500">Issue #<?php echo $historyEntry['issue_number']; ?></span>
+                        </div>
                     </li>
                 </ol>
             </nav>
