@@ -61,18 +61,9 @@ $currentPage = 'history';
             <nav class="flex mb-6" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1">
                     <li class="inline-flex items-center">
-                        <a href="/dashboard/" class="breadcrumb-link inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary">
-                            <i class="fas fa-home mr-2"></i>
-                            My Newsletters
+                        <a href="/dashboard/history.php" class="breadcrumb-link inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary">
+                            History
                         </a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-3 text-sm"></i>
-                            <a href="/dashboard/history.php" class="breadcrumb-link text-sm font-medium text-gray-600 hover:text-primary">
-                                History
-                            </a>
-                        </div>
                     </li>
                     <li>
                         <div class="flex items-center">
