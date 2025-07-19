@@ -46,6 +46,27 @@
     /* Ensure content is readable */
     max-width: 100%;
     overflow-wrap: break-word;
+    /* Isolate newsletter content from affecting global styles */
+    contain: style layout;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #374151;
+}
+
+/* Reset any potential newsletter content styles that could leak */
+.newsletter-preview * {
+    font-family: inherit !important;
+}
+
+.newsletter-preview h1, .newsletter-preview h2, .newsletter-preview h3, 
+.newsletter-preview h4, .newsletter-preview h5, .newsletter-preview h6 {
+    font-family: inherit !important;
+}
+
+.newsletter-preview style,
+.newsletter-preview link[rel="stylesheet"] {
+    display: none !important;
 }
 
 .newsletter-preview img {
