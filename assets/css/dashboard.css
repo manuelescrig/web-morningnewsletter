@@ -169,6 +169,17 @@ html body main .btn-pill {
     transform: translateY(-1px);
 }
 
+/* Breadcrumb Arrow Styles */
+.fas.fa-angle-right {
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+nav[aria-label="Breadcrumb"]:hover .fas.fa-angle-right {
+    opacity: 0.8;
+    color: #468BE6;
+}
+
 .source-item:hover {
     cursor: move;
 }

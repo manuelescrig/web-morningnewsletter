@@ -373,7 +373,7 @@ $canAddSource = count($sources) < $maxSources;
         <!-- Header -->
         <div class="mb-8">
             <nav class="flex mb-6" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1">
+                <ol class="inline-flex items-center space-x-0.5">
                     <li class="inline-flex items-center">
                         <a href="/dashboard/" class="breadcrumb-link inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary">
                             My Newsletters
@@ -381,7 +381,7 @@ $canAddSource = count($sources) < $maxSources;
                     </li>
                     <li>
                         <div class="flex items-center">
-                            <i class="fas fa-chevron-right text-gray-400 mx-3 text-sm"></i>
+                            <i class="fas fa-angle-right text-gray-400 mx-2 text-base"></i>
                             <span class="text-sm font-medium text-gray-500"><?php echo htmlspecialchars($newsletter->getTitle()); ?></span>
                         </div>
                     </li>
