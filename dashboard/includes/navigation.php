@@ -18,6 +18,11 @@ if (!isset($currentPage)) {
 require_once __DIR__ . '/../../includes/logo.php';
 
 function getNavClass($page, $currentPage) {
+    // Treat 'newsletter', 'newsletters', and 'dashboard' as the same for "My Newsletters" nav item
+    if ($page === 'dashboard' && in_array($currentPage, ['newsletter', 'newsletters', 'dashboard'])) {
+        return 'nav-underline text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium';
+    }
+    
     if ($page === $currentPage) {
         return 'nav-underline text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium';
     }

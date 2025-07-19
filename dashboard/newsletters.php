@@ -108,6 +108,8 @@ $timezones = [
     'Asia/Tokyo' => 'Tokyo',
     'Australia/Sydney' => 'Sydney'
 ];
+
+$currentPage = 'dashboard';
 ?>
 
 <!DOCTYPE html>
