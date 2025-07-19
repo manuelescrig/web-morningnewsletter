@@ -19,6 +19,8 @@ $currentPage = 'upgrade';
     <title>Pricing - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -26,7 +28,7 @@ $currentPage = 'upgrade';
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="px-4 py-6 sm:px-0">
-            <h1 class="text-3xl font-bold text-gray-900">Choose Your Plan</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">Choose Your Plan</h1>
             <p class="mt-2 text-gray-600">Upgrade your account to unlock premium features and get the most out of your morning routine</p>
         </div>
 
@@ -268,5 +270,6 @@ $currentPage = 'upgrade';
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/payments.js"></script>
 </body>
 </html>

@@ -57,6 +57,8 @@ $csrfToken = $auth->generateCSRFToken();
     <title>Settings - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -64,7 +66,7 @@ $csrfToken = $auth->generateCSRFToken();
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="px-4 py-6 sm:px-0">
-            <h1 class="text-3xl font-bold text-gray-900">Account Settings</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">Account Settings</h1>
             <p class="mt-2 text-gray-600">Manage your account preferences and subscription</p>
         </div>
 

@@ -81,7 +81,7 @@ $csrfToken = $auth->generateCSRFToken();
         <div class="px-4 py-6 sm:px-0">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Cron Job Status</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 dashboard-title">Cron Job Status</h1>
                     <p class="mt-2 text-gray-600">Monitor automated newsletter sending</p>
                 </div>
                 <div class="text-sm text-gray-500">

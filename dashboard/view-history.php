@@ -74,7 +74,7 @@ $currentPage = 'history';
             
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">
+                    <h1 class="text-2xl font-bold text-gray-900 dashboard-title">
                         <?php echo htmlspecialchars($historyEntry['newsletter_title']); ?>
                         <span class="ml-2 text-lg text-gray-500">
                             #<?php echo $historyEntry['issue_number']; ?>
