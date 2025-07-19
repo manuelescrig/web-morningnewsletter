@@ -57,7 +57,7 @@ $currentPage = 'history';
         <?php endif; ?>
         
         <!-- Header -->
-        <div class="mb-6">
+        <div class="mb-8">
             <nav class="flex mb-6" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1">
                     <li class="inline-flex items-center">
