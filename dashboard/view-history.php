@@ -40,8 +40,9 @@ $currentPage = 'history';
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Success message when coming from email -->
-        <?php if ($fromEmail): ?>
+        <!-- Header -->
+        <div class="mb-8">
+            <?php if ($fromEmail): ?>
             <div class="mb-6 bg-primary-lightest border border-primary-light rounded-md p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
@@ -54,13 +55,7 @@ $currentPage = 'history';
                     </div>
                 </div>
             </div>
-        <?php else: ?>
-            <!-- Maintain consistent spacing when no message -->
-            <div class="mb-6" style="height: 0;"></div>
-        <?php endif; ?>
-        
-        <!-- Header -->
-        <div class="mb-8">
+            <?php endif; ?>
             <nav class="flex mb-6" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-0.5">
                     <li class="inline-flex items-center">
