@@ -26,15 +26,15 @@ require_once __DIR__ . '/logo.php';
                 <div class="flex justify-center">
                     <div class="flex space-x-8">
                         <a href="/#features" 
-                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary hover:nav-underline px-3 py-2 transition-colors duration-200">
                             Features
                         </a>
                         <a href="/#pricing" 
-                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary hover:nav-underline px-3 py-2 transition-colors duration-200">
                             Pricing
                         </a>
                         <a href="/blog" 
-                           class="text-gray-700 hover:text-primary px-3 py-2 transition-colors duration-200">
+                           class="text-gray-700 hover:text-primary hover:nav-underline px-3 py-2 transition-colors duration-200">
                             Blog
                         </a>
                     </div>

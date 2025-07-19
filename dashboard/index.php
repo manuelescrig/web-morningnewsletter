@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">My Newsletters</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">My Newsletters</h1>
             <p class="text-gray-600 mt-2">Create and manage your personalized morning briefings</p>
         </div>
 

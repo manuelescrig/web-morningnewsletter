@@ -8,10 +8,13 @@
     --cobalt-blue: #1A5799;
     --cool-black: #092F64;
     --eerie-black: #1F1F1F;
+    --primary-button: #1d9bf0;
+    --text-dark: rgb(15, 20, 25);
+    --nav-underline: rgb(29, 155, 240);
 }
 
 /* Background Color Utilities */
-.bg-primary { background-color: var(--tufts-blue) !important; }
+.bg-primary { background-color: var(--primary-button) !important; }
 .bg-primary-dark { background-color: var(--cobalt-blue) !important; }
 .bg-primary-darker { background-color: var(--cool-black) !important; }
 .bg-primary-light { background-color: var(--jordy-blue) !important; }
@@ -24,7 +27,8 @@
 .text-primary-darker { color: var(--cool-black) !important; }
 .text-primary-light { color: var(--jordy-blue) !important; }
 .text-primary-lightest { color: var(--alice-blue) !important; }
-.text-dark { color: var(--eerie-black) !important; }
+.text-dark { color: var(--text-dark) !important; }
+.text-dark-custom { color: var(--text-dark) !important; }
 
 /* Border Color Utilities */
 .border-primary { border-color: var(--tufts-blue) !important; }
@@ -41,11 +45,40 @@
 }
 
 /* Hover Utilities */
-.hover-bg-primary:hover { background-color: var(--tufts-blue) !important; }
+.hover-bg-primary:hover { background-color: var(--primary-button) !important; }
 .hover-bg-primary-dark:hover { background-color: var(--cobalt-blue) !important; }
 .hover-bg-primary-darker:hover { background-color: var(--cool-black) !important; }
 .hover-text-primary:hover { color: var(--tufts-blue) !important; }
 .hover-text-primary-dark:hover { color: var(--cobalt-blue) !important; }
+
+/* Dashboard Title Styles */
+.dashboard-title, 
+.dashboard-main-title,
+h1.dashboard-title,
+.dashboard h1,
+.dashboard-header h1 {
+    font-weight: 800 !important;
+}
+
+/* Navigation Underline Styles */
+.nav-underline,
+.border-b-2,
+.border-current {
+    border-bottom: 4px solid var(--nav-underline) !important;
+    border-radius: 2px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: -4px !important;
+}
+
+/* Auth Page White Background */
+.auth-bg-white {
+    background-color: white !important;
+}
+
+/* Utility for replacing text-gray-900 */
+.text-gray-900 {
+    color: var(--text-dark) !important;
+}
 
 /* Global Styles */
 html {
@@ -121,7 +154,7 @@ html {
 /* Pill Button Styles - Comprehensive Override */
 .btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Ensure all button elements with btn-pill class get proper styling */
@@ -129,7 +162,7 @@ button.btn-pill,
 a.btn-pill, 
 input.btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Override Tailwind rounded classes for pill buttons */
@@ -209,14 +242,14 @@ form input.btn-pill {
 /* Force override after any dynamic CSS processing */
 html body .btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 html body button.btn-pill,
 html body a.btn-pill,
 html body input.btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Additional overrides for Tailwind CSS conflicts */
@@ -261,7 +294,7 @@ html body input.btn-pill {
 .btn-pill.border-transparent,
 .btn-pill.border-gray-300 {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Ultimate override with maximum specificity */
@@ -276,13 +309,13 @@ html body section button.btn-pill,
 html body main button.btn-pill,
 html body div form button.btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Catch-all for any combination of classes */
 [class*="btn-pill"] {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Form Styles */

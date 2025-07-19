@@ -390,7 +390,7 @@ $canAddSource = count($sources) < $maxSources;
             
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900"><?php echo htmlspecialchars($newsletter->getTitle()); ?></h1>
+                    <h1 class="text-3xl font-bold text-gray-900 dashboard-title"><?php echo htmlspecialchars($newsletter->getTitle()); ?></h1>
                     <p class="text-gray-600 mt-2">Configure your newsletter sources and settings</p>
                 </div>
                 <div class="flex space-x-3">

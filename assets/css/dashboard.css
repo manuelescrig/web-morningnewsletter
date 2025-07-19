@@ -78,8 +78,8 @@
 
 /* Button utility classes */
 .btn-primary {
-    background-color: #468BE6;
-    color: #E9F5FF;
+    background-color: #1d9bf0;
+    color: white;
     border: 1px solid transparent;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
@@ -92,7 +92,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #1A5799;
+    background-color: #1a91da;
 }
 
 .btn-secondary {
@@ -117,7 +117,7 @@
 .btn-primary.btn-pill,
 .btn-secondary.btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Additional comprehensive overrides for dashboard pages */
@@ -130,13 +130,13 @@ html body div .btn-pill,
 html body section .btn-pill,
 html body main .btn-pill {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Catch-all for dashboard elements */
 [class*="btn-pill"] {
     border-radius: 9999px !important;
-    padding: 0.65rem 1.5rem !important;
+    padding: 0.6rem 1.2rem !important;
 }
 
 /* Dropdown positioning utilities */

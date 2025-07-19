@@ -114,7 +114,7 @@ $csrfToken = $auth->generateCSRFToken();
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="px-4 py-6 sm:px-0">
-            <h1 class="text-3xl font-bold text-gray-900">Source Configuration</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">Source Configuration</h1>
             <p class="mt-2 text-gray-600">
                 Manage global settings for all available data sources. Configure which sources are available to users and their default settings.
             </p>
