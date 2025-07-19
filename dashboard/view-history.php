@@ -35,10 +35,11 @@ $currentPage = 'history';
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
-
+    
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Header -->
         <div class="mb-8">
