@@ -160,7 +160,6 @@ html body main .btn-pill {
 /* Breadcrumb Styles */
 .breadcrumb-link {
     border-radius: 0.375rem;
-    padding: 0.375rem 0.5rem;
     transition: all 0.2s ease;
 }
 
@@ -172,12 +171,7 @@ html body main .btn-pill {
 /* Breadcrumb Arrow Styles */
 .fas.fa-angle-right {
     opacity: 0.6;
-    transition: all 0.2s ease;
-}
-
-nav[aria-label="Breadcrumb"]:hover .fas.fa-angle-right {
-    opacity: 0.8;
-    color: #468BE6;
+    transition: opacity 0.2s ease;
 }
 
 .source-item:hover {
