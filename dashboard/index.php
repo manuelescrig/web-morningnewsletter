@@ -335,7 +335,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="btn-pill inline-flex items-center px-3 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover-bg-primary-light transition-colors duration-200">
+                                           class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover-bg-primary-light border border-primary-light transition-colors duration-200">
                                             <i class="fas fa-eye mr-1"></i>
                                             Preview
                                         </a>
