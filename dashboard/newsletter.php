@@ -730,6 +730,27 @@ $canAddSource = count($sources) < $maxSources;
                                 Update Settings
                             </button>
                         </form>
+                        
+                        <!-- Danger Zone -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h3 class="text-lg font-medium text-red-900 mb-3 text-center">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                                Danger Zone
+                            </h3>
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                                <div class="text-center">
+                                    <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
+                                    <p class="text-sm text-red-700 mb-4">
+                                        Permanently delete this newsletter and all its data. This action cannot be undone.
+                                    </p>
+                                    <button onclick="deleteNewsletter()" 
+                                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                                        <i class="fas fa-trash mr-2"></i>
+                                        Delete Newsletter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -766,31 +787,6 @@ $canAddSource = count($sources) < $maxSources;
                                 </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Danger Zone Section - Full Width -->
-        <div class="mt-8">
-            <div class="bg-white rounded-lg shadow border-2 border-red-200">
-                <div class="p-6 border-b border-red-200 bg-red-50">
-                    <h2 class="text-lg font-semibold text-red-900 flex items-center">
-                        <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
-                        Danger Zone
-                    </h2>
-                </div>
-                <div class="p-6">
-                    <div class="text-center">
-                        <h3 class="text-base font-medium text-red-900 mb-2">Delete this newsletter</h3>
-                        <p class="text-sm text-red-700 mb-6 max-w-2xl mx-auto">
-                            Permanently delete this newsletter and all its data including sources, history, and settings. This action cannot be undone.
-                        </p>
-                        <button onclick="deleteNewsletter()" 
-                                class="btn-pill bg-red-600 hover:bg-red-700 text-white px-6 py-3 font-medium transition-colors duration-200">
-                            <i class="fas fa-trash mr-2"></i>
-                            Delete Newsletter
-                        </button>
                     </div>
                 </div>
             </div>
