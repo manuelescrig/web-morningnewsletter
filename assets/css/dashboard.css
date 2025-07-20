@@ -3,6 +3,27 @@
  * Custom styles for dashboard functionality
  */
 
+/* Modal Animation Styles */
+.modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+}
+
+.modal-backdrop.show {
+    opacity: 1;
+}
+
+.modal-content {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.modal-content.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
 /* Toggle Switch Styling */
 .toggle-switch {
     width: 48px;

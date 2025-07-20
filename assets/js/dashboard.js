@@ -23,6 +23,16 @@ const Dashboard = {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('hidden');
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    modal.classList.add('show');
+                    const content = modal.querySelector('.modal-content');
+                    if (content) {
+                        content.classList.add('show');
+                    }
+                });
+                
                 // Focus trap for accessibility
                 const firstInput = modal.querySelector('input, select, textarea, button');
                 if (firstInput) firstInput.focus();
@@ -32,7 +42,17 @@ const Dashboard = {
         close: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.add('hidden');
+                // Start close animation
+                modal.classList.remove('show');
+                const content = modal.querySelector('.modal-content');
+                if (content) {
+                    content.classList.remove('show');
+                }
+                
+                // Hide modal after animation completes
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200); // Match CSS transition duration
             }
         },
 

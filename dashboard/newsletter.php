@@ -1679,8 +1679,8 @@ $canAddSource = count($sources) < $maxSources;
     </div>
 
     <!-- Newsletter Settings Modal -->
-    <div id="editSettingsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+    <div id="editSettingsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 modal-backdrop">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white modal-content">
             <div class="mt-3">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-medium text-gray-900">Newsletter Settings</h3>
@@ -1689,9 +1689,8 @@ $canAddSource = count($sources) < $maxSources;
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Left Column: Settings Form -->
-                    <div class="lg:col-span-2">
+                <!-- Settings Form -->
+                <div>
                         <form method="POST" class="space-y-4">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                             <input type="hidden" name="action" value="update_newsletter_settings">
@@ -1887,41 +1886,6 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                         </div>
                     </div>
-
-                    <!-- Right Column: Schedule Preview -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <h4 class="font-medium text-gray-900 mb-3 flex items-center">
-                                <i class="fas fa-clock text-green-600 mr-2"></i>
-                                Schedule Preview
-                            </h4>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-gray-600">Current Time:</span>
-                                    <span class="text-sm font-medium"><?php 
-                                        $userTimezone = new DateTimeZone($newsletter->getTimezone());
-                                        $currentTime = new DateTime('now', $userTimezone);
-                                        echo $currentTime->format('M j, g:i A'); 
-                                    ?></span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-gray-600">Next Send:</span>
-                                    <span class="text-sm font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm text-gray-600">Last Sent:</span>
-                                    <span class="text-sm font-medium">
-                                        <?php if ($scheduleStatus['last_sent']): ?>
-                                            <span class="text-primary"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
-                                        <?php else: ?>
-                                            <span class="text-gray-500">Never</span>
-                                        <?php endif; ?>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
