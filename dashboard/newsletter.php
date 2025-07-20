@@ -1384,8 +1384,8 @@ $canAddSource = count($sources) < $maxSources;
     </script>
 
     <!-- Add Source Modal -->
-    <div id="addSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+    <div id="addSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 modal-backdrop">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white modal-content">
             <div class="mt-3">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-medium text-gray-900">Add Data Source</h3>
@@ -1550,8 +1550,8 @@ $canAddSource = count($sources) < $maxSources;
     </div>
 
     <!-- Edit Source Modal -->
-    <div id="editSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <div id="editSourceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 modal-backdrop">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white modal-content">
             <div class="mt-3">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Edit Source</h3>
                 <form method="POST">
