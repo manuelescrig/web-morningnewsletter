@@ -405,6 +405,11 @@ $canAddSource = count($sources) < $maxSources;
                     <p class="text-gray-600 mt-2">Configure your newsletter sources and settings</p>
                 </div>
                 <div class="flex space-x-3">
+                    <button onclick="openEditSettingsModal()" 
+                            class="btn-pill bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 font-medium transition-colors duration-200">
+                        <i class="fas fa-cog mr-2"></i>
+                        Edit Settings
+                    </button>
                     <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                        class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200"
                        target="_blank">
@@ -549,207 +554,8 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
             </div>
 
-            <!-- Right Column: Newsletter Settings -->
+            <!-- Right Column: Schedule Status -->
             <div class="lg:col-span-1">
-                <!-- Newsletter Settings -->
-                <div class="bg-white rounded-lg shadow mb-6">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-cog text-primary mr-2"></i>
-                            Newsletter Settings
-                        </h2>
-                    </div>
-                    <div class="p-6">
-                        <form method="POST" class="space-y-4">
-                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
-                            <input type="hidden" name="action" value="update_newsletter_settings">
-                            
-                            <div>
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Newsletter Title
-                                </label>
-                                <input type="text" name="title" id="title" required 
-                                       value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
-                            </div>
-                            
-                            <div>
-                                <label for="timezone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Timezone
-                                </label>
-                                <select name="timezone" id="timezone" 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
-                                    <?php foreach ($timezones as $value => $label): ?>
-                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
-                                            <?php echo $label; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label for="frequency" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Frequency
-                                </label>
-                                <select name="frequency" id="frequency" onchange="updateScheduleOptions()"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
-                                    <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
-                                    <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
-                                    <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Weekly Schedule Options -->
-                            <div id="weekly-options" class="<?php echo $newsletter->getFrequency() !== 'weekly' ? 'hidden' : ''; ?>">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Days of Week
-                                </label>
-                                <div class="grid grid-cols-7 gap-2">
-                                    <?php 
-                                    $daysOfWeek = $newsletter->getDaysOfWeek();
-                                    $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                    for ($i = 1; $i <= 7; $i++): 
-                                    ?>
-                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
-                                            <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" 
-                                                   <?php echo in_array($i, $daysOfWeek) ? 'checked' : ''; ?>
-                                                   class="sr-only" onchange="toggleDaySelection(this)">
-                                            <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
-                                        </label>
-                                    <?php endfor; ?>
-                                </div>
-                            </div>
-                            
-                            <!-- Monthly Day Options -->
-                            <div id="monthly-options" class="<?php echo $newsletter->getFrequency() !== 'monthly' ? 'hidden' : ''; ?>">
-                                <label for="day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Day of Month
-                                </label>
-                                <select name="day_of_month" id="day_of_month"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
-                                    <?php for ($day = 1; $day <= 31; $day++): ?>
-                                        <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
-                                            <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
-                                        </option>
-                                    <?php endfor; ?>
-                                </select>
-                                <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
-                            </div>
-                            
-                            <!-- Send Times (always visible, 15-minute intervals) -->
-                            <div id="send-times-section">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Send Times (15-minute intervals only)
-                                </label>
-                                <div id="daily-times-container" class="space-y-2">
-                                    <?php 
-                                    $dailyTimes = $newsletter->getDailyTimes();
-                                    if (empty($dailyTimes)) {
-                                        $dailyTimes = [$newsletter->getSendTime()]; // Default to current send time
-                                    }
-                                    foreach ($dailyTimes as $index => $time): 
-                                    ?>
-                                        <div class="flex items-center gap-2">
-                                            <select name="daily_times[]" 
-                                                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
-                                                <?php for ($h = 0; $h < 24; $h++): ?>
-                                                    <?php for ($m = 0; $m < 60; $m += 15): ?>
-                                                        <?php 
-                                                        $timeValue = sprintf('%02d:%02d', $h, $m);
-                                                        $timeDisplay = date('g:i A', strtotime($timeValue));
-                                                        $selected = ($timeValue === $time) ? 'selected' : '';
-                                                        ?>
-                                                        <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
-                                                            <?php echo $timeDisplay; ?>
-                                                        </option>
-                                                    <?php endfor; ?>
-                                                <?php endfor; ?>
-                                            </select>
-                                            <?php if (count($dailyTimes) > 1): ?>
-                                                <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            <?php else: ?>
-                                                <div class="px-2 w-8"></div> <!-- Spacer for alignment -->
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                                <button type="button" onclick="addDailyTime()" class="mt-2 text-primary hover-text-primary-dark text-sm">
-                                    <i class="fas fa-plus mr-1"></i> Add another time
-                                </button>
-                                <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
-                            </div>
-                            
-                            <!-- Quarterly Month Options -->
-                            <div id="quarterly-options" class="<?php echo $newsletter->getFrequency() !== 'quarterly' ? 'hidden' : ''; ?>">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Months
-                                </label>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <?php 
-                                    $selectedMonths = $newsletter->getMonths();
-                                    $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                                    for ($i = 1; $i <= 12; $i++): 
-                                    ?>
-                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50">
-                                            <input type="checkbox" name="months[]" value="<?php echo $i; ?>" 
-                                                   <?php echo in_array($i, $selectedMonths) ? 'checked' : ''; ?>
-                                                   class="sr-only">
-                                            <span class="text-sm font-medium"><?php echo $monthNames[$i-1]; ?></span>
-                                        </label>
-                                    <?php endfor; ?>
-                                </div>
-                            </div>
-                            
-                            <!-- Pause Option -->
-                            <div class="flex items-center justify-between">
-                                <div class="flex flex-col">
-                                    <label class="text-sm font-medium text-gray-900">
-                                        Pause newsletter sending
-                                    </label>
-                                    <p class="text-xs text-gray-500">
-                                        Temporarily stop sending this newsletter
-                                    </p>
-                                </div>
-                                
-                                <div class="relative">
-                                    <input type="checkbox" name="is_paused" id="is_paused" value="1" 
-                                           <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>
-                                           class="sr-only toggle-checkbox">
-                                    <label for="is_paused" class="toggle-label cursor-pointer">
-                                        <div class="toggle-switch">
-                                            <div class="toggle-slider"></div>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn-pill w-full bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
-                                <i class="fas fa-save mr-2"></i>
-                                Update Settings
-                            </button>
-                        </form>
-                        
-                        <!-- Danger Zone -->
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
-                                <div class="text-center">
-                                    <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
-                                    <p class="text-sm text-red-700 mb-4">
-                                        Permanently delete this newsletter and all its data. This action cannot be undone.
-                                    </p>
-                                    <button onclick="deleteNewsletter()" 
-                                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
-                                        <i class="fas fa-trash mr-2"></i>
-                                        Delete Newsletter
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Schedule Status -->
                 <div class="bg-white rounded-lg shadow">
                     <div class="p-6 border-b border-gray-200">
@@ -1502,6 +1308,79 @@ $canAddSource = count($sources) < $maxSources;
             document.getElementById('config_longitude').value = lon;
             document.getElementById('location_results').classList.add('hidden');
         }
+
+        // Newsletter Settings Modal Functions
+        function openEditSettingsModal() {
+            Dashboard.modal.open('editSettingsModal');
+        }
+
+        // Modal Schedule Options Management
+        function updateModalScheduleOptions() {
+            const frequency = document.getElementById('modal_frequency').value;
+            const weeklyOptions = document.getElementById('modal-weekly-options');
+            const monthlyOptions = document.getElementById('modal-monthly-options');
+            const quarterlyOptions = document.getElementById('modal-quarterly-options');
+            
+            // Hide all options first
+            weeklyOptions.classList.add('hidden');
+            monthlyOptions.classList.add('hidden');
+            quarterlyOptions.classList.add('hidden');
+            
+            // Show relevant options based on frequency
+            switch (frequency) {
+                case 'weekly':
+                    weeklyOptions.classList.remove('hidden');
+                    break;
+                case 'monthly':
+                    monthlyOptions.classList.remove('hidden');
+                    break;
+                case 'quarterly':
+                    monthlyOptions.classList.remove('hidden');
+                    quarterlyOptions.classList.remove('hidden');
+                    break;
+            }
+        }
+        
+        // Add modal daily time slot
+        function addModalDailyTime() {
+            const container = document.getElementById('modal-daily-times-container');
+            const newTimeDiv = document.createElement('div');
+            newTimeDiv.className = 'flex items-center gap-2';
+            
+            // Generate time options for 15-minute intervals
+            let timeOptions = '';
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 15) {
+                    const timeValue = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                    const timeObj = new Date('2000-01-01 ' + timeValue);
+                    const timeDisplay = timeObj.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', hour12: true});
+                    const selected = (timeValue === '12:00') ? 'selected' : '';
+                    timeOptions += `<option value="${timeValue}" ${selected}>${timeDisplay}</option>`;
+                }
+            }
+            
+            newTimeDiv.innerHTML = `
+                <select name="daily_times[]" 
+                        class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                    ${timeOptions}
+                </select>
+                <button type="button" onclick="removeModalDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(newTimeDiv);
+        }
+        
+        // Remove modal daily time slot
+        function removeModalDailyTime(button) {
+            const container = document.getElementById('modal-daily-times-container');
+            const timeDiv = button.parentElement;
+            
+            // Don't allow removing the last time slot
+            if (container.children.length > 1) {
+                timeDiv.remove();
+            }
+        }
     </script>
 
     <!-- Add Source Modal -->
@@ -1795,6 +1674,254 @@ $canAddSource = count($sources) < $maxSources;
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Settings Modal -->
+    <div id="editSettingsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-medium text-gray-900">Newsletter Settings</h3>
+                    <button onclick="Dashboard.modal.close('editSettingsModal')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: Settings Form -->
+                    <div class="lg:col-span-2">
+                        <form method="POST" class="space-y-4">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                            <input type="hidden" name="action" value="update_newsletter_settings">
+                            
+                            <div>
+                                <label for="modal_title" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Newsletter Title
+                                </label>
+                                <input type="text" name="title" id="modal_title" required 
+                                       value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                            </div>
+                            
+                            <div>
+                                <label for="modal_timezone" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Timezone
+                                </label>
+                                <select name="timezone" id="modal_timezone" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <?php foreach ($timezones as $value => $label): ?>
+                                        <option value="<?php echo $value; ?>" <?php echo $value === $newsletter->getTimezone() ? 'selected' : ''; ?>>
+                                            <?php echo $label; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="modal_frequency" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Frequency
+                                </label>
+                                <select name="frequency" id="modal_frequency" onchange="updateModalScheduleOptions()"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
+                                    <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
+                                    <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Weekly Schedule Options -->
+                            <div id="modal-weekly-options" class="<?php echo $newsletter->getFrequency() !== 'weekly' ? 'hidden' : ''; ?>">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Days of Week
+                                </label>
+                                <div class="grid grid-cols-7 gap-2">
+                                    <?php 
+                                    $daysOfWeek = $newsletter->getDaysOfWeek();
+                                    $dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                                    for ($i = 1; $i <= 7; $i++): 
+                                    ?>
+                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50 day-checkbox">
+                                            <input type="checkbox" name="days_of_week[]" value="<?php echo $i; ?>" 
+                                                   <?php echo in_array($i, $daysOfWeek) ? 'checked' : ''; ?>
+                                                   class="sr-only" onchange="toggleDaySelection(this)">
+                                            <span class="text-sm font-medium"><?php echo $dayNames[$i-1]; ?></span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <!-- Monthly Day Options -->
+                            <div id="modal-monthly-options" class="<?php echo $newsletter->getFrequency() !== 'monthly' ? 'hidden' : ''; ?>">
+                                <label for="modal_day_of_month" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Day of Month
+                                </label>
+                                <select name="day_of_month" id="modal_day_of_month"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <?php for ($day = 1; $day <= 31; $day++): ?>
+                                        <option value="<?php echo $day; ?>" <?php echo $newsletter->getDayOfMonth() == $day ? 'selected' : ''; ?>>
+                                            <?php echo $day; ?><?php echo $day == 1 ? 'st' : ($day == 2 ? 'nd' : ($day == 3 ? 'rd' : 'th')); ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">For months with fewer days, will send on the last day of the month</p>
+                            </div>
+                            
+                            <!-- Send Times (always visible, 15-minute intervals) -->
+                            <div id="modal-send-times-section">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Send Times (15-minute intervals only)
+                                </label>
+                                <div id="modal-daily-times-container" class="space-y-2">
+                                    <?php 
+                                    $dailyTimes = $newsletter->getDailyTimes();
+                                    if (empty($dailyTimes)) {
+                                        $dailyTimes = [$newsletter->getSendTime()]; // Default to current send time
+                                    }
+                                    foreach ($dailyTimes as $index => $time): 
+                                    ?>
+                                        <div class="flex items-center gap-2">
+                                            <select name="daily_times[]" 
+                                                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                                <?php for ($h = 0; $h < 24; $h++): ?>
+                                                    <?php for ($m = 0; $m < 60; $m += 15): ?>
+                                                        <?php 
+                                                        $timeValue = sprintf('%02d:%02d', $h, $m);
+                                                        $timeDisplay = date('g:i A', strtotime($timeValue));
+                                                        $selected = ($timeValue === $time) ? 'selected' : '';
+                                                        ?>
+                                                        <option value="<?php echo $timeValue; ?>" <?php echo $selected; ?>>
+                                                            <?php echo $timeDisplay; ?>
+                                                        </option>
+                                                    <?php endfor; ?>
+                                                <?php endfor; ?>
+                                            </select>
+                                            <?php if (count($dailyTimes) > 1): ?>
+                                                <button type="button" onclick="removeModalDailyTime(this)" class="text-red-600 hover:text-red-800 px-2">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            <?php else: ?>
+                                                <div class="px-2 w-8"></div> <!-- Spacer for alignment -->
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <button type="button" onclick="addModalDailyTime()" class="mt-2 text-primary hover-text-primary-dark text-sm">
+                                    <i class="fas fa-plus mr-1"></i> Add another time
+                                </button>
+                                <p class="text-xs text-gray-500 mt-1">Add multiple send times for each scheduled day. Times are restricted to 15-minute intervals to match the cron schedule.</p>
+                            </div>
+                            
+                            <!-- Quarterly Month Options -->
+                            <div id="modal-quarterly-options" class="<?php echo $newsletter->getFrequency() !== 'quarterly' ? 'hidden' : ''; ?>">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Months
+                                </label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <?php 
+                                    $selectedMonths = $newsletter->getMonths();
+                                    $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                    for ($i = 1; $i <= 12; $i++): 
+                                    ?>
+                                        <label class="flex items-center justify-center p-2 border rounded cursor-pointer hover:bg-gray-50">
+                                            <input type="checkbox" name="months[]" value="<?php echo $i; ?>" 
+                                                   <?php echo in_array($i, $selectedMonths) ? 'checked' : ''; ?>
+                                                   class="sr-only">
+                                            <span class="text-sm font-medium"><?php echo $monthNames[$i-1]; ?></span>
+                                        </label>
+                                    <?php endfor; ?>
+                                </div>
+                            </div>
+                            
+                            <!-- Pause Option -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex flex-col">
+                                    <label class="text-sm font-medium text-gray-900">
+                                        Pause newsletter sending
+                                    </label>
+                                    <p class="text-xs text-gray-500">
+                                        Temporarily stop sending this newsletter
+                                    </p>
+                                </div>
+                                
+                                <div class="relative">
+                                    <input type="checkbox" name="is_paused" id="modal_is_paused" value="1" 
+                                           <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>
+                                           class="sr-only toggle-checkbox">
+                                    <label for="modal_is_paused" class="toggle-label cursor-pointer">
+                                        <div class="toggle-switch">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end space-x-3 pt-4">
+                                <button type="button" onclick="Dashboard.modal.close('editSettingsModal')" 
+                                        class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                    Cancel
+                                </button>
+                                <button type="submit" 
+                                        class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Update Settings
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Danger Zone -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                                <div class="text-center">
+                                    <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
+                                    <p class="text-sm text-red-700 mb-4">
+                                        Permanently delete this newsletter and all its data. This action cannot be undone.
+                                    </p>
+                                    <button onclick="deleteNewsletter()" 
+                                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                                        <i class="fas fa-trash mr-2"></i>
+                                        Delete Newsletter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Schedule Preview -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-medium text-gray-900 mb-3 flex items-center">
+                                <i class="fas fa-clock text-green-600 mr-2"></i>
+                                Schedule Preview
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-600">Current Time:</span>
+                                    <span class="text-sm font-medium"><?php 
+                                        $userTimezone = new DateTimeZone($newsletter->getTimezone());
+                                        $currentTime = new DateTime('now', $userTimezone);
+                                        echo $currentTime->format('M j, g:i A'); 
+                                    ?></span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-600">Next Send:</span>
+                                    <span class="text-sm font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-600">Last Sent:</span>
+                                    <span class="text-sm font-medium">
+                                        <?php if ($scheduleStatus['last_sent']): ?>
+                                            <span class="text-primary"><?php echo $scheduleStatus['last_sent']->format('M j, g:i A'); ?></span>
+                                        <?php else: ?>
+                                            <span class="text-gray-500">Never</span>
+                                        <?php endif; ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
