@@ -733,9 +733,6 @@ $canAddSource = count($sources) < $maxSources;
                         
                         <!-- Danger Zone -->
                         <div class="mt-8 pt-6 border-t border-gray-200">
-                            <h3 class="text-lg font-medium text-red-900 mb-3 text-center">
-                                Danger Zone
-                            </h3>
                             <div class="bg-red-50 border border-red-200 rounded-lg p-6">
                                 <div class="text-center">
                                     <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
