@@ -15,7 +15,14 @@
 
 /* Reduce backdrop opacity for less blur effect */
 .modal-backdrop {
-    background-color: rgba(75, 85, 99, 0.3) !important; /* Reduced from default 50% to 30% */
+    background-color: rgba(75, 85, 99, 0.2) !important; /* Reduced from 30% to 20% */
+}
+
+/* Modal title styling */
+.modal-title {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 700; /* Bold */
+    line-height: 1.2;
 }
 
 .modal-content {
