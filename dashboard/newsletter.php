@@ -411,11 +411,6 @@ $canAddSource = count($sources) < $maxSources;
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
                     </a>
-                    <button onclick="deleteNewsletter()" 
-                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
-                        <i class="fas fa-trash mr-2"></i>
-                        Delete
-                    </button>
                 </div>
             </div>
         </div>
@@ -735,6 +730,29 @@ $canAddSource = count($sources) < $maxSources;
                                 Update Settings
                             </button>
                         </form>
+                        
+                        <!-- Danger Zone -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h3 class="text-lg font-medium text-red-900 mb-3">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                                Danger Zone
+                            </h3>
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-sm font-medium text-red-900">Delete this newsletter</h4>
+                                        <p class="text-sm text-red-700 mt-1">
+                                            Permanently delete this newsletter and all its data. This action cannot be undone.
+                                        </p>
+                                    </div>
+                                    <button onclick="deleteNewsletter()" 
+                                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200 ml-4 flex-shrink-0">
+                                        <i class="fas fa-trash mr-2"></i>
+                                        Delete Newsletter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
