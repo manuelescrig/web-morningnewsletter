@@ -339,6 +339,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
+            case 'delete_newsletter':
+                // Delete the newsletter
+                if ($user->deleteNewsletter($newsletterId)) {
+                    // Redirect to dashboard after successful deletion
+                    header('Location: /dashboard/?deleted=1');
+                    exit;
+                } else {
+                    $error = 'Failed to delete newsletter.';
+                }
+                break;
+                
         }
     }
 }
@@ -400,6 +411,11 @@ $canAddSource = count($sources) < $maxSources;
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
                     </a>
+                    <button onclick="deleteNewsletter()" 
+                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                        <i class="fas fa-trash mr-2"></i>
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
@@ -1008,6 +1024,23 @@ $canAddSource = count($sources) < $maxSources;
                     document.body.appendChild(form);
                     form.submit();
                 }
+            }
+        }
+        
+        function deleteNewsletter() {
+            const newsletterTitle = "<?php echo addslashes($newsletter->getTitle()); ?>";
+            const message = `Are you sure you want to delete the newsletter "${newsletterTitle}"?\n\nThis will permanently delete:\n• All sources and configurations\n• Newsletter history and analytics\n• Scheduled delivery settings\n\nThis action cannot be undone.`;
+            
+            if (confirm(message)) {
+                // Create form and submit
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.innerHTML = `
+                    <input type="hidden" name="action" value="delete_newsletter">
+                    <input type="hidden" name="csrf_token" value="${window.csrfToken}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
             }
         }
 
