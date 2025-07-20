@@ -231,6 +231,14 @@ class User {
         return $newsletter->create($this->id, $title, $timezone, $sendTime, $frequency);
     }
     
+    public function deleteNewsletter($newsletterId) {
+        $newsletter = $this->getNewsletter($newsletterId);
+        if ($newsletter) {
+            return $newsletter->delete();
+        }
+        return false;
+    }
+    
     public function getDefaultNewsletter() {
         $newsletters = $this->getNewsletters();
         return !empty($newsletters) ? $newsletters[0] : null;
