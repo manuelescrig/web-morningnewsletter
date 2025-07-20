@@ -209,6 +209,34 @@ $currentPage = 'history';
         function printNewsletter() {
             Dashboard.print.hideElementsAndPrint(['nav', '.max-w-7xl > .mb-6']);
         }
+        
+        // Override legacy font declarations in newsletter content
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsletterPreview = document.querySelector('.newsletter-preview');
+            if (newsletterPreview) {
+                // Find and modify any style elements within the newsletter
+                const styleElements = newsletterPreview.querySelectorAll('style');
+                styleElements.forEach(function(style) {
+                    if (style.textContent.includes('Segoe UI')) {
+                        style.textContent = style.textContent.replace(
+                            /font-family:\s*[^;]+;/g, 
+                            'font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";'
+                        );
+                    }
+                });
+                
+                // Also override any inline styles
+                const elementsWithFontFamily = newsletterPreview.querySelectorAll('[style*="font-family"]');
+                elementsWithFontFamily.forEach(function(element) {
+                    const currentStyle = element.getAttribute('style');
+                    const newStyle = currentStyle.replace(
+                        /font-family:\s*[^;]+;?/g, 
+                        'font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";'
+                    );
+                    element.setAttribute('style', newStyle);
+                });
+            }
+        });
     </script>
 </body>
 </html>

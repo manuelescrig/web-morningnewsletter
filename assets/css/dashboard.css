@@ -79,6 +79,23 @@
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
+/* Maximum specificity override for any Segoe UI font declarations */
+.newsletter-preview body[style*="font-family"] {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+/* Override any inline styles containing Segoe UI */
+.newsletter-preview [style*="Segoe UI"] {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+/* Nuclear option - override ALL elements regardless of specificity */
+html body .newsletter-preview,
+html body .newsletter-preview *,
+html body .newsletter-preview body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
 /* Block any style injection */
 .newsletter-preview style,
 .newsletter-preview link[rel="stylesheet"],
