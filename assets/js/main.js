@@ -69,19 +69,24 @@ const MorningNewsletter = {
             return; // No dropdown on this page
         }
         
-        // Toggle function
+        // Toggle function with animation
         const toggleDropdown = () => {
             if (dropdown.classList.contains('hidden')) {
                 // Close any other open dropdowns first
                 document.querySelectorAll('[id*="dropdown-"]').forEach(el => {
                     if (el !== dropdown && !el.classList.contains('hidden')) {
                         el.classList.add('hidden');
+                        el.classList.remove('show');
                     }
                 });
                 
+                // Show dropdown with animation
                 dropdown.classList.remove('hidden');
+                dropdown.classList.add('show');
                 button.setAttribute('aria-expanded', 'true');
             } else {
+                // Hide dropdown with animation
+                dropdown.classList.remove('show');
                 dropdown.classList.add('hidden');
                 button.setAttribute('aria-expanded', 'false');
             }
@@ -98,6 +103,7 @@ const MorningNewsletter = {
         document.addEventListener('click', function(event) {
             if (!button.contains(event.target) && !dropdown.contains(event.target)) {
                 if (!dropdown.classList.contains('hidden')) {
+                    dropdown.classList.remove('show');
                     dropdown.classList.add('hidden');
                     button.setAttribute('aria-expanded', 'false');
                 }
@@ -108,6 +114,7 @@ const MorningNewsletter = {
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 if (!dropdown.classList.contains('hidden')) {
+                    dropdown.classList.remove('show');
                     dropdown.classList.add('hidden');
                     button.setAttribute('aria-expanded', 'false');
                 }

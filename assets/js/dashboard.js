@@ -91,12 +91,17 @@ const Dashboard = {
                 document.querySelectorAll('[id*="dropdown-"]').forEach(el => {
                     if (el !== dropdown && !el.classList.contains('hidden')) {
                         el.classList.add('hidden');
+                        el.classList.remove('show');
                     }
                 });
                 
+                // Show dropdown with animation
                 dropdown.classList.remove('hidden');
+                dropdown.classList.add('show');
                 button.setAttribute('aria-expanded', 'true');
             } else {
+                // Hide dropdown with animation
+                dropdown.classList.remove('show');
                 dropdown.classList.add('hidden');
                 button.setAttribute('aria-expanded', 'false');
             }
@@ -104,6 +109,7 @@ const Dashboard = {
 
         closeAll: function() {
             document.querySelectorAll('[id*="dropdown-"]').forEach(el => {
+                el.classList.remove('show');
                 el.classList.add('hidden');
             });
             document.querySelectorAll('[aria-expanded="true"]').forEach(button => {

@@ -314,6 +314,29 @@ html body main .btn-pill {
     background: #1A5799;
 }
 
+/* Dropdown animation styles */
+#dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+#dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+}
+
+#dropdown-menu.hidden {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    pointer-events: none;
+    visibility: hidden;
+}
+
 /* Print styles */
 @media print {
     .no-print {
