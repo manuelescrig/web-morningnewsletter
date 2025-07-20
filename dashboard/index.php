@@ -139,7 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">My Newsletters</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dashboard-title">
+                <i class="fas fa-newspaper text-gray-900 mr-3"></i>My Newsletters
+            </h1>
             <p class="mt-2 text-gray-600">Create and manage your personalized morning briefings</p>
         </div>
 

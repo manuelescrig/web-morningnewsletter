@@ -65,7 +65,9 @@ if ($newsletterId) {
         <div class="mb-8">
             <div class="flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 dashboard-title">History</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 dashboard-title">
+                        <i class="fas fa-history text-gray-900 mr-3"></i>History
+                    </h1>
                     <p class="mt-2 text-gray-600">
                         <?php if ($selectedNewsletter): ?>
                             View past issues of "<?php echo htmlspecialchars($selectedNewsletter->getTitle()); ?>"
