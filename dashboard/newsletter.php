@@ -734,7 +734,6 @@ $canAddSource = count($sources) < $maxSources;
                         <!-- Danger Zone -->
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="text-lg font-medium text-red-900 mb-3 text-center">
-                                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
                                 Danger Zone
                             </h3>
                             <div class="bg-red-50 border border-red-200 rounded-lg p-6">
