@@ -13,6 +13,11 @@
     opacity: 1;
 }
 
+/* Reduce backdrop opacity for less blur effect */
+.modal-backdrop {
+    background-color: rgba(75, 85, 99, 0.3) !important; /* Reduced from default 50% to 30% */
+}
+
 .modal-content {
     transform: scale(0.95);
     opacity: 0;
