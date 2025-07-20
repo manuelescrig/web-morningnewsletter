@@ -281,7 +281,7 @@ class EmailSender {
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>Verify Your Account</title>
         </head>
-        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+        <body style='font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
                 <h1 style='color: #468BE6;'>Welcome to MorningNewsletter!</h1>
             </div>
@@ -327,7 +327,7 @@ class EmailSender {
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>Reset Your Password</title>
         </head>
-        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+        <body style='font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
                 <h1 style='color: #468BE6;'>Password Reset Request</h1>
             </div>
@@ -378,7 +378,7 @@ class EmailSender {
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>Verify Your New Email Address</title>
         </head>
-        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+        <body style='font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
             <div style='text-align: center; margin-bottom: 30px;'>
                 <h1 style='color: #468BE6;'>Email Address Change Request</h1>
             </div>
