@@ -61,7 +61,8 @@
     word-spacing: normal !important;
 }
 
-/* Aggressive reset for ALL newsletter content */
+/* Aggressive reset for ALL newsletter content - Override ANY font-family declarations */
+.newsletter-preview,
 .newsletter-preview *,
 .newsletter-preview *::before,
 .newsletter-preview *::after {
@@ -71,6 +72,11 @@
     text-transform: inherit !important;
     letter-spacing: inherit !important;
     word-spacing: inherit !important;
+}
+
+/* Override specific legacy font declarations in stored newsletter content */
+.newsletter-preview body {
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
 /* Block any style injection */
