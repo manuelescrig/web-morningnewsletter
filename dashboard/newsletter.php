@@ -411,6 +411,11 @@ $canAddSource = count($sources) < $maxSources;
                         <i class="fas fa-eye mr-2"></i>
                         Preview Newsletter
                     </a>
+                    <button onclick="Dashboard.modal.open('settingsModal')" 
+                            class="btn-pill bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                        <i class="fas fa-cog mr-2"></i>
+                        Edit Settings
+                    </button>
                 </div>
             </div>
         </div>
@@ -549,16 +554,9 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
             </div>
 
-            <!-- Right Column: Newsletter Settings -->
+            <!-- Right Column: Schedule Status -->
             <div class="lg:col-span-1">
-                <!-- Newsletter Settings -->
-                <div class="bg-white rounded-lg shadow mb-6">
-                    <div class="p-6 border-b border-gray-200">
-                        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <i class="fas fa-cog text-primary mr-2"></i>
-                            Newsletter Settings
-                        </h2>
-                    </div>
+                <!-- Newsletter Settings moved to modal -->
                     <div class="p-6">
                         <form method="POST" class="space-y-4">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
@@ -1796,6 +1794,124 @@ $canAddSource = count($sources) < $maxSources;
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-medium text-gray-900">Newsletter Settings</h3>
+                <button onclick="Dashboard.modal.close('settingsModal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            
+            <form method="POST" class="space-y-4">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                <input type="hidden" name="action" value="update_newsletter_settings">
+                
+                <div>
+                    <label for="modal_title" class="block text-sm font-medium text-gray-700 mb-2">
+                        Newsletter Title
+                    </label>
+                    <input type="text" 
+                           id="modal_title" 
+                           name="title" 
+                           value="<?php echo htmlspecialchars($newsletter->getTitle()); ?>"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                           required>
+                </div>
+                
+                <div>
+                    <label for="modal_timezone" class="block text-sm font-medium text-gray-700 mb-2">
+                        Timezone
+                    </label>
+                    <select id="modal_timezone" 
+                            name="timezone" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                        <?php foreach ($timezones as $tz => $name): ?>
+                            <option value="<?php echo htmlspecialchars($tz); ?>" <?php echo $newsletter->getTimezone() === $tz ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($name); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="modal_frequency" class="block text-sm font-medium text-gray-700 mb-2">
+                        Delivery Frequency
+                    </label>
+                    <select id="modal_frequency" 
+                            name="frequency" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                            onchange="updateModalFrequencyOptions()">
+                        <option value="daily" <?php echo $newsletter->getFrequency() === 'daily' ? 'selected' : ''; ?>>Daily</option>
+                        <option value="weekly" <?php echo $newsletter->getFrequency() === 'weekly' ? 'selected' : ''; ?>>Weekly</option>
+                        <option value="monthly" <?php echo $newsletter->getFrequency() === 'monthly' ? 'selected' : ''; ?>>Monthly</option>
+                    </select>
+                </div>
+                
+                <div id="modal_send_time_section">
+                    <label for="modal_send_time" class="block text-sm font-medium text-gray-700 mb-2">
+                        Send Time
+                    </label>
+                    <select id="modal_send_time" 
+                            name="send_time" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                        <?php foreach ($timeOptions as $timeValue => $timeLabel): ?>
+                            <option value="<?php echo $timeValue; ?>" <?php echo $newsletter->getSendTime() === $timeValue ? 'selected' : ''; ?>>
+                                <?php echo $timeLabel; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" 
+                           id="modal_is_paused" 
+                           name="is_paused" 
+                           class="hidden" 
+                           <?php echo $newsletter->isPaused() ? 'checked' : ''; ?>>
+                    <label for="modal_is_paused" class="flex items-center cursor-pointer">
+                        <div class="toggle-switch">
+                            <div class="toggle-slider"></div>
+                        </div>
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            Pause newsletter delivery
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                        <div class="text-center">
+                            <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
+                            <p class="text-sm text-red-700 mb-4">
+                                Permanently delete this newsletter and all its data. This action cannot be undone.
+                            </p>
+                            <button type="button" onclick="deleteNewsletter()" 
+                                    class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                                <i class="fas fa-trash mr-2"></i>
+                                Delete Newsletter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="Dashboard.modal.close('settingsModal')" 
+                            class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
+                        <i class="fas fa-save mr-2"></i>
+                        Update Settings
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
