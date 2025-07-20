@@ -148,59 +148,6 @@ $currentPage = 'history';
             </div>
         </div>
 
-        <!-- Source Data (if available) -->
-        <?php if (!empty($historyEntry['sources_data'])): ?>
-            <?php $sourcesData = json_decode($historyEntry['sources_data'], true); ?>
-            <?php if ($sourcesData): ?>
-                <div class="mt-6 bg-white shadow rounded-lg">
-                    <div class="px-6 py-4 border-b border-gray-200">
-                        <h2 class="text-lg font-semibold text-gray-900">Source Data</h2>
-                        <p class="text-sm text-gray-600 mt-1">Raw data used to generate this newsletter</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            <?php foreach ($sourcesData as $source): ?>
-                                <div class="border border-gray-200 rounded-lg p-4">
-                                    <h3 class="font-medium text-gray-900 mb-2">
-                                        <?php echo htmlspecialchars($source['title']); ?>
-                                        <span class="text-sm text-gray-500 ml-2">(<?php echo htmlspecialchars($source['type']); ?>)</span>
-                                    </h3>
-                                    
-                                    <?php if (!empty($source['data'])): ?>
-                                        <div class="bg-gray-50 rounded p-3">
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                                <?php foreach ($source['data'] as $item): ?>
-                                                    <?php if (isset($item['label']) && isset($item['value'])): ?>
-                                                        <div class="flex justify-between">
-                                                            <span class="text-gray-600"><?php echo htmlspecialchars($item['label']); ?>:</span>
-                                                            <span class="font-medium text-gray-900">
-                                                                <?php echo htmlspecialchars($item['value']); ?>
-                                                                <?php if (isset($item['delta']) && $item['delta'] !== null): ?>
-                                                                    <span class="ml-1 text-xs <?php echo (float)$item['delta'] >= 0 ? 'text-green-600' : 'text-red-600'; ?>">
-                                                                        (<?php echo (float)$item['delta'] >= 0 ? '+' : ''; ?><?php echo $item['delta']; ?>)
-                                                                    </span>
-                                                                <?php endif; ?>
-                                                            </span>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
-                                    
-                                    <?php if (!empty($source['last_updated'])): ?>
-                                        <div class="mt-2 text-xs text-gray-500">
-                                            Last updated: <?php echo $source['last_updated']; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-        <?php endif; ?>
     </div>
 
     <script src="/assets/js/main.js"></script>
