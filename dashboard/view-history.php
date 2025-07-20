@@ -134,7 +134,7 @@ $currentPage = 'history';
         </div>
 
         <!-- Newsletter Content -->
-        <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
                 <h2 class="text-lg font-semibold text-gray-900">Newsletter Content</h2>
                 <p class="text-sm text-gray-600 mt-1">This is exactly what was sent to your email</p>
