@@ -434,9 +434,9 @@ $canAddSource = count($sources) < $maxSources;
             </div>
         <?php endif; ?>
 
-        <div class="space-y-8">
-            <!-- Data Sources Section -->
-            <div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Data Sources -->
+            <div class="lg:col-span-2">
                 <!-- Add New Source Button -->
                 <?php if ($canAddSource): ?>
                     <div class="bg-white rounded-lg shadow mb-6">
@@ -549,8 +549,8 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
             </div>
 
-            <!-- Newsletter Settings Section -->
-            <div>
+            <!-- Right Column: Newsletter Settings -->
+            <div class="lg:col-span-1">
                 <!-- Newsletter Settings -->
                 <div class="bg-white rounded-lg shadow mb-6">
                     <div class="p-6 border-b border-gray-200">
@@ -769,8 +769,10 @@ $canAddSource = count($sources) < $maxSources;
                     </div>
                 </div>
             </div>
-            
-            <!-- Danger Zone Section -->
+        </div>
+        
+        <!-- Danger Zone Section - Full Width -->
+        <div class="mt-8">
             <div class="bg-white rounded-lg shadow border-2 border-red-200">
                 <div class="p-6 border-b border-red-200 bg-red-50">
                     <h2 class="text-lg font-semibold text-red-900 flex items-center">
@@ -779,15 +781,13 @@ $canAddSource = count($sources) < $maxSources;
                     </h2>
                 </div>
                 <div class="p-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                        <div class="mb-4 sm:mb-0">
-                            <h3 class="text-base font-medium text-red-900">Delete this newsletter</h3>
-                            <p class="text-sm text-red-700 mt-1">
-                                Permanently delete this newsletter and all its data including sources, history, and settings. This action cannot be undone.
-                            </p>
-                        </div>
+                    <div class="text-center">
+                        <h3 class="text-base font-medium text-red-900 mb-2">Delete this newsletter</h3>
+                        <p class="text-sm text-red-700 mb-6 max-w-2xl mx-auto">
+                            Permanently delete this newsletter and all its data including sources, history, and settings. This action cannot be undone.
+                        </p>
                         <button onclick="deleteNewsletter()" 
-                                class="btn-pill bg-red-600 hover:bg-red-700 text-white px-6 py-3 font-medium transition-colors duration-200 flex-shrink-0">
+                                class="btn-pill bg-red-600 hover:bg-red-700 text-white px-6 py-3 font-medium transition-colors duration-200">
                             <i class="fas fa-trash mr-2"></i>
                             Delete Newsletter
                         </button>
