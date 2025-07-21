@@ -399,7 +399,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors duration-200">
+                                           class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded transition-colors duration-200">
                                             <i class="icon-eye mr-1"></i>
                                             Preview
                                         </a>
@@ -408,8 +408,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="relative" onclick="event.stopPropagation();">
                                             <button type="button" 
                                                     onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
-                                                    class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 transition-colors duration-200">
-                                                <i class="icon-more-horizontal"></i>
+                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded transition-colors duration-200">
+                                                <i class="icon-more-horizontal mr-1"></i>
+                                                More
                                             </button>
                                             
                                             <!-- Dropdown Menu -->
