@@ -576,8 +576,13 @@ $canAddSource = count($sources) < $maxSources;
                                 ?></span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-600">Next Send:</span>
-                                <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
+                                <?php if ($newsletter->isPaused()): ?>
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="font-medium text-yellow-600">Paused</span>
+                                <?php else: ?>
+                                    <span class="text-gray-600">Next Send:</span>
+                                    <span class="font-medium"><?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?></span>
+                                <?php endif; ?>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Last Sent:</span>
