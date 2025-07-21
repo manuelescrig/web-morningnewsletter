@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="btn-pill px-3 py-2 text-primary hover-text-primary-darker border border-primary-light hover-bg-primary-lightest">
+                                <button type="button" onclick="addDailyTime()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 font-medium transition-colors duration-200">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
