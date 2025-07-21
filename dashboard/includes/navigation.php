@@ -20,13 +20,13 @@ require_once __DIR__ . '/../../includes/logo.php';
 function getNavClass($page, $currentPage) {
     // Treat 'newsletter', 'newsletters', and 'dashboard' as the same for "My Newsletters" nav item
     if ($page === 'dashboard' && in_array($currentPage, ['newsletter', 'newsletters', 'dashboard'])) {
-        return 'nav-pill-active bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105';
+        return 'nav-tab-active relative inline-flex items-center px-6 py-4 text-sm font-semibold text-gray-900 transition-all duration-300 hover:text-blue-600';
     }
     
     if ($page === $currentPage) {
-        return 'nav-pill-active bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105';
+        return 'nav-tab-active relative inline-flex items-center px-6 py-4 text-sm font-semibold text-gray-900 transition-all duration-300 hover:text-blue-600';
     }
-    return 'nav-pill-inactive bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-md transform hover:scale-105';
+    return 'nav-tab-inactive relative inline-flex items-center px-6 py-4 text-sm font-medium text-gray-500 transition-all duration-300 hover:text-gray-700';
 }
 ?>
 <!-- Navigation -->
