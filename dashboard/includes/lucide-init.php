@@ -1,16 +1,9 @@
 <?php
 /**
- * Lucide Icons Initialization Script - for bottom of page
+ * Lucide Icons - No JavaScript needed with CSS approach
  * 
  * Usage: 
  * include __DIR__ . '/includes/lucide-init.php';
  */
 ?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Lucide icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
-</script>
+<!-- No JavaScript initialization needed for CSS-based Lucide icons -->
