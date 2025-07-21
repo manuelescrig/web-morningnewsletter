@@ -389,7 +389,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <h3 class="text-lg font-semibold text-gray-900 flex-1 mr-2">
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                                     </h3>
-                                    <div class="flex items-center space-x-2">
+                                    <div class="flex items-center space-x-1">
                                         <!-- Preview Button -->
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
