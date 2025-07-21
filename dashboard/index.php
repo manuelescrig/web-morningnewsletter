@@ -384,12 +384,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ?>
                         <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer" onclick="window.location.href='/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>'">
                             <!-- Newsletter Header -->
-                            <div class="px-4 py-3 border-b border-gray-200">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900 flex-1 mr-2">
+                            <div class="p-6 border-b border-gray-200 relative">
+                                <div class="mb-3">
+                                    <h3 class="text-lg font-semibold text-gray-900 pr-24">
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                                     </h3>
-                                    <div class="flex items-center space-x-1">
+                                    <div class="absolute top-3 right-3 flex items-center space-x-1">
                                         <!-- Preview Button -->
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
@@ -480,7 +480,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             
                             <!-- Newsletter Content -->
-                            <div class="px-4 py-3">
+                            <div class="p-6">
                                 
                                 <?php if ($sourceCount > 0): ?>
                                     <div>
