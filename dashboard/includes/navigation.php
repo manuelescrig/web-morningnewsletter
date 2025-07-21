@@ -41,21 +41,21 @@ function getNavClass($page, $currentPage) {
             <!-- Centered Navigation Pills (Desktop) -->
             <div class="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex space-x-3">
                 <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                    <i class="lucide-newspaper mr-2 w-4 h-4"></i>My Newsletters
+                    <i data-lucide="newspaper" class="mr-2 w-4 h-4"></i>My Newsletters
                 </a>
                 <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                    <i class="lucide-archive mr-2 w-4 h-4"></i>History
+                    <i data-lucide="archive" class="mr-2 w-4 h-4"></i>History
                 </a>
             </div>
             
             <!-- Mobile Navigation Pills -->
             <div class="flex sm:hidden space-x-2">
                 <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                    <i class="lucide-newspaper w-4 h-4"></i>
+                    <i data-lucide="newspaper" class="w-4 h-4"></i>
                     <span class="sr-only">My Newsletters</span>
                 </a>
                 <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                    <i class="lucide-archive w-4 h-4"></i>
+                    <i data-lucide="archive" class="w-4 h-4"></i>
                     <span class="sr-only">History</span>
                 </a>
             </div>
