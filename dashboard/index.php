@@ -430,6 +430,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <?php endif; ?>
                                                 </button>
                                                 
+                                                <!-- Edit -->
+                                                <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>"
+                                                   class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    <i class="icon-edit mr-2"></i>
+                                                    Edit Newsletter
+                                                </a>
+                                                
                                                 <!-- Duplicate -->
                                                 <button type="button" 
                                                         onclick="duplicateNewsletter(<?php echo $newsletter->getId(); ?>)"
