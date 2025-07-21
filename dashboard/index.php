@@ -388,6 +388,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="flex justify-between items-start mb-3">
                                     <h3 class="text-lg font-semibold text-gray-900 flex-1 mr-2">
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
+                                        <?php if (!$newsletter->isActive()): ?>
+                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Paused
+                                            </span>
+                                        <?php endif; ?>
                                     </h3>
                                     <div class="flex space-x-1">
                                         <!-- Newsletter Actions Dropdown -->
