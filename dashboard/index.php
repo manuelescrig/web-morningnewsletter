@@ -316,7 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 font-medium transition-colors duration-200">
+                                <button type="button" onclick="addDailyTime()" class="btn-pill btn-secondary-light px-3 py-2 font-medium"
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -328,7 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideCreateForm()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 font-medium transition-colors duration-200">
+                        <button type="button" onclick="hideCreateForm()" class="btn-pill btn-secondary-light px-6 py-2 font-medium">
                             Cancel
                         </button>
                         <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">

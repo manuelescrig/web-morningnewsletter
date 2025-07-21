@@ -407,7 +407,7 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
                 <div class="flex space-x-3">
                     <button onclick="openEditSettingsModal()" 
-                            class="btn-pill bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 font-medium transition-colors duration-200">
+                            class="btn-pill btn-secondary-light px-4 py-2 font-medium">
                         <i class="fas fa-cog mr-2"></i>
                         Edit Settings
                     </button>
@@ -1089,10 +1089,10 @@ $canAddSource = count($sources) < $maxSources;
             // Update button states
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-primary', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
+                btn.classList.add('btn-secondary-light');
             });
             event.target.classList.add('active', 'bg-primary', 'text-white');
-            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.remove('btn-secondary-light');
             
             // Filter source cards
             const cards = document.querySelectorAll('.source-card');

@@ -667,3 +667,15 @@ button,
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(70, 139, 230, 0.3);
 }
+
+/* Custom secondary button style */
+.btn-secondary-light {
+    background-color: #f3f4f6; /* bg-gray-100 */
+    color: #374151; /* text-gray-700 - darker than original */
+    transition: all 0.2s ease;
+}
+
+.btn-secondary-light:hover {
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #1f2937; /* text-gray-800 - even darker on hover */
+}
