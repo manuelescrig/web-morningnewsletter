@@ -232,7 +232,7 @@ const Dashboard = {
             if (timezoneInput) timezoneInput.value = 'UTC';
             if (frequencySelect) frequencySelect.value = 'daily';
             
-            // Clear frequency-specific options
+            // Clear frequency-specific options (includes resetting daily times)
             this.clearFrequencyOptions();
             
             // Hide frequency-specific sections
@@ -273,16 +273,18 @@ const Dashboard = {
                 }
                 
                 dailyTimesContainer.innerHTML = `
-                    <div class="flex items-center gap-2">
+                    <div class="flex gap-1 time-slot">
                         <select name="daily_times[]" 
                                 class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             ${timeOptions}
                         </select>
-                        <button type="button" onclick="removeDailyTime(this)" class="text-red-600 hover:text-red-800 px-2" style="display: none;">
+                        <button type="button" onclick="removeDailyTime(this)" class="btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn" style="display: none;">
                             <i class="fas fa-times"></i>
                         </button>
-                        <div class="px-2 w-8 spacer"></div>
                     </div>
+                    <button type="button" onclick="addDailyTime()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 font-medium transition-colors duration-200">
+                        <i class="fas fa-plus"></i>
+                    </button>
                 `;
             }
             
