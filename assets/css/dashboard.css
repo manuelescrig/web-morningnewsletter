@@ -3,6 +3,16 @@
  * Custom styles for dashboard functionality
  */
 
+/* Minimize icon flash on load */
+[data-lucide] {
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+}
+
+[data-lucide].lucide {
+    opacity: 1;
+}
+
 /* Clean Minimal Navigation */
 .nav-tab-active {
     color: #1F2937; /* darker gray */
