@@ -65,7 +65,7 @@ function getNavClass($page, $currentPage) {
                 <!-- Profile dropdown -->
                 <div class="relative ml-3">
                     <div>
-                        <button type="button" class="relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus-ring-primary focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-md lg:hover:bg-gray-50 transition-colors" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <button type="button" class="user-button-hover relative flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus-ring-primary focus:ring-offset-2 lg:px-2 lg:py-1 lg:rounded-full transition-all duration-200" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <div class="flex items-center">
                                 <!-- Avatar circle with initial -->
                                 <div class="flex-shrink-0 h-8 w-8 rounded-full bg-primary-lightest flex items-center justify-center">

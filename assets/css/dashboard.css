@@ -22,8 +22,8 @@
 
 .nav-tab-inactive:hover {
     color: #1F2937; /* even darker on hover */
-    background: rgba(243, 244, 246, 0.5); /* light gray background like username */
-    border-radius: 0.25rem; /* smaller rounded corners */
+    background: rgba(229, 231, 235, 0.8); /* more visible gray background */
+    border-radius: 9999px; /* pill rounded corners */
 }
 
 /* Subtle icon transitions */
@@ -36,6 +36,11 @@
     transform: translateY(-1px);
 }
 
+/* Username button hover styling */
+.user-button-hover:hover {
+    background: rgba(229, 231, 235, 0.8) !important;
+}
+
 /* Mobile navigation adjustments */
 @media (max-width: 640px) {
     .nav-tab-active,
@@ -45,7 +50,8 @@
     }
     
     .nav-tab-inactive:hover {
-        background: rgba(243, 244, 246, 0.3); /* less background on mobile */
+        background: rgba(229, 231, 235, 0.6); /* more visible on mobile too */
+        border-radius: 9999px; /* pill rounded corners on mobile */
     }
 }
 
