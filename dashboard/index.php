@@ -394,12 +394,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </span>
                                         <?php endif; ?>
                                     </h3>
-                                    <div class="flex space-x-1">
+                                    <div class="flex items-center space-x-1">
                                         <!-- Preview Button -->
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded transition-colors duration-200">
+                                           class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200">
                                             <i class="icon-eye mr-1"></i>
                                             Preview
                                         </a>
@@ -408,7 +408,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="relative" onclick="event.stopPropagation();">
                                             <button type="button" 
                                                     onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
-                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded transition-colors duration-200">
+                                                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200">
                                                 <i class="icon-more-horizontal mr-1"></i>
                                                 More
                                             </button>
