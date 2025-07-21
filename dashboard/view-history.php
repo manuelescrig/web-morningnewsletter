@@ -33,6 +33,7 @@ $currentPage = 'history';
     <title><?php echo htmlspecialchars($historyEntry['title']); ?> - Newsletter History</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <?php include __DIR__ . '/includes/lucide-head.php'; ?>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -152,6 +153,7 @@ $currentPage = 'history';
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+    <?php include __DIR__ . '/includes/lucide-init.php'; ?>
     <script>
         function printNewsletter() {
             Dashboard.print.hideElementsAndPrint(['nav', '.max-w-7xl > .mb-6']);
