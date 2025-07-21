@@ -304,6 +304,14 @@ class Newsletter {
     public function getTimezone() { return $this->timezone; }
     public function getSendTime() { return $this->send_time; }
     public function isActive() { return (bool)$this->is_active; }
+    public function setActive($isActive) {
+        $stmt = $this->db->prepare("UPDATE newsletters SET is_active = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+        if ($stmt->execute([$isActive ? 1 : 0, $this->id])) {
+            $this->is_active = $isActive ? 1 : 0;
+            return true;
+        }
+        return false;
+    }
     public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }
     

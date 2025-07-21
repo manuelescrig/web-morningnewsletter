@@ -239,6 +239,55 @@ class User {
         return false;
     }
     
+    public function duplicateNewsletter($newsletterId) {
+        $originalNewsletter = $this->getNewsletter($newsletterId);
+        if (!$originalNewsletter) {
+            return false;
+        }
+        
+        // Create new newsletter with "(Copy)" suffix
+        $originalTitle = $originalNewsletter->getTitle();
+        $newTitle = $originalTitle . ' (Copy)';
+        
+        $duplicatedId = $this->createNewsletter(
+            $newTitle,
+            $originalNewsletter->getTimezone(),
+            $originalNewsletter->getSendTime(),
+            $originalNewsletter->getFrequency()
+        );
+        
+        if ($duplicatedId) {
+            $duplicatedNewsletter = $this->getNewsletter($duplicatedId);
+            
+            // Copy all sources from original newsletter
+            $originalSources = $originalNewsletter->getSources();
+            foreach ($originalSources as $source) {
+                $duplicatedNewsletter->addSource(
+                    $source['type'],
+                    json_decode($source['config'], true) ?? [],
+                    $source['name']
+                );
+            }
+            
+            // Copy frequency-specific settings
+            if ($originalNewsletter->getFrequency() === 'weekly') {
+                $duplicatedNewsletter->setDaysOfWeek($originalNewsletter->getDaysOfWeek());
+            } elseif ($originalNewsletter->getFrequency() === 'monthly') {
+                $duplicatedNewsletter->setDayOfMonth($originalNewsletter->getDayOfMonth());
+            }
+            
+            // Copy daily times if they exist
+            $dailyTimes = $originalNewsletter->getDailyTimes();
+            if (!empty($dailyTimes)) {
+                $duplicatedNewsletter->setDailyTimes($dailyTimes);
+            }
+            
+            return $duplicatedId;
+        }
+        
+        return false;
+    }
+    
     public function getDefaultNewsletter() {
         $newsletters = $this->getNewsletters();
         return !empty($newsletters) ? $newsletters[0] : null;
