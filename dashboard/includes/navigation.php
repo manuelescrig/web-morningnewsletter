@@ -37,10 +37,10 @@ function getNavClass($page, $currentPage) {
 <?php renderLogo('md'); ?>
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                        <i class="fas fa-newspaper mr-2"></i>My Newsletters
+                        <i data-lucide="newspaper" class="mr-2 w-4 h-4"></i>My Newsletters
                     </a>
                     <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                        <i class="fas fa-history mr-2"></i>History
+                        <i data-lucide="archive" class="mr-2 w-4 h-4"></i>History
                     </a>
                 </div>
             </div>

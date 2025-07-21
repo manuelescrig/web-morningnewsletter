@@ -130,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>My Newsletters - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -580,6 +581,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Dashboard.modal.closeOnOutsideClick('editModal');
             // Initialize remove button visibility
             updateRemoveButtonsVisibility();
+            // Initialize Lucide icons
+            lucide.createIcons();
         });
     </script>
 </body>
