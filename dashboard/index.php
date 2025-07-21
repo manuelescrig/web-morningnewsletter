@@ -328,10 +328,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideCreateForm()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 font-medium transition-colors duration-200">
+                        <button type="button" onclick="hideCreateForm()" class="btn-pill bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">
+                            <i class="fas fa-times mr-2"></i>
                             Cancel
                         </button>
-                        <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200">
+                        <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">
                             <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
                         </button>
