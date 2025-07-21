@@ -119,12 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'toggle_newsletter':
                 $newsletterId = (int)$_POST['newsletter_id'];
-                $isActive = $_POST['is_active'] === 'true';
+                $isPaused = $_POST['is_paused'] === 'true';
                 $newsletter = $user->getNewsletter($newsletterId);
                 
                 if ($newsletter) {
-                    if ($newsletter->setActive($isActive)) {
-                        $success = 'Newsletter ' . ($isActive ? 'activated' : 'paused') . ' successfully!';
+                    if ($newsletter->setPaused($isPaused)) {
+                        $success = 'Newsletter ' . ($isPaused ? 'paused' : 'activated') . ' successfully!';
                         // Refresh newsletters
                         $newsletters = $user->getNewsletters();
                     } else {
@@ -388,44 +388,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="flex justify-between items-start mb-3">
                                     <h3 class="text-lg font-semibold text-gray-900 flex-1 mr-2">
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
-                                        <?php if (!$newsletter->isActive()): ?>
+                                        <?php if ($newsletter->isPaused()): ?>
                                             <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
                                                 Paused
                                             </span>
                                         <?php endif; ?>
                                     </h3>
                                     <div class="flex space-x-1">
+                                        <!-- Preview Button -->
+                                        <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
+                                           target="_blank"
+                                           onclick="event.stopPropagation();"
+                                           class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300 transition-colors duration-200">
+                                            <i class="icon-eye mr-1"></i>
+                                            Preview
+                                        </a>
+                                        
                                         <!-- Newsletter Actions Dropdown -->
                                         <div class="relative" onclick="event.stopPropagation();">
                                             <button type="button" 
                                                     onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
                                                     class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 transition-colors duration-200">
-                                                <i class="icon-more-horizontal mr-1"></i>
-                                                Actions
+                                                <i class="icon-more-horizontal"></i>
                                             </button>
                                             
                                             <!-- Dropdown Menu -->
                                             <div id="newsletter-dropdown-<?php echo $newsletter->getId(); ?>" 
                                                  class="hidden absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                 
-                                                <!-- Preview -->
-                                                <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                                   target="_blank"
-                                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="icon-eye mr-2"></i>
-                                                    Preview
-                                                </a>
-                                                
-                                                <!-- Active/Inactive Toggle -->
+                                                <!-- Pause/Activate Toggle -->
                                                 <button type="button" 
-                                                        onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isActive() ? 'false' : 'true'; ?>)"
+                                                        onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isPaused() ? 'false' : 'true'; ?>)"
                                                         class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <?php if ($newsletter->isActive()): ?>
-                                                        <i class="icon-pause mr-2"></i>
-                                                        Pause Newsletter
-                                                    <?php else: ?>
+                                                    <?php if ($newsletter->isPaused()): ?>
                                                         <i class="icon-play mr-2"></i>
                                                         Activate Newsletter
+                                                    <?php else: ?>
+                                                        <i class="icon-pause mr-2"></i>
+                                                        Pause Newsletter
                                                     <?php endif; ?>
                                                 </button>
                                                 
@@ -697,8 +697,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             dropdown.classList.toggle('hidden');
         }
         
-        function toggleNewsletterStatus(newsletterId, newStatus) {
-            if (confirm(`Are you sure you want to ${newStatus === 'true' ? 'activate' : 'pause'} this newsletter?`)) {
+        function toggleNewsletterStatus(newsletterId, newPausedStatus) {
+            const action = newPausedStatus === 'true' ? 'pause' : 'activate';
+            if (confirm(`Are you sure you want to ${action} this newsletter?`)) {
                 // Create form and submit
                 const form = document.createElement('form');
                 form.method = 'POST';
@@ -706,7 +707,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
                     <input type="hidden" name="action" value="toggle_newsletter">
                     <input type="hidden" name="newsletter_id" value="${newsletterId}">
-                    <input type="hidden" name="is_active" value="${newStatus}">
+                    <input type="hidden" name="is_paused" value="${newPausedStatus}">
                 `;
                 document.body.appendChild(form);
                 form.submit();

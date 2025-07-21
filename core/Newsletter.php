@@ -312,6 +312,15 @@ class Newsletter {
         }
         return false;
     }
+    
+    public function setPaused($isPaused) {
+        $stmt = $this->db->prepare("UPDATE newsletters SET is_paused = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+        if ($stmt->execute([$isPaused ? 1 : 0, $this->id])) {
+            $this->is_paused = $isPaused ? 1 : 0;
+            return true;
+        }
+        return false;
+    }
     public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }
     
