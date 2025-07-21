@@ -1838,10 +1838,10 @@ $canAddSource = count($sources) < $maxSources;
                             <div class="flex items-center justify-between">
                                 <div class="flex flex-col">
                                     <label class="text-sm font-medium text-gray-900">
-                                        Active toggle
+                                        Pause Newsletter
                                     </label>
                                     <p class="text-xs text-gray-500">
-                                        Enable or disable newsletter sending
+                                        Temporarily stop newsletter delivery
                                     </p>
                                 </div>
                                 
