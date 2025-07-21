@@ -99,20 +99,20 @@ function getNavClass($page, $currentPage) {
                         </div>
                         
                         <!-- Account option -->
-                        <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-user mr-2 text-primary"></i>
+                        <a href="/account" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-user mr-2"></i>
                             Account
                         </a>
                         
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
-                        <a href="/upgrade" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-crown mr-2 text-primary"></i>
+                        <a href="/upgrade" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-crown mr-2"></i>
                             Upgrade Plan
                         </a>
                         <?php else: ?>
-                        <a href="/billing" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-credit-card mr-2 text-primary"></i>
+                        <a href="/billing" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-credit-card mr-2"></i>
                             Billing
                         </a>
                         <?php endif; ?>
@@ -122,16 +122,16 @@ function getNavClass($page, $currentPage) {
                         <!-- Divider for admin section -->
                         <div class="border-t border-gray-200 my-1"></div>
                         
-                        <a href="/dashboard/users.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-users mr-2 text-purple-500"></i>
+                        <a href="/dashboard/users.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-users mr-2"></i>
                             Users
                         </a>
-                        <a href="/dashboard/sources.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-plug mr-2 text-purple-500"></i>
+                        <a href="/dashboard/sources.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-plug mr-2"></i>
                             Source Config
                         </a>
-                        <a href="/dashboard/cron_status.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-server mr-2 text-purple-500"></i>
+                        <a href="/dashboard/cron_status.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="icon-server mr-2"></i>
                             Cron Status
                         </a>
                         <?php endif; ?>
@@ -140,8 +140,8 @@ function getNavClass($page, $currentPage) {
                         <div class="border-t border-gray-200 my-1"></div>
                         
                         <!-- Logout option -->
-                        <a href="/auth/logout.php" class="block px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900" role="menuitem" tabindex="-1">
-                            <i class="icon-log-out mr-2 text-red-500"></i>
+                        <a href="/auth/logout.php" class="flex items-center px-4 py-2 text-nav text-red-700 hover:bg-red-50 hover:text-red-900" role="menuitem" tabindex="-1">
+                            <i class="icon-log-out mr-2"></i>
                             Sign out
                         </a>
                     </div>
