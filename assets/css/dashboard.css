@@ -10,12 +10,12 @@
 }
 
 .nav-tab-inactive {
-    color: #6B7280; /* medium gray */
+    color: #374151; /* darker gray */
     font-weight: 500; /* medium */
 }
 
 .nav-tab-inactive:hover {
-    color: #374151; /* slightly darker on hover */
+    color: #1F2937; /* even darker on hover */
 }
 
 /* Subtle icon transitions */
