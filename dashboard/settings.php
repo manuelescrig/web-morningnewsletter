@@ -440,8 +440,8 @@ $csrfToken = $auth->generateCSRFToken();
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h4 class="text-sm font-medium text-gray-900">Pause Newsletter</h4>
-                                <p class="text-sm text-gray-600">Temporarily stop receiving newsletters without losing your configuration.</p>
+                                <h4 class="text-sm font-medium text-gray-900">Newsletter Status</h4>
+                                <p class="text-sm text-gray-600">Enable or disable newsletter delivery without losing your configuration.</p>
                             </div>
                             <button class="btn-pill inline-flex items-center px-3 py-2 border border-yellow-300 shadow-sm text-sm leading-4 font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                                 <i class="fas fa-pause mr-2"></i>
