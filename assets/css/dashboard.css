@@ -3,16 +3,6 @@
  * Custom styles for dashboard functionality
  */
 
-/* Minimize icon flash on load */
-[data-lucide] {
-    opacity: 0;
-    transition: opacity 0.1s ease-in;
-}
-
-[data-lucide].lucide {
-    opacity: 1;
-}
-
 /* Clean Minimal Navigation */
 .nav-tab-active {
     color: #1F2937; /* darker gray */
@@ -22,10 +12,13 @@
 .nav-tab-inactive {
     color: #374151; /* darker gray */
     font-weight: 500; /* medium */
+    transition: all 0.2s ease;
 }
 
 .nav-tab-inactive:hover {
     color: #1F2937; /* even darker on hover */
+    background: rgba(243, 244, 246, 0.5); /* light gray background like username */
+    border-radius: 0.375rem; /* rounded-md */
 }
 
 /* Subtle icon transitions */
@@ -44,6 +37,10 @@
     .nav-tab-inactive {
         padding: 16px 20px;
         justify-content: center;
+    }
+    
+    .nav-tab-inactive:hover {
+        background: rgba(243, 244, 246, 0.3); /* less background on mobile */
     }
 }
 
