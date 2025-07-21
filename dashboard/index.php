@@ -117,6 +117,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
                 
+            case 'toggle_newsletter':
+                $newsletterId = (int)$_POST['newsletter_id'];
+                $isActive = $_POST['is_active'] === 'true';
+                $newsletter = $user->getNewsletter($newsletterId);
+                
+                if ($newsletter) {
+                    if ($newsletter->setActive($isActive)) {
+                        $success = 'Newsletter ' . ($isActive ? 'activated' : 'paused') . ' successfully!';
+                        // Refresh newsletters
+                        $newsletters = $user->getNewsletters();
+                    } else {
+                        $error = 'Failed to update newsletter status.';
+                    }
+                } else {
+                    $error = 'Newsletter not found.';
+                }
+                break;
+                
+            case 'duplicate_newsletter':
+                $newsletterId = (int)$_POST['newsletter_id'];
+                $originalNewsletter = $user->getNewsletter($newsletterId);
+                
+                if ($originalNewsletter) {
+                    try {
+                        $duplicatedId = $user->duplicateNewsletter($newsletterId);
+                        if ($duplicatedId) {
+                            $success = 'Newsletter duplicated successfully!';
+                            // Refresh newsletters
+                            $newsletters = $user->getNewsletters();
+                        } else {
+                            $error = 'Failed to duplicate newsletter.';
+                        }
+                    } catch (Exception $e) {
+                        $error = 'Error: ' . $e->getMessage();
+                    }
+                } else {
+                    $error = 'Newsletter not found.';
+                }
+                break;
+                
+            case 'delete_newsletter':
+                $newsletterId = (int)$_POST['newsletter_id'];
+                $newsletter = $user->getNewsletter($newsletterId);
+                
+                if ($newsletter) {
+                    if ($user->deleteNewsletter($newsletterId)) {
+                        $success = 'Newsletter deleted successfully!';
+                        // Refresh newsletters
+                        $newsletters = $user->getNewsletters();
+                    } else {
+                        $error = 'Failed to delete newsletter.';
+                    }
+                } else {
+                    $error = 'Newsletter not found.';
+                }
+                break;
+                
         }
     }
 }
@@ -333,13 +390,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <?php echo htmlspecialchars($newsletter->getTitle()); ?>
                                     </h3>
                                     <div class="flex space-x-1">
-                                        <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
-                                           target="_blank"
-                                           onclick="event.stopPropagation();"
-                                           class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-lightest text-primary-darker hover-bg-primary-light border border-primary-light transition-colors duration-200">
-                                            <i class="fas fa-eye mr-1"></i>
-                                            Preview
-                                        </a>
+                                        <!-- Newsletter Actions Dropdown -->
+                                        <div class="relative" onclick="event.stopPropagation();">
+                                            <button type="button" 
+                                                    onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
+                                                    class="btn-pill inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300 transition-colors duration-200">
+                                                <i class="icon-more-horizontal mr-1"></i>
+                                                Actions
+                                            </button>
+                                            
+                                            <!-- Dropdown Menu -->
+                                            <div id="newsletter-dropdown-<?php echo $newsletter->getId(); ?>" 
+                                                 class="hidden absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                
+                                                <!-- Preview -->
+                                                <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
+                                                   target="_blank"
+                                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    <i class="icon-eye mr-2"></i>
+                                                    Preview
+                                                </a>
+                                                
+                                                <!-- Active/Inactive Toggle -->
+                                                <button type="button" 
+                                                        onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isActive() ? 'false' : 'true'; ?>)"
+                                                        class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    <?php if ($newsletter->isActive()): ?>
+                                                        <i class="icon-pause mr-2"></i>
+                                                        Pause Newsletter
+                                                    <?php else: ?>
+                                                        <i class="icon-play mr-2"></i>
+                                                        Activate Newsletter
+                                                    <?php endif; ?>
+                                                </button>
+                                                
+                                                <!-- Duplicate -->
+                                                <button type="button" 
+                                                        onclick="duplicateNewsletter(<?php echo $newsletter->getId(); ?>)"
+                                                        class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    <i class="icon-copy mr-2"></i>
+                                                    Duplicate
+                                                </button>
+                                                
+                                                <!-- Divider -->
+                                                <div class="border-t border-gray-200 my-1"></div>
+                                                
+                                                <!-- Delete -->
+                                                <button type="button" 
+                                                        onclick="confirmDeleteNewsletter(<?php echo $newsletter->getId(); ?>, '<?php echo htmlspecialchars($newsletter->getTitle(), ENT_QUOTES); ?>')"
+                                                        class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                    <i class="icon-trash-2 mr-2"></i>
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -575,6 +679,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 button.style.display = timeSlots.length > 1 ? 'block' : 'none';
             });
         }
+        
+        // Newsletter Actions Functions
+        function toggleNewsletterDropdown(newsletterId) {
+            const dropdown = document.getElementById(`newsletter-dropdown-${newsletterId}`);
+            // Close all other dropdowns first
+            document.querySelectorAll('[id^="newsletter-dropdown-"]').forEach(d => {
+                if (d.id !== `newsletter-dropdown-${newsletterId}`) {
+                    d.classList.add('hidden');
+                }
+            });
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function toggleNewsletterStatus(newsletterId, newStatus) {
+            if (confirm(`Are you sure you want to ${newStatus === 'true' ? 'activate' : 'pause'} this newsletter?`)) {
+                // Create form and submit
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.innerHTML = `
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                    <input type="hidden" name="action" value="toggle_newsletter">
+                    <input type="hidden" name="newsletter_id" value="${newsletterId}">
+                    <input type="hidden" name="is_active" value="${newStatus}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        function duplicateNewsletter(newsletterId) {
+            if (confirm('Are you sure you want to duplicate this newsletter?')) {
+                // Create form and submit
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.innerHTML = `
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                    <input type="hidden" name="action" value="duplicate_newsletter">
+                    <input type="hidden" name="newsletter_id" value="${newsletterId}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        function confirmDeleteNewsletter(newsletterId, title) {
+            if (confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
+                // Create form and submit
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.innerHTML = `
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($auth->generateCSRFToken()); ?>">
+                    <input type="hidden" name="action" value="delete_newsletter">
+                    <input type="hidden" name="newsletter_id" value="${newsletterId}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.relative')) {
+                document.querySelectorAll('[id^="newsletter-dropdown-"]').forEach(d => {
+                    d.classList.add('hidden');
+                });
+            }
+        });
         
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
