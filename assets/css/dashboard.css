@@ -7,18 +7,20 @@
 .nav-tab-active {
     color: #1F2937; /* darker gray */
     font-weight: 700; /* bold */
+    font-size: 0.9rem; /* slightly larger text */
 }
 
 .nav-tab-inactive {
     color: #374151; /* darker gray */
     font-weight: 500; /* medium */
+    font-size: 0.9rem; /* slightly larger text */
     transition: all 0.2s ease;
 }
 
 .nav-tab-inactive:hover {
     color: #1F2937; /* even darker on hover */
     background: rgba(243, 244, 246, 0.5); /* light gray background like username */
-    border-radius: 0.375rem; /* rounded-md */
+    border-radius: 0.25rem; /* smaller rounded corners */
 }
 
 /* Subtle icon transitions */
@@ -35,7 +37,7 @@
 @media (max-width: 640px) {
     .nav-tab-active,
     .nav-tab-inactive {
-        padding: 16px 20px;
+        padding: 12px 16px;
         justify-content: center;
     }
     

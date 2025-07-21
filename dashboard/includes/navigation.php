@@ -20,13 +20,13 @@ require_once __DIR__ . '/../../includes/logo.php';
 function getNavClass($page, $currentPage) {
     // Treat 'newsletter', 'newsletters', and 'dashboard' as the same for "My Newsletters" nav item
     if ($page === 'dashboard' && in_array($currentPage, ['newsletter', 'newsletters', 'dashboard'])) {
-        return 'nav-tab-active inline-flex items-center px-6 py-4 text-sm transition-all duration-200';
+        return 'nav-tab-active inline-flex items-center px-4 py-2 transition-all duration-200';
     }
     
     if ($page === $currentPage) {
-        return 'nav-tab-active inline-flex items-center px-6 py-4 text-sm transition-all duration-200';
+        return 'nav-tab-active inline-flex items-center px-4 py-2 transition-all duration-200';
     }
-    return 'nav-tab-inactive inline-flex items-center px-6 py-4 text-sm transition-all duration-200';
+    return 'nav-tab-inactive inline-flex items-center px-4 py-2 transition-all duration-200';
 }
 ?>
 <!-- Navigation -->
