@@ -3,6 +3,60 @@
  * Custom styles for dashboard functionality
  */
 
+/* Cool Navigation Pills */
+.nav-pill-active {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4), 0 10px 10px -5px rgba(59, 130, 246, 0.04);
+}
+
+.nav-pill-active:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+    box-shadow: 0 20px 40px -12px rgba(59, 130, 246, 0.5), 0 4px 25px 0px rgba(59, 130, 246, 0.12);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.nav-pill-inactive {
+    backdrop-filter: blur(10px);
+    background: rgba(243, 244, 246, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-pill-inactive:hover {
+    background: rgba(229, 231, 235, 0.9);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px) scale(1.05);
+}
+
+/* Navigation icon transitions */
+.nav-pill-active i,
+.nav-pill-inactive i {
+    transition: transform 0.2s ease;
+}
+
+.nav-pill-active:hover i,
+.nav-pill-inactive:hover i {
+    transform: scale(1.1);
+}
+
+/* Mobile navigation adjustments */
+@media (max-width: 640px) {
+    .nav-pill-active,
+    .nav-pill-inactive {
+        padding: 12px 16px;
+        min-width: 48px;
+        justify-content: center;
+    }
+    
+    /* Make mobile pills slightly smaller but still cool */
+    .nav-pill-active {
+        box-shadow: 0 6px 20px -4px rgba(59, 130, 246, 0.4);
+    }
+    
+    .nav-pill-active:hover {
+        box-shadow: 0 12px 30px -8px rgba(59, 130, 246, 0.5);
+    }
+}
+
 /* Modal Animation Styles */
 .modal-backdrop {
     opacity: 0;

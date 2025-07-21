@@ -20,30 +20,47 @@ require_once __DIR__ . '/../../includes/logo.php';
 function getNavClass($page, $currentPage) {
     // Treat 'newsletter', 'newsletters', and 'dashboard' as the same for "My Newsletters" nav item
     if ($page === 'dashboard' && in_array($currentPage, ['newsletter', 'newsletters', 'dashboard'])) {
-        return 'nav-underline text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium';
+        return 'nav-pill-active bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105';
     }
     
     if ($page === $currentPage) {
-        return 'nav-underline text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium';
+        return 'nav-pill-active bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105';
     }
-    return 'border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium';
+    return 'nav-pill-inactive bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 inline-flex items-center px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-md transform hover:scale-105';
 }
 ?>
 <!-- Navigation -->
 <nav class="bg-white shadow-sm border-b">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
             <div class="flex items-center">
 <?php renderLogo('md'); ?>
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                        <i data-lucide="newspaper" class="mr-2 w-4 h-4"></i>My Newsletters
-                    </a>
-                    <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                        <i data-lucide="archive" class="mr-2 w-4 h-4"></i>History
-                    </a>
-                </div>
             </div>
+            
+            <!-- Centered Navigation Pills (Desktop) -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex space-x-3">
+                <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
+                    <i data-lucide="newspaper" class="mr-2 w-4 h-4"></i>My Newsletters
+                </a>
+                <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
+                    <i data-lucide="archive" class="mr-2 w-4 h-4"></i>History
+                </a>
+            </div>
+            
+            <!-- Mobile Navigation Pills -->
+            <div class="flex sm:hidden space-x-2">
+                <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
+                    <i data-lucide="newspaper" class="w-4 h-4"></i>
+                    <span class="sr-only">My Newsletters</span>
+                </a>
+                <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
+                    <i data-lucide="archive" class="w-4 h-4"></i>
+                    <span class="sr-only">History</span>
+                </a>
+            </div>
+            
+            <!-- Profile Section -->
             <div class="relative flex items-center">
                 <!-- Profile dropdown -->
                 <div class="relative ml-3">
