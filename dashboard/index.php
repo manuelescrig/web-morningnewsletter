@@ -417,6 +417,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <div id="newsletter-dropdown-<?php echo $newsletter->getId(); ?>" 
                                                  class="hidden absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                 
+                                                <!-- Edit -->
+                                                <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>"
+                                                   class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    <i class="icon-pencil mr-2"></i>
+                                                    Edit Newsletter
+                                                </a>
+                                                
                                                 <!-- Pause/Activate Toggle -->
                                                 <button type="button" 
                                                         onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isPaused() ? 'false' : 'true'; ?>)"
@@ -429,13 +436,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         Pause Newsletter
                                                     <?php endif; ?>
                                                 </button>
-                                                
-                                                <!-- Edit -->
-                                                <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>"
-                                                   class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="icon-edit mr-2"></i>
-                                                    Edit Newsletter
-                                                </a>
                                                 
                                                 <!-- Duplicate -->
                                                 <button type="button" 
