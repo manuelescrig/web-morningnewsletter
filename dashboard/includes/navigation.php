@@ -20,13 +20,13 @@ require_once __DIR__ . '/../../includes/logo.php';
 function getNavClass($page, $currentPage) {
     // Treat 'newsletter', 'newsletters', and 'dashboard' as the same for "My Newsletters" nav item
     if ($page === 'dashboard' && in_array($currentPage, ['newsletter', 'newsletters', 'dashboard'])) {
-        return 'nav-tab-active inline-flex items-center px-4 py-2 transition-all duration-200';
+        return 'nav-tab-active text-nav inline-flex items-center px-4 py-2 transition-all duration-200';
     }
     
     if ($page === $currentPage) {
-        return 'nav-tab-active inline-flex items-center px-4 py-2 transition-all duration-200';
+        return 'nav-tab-active text-nav inline-flex items-center px-4 py-2 transition-all duration-200';
     }
-    return 'nav-tab-inactive inline-flex items-center px-4 py-2 transition-all duration-200';
+    return 'nav-tab-inactive text-nav inline-flex items-center px-4 py-2 transition-all duration-200';
 }
 ?>
 <!-- Navigation -->
@@ -75,7 +75,7 @@ function getNavClass($page, $currentPage) {
                                 </div>
                                 <!-- User info (hidden on mobile, shown on desktop) -->
                                 <div class="hidden lg:ml-3 lg:block text-left">
-                                    <div class="text-sm font-medium text-gray-900 text-left">
+                                    <div class="text-nav font-medium text-gray-900 text-left">
                                         <?php echo htmlspecialchars($user->getName() ?: $user->getEmail()); ?>
                                     </div>
                                     <div class="text-xs text-gray-500 capitalize text-left"><?php echo $user->getPlan(); ?> Plan</div>

@@ -3,17 +3,20 @@
  * Custom styles for dashboard functionality
  */
 
+/* Navigation font size utility */
+.text-nav {
+    font-size: 0.9rem;
+}
+
 /* Clean Minimal Navigation */
 .nav-tab-active {
     color: #1F2937; /* darker gray */
     font-weight: 700; /* bold */
-    font-size: 0.9rem; /* slightly larger text */
 }
 
 .nav-tab-inactive {
     color: #374151; /* darker gray */
     font-weight: 500; /* medium */
-    font-size: 0.9rem; /* slightly larger text */
     transition: all 0.2s ease;
 }
 
