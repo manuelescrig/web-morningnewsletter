@@ -399,8 +399,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <a href="/preview.php?newsletter_id=<?php echo $newsletter->getId(); ?>" 
                                            target="_blank"
                                            onclick="event.stopPropagation();"
-                                           class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
-                                            <i class="icon-eye mr-1"></i>
+                                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
+                                            <i class="icon-eye mr-1.5 text-base"></i>
                                             Preview
                                         </a>
                                         
@@ -408,8 +408,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="relative" onclick="event.stopPropagation();">
                                             <button type="button" 
                                                     onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
-                                                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
-                                                <i class="icon-ellipsis mr-1"></i>
+                                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
+                                                <i class="icon-ellipsis mr-1.5 text-base"></i>
                                                 More
                                             </button>
                                             
