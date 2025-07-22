@@ -35,7 +35,7 @@
         /* Header */
         .email-header {
             background: linear-gradient(135deg, #1A5799 0%, #468BE6 100%);
-            color: white;
+            color: white !important;
             padding: 30px 20px;
             text-align: center;
         }
@@ -420,12 +420,12 @@
         <!-- Header -->
         <div class="email-header">
             <div style="text-align: left;">
-                <h2 style="margin: 0; font-size: 32px; font-weight: 700; color: white; text-transform: capitalize; letter-spacing: 0.5px; opacity: 0.9;">{{GREETING}}</h2>
-                <p style="margin: -5px 0 0 0; font-size: 21px; color: white; opacity: 0.7; font-weight: 700; letter-spacing: 0.5px;">{{DATE_SUBTITLE}}</p>
-                <p style="margin: 10px 0 0 0; font-size: 14px; color: white; opacity: 0.7;">
+                <h2 style="margin: 0; font-size: 32px; font-weight: 700; color: white !important; text-transform: capitalize; letter-spacing: 0.5px; opacity: 0.9;">{{GREETING}}</h2>
+                <p style="margin: -5px 0 0 0; font-size: 21px; color: white !important; opacity: 0.7; font-weight: 700; letter-spacing: 0.5px;">{{DATE_SUBTITLE}}</p>
+                <p style="margin: 10px 0 0 0; font-size: 14px; color: white !important; opacity: 0.7;">
                     {{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · 
-                    <a href="{{VIEW_URL}}" style="color: white; opacity: 0.9;">View in browser</a> · 
-                    <a href="{{EDIT_URL}}" style="color: white; opacity: 0.9;">Edit</a>
+                    <a href="{{VIEW_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">View in browser</a> · 
+                    <a href="{{EDIT_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">Edit</a>
                 </p>
             </div>
         </div>
