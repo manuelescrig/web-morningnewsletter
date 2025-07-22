@@ -34,7 +34,7 @@
         
         /* Header */
         .email-header {
-            background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
+            background: linear-gradient(135deg, #1A5799 0%, #468BE6 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
