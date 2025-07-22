@@ -420,9 +420,9 @@
         <!-- Header -->
         <div class="email-header">
             <div style="text-align: left;">
-                <h2 style="margin: 0; font-size: 32px; font-weight: 700; color: white !important; text-transform: capitalize; letter-spacing: 0.5px; opacity: 0.9;">{{GREETING}}</h2>
-                <p style="margin: -5px 0 0 0; font-size: 21px; color: white !important; opacity: 0.7; font-weight: 700; letter-spacing: 0.5px;">{{DATE_SUBTITLE}}</p>
-                <p style="margin: 10px 0 0 0; font-size: 14px; color: white !important; opacity: 0.7;">
+                <h2 style="margin: 0 !important; font-size: 32px !important; font-weight: 700 !important; color: white !important; text-transform: capitalize !important; letter-spacing: 0.5px !important; opacity: 0.9 !important;">{{GREETING}}</h2>
+                <p style="margin: -5px 0 0 0 !important; font-size: 21px !important; color: white !important; opacity: 0.7 !important; font-weight: 700 !important; letter-spacing: 0.5px !important;">{{DATE_SUBTITLE}}</p>
+                <p style="margin: 10px 0 0 0 !important; font-size: 14px !important; color: white !important; opacity: 0.7 !important; font-weight: 500 !important;">
                     {{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · 
                     <a href="{{VIEW_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">View in browser</a> · 
                     <a href="{{EDIT_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">Edit</a>
