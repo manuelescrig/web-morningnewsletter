@@ -423,7 +423,7 @@
                 <h2 style="margin: 0; font-size: 28px; font-weight: 700; color: white;">{{GREETING}}</h2>
                 <p style="margin: 5px 0 0 0; font-size: 18px; color: white; opacity: 0.9;">{{DATE_SUBTITLE}}</p>
                 <p style="margin: 10px 0 0 0; font-size: 14px; color: white; opacity: 0.7;">
-                    Issue #{{ISSUE_NUMBER}} · 
+                    {{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · 
                     <a href="{{VIEW_URL}}" style="color: white; opacity: 0.9;">View in browser</a> · 
                     <a href="{{EDIT_URL}}" style="color: white; opacity: 0.9;">Edit</a>
                 </p>
@@ -456,7 +456,6 @@
             <p style="margin-top: 15px; color: #9ca3af;">
                 © {{CURRENT_YEAR}} MorningNewsletter. All rights reserved.
             </p>
-            {{VIEW_IN_BROWSER_SECTION}}
         </div>
     </div>
 </body>
