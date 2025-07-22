@@ -247,8 +247,8 @@ class NewsletterBuilder {
         $lastUpdated = $source['last_updated'];
         
         $html = "
-        <div style='margin-bottom: 32px; padding: 24px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #468BE6;'>
-            <h2 style='margin: 0 0 16px 0; color: #1f2937; font-size: 20px; font-weight: 600;'>$title</h2>";
+        <div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
+            <h2 style='margin: 0 0 16px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {
             $html .= "<div style='space-y: 12px;'>";
