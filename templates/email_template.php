@@ -34,10 +34,21 @@
         
         /* Header */
         .email-header {
-            background: linear-gradient(135deg, #1A5799 0%, #468BE6 100%);
-            color: white !important;
-            padding: 30px 20px;
-            text-align: center;
+            background: #1A5799;
+            background-color: #1A5799;
+            background-image: linear-gradient(135deg, #1A5799 0%, #468BE6 100%);
+            color: #ffffff !important;
+            padding: 0;
+            text-align: left;
+        }
+        
+        .email-header * {
+            color: #ffffff !important;
+        }
+        
+        .email-header a {
+            color: #ffffff !important;
+            text-decoration: underline !important;
         }
         
         .email-header h1 {
@@ -418,17 +429,45 @@
 <body>
     <div class="email-container">
         <!-- Header -->
-        <div class="email-header">
-            <div style="text-align: left;">
-                <h2 style="margin: 0 !important; font-size: 32px !important; font-weight: 700 !important; color: white !important; text-transform: capitalize !important; letter-spacing: 0.5px !important; opacity: 0.9 !important;">{{GREETING}}</h2>
-                <p style="margin: -5px 0 0 0 !important; font-size: 21px !important; color: white !important; opacity: 0.7 !important; font-weight: 700 !important; letter-spacing: 0.5px !important;">{{DATE_SUBTITLE}}</p>
-                <p style="margin: 10px 0 0 0 !important; font-size: 14px !important; color: white !important; opacity: 0.7 !important; font-weight: 500 !important;">
-                    {{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · 
-                    <a href="{{VIEW_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">View in browser</a> · 
-                    <a href="{{EDIT_URL}}" style="color: white !important; opacity: 0.9; text-decoration: underline;">Edit</a>
-                </p>
-            </div>
-        </div>
+        <!-- Header with table structure for better compatibility -->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background: #1A5799; background-color: #1A5799;">
+            <tr>
+                <td style="background: #1A5799; background-color: #1A5799; background-image: linear-gradient(135deg, #1A5799 0%, #468BE6 100%);">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                            <td style="padding: 30px 20px; text-align: left;">
+                                <h2 style="margin: 0; padding: 0; font-size: 32px; font-weight: 700; color: #ffffff; text-transform: capitalize; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 38px;">
+                                    <font color="#ffffff">{{GREETING}}</font>
+                                </h2>
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td height="0" style="font-size: 0; line-height: 0;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <p style="margin: 0; padding: 0; font-size: 21px; color: #ffffff; font-weight: 700; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 28px;">
+                                    <font color="#ffffff">{{DATE_SUBTITLE}}</font>
+                                </p>
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td height="10" style="font-size: 0; line-height: 0;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <p style="margin: 0; padding: 0; font-size: 14px; color: #ffffff; font-weight: 500; mso-line-height-rule: exactly; line-height: 21px;">
+                                    <font color="#ffffff">{{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · </font>
+                                    <a href="{{VIEW_URL}}" style="color: #ffffff; text-decoration: underline;">
+                                        <font color="#ffffff">View in browser</font>
+                                    </a>
+                                    <font color="#ffffff"> · </font>
+                                    <a href="{{EDIT_URL}}" style="color: #ffffff; text-decoration: underline;">
+                                        <font color="#ffffff">Edit</font>
+                                    </a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
         
         <!-- Main Content -->
         <div class="email-content">
