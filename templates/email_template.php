@@ -420,8 +420,8 @@
         <!-- Header -->
         <div class="email-header">
             <div style="text-align: left;">
-                <h2 style="margin: 0; font-size: 28px; font-weight: 700; color: white;">{{GREETING}}</h2>
-                <p style="margin: 5px 0 0 0; font-size: 18px; color: white; opacity: 0.9;">{{DATE_SUBTITLE}}</p>
+                <h2 style="margin: 0; font-size: 32px; font-weight: 700; color: white; text-transform: capitalize; letter-spacing: 0.5px; opacity: 0.9;">{{GREETING}}</h2>
+                <p style="margin: -5px 0 0 0; font-size: 21px; color: white; opacity: 0.7; font-weight: 700; letter-spacing: 0.5px;">{{DATE_SUBTITLE}}</p>
                 <p style="margin: 10px 0 0 0; font-size: 14px; color: white; opacity: 0.7;">
                     {{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · 
                     <a href="{{VIEW_URL}}" style="color: white; opacity: 0.9;">View in browser</a> · 
