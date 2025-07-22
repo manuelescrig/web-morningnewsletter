@@ -163,28 +163,39 @@ class NewsletterBuilder {
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
         $baseUrl = $protocol . '://' . $host;
         
+        // Get dynamic values
+        $greeting = $this->getTimeBasedGreeting();
+        $dateSubtitle = $this->getFormattedDateSubtitle();
+        $issueNumber = $historyId ? $this->getIssueNumberFromHistory($historyId) : $this->getNextIssueNumber();
+        
+        // Generate URLs
+        $viewUrl = '#';
+        $editUrl = '#';
+        
+        if ($historyId && !$isPreview) {
+            $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
+            $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
+            $viewUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
+            $editUrl = $baseUrl . '/dashboard/newsletter.php?id=' . $this->newsletter->getId();
+        } elseif (!$isPreview) {
+            // For non-history emails, still provide edit URL
+            $editUrl = $baseUrl . '/dashboard/newsletter.php?id=' . $this->newsletter->getId();
+        }
+        
         // Generate view in browser section
         $viewInBrowserSection = '';
         if ($historyId) {
             if ($isPreview) {
                 // Gray out the view in browser link for preview/history view
-                $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
-                    <p style="margin: 0; font-size: 12px; color: #6b7280;">
-                        Having trouble viewing this email? 
-                        <span style="color: #9ca3af; text-decoration: none; font-weight: 500; cursor: not-allowed;">View in browser</span>
-                    </p>
-                </div>';
+                $viewInBrowserSection = '<p style="margin: 15px 0 0 0; font-size: 12px; color: #6b7280; text-align: center;">
+                    Having trouble viewing this email? 
+                    <span style="color: #9ca3af; text-decoration: none; font-weight: 500; cursor: not-allowed;">View in browser</span>
+                </p>';
             } else {
-                $viewSecretKey = 'newsletter_view_secret_2025'; // In production, use env variable
-                $viewToken = hash('sha256', $historyId . $this->user->getId() . $viewSecretKey);
-                $viewInBrowserUrl = $baseUrl . '/newsletter-view.php?id=' . $historyId . '&token=' . $viewToken;
-                
-                $viewInBrowserSection = '<div style="background-color: #f8f9fa; padding: 8px 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
-                    <p style="margin: 0; font-size: 12px; color: #6b7280;">
-                        Having trouble viewing this email? 
-                        <a href="' . htmlspecialchars($viewInBrowserUrl) . '" style="color: #468BE6; text-decoration: none; font-weight: 500;">View in browser</a>
-                    </p>
-                </div>';
+                $viewInBrowserSection = '<p style="margin: 15px 0 0 0; font-size: 12px; color: #6b7280; text-align: center;">
+                    Having trouble viewing this email? 
+                    <a href="' . htmlspecialchars($viewUrl) . '" style="color: #468BE6; text-decoration: none; font-weight: 500;">View in browser</a>
+                </p>';
             }
         }
         
@@ -197,6 +208,11 @@ class NewsletterBuilder {
         
         $html = str_replace('{{RECIPIENT_EMAIL}}', $recipientEmail, $html);
         $html = str_replace('{{DATE}}', $this->formatDateInUserTimezone('F j, Y'), $html);
+        $html = str_replace('{{GREETING}}', $greeting, $html);
+        $html = str_replace('{{DATE_SUBTITLE}}', $dateSubtitle, $html);
+        $html = str_replace('{{ISSUE_NUMBER}}', $issueNumber, $html);
+        $html = str_replace('{{VIEW_URL}}', htmlspecialchars($viewUrl), $html);
+        $html = str_replace('{{EDIT_URL}}', htmlspecialchars($editUrl), $html);
         $html = str_replace('{{NEWSLETTER_TITLE}}', $this->newsletter->getTitle(), $html);
         $html = str_replace('{{NEWSLETTER_ID}}', $this->newsletter->getId(), $html);
         $html = str_replace('{{USER_ID}}', $this->user->getId(), $html);
@@ -292,6 +308,75 @@ class NewsletterBuilder {
         } catch (Exception $e) {
             // Fallback to server timezone if user timezone is invalid
             return date($format);
+        }
+    }
+    
+    private function getTimeBasedGreeting() {
+        try {
+            // Get the user's timezone or fallback to newsletter timezone
+            $userTimezone = $this->user->getTimezone() ?? $this->newsletter->getTimezone() ?? 'UTC';
+            $dateTime = new DateTime('now', new DateTimeZone($userTimezone));
+            $hour = (int)$dateTime->format('G'); // 0-23 hour format
+            
+            if ($hour >= 5 && $hour < 12) {
+                return 'Good morning';
+            } elseif ($hour >= 12 && $hour < 17) {
+                return 'Good afternoon';
+            } elseif ($hour >= 17 && $hour < 21) {
+                return 'Good evening';
+            } else {
+                return 'Good night';
+            }
+        } catch (Exception $e) {
+            // Fallback to morning greeting if timezone is invalid
+            return 'Good morning';
+        }
+    }
+    
+    private function getFormattedDateSubtitle() {
+        try {
+            // Get the user's timezone or fallback to newsletter timezone
+            $userTimezone = $this->user->getTimezone() ?? $this->newsletter->getTimezone() ?? 'UTC';
+            $dateTime = new DateTime('now', new DateTimeZone($userTimezone));
+            // Format: "It's Monday, July 21"
+            return "It's " . $dateTime->format('l, F j');
+        } catch (Exception $e) {
+            // Fallback format if timezone is invalid
+            return "It's " . date('l, F j');
+        }
+    }
+    
+    private function getNextIssueNumber() {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("
+                SELECT COALESCE(MAX(issue_number), 0) + 1 as next_issue 
+                FROM newsletter_history 
+                WHERE newsletter_id = ?
+            ");
+            $stmt->execute([$this->newsletter->getId()]);
+            $result = $stmt->fetch();
+            return $result['next_issue'] ?? 1;
+        } catch (Exception $e) {
+            error_log("Error getting next issue number: " . $e->getMessage());
+            return 1;
+        }
+    }
+    
+    private function getIssueNumberFromHistory($historyId) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("
+                SELECT issue_number 
+                FROM newsletter_history 
+                WHERE id = ?
+            ");
+            $stmt->execute([$historyId]);
+            $result = $stmt->fetch();
+            return $result['issue_number'] ?? 1;
+        } catch (Exception $e) {
+            error_log("Error getting issue number from history: " . $e->getMessage());
+            return 1;
         }
     }
     
