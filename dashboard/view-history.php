@@ -134,18 +134,34 @@ $currentPage = 'history';
             </div>
         </div>
 
-        <!-- Newsletter Content -->
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h2 class="text-lg font-semibold text-gray-900">Newsletter Content</h2>
-                <p class="text-sm text-gray-600 mt-1">This is exactly what was sent to your email</p>
+        <!-- Newsletter preview in device mockup -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+            <!-- Email client mockup header -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex space-x-1">
+                            <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        </div>
+                        <span class="text-sm font-medium text-gray-600">Email Preview</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                        <span><i class="fas fa-envelope mr-1"></i> To: <?php echo htmlspecialchars($user->getEmail()); ?></span>
+                        <span><i class="fas fa-calendar mr-1"></i> <?php echo date('F j, Y g:i A', strtotime($historyEntry['sent_at'])); ?></span>
+                    </div>
+                </div>
             </div>
             
-            <div id="newsletter-content" class="p-6">
-                <!-- Newsletter HTML Content -->
-                <div class="newsletter-preview">
-                    <?php echo $historyEntry['content']; ?>
-                </div>
+            <!-- Newsletter content with proper styling -->
+            <div id="newsletter-content" class="newsletter-display" style="background-color: #f8f9fa; padding: 0;">
+                <iframe 
+                    srcdoc="<?php echo htmlspecialchars($historyEntry['content'], ENT_QUOTES); ?>" 
+                    class="w-full border-0" 
+                    style="min-height: 600px; background: white;"
+                    onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';">
+                </iframe>
             </div>
         </div>
 
@@ -156,36 +172,32 @@ $currentPage = 'history';
     <?php include __DIR__ . '/includes/lucide-init.php'; ?>
     <script>
         function printNewsletter() {
-            Dashboard.print.hideElementsAndPrint(['nav', '.max-w-7xl > .mb-6']);
+            // Print the iframe content directly
+            const iframe = document.querySelector('iframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.print();
+            }
         }
         
-        // Override legacy font declarations in newsletter content
-        document.addEventListener('DOMContentLoaded', function() {
-            const newsletterPreview = document.querySelector('.newsletter-preview');
-            if (newsletterPreview) {
-                // Find and modify any style elements within the newsletter
-                const styleElements = newsletterPreview.querySelectorAll('style');
-                styleElements.forEach(function(style) {
-                    if (style.textContent.includes('Segoe UI')) {
-                        style.textContent = style.textContent.replace(
-                            /font-family:\s*[^;]+;/g, 
-                            'font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";'
-                        );
-                    }
-                });
-                
-                // Also override any inline styles
-                const elementsWithFontFamily = newsletterPreview.querySelectorAll('[style*="font-family"]');
-                elementsWithFontFamily.forEach(function(element) {
-                    const currentStyle = element.getAttribute('style');
-                    const newStyle = currentStyle.replace(
-                        /font-family:\s*[^;]+;?/g, 
-                        'font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";'
-                    );
-                    element.setAttribute('style', newStyle);
-                });
+        // Auto-resize iframe based on content
+        function resizeIframe() {
+            const iframe = document.querySelector('iframe');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    const height = iframe.contentWindow.document.documentElement.scrollHeight;
+                    iframe.style.height = height + 'px';
+                } catch (e) {
+                    // Fallback height if cross-origin issues
+                    iframe.style.height = '800px';
+                }
             }
-        });
+        }
+        
+        // Resize on load
+        window.addEventListener('load', resizeIframe);
+        
+        // Resize periodically in case content changes
+        setInterval(resizeIframe, 1000);
     </script>
 </body>
 </html>
