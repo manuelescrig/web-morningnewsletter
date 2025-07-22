@@ -224,7 +224,7 @@ $currentPage = 'dashboard';
                                         Manage Sources
                                     </a>
                                     <button onclick="editNewsletter(<?php echo $newsletter->getId(); ?>)" 
-                                            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                            class="btn-secondary-dark px-4 py-2 rounded-md text-sm font-medium">
                                         Edit
                                     </button>
                                     <button onclick="deleteNewsletter(<?php echo $newsletter->getId(); ?>)" 

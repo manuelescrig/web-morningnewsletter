@@ -120,7 +120,7 @@ $currentPage = 'history';
                 
                 <div class="flex space-x-3">
                     <button onclick="printNewsletter()" 
-                            class="btn-pill bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 font-medium transition-colors duration-200">
+                            class="btn-pill btn-secondary-dark px-4 py-2 font-medium">
                         <i class="fas fa-print mr-2"></i>
                         Print
                     </button>
