@@ -145,7 +145,7 @@ $currentPage = 'history';
                             <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
                             <div class="w-3 h-3 bg-green-400 rounded-full"></div>
                         </div>
-                        <span class="text-sm font-medium text-gray-600">Email Preview</span>
+                        <span class="text-sm font-medium text-gray-600"><?php echo htmlspecialchars($historyEntry['newsletter_title']); ?></span>
                     </div>
                     <div class="flex items-center space-x-4 text-sm text-gray-500">
                         <span><i class="fas fa-envelope mr-1"></i> To: <?php echo htmlspecialchars($user->getEmail()); ?></span>
