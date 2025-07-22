@@ -438,30 +438,30 @@
                                         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
                                                 <td style="padding: 30px 20px; text-align: left;">
-                                                    <h2 style="margin: 0; padding: 0; font-size: 32px; font-weight: 700; color: #e6e6e6; text-transform: capitalize; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 38px;">
-                                                        <font color="#e6e6e6">{{GREETING}}</font>
+                                                    <h2 style="margin: 0; padding: 0; font-size: 32px; font-weight: 700; color: #fdfdfd; text-transform: capitalize; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 38px;">
+                                                        <font color="#fdfdfd">{{GREETING}}</font>
                                                     </h2>
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td height="0" style="font-size: 0; line-height: 0;">&nbsp;</td>
                                                         </tr>
                                                     </table>
-                                                    <p style="margin: 0; padding: 0; font-size: 21px; color: #b3b3b3; font-weight: 700; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 28px;">
-                                                        <font color="#b3b3b3">{{DATE_SUBTITLE}}</font>
+                                                    <p style="margin: 0; padding: 0; font-size: 21px; color: #fdfdfd; font-weight: 700; letter-spacing: 0.5px; mso-line-height-rule: exactly; line-height: 28px;">
+                                                        <font color="#fdfdfd">{{DATE_SUBTITLE}}</font>
                                                     </p>
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td height="10" style="font-size: 0; line-height: 0;">&nbsp;</td>
                                                         </tr>
                                                     </table>
-                                                    <p style="margin: 0; padding: 0; font-size: 14px; color: #b3b3b3; font-weight: 500; mso-line-height-rule: exactly; line-height: 21px;">
-                                                        <font color="#b3b3b3">{{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · </font>
-                                                        <a href="{{VIEW_URL}}" style="color: #e6e6e6; text-decoration: underline;">
-                                                            <font color="#e6e6e6">View in browser</font>
+                                                    <p style="margin: 0; padding: 0; font-size: 14px; color: #e3e3e3; font-weight: 500; mso-line-height-rule: exactly; line-height: 21px;">
+                                                        <font color="#e3e3e3">{{NEWSLETTER_TITLE}} · Issue #{{ISSUE_NUMBER}} · </font>
+                                                        <a href="{{VIEW_URL}}" style="color: #e3e3e3; text-decoration: underline;">
+                                                            <font color="#e3e3e3">View in browser</font>
                                                         </a>
-                                                        <font color="#b3b3b3"> · </font>
-                                                        <a href="{{EDIT_URL}}" style="color: #e6e6e6; text-decoration: underline;">
-                                                            <font color="#e6e6e6">Edit</font>
+                                                        <font color="#e3e3e3"> · </font>
+                                                        <a href="{{EDIT_URL}}" style="color: #e3e3e3; text-decoration: underline;">
+                                                            <font color="#e3e3e3">Edit</font>
                                                         </a>
                                                     </p>
                                                 </td>
