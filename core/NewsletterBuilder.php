@@ -246,9 +246,8 @@ class NewsletterBuilder {
         $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
         
-        $html = "
-        <div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
-            <h2 style='margin: 0 0 16px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
+        $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
+            <h2 style='margin: 0 0 0px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {
             $html .= "<div style='space-y: 12px;'>";
@@ -259,10 +258,10 @@ class NewsletterBuilder {
                     $value = htmlspecialchars($item['value']);
                     $delta = $item['delta'] ?? null;
                     
-                    $html .= "<div style='display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #e5e7eb;'>
+                    $html .= "<div style='display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #e5e7eb; flex-direction: row; align-items: baseline;'>
                                 <span style='color: #6b7280; font-weight: 500;'>$label:</span>
                                 <div style='text-align: right;'>
-                                    <span style='color: #1f2937; font-weight: 600;'>$value</span>";
+                                    <span style='color: #1f2937; font-weight: 600; font-size: 20px; letter-spacing: 0.5px;'>$value</span>";
                     
                     if ($delta !== null) {
                         if (is_array($delta) && isset($delta['value'], $delta['color'])) {
@@ -289,7 +288,7 @@ class NewsletterBuilder {
         }
         
         if ($lastUpdated) {
-            $html .= "<div style='margin-top: 12px; text-align: right;'>
+            $html .= "<div style='margin-top: 4px; text-align: right;'>
                         <span style='color: #9ca3af; font-size: 12px;'>Updated: $lastUpdated</span>
                       </div>";
         }
