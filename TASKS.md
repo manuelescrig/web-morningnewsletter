@@ -10,6 +10,33 @@ RULES:
 
 ## TASKS
 
+### Add Data Source Modal improvements
+- The All category has a border. Remove it. All the category should behave the same, in fact remove all the borders in regular state and hover state for those filter categories.
+
+### Add Data Source Modal improvements
+- The source-card box has a .border-gray-200, remove it. It looks nicer without it. Also  no need for the category tag in there. It's just too much info and redundant.
+
+### Implement Finance sources
+- I belive there's a document explaining how to add a source, otherwise we will create one because we are going to add more sources.
+- I want a Stock source that uses a free API and the user can search for stocks and then it adds the price of the stock to the newsletters. Kind of like with bitcoins but with Stocks.
+- When implementing a new source please check how the current source are working and to the same thing.
+- Do a double check to see what you are missing and please fix it. I want the user to select the Stock Source, to have the option to search for a stock with autocompletion and then select it and add it to the newsletter and recieve it.
+- Make sure to make it editable for the user and to add it to the Sources screen so the admin can enable/disable it.
+
+### Implement News Sources
+- I belive there's a document explaining how to add a source, otherwise we will create one because we are going to add more sources.
+- I want to give the user to add an RSS as a news source, the user can put a RSS, then the RSS will be validated and if it is valid add it. The user can choose the number of the RSS items to be fetched, the options houls be like 1,3,5. Then if the RSS is valid the user will able to receive in the newsletter those items. Make them look nice on the newsletter and try to match the style we have.
+- Do a double check to see what you are missing and please fix it. I want the user to select the Stock Source, to have the option to search for a stock with autocompletion and then select it and add it to the newsletter and recieve it.
+- Make sure to make it editable for the user and to add it to the Sources screen so the admin can enable/disable it.
+
+### Update Add Data Source & Newsletter Settings
+- Update Add Data Source & Newsletter Settings modals to match on the screeen in smaller screens, currently there/s no padding, put some padding to make it look more natural. Also remove the blur in the background and put a shared of black. Currently it's not showing it.
+
+### Improve Crypto and Finance Sources 
+- I want for crypto and finance sources to give the user the ability to show their holding value. Something like Show holding value and the ability to put 0.5x of the asset or something like 100x and then if the user has that enabled it will be calculated and shown in the preview and in the email newsletter. Format the numbers properly. And make this look nice.
+
+
+
 ### ~~Remove custom.css~~ ✅ COMPLETED
 - We already have the dashboard.css so let's move all the code from custom.css to dashboard.css, I forgot about that. Also update all the places were we use it to make sure it works. Double check where we use custom.css and change it to dashbaord.css
 

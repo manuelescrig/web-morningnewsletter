@@ -26,10 +26,10 @@ const NewsletterEditor = {
             filterButtons.forEach(btn => {
                 if (btn.dataset.category === category) {
                     btn.classList.add('bg-primary', 'text-primary-lightest');
-                    btn.classList.remove('bg-gray-100', 'text-gray-700');
+                    btn.classList.remove('bg-gray-200', 'text-gray-700');
                 } else {
                     btn.classList.remove('bg-primary', 'text-primary-lightest');
-                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
                 }
             });
         },
@@ -49,23 +49,23 @@ const NewsletterEditor = {
                             data-category="all" onclick="NewsletterEditor.filter.byCategory('all')">
                         All
                     </button>
-                    <button class="category-filter pill-gray text-sm font-medium" 
+                    <button class="category-filter bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="crypto" onclick="NewsletterEditor.filter.byCategory('crypto')">
                         Crypto
                     </button>
-                    <button class="category-filter pill-gray text-sm font-medium" 
+                    <button class="category-filter bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="finance" onclick="NewsletterEditor.filter.byCategory('finance')">
                         Finance
                     </button>
-                    <button class="category-filter pill-gray text-sm font-medium" 
+                    <button class="category-filter bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="lifestyle" onclick="NewsletterEditor.filter.byCategory('lifestyle')">
                         Lifestyle
                     </button>
-                    <button class="category-filter pill-gray text-sm font-medium" 
+                    <button class="category-filter bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="news" onclick="NewsletterEditor.filter.byCategory('news')">
                         News
                     </button>
-                    <button class="category-filter pill-gray text-sm font-medium" 
+                    <button class="category-filter bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-800 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200" 
                             data-category="business" onclick="NewsletterEditor.filter.byCategory('business')">
                         Business
                     </button>

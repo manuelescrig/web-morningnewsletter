@@ -677,11 +677,13 @@ button,
 /* Source Category Filtering */
 .category-filter {
     transition: all 0.2s ease-in-out;
+    border: none !important;
 }
 
 .category-filter:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none !important;
 }
 
 /* Source category headers */
