@@ -16,7 +16,7 @@ I want to have everywhere we have a pill button either the blue blackground or t
   customize from there all the buttons from the dashboard, like the 2 types or 3 types and fromt custom.css just chaning one property make it bigger, change the background color, the font size, weidght or 
   color. All those things. Slowly I want to get rid off tailwind so this is the first step. Make sure and double check that all of them are done.
 
-### Fix delivery configuration
+### ~~Fix delivery configuration~~ ✅ COMPLETED
 Schedule Status
 Current Time:
 Jul 23, 9:37 AM

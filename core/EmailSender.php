@@ -313,6 +313,68 @@ class EmailSender {
         return $this->sendEmail($email, $subject, $htmlBody);
     }
     
+    public function sendWelcomeEmail($email, $name = '') {
+        $subject = "Welcome to MorningNewsletter!";
+        
+        // Extract first name from full name or email
+        $firstName = $name;
+        if (empty($firstName)) {
+            // Try to extract from email (e.g., john.doe@email.com -> John)
+            $emailParts = explode('@', $email);
+            $namePart = $emailParts[0];
+            $firstName = ucfirst(preg_replace('/[._-].*/', '', $namePart));
+        } else {
+            // Extract first name from full name
+            $nameParts = explode(' ', $name);
+            $firstName = $nameParts[0];
+        }
+        
+        $htmlBody = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Welcome to MorningNewsletter</title>
+        </head>
+        <body style='font-family: ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;'>
+            <div style='background-color: #f8f9fa; padding: 30px; border-radius: 8px;'>
+                <p style='font-size: 16px; margin-bottom: 20px;'>Hi $firstName,</p>
+                
+                <p style='font-size: 16px; margin-bottom: 20px;'>
+                    My name is Manuel, and I'm the founder of MorningNewsletter. Thanks so much for signing up!
+                </p>
+                
+                <p style='font-size: 16px; margin-bottom: 20px;'>
+                    If you ever have any questions or just want to share your thoughts, just reply to this email, I read every response.
+                </p>
+                
+                <p style='font-size: 16px; margin-bottom: 20px;'>
+                    Manuel
+                </p>
+                
+                <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;'>
+                    <p style='font-size: 14px; color: #666; text-align: center;'>
+                        You're receiving this because you signed up for MorningNewsletter.<br>
+                        <a href='https://morningnewsletter.com' style='color: #468BE6; text-decoration: none;'>morningnewsletter.com</a>
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>";
+        
+        // Also prepare plain text version
+        $plainBody = "Hi $firstName,\n\n";
+        $plainBody .= "My name is Manuel, and I'm the founder of MorningNewsletter. Thanks so much for signing up!\n\n";
+        $plainBody .= "If you ever have any questions or just want to share your thoughts, just reply to this email, I read every response.\n\n";
+        $plainBody .= "Manuel\n\n";
+        $plainBody .= "---\n";
+        $plainBody .= "You're receiving this because you signed up for MorningNewsletter.\n";
+        $plainBody .= "morningnewsletter.com";
+        
+        return $this->sendEmail($email, $subject, $htmlBody);
+    }
+    
     public function sendPasswordResetEmail($email, $token) {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';

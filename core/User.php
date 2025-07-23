@@ -95,6 +95,17 @@ class User {
         $success = $stmt->execute([$this->id, $token]);
         if ($success && $stmt->rowCount() > 0) {
             $this->email_verified = 1;
+            
+            // Send welcome email after successful verification
+            try {
+                require_once __DIR__ . '/EmailSender.php';
+                $emailSender = new EmailSender();
+                $emailSender->sendWelcomeEmail($this->email, $this->name);
+            } catch (Exception $e) {
+                // Log error but don't fail the verification
+                error_log("Failed to send welcome email: " . $e->getMessage());
+            }
+            
             return true;
         }
         return false;
