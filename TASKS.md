@@ -3,14 +3,14 @@ List of task for claude cursor to implement.
 
 RULES: 
 - For each task, create a commit so then I have the flexibility to revert it if I don't like what I see.
-- Check for tasks below and implmement them following the orders, one the task has been complated, mark the task complated in this .md file.
+- Check for tasks below and implmement them following the orders.
+- Once the task has been complated, mark the task complated in this .md file.
 - Keep implemeting these tasks in the project allways doing a good deep dive of the project and thinking really hard to understand what the user wants.
 - Do not stop until you've finished implementing these tasks.
 
-
 ## TASKS
 
-### Refactor Dashboard Pill Buttons to Use Centralized CSS Variables
+### ~~Refactor Dashboard Pill Buttons to Use Centralized CSS Variables~~ ✅ COMPLETED
 I want to have everywhere we have a pill button either the blue blackground or the grayish/white backgroudn. Ok, go trough the whole dashboard files and make sure where we have the grayish bakcground to 
   create a new background color constant if we don't have it and use it everywhere in those places, also do the same for the other button properties, basically I'd like to have in the custom.css the option to 
   customize from there all the buttons from the dashboard, like the 2 types or 3 types and fromt custom.css just chaning one property make it bigger, change the background color, the font size, weidght or 

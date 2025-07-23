@@ -148,16 +148,28 @@ class Scheduler {
         return $sendTime >= $windowStart && $sendTime <= $windowEnd;
     }
     
-    private function wasNewsletterSentToday($newsletterId) {
-        $today = date('Y-m-d');
+    private function wasNewsletterSentToday($newsletterId, $timezone = 'UTC') {
+        // Get today's date in the newsletter's timezone
+        $userTimezone = new DateTimeZone($timezone);
+        $userTime = new DateTime('now', $userTimezone);
+        $todayInUserTz = $userTime->format('Y-m-d');
+        
+        // Calculate the UTC range for this day in user's timezone
+        $startOfDayUser = new DateTime($todayInUserTz . ' 00:00:00', $userTimezone);
+        $endOfDayUser = new DateTime($todayInUserTz . ' 23:59:59', $userTimezone);
+        
+        // Convert to UTC for database query
+        $startOfDayUser->setTimezone(new DateTimeZone('UTC'));
+        $endOfDayUser->setTimezone(new DateTimeZone('UTC'));
+        
         $stmt = $this->db->prepare("
             SELECT COUNT(*) as count 
             FROM newsletter_history 
             WHERE newsletter_id = ? 
             AND email_sent = 1 
-            AND DATE(sent_at) = ?
+            AND sent_at BETWEEN ? AND ?
         ");
-        $stmt->execute([$newsletterId, $today]);
+        $stmt->execute([$newsletterId, $startOfDayUser->format('Y-m-d H:i:s'), $endOfDayUser->format('Y-m-d H:i:s')]);
         $result = $stmt->fetch();
         
         return $result['count'] > 0;
@@ -188,22 +200,31 @@ class Scheduler {
         return null;
     }
     
-    private function wasNewsletterSentAtTimeToday($newsletterId, $sendTime) {
-        $today = date('Y-m-d');
+    private function wasNewsletterSentAtTimeToday($newsletterId, $sendTime, $timezone = 'UTC') {
+        // Get today's date in the newsletter's timezone
+        $userTimezone = new DateTimeZone($timezone);
+        $userTime = new DateTime('now', $userTimezone);
+        $todayInUserTz = $userTime->format('Y-m-d');
         
-        // Create time window around the send time (30 minutes)
-        $startTime = date('H:i:s', strtotime($sendTime . ' -15 minutes'));
-        $endTime = date('H:i:s', strtotime($sendTime . ' +15 minutes'));
+        // Create time window around the send time (30 minutes) in user's timezone
+        $sendDateTime = new DateTime($todayInUserTz . ' ' . $sendTime, $userTimezone);
+        $startDateTime = clone $sendDateTime;
+        $startDateTime->sub(new DateInterval('PT15M'));
+        $endDateTime = clone $sendDateTime;
+        $endDateTime->add(new DateInterval('PT15M'));
+        
+        // Convert to UTC for database query
+        $startDateTime->setTimezone(new DateTimeZone('UTC'));
+        $endDateTime->setTimezone(new DateTimeZone('UTC'));
         
         $stmt = $this->db->prepare("
             SELECT COUNT(*) as count 
             FROM newsletter_history 
             WHERE newsletter_id = ? 
             AND email_sent = 1 
-            AND DATE(sent_at) = ?
-            AND TIME(sent_at) BETWEEN ? AND ?
+            AND sent_at BETWEEN ? AND ?
         ");
-        $stmt->execute([$newsletterId, $today, $startTime, $endTime]);
+        $stmt->execute([$newsletterId, $startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')]);
         $result = $stmt->fetch();
         
         return $result['count'] > 0;
@@ -350,7 +371,7 @@ class Scheduler {
                 $timeStamp = strtotime($time);
                 if ($timeStamp > $currentTimeStamp) {
                     // Check if not already sent at this time
-                    if (!$this->wasNewsletterSentAtTimeToday($newsletter->getId(), $time)) {
+                    if (!$this->wasNewsletterSentAtTimeToday($newsletter->getId(), $time, $newsletter->getTimezone())) {
                         $nextSend = clone $currentTime;
                         list($hour, $minute) = explode(':', $time);
                         $nextSend->setTime((int)$hour, (int)$minute, 0);
@@ -512,7 +533,7 @@ class Scheduler {
         if ($object instanceof Newsletter) {
             $newsletter = $object;
             $nextSend = $this->getNextSendTime($newsletter);
-            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
+            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId(), $newsletter->getTimezone());
             $timezone = $newsletter->getTimezone();
             $sendTime = $newsletter->getSendTime();
             $lastSentTime = $this->getLastSentTime($newsletter->getId(), $timezone);
@@ -523,7 +544,7 @@ class Scheduler {
                 throw new Exception("User has no newsletters");
             }
             $nextSend = $this->getNextSendTime($newsletter);
-            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId());
+            $wasEmailSentToday = $this->wasNewsletterSentToday($newsletter->getId(), $newsletter->getTimezone());
             $timezone = $newsletter->getTimezone();
             $sendTime = $newsletter->getSendTime();
             $lastSentTime = $this->getLastSentTime($newsletter->getId(), $timezone);
@@ -565,7 +586,7 @@ class Scheduler {
      */
     private function shouldSendNewsletterAtTime(Newsletter $newsletter, DateTime $currentTime, $sendTime) {
         // First check if already sent at this time today
-        if ($this->wasNewsletterSentAtTimeToday($newsletter->getId(), $sendTime)) {
+        if ($this->wasNewsletterSentAtTimeToday($newsletter->getId(), $sendTime, $newsletter->getTimezone())) {
             return false;
         }
         
@@ -592,7 +613,7 @@ class Scheduler {
      * Check if daily newsletter should be sent (original logic)
      */
     private function shouldSendDaily(Newsletter $newsletter) {
-        return !$this->wasNewsletterSentToday($newsletter->getId());
+        return !$this->wasNewsletterSentToday($newsletter->getId(), $newsletter->getTimezone());
     }
     
     
@@ -625,7 +646,7 @@ class Scheduler {
         }
         
         // Check if already sent today
-        return !$this->wasNewsletterSentToday($newsletter->getId());
+        return !$this->wasNewsletterSentToday($newsletter->getId(), $newsletter->getTimezone());
     }
     
     /**
