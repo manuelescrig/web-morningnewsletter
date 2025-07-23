@@ -127,6 +127,23 @@ try {
     $stmt = $db->prepare("UPDATE newsletter_history SET content = ? WHERE id = ?");
     $stmt->execute([$newsletterHtml, $historyId]);
     
+    // Inject CSS to disable all links in the newsletter content
+    $disableLinksCss = '
+    <style>
+        a, a:hover, a:visited, a:active {
+            color: #93BFEF !important;
+            cursor: not-allowed !important;
+            text-decoration: none !important;
+            pointer-events: none !important;
+        }
+        a * {
+            pointer-events: none !important;
+        }
+    </style>';
+    
+    // Add the CSS to the beginning of the content for preview display
+    $newsletterHtmlWithDisabledLinks = $disableLinksCss . $newsletterHtml;
+    
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -227,7 +244,7 @@ try {
                 <!-- Newsletter content with proper styling -->
                 <div class="newsletter-display" style="background-color: #f8f9fa; padding: 0;">
                     <iframe 
-                        srcdoc="<?php echo htmlspecialchars($newsletterHtml, ENT_QUOTES); ?>" 
+                        srcdoc="<?php echo htmlspecialchars($newsletterHtmlWithDisabledLinks, ENT_QUOTES); ?>" 
                         class="w-full border-0" 
                         style="min-height: 600px; background: white;"
                         onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';">
