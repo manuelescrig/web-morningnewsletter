@@ -274,6 +274,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $config = [];
                 
                 // Get configuration fields from POST data
+                // Handle both config[field_name] array format and config_field_name format
+                if (isset($_POST['config']) && is_array($_POST['config'])) {
+                    $config = $_POST['config'];
+                }
+                // Also check for config_ prefix format (legacy)
                 foreach ($_POST as $key => $value) {
                     if (strpos($key, 'config_') === 0) {
                         $configKey = substr($key, 7); // Remove 'config_' prefix
@@ -296,6 +301,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $config = [];
                 
                 // Get configuration fields from POST data
+                // Handle both config[field_name] array format and config_field_name format
+                if (isset($_POST['config']) && is_array($_POST['config'])) {
+                    $config = $_POST['config'];
+                }
+                // Also check for config_ prefix format (legacy)
                 foreach ($_POST as $key => $value) {
                     if (strpos($key, 'config_') === 0) {
                         $configKey = substr($key, 7); // Remove 'config_' prefix
