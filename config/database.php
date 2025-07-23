@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/constants.php';
+
 class Database {
     private static $instance = null;
     private $pdo;

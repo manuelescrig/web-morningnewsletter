@@ -8,6 +8,7 @@
 
 session_start();
 require_once __DIR__ . '/../core/User.php';
+require_once __DIR__ . '/../config/constants.php';
 require_once __DIR__ . '/../core/Newsletter.php';
 require_once __DIR__ . '/../core/Scheduler.php';
 
@@ -170,7 +171,7 @@ $currentPage = 'dashboard';
                         
                         <div>
                             <label for="send_time" class="block text-sm font-medium text-gray-700 mb-2">Send Time</label>
-                            <input type="time" name="send_time" id="send_time" value="06:00" required
+                            <input type="time" name="send_time" id="send_time" value="<?php echo DEFAULT_SEND_TIME; ?>" required
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                         </div>
                     </div>

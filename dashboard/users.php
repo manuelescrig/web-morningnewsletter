@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/User.php';
+require_once __DIR__ . '/../config/constants.php';
 
 $auth = Auth::getInstance();
 $auth->requireAuth();
@@ -517,8 +518,13 @@ $csrfToken = $auth->generateCSRFToken();
                                     </td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <?php 
-                                        $limits = ['free' => 1, 'starter' => 5, 'pro' => 15, 'unlimited' => PHP_INT_MAX];
-                                        $limit = $limits[$userData['plan']] ?? 1;
+                                        $limits = [
+                                            'free' => FREE_PLAN_SOURCE_LIMIT, 
+                                            'starter' => STARTER_PLAN_SOURCE_LIMIT, 
+                                            'pro' => PRO_PLAN_SOURCE_LIMIT, 
+                                            'unlimited' => UNLIMITED_PLAN_SOURCE_LIMIT
+                                        ];
+                                        $limit = $limits[$userData['plan']] ?? FREE_PLAN_SOURCE_LIMIT;
                                         $limitText = $limit === PHP_INT_MAX ? '∞' : $limit;
                                         $isAtLimit = $userData['source_count'] >= $limit && $limit !== PHP_INT_MAX;
                                         ?>

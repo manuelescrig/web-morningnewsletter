@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/constants.php';
 require_once __DIR__ . '/Newsletter.php';
 
 class User {
@@ -318,15 +319,15 @@ class User {
     public function getSourceLimit() {
         switch ($this->plan) {
             case 'free':
-                return 1;
+                return FREE_PLAN_SOURCE_LIMIT;
             case 'starter':
-                return 5;
+                return STARTER_PLAN_SOURCE_LIMIT;
             case 'pro':
-                return 15;
+                return PRO_PLAN_SOURCE_LIMIT;
             case 'unlimited':
-                return PHP_INT_MAX;
+                return UNLIMITED_PLAN_SOURCE_LIMIT;
             default:
-                return 1;
+                return FREE_PLAN_SOURCE_LIMIT;
         }
     }
     
