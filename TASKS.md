@@ -29,7 +29,7 @@ RULES:
 - Do a double check to see what you are missing and please fix it. I want the user to select the Stock Source, to have the option to search for a stock with autocompletion and then select it and add it to the newsletter and recieve it.
 - Make sure to make it editable for the user and to add it to the Sources screen so the admin can enable/disable it.
 
-### Update Add Data Source & Newsletter Settings
+### ~~Update Add Data Source & Newsletter Settings~~ ✅ COMPLETED
 - Update Add Data Source & Newsletter Settings modals to match on the screeen in smaller screens, currently there/s no padding, put some padding to make it look more natural. Also remove the blur in the background and put a shared of black. Currently it's not showing it.
 
 ### Improve Crypto and Finance Sources 

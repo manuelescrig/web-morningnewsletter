@@ -47,7 +47,7 @@ class StockModule extends BaseSourceModule {
             
             $displayName = !empty($this->config['display_name']) ? $this->config['display_name'] : $symbol;
             
-            return [
+            $result = [
                 [
                     'label' => $displayName,
                     'value' => $formattedPrice,
@@ -58,6 +58,37 @@ class StockModule extends BaseSourceModule {
                     ]
                 ]
             ];
+            
+            // Add holdings value if enabled
+            $showHoldings = isset($this->config['show_holdings']) && $this->config['show_holdings'] === 'on';
+            $holdingsAmount = floatval($this->config['holdings_amount'] ?? 0);
+            
+            if ($showHoldings && $holdingsAmount > 0) {
+                $holdingsValue = $currentPrice * $holdingsAmount;
+                
+                // Format holdings amount
+                $formattedAmount = number_format($holdingsAmount, 0);
+                
+                // Format holdings value
+                $formattedHoldingsValue = $currencySymbol . number_format($holdingsValue, 2);
+                
+                // Calculate holdings change
+                $holdingsChange = $change * $holdingsAmount;
+                $formattedHoldingsChange = ($holdingsChange >= 0 ? '+' : '') . $currencySymbol . number_format(abs($holdingsChange), 2);
+                
+                $result[] = [
+                    'label' => "Holdings ({$formattedAmount} shares)",
+                    'value' => $formattedHoldingsValue,
+                    'delta' => [
+                        'value' => $formattedHoldingsChange . ' (' . $formattedPercent . ')',
+                        'color' => $holdingsChange >= 0 ? 'green' : 'red',
+                        'raw_delta' => $holdingsChange
+                    ],
+                    'is_holdings' => true
+                ];
+            }
+            
+            return $result;
             
         } catch (Exception $e) {
             error_log('Stock module error: ' . $e->getMessage());
@@ -89,6 +120,23 @@ class StockModule extends BaseSourceModule {
                 'required' => false,
                 'description' => 'Custom name to display instead of symbol',
                 'placeholder' => 'e.g., Apple Inc.'
+            ],
+            [
+                'name' => 'show_holdings',
+                'type' => 'checkbox',
+                'label' => 'Show holding value',
+                'required' => false,
+                'description' => 'Display the value of your stock holdings'
+            ],
+            [
+                'name' => 'holdings_amount',
+                'type' => 'number',
+                'label' => 'Number of shares',
+                'required' => false,
+                'placeholder' => '100',
+                'description' => 'Number of shares you hold (e.g., 10, 100, 1000)',
+                'step' => '1',
+                'min' => '0'
             ]
         ];
     }

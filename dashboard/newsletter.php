@@ -1232,6 +1232,34 @@ $canAddSource = count($sources) < $maxSources;
                                    placeholder="e.g., Apple Inc.">
                             <p class="text-xs text-gray-500 mt-1">Custom name to display instead of stock symbol</p>
                         </div>
+                        <div class="mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="config[show_holdings]" id="config_stock_show_holdings" 
+                                       class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                       onchange="toggleStockHoldingsAmount()">
+                                <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                            </label>
+                            <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your stock holdings</p>
+                        </div>
+                        <div id="stockHoldingsAmountDiv" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of shares</label>
+                            <input type="number" name="config[holdings_amount]" id="config_stock_holdings_amount"
+                                   step="1" min="0"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="100">
+                            <p class="text-xs text-gray-500 mt-1">Number of shares you hold (e.g., 10, 100, 1000)</p>
+                        </div>
+                        <script>
+                            function toggleStockHoldingsAmount() {
+                                const checkbox = document.getElementById('config_stock_show_holdings');
+                                const div = document.getElementById('stockHoldingsAmountDiv');
+                                if (checkbox.checked) {
+                                    div.classList.remove('hidden');
+                                } else {
+                                    div.classList.add('hidden');
+                                }
+                            }
+                        </script>
                     `;
                     break;
                 case 'rss':
@@ -1265,13 +1293,44 @@ $canAddSource = count($sources) < $maxSources;
                 case 'ethereum':
                 case 'xrp':
                 case 'binancecoin':
+                    const cryptoSymbol = sourceType === 'bitcoin' ? 'BTC' : 
+                                       sourceType === 'ethereum' ? 'ETH' : 
+                                       sourceType === 'xrp' ? 'XRP' : 'BNB';
                     fieldsHtml = `
-                        <div class="bg-green-50 border border-green-200 rounded-md p-3">
+                        <div class="bg-green-50 border border-green-200 rounded-md p-3 mb-4">
                             <div class="flex">
                                 <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
-                                <p class="text-sm text-green-800">No configuration required! Cryptocurrency price data is provided free by Binance API with 24-hour comparison.</p>
+                                <p class="text-sm text-green-800">Cryptocurrency price data is provided free by Binance API.</p>
                             </div>
                         </div>
+                        <div class="mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="config[show_holdings]" id="config_show_holdings" 
+                                       class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                       onchange="toggleHoldingsAmount()">
+                                <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                            </label>
+                            <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your ${cryptoSymbol} holdings</p>
+                        </div>
+                        <div id="holdingsAmountDiv" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Holdings amount</label>
+                            <input type="number" name="config[holdings_amount]" id="config_holdings_amount"
+                                   step="0.00000001" min="0"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="0.5">
+                            <p class="text-xs text-gray-500 mt-1">Amount of ${cryptoSymbol} you hold (e.g., 0.5, 1.25, 100)</p>
+                        </div>
+                        <script>
+                            function toggleHoldingsAmount() {
+                                const checkbox = document.getElementById('config_show_holdings');
+                                const div = document.getElementById('holdingsAmountDiv');
+                                if (checkbox.checked) {
+                                    div.classList.remove('hidden');
+                                } else {
+                                    div.classList.add('hidden');
+                                }
+                            }
+                        </script>
                     `;
                     break;
                 case 'appstore':
