@@ -312,12 +312,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <?php endfor; ?>
                                         <?php endfor; ?>
                                     </select>
-                                    <button type="button" onclick="removeDailyTime(this)" class="btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn" style="display: none;">
-                                        <i class="icon-x"></i>
+                                    <button type="button" onclick="removeDailyTime(this)" class="remove-time-button px-2 py-2 transition-all duration-200" style="display: none;">
+                                        <i class="icon-x text-red-600"></i>
                                     </button>
                                 </div>
-                                <button type="button" onclick="addDailyTime()" class="btn-pill btn-secondary-light px-3 py-2 font-medium"
-                                    <i class="icon-plus"></i>
+                                <button type="button" onclick="addDailyTime()" class="add-time-button px-3 py-2 font-medium transition-all duration-200" id="addTimeButton">
+                                    <i class="icon-plus text-green-600"></i>
                                 </button>
                             </div>
                         </div>
@@ -566,6 +566,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
     <script>
+        // Load constants from PHP
+        <?php require_once __DIR__ . '/../config/constants.php'; ?>
+        
+        // Maximum number of daily times allowed
+        const MAX_DAILY_TIMES = <?php echo MAX_DAILY_TIMES; ?>;
+        
         // Newsletter data for the edit modal
         const newsletters = <?php echo json_encode(array_map(function($newsletter) {
             return [
@@ -630,6 +636,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Add daily time slot
         function addDailyTime() {
             const container = document.getElementById('daily-times-container');
+            const timeSlots = container.querySelectorAll('.time-slot');
+            
+            // Check if we've reached the maximum
+            if (timeSlots.length >= MAX_DAILY_TIMES) {
+                return;
+            }
             
             // Generate time options for 15-minute intervals
             let timeOptions = '';
@@ -761,11 +773,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
         
+        // Update add button state based on number of time slots
+        function updateAddButtonState() {
+            const container = document.getElementById('daily-times-container');
+            if (!container) return;
+            
+            const timeSlots = container.querySelectorAll('.time-slot');
+            const addButton = document.getElementById('addTimeButton');
+            
+            if (addButton) {
+                if (timeSlots.length >= MAX_DAILY_TIMES) {
+                    addButton.disabled = true;
+                    addButton.title = 'Maximum of ' + MAX_DAILY_TIMES + ' times allowed';
+                } else {
+                    addButton.disabled = false;
+                    addButton.title = 'Add another time';
+                }
+            }
+        }
+        
         // Initialize modal functionality
         document.addEventListener('DOMContentLoaded', function() {
             Dashboard.modal.closeOnOutsideClick('editModal');
-            // Initialize remove button visibility
+            // Initialize remove button visibility and add button state
             updateRemoveButtonsVisibility();
+            updateAddButtonState();
         });
     </script>
     <?php include __DIR__ . '/includes/lucide-init.php'; ?>

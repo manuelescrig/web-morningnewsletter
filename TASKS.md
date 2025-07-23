@@ -37,7 +37,7 @@ If you ever have any questions or just want to share your thoughts, just reply t
 
 Manuel
 
-### Update icons on the newsletter cards
+### ~~Update icons on the newsletter cards~~ ✅ COMPLETED
 - In the dashboard in the index page where we see all the newsletters cards. Update the icons of the cards to use the new lucide icons. Make sure they look centered with the text. Keep the current colors for those icons, basically jus swap them to lucide icons.
 
 ### Update Create New Newsletter box
