@@ -454,6 +454,15 @@ class Database {
                         'default_config' => json_encode([])
                     ],
                     [
+                        'type' => 'rss',
+                        'name' => 'RSS Feed',
+                        'description' => 'Subscribe to any RSS feed for custom news updates',
+                        'category' => 'news',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode(['feed_url' => '', 'item_limit' => '3', 'display_name' => ''])
+                    ],
+                    [
                         'type' => 'appstore',
                         'name' => 'App Store Sales',
                         'description' => 'App Store Connect revenue and sales tracking',

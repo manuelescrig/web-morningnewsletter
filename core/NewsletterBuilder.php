@@ -13,6 +13,7 @@ require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
@@ -140,6 +141,7 @@ class NewsletterBuilder {
             'stock' => 'StockModule',
             'weather' => 'WeatherModule',
             'news' => 'NewsModule',
+            'rss' => 'RSSModule',
             'appstore' => 'AppStoreModule',
             'stripe' => 'StripeModule'
         ];

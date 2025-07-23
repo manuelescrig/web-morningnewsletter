@@ -16,7 +16,7 @@ RULES:
 ### ~~Add Data Source Modal improvements~~ ✅ COMPLETED
 - The source-card box has a .border-gray-200, remove it. It looks nicer without it. Also  no need for the category tag in there. It's just too much info and redundant.
 
-### Implement Finance sources
+### ~~Implement Finance sources~~ ✅ COMPLETED
 - I belive there's a document explaining how to add a source, otherwise we will create one because we are going to add more sources.
 - I want a Stock source that uses a free API and the user can search for stocks and then it adds the price of the stock to the newsletters. Kind of like with bitcoins but with Stocks.
 - When implementing a new source please check how the current source are working and to the same thing.

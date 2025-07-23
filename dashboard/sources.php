@@ -11,6 +11,7 @@ require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
@@ -193,6 +194,7 @@ $csrfToken = $auth->generateCSRFToken();
                                                             'stock' => 'chart-line',
                                                             'weather' => 'cloud-sun',
                                                             'news' => 'newspaper',
+                                                            'rss' => 'rss',
                                                             'appstore' => 'mobile-alt',
                                                             'stripe' => 'credit-card'
                                                         ];

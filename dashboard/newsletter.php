@@ -21,6 +21,7 @@ require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
 
@@ -169,6 +170,7 @@ $moduleClasses = [
     'binancecoin' => 'BinancecoinModule',
     'weather' => 'WeatherModule',
     'news' => 'NewsModule',
+    'rss' => 'RSSModule',
     'sp500' => 'SP500Module',
     'stock' => 'StockModule',
     'stripe' => 'StripeModule',
@@ -1232,6 +1234,33 @@ $canAddSource = count($sources) < $maxSources;
                         </div>
                     `;
                     break;
+                case 'rss':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">RSS Feed URL *</label>
+                            <input type="url" name="config[feed_url]" id="config_feed_url" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="https://example.com/feed.xml">
+                            <p class="text-xs text-gray-500 mt-1">Enter the full URL of the RSS feed</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of items *</label>
+                            <select name="config[item_limit]" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="1">1 item</option>
+                                <option value="3" selected>3 items</option>
+                                <option value="5">5 items</option>
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">How many items to show from the feed</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
+                            <input type="text" name="config[display_name]" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="e.g., Tech News">
+                            <p class="text-xs text-gray-500 mt-1">Custom name to display instead of feed title</p>
+                        </div>
+                    `;
+                    break;
                 case 'bitcoin':
                 case 'ethereum':
                 case 'xrp':
@@ -1269,6 +1298,11 @@ $canAddSource = count($sources) < $maxSources;
             // Set up stock search for stock sources
             if (sourceType === 'stock') {
                 setupStockSearch();
+            }
+            
+            // Set up RSS validation for RSS sources
+            if (sourceType === 'rss') {
+                setTimeout(validateRSSFeed, 100); // Small delay to ensure DOM is ready
             }
         }
         
@@ -1510,6 +1544,50 @@ $canAddSource = count($sources) < $maxSources;
             document.getElementById('config_display_name').value = name;
             document.getElementById('stock_results').classList.add('hidden');
         }
+        
+        // RSS feed validation
+        function validateRSSFeed() {
+            const feedUrlInput = document.getElementById('config_feed_url');
+            if (!feedUrlInput) return;
+            
+            // Add real-time validation on blur
+            feedUrlInput.addEventListener('blur', function() {
+                const url = this.value.trim();
+                if (url) {
+                    checkRSSFeed(url);
+                }
+            });
+        }
+        
+        function checkRSSFeed(url) {
+            const feedUrlInput = document.getElementById('config_feed_url');
+            const parentDiv = feedUrlInput.parentElement;
+            
+            // Remove existing validation messages
+            const existingMsg = parentDiv.querySelector('.rss-validation-msg');
+            if (existingMsg) {
+                existingMsg.remove();
+            }
+            
+            // Create validation message element
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'rss-validation-msg text-xs mt-1';
+            msgDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating RSS feed...';
+            parentDiv.appendChild(msgDiv);
+            
+            // Validate the feed using a simple HEAD request first
+            fetch(url, { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                    msgDiv.innerHTML = '<i class="fas fa-check-circle text-green-500"></i> <span class="text-green-600">Valid RSS feed URL</span>';
+                    feedUrlInput.classList.remove('border-red-300');
+                    feedUrlInput.classList.add('border-green-300');
+                })
+                .catch(() => {
+                    msgDiv.innerHTML = '<i class="fas fa-exclamation-circle text-red-500"></i> <span class="text-red-600">Unable to validate RSS feed. Please ensure the URL is correct.</span>';
+                    feedUrlInput.classList.remove('border-green-300');
+                    feedUrlInput.classList.add('border-red-300');
+                });
+        }
     </script>
 
     <!-- Add Source Modal -->
@@ -1600,6 +1678,7 @@ $canAddSource = count($sources) < $maxSources;
                             'binancecoin' => 'fas fa-coins',
                             'weather' => 'fas fa-cloud-sun',
                             'news' => 'fas fa-newspaper',
+                            'rss' => 'fas fa-rss',
                             'sp500' => 'fas fa-chart-line',
                             'stock' => 'fas fa-chart-line',
                             'stripe' => 'fab fa-stripe',

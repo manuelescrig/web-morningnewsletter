@@ -172,6 +172,11 @@ const NewsletterEditor = {
                     this.setFieldValue(`${prefix}_stock_symbol`, config.symbol);
                     this.setFieldValue(`${prefix}_stock_display_name`, config.display_name);
                     break;
+                case 'rss':
+                    this.setFieldValue(`${prefix}_rss_feed_url`, config.feed_url);
+                    this.setFieldValue(`${prefix}_rss_item_limit`, config.item_limit);
+                    this.setFieldValue(`${prefix}_rss_display_name`, config.display_name);
+                    break;
                 // Add other source types as needed
             }
         },
