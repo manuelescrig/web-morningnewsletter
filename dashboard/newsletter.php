@@ -1488,7 +1488,7 @@ $canAddSource = count($sources) < $maxSources;
                             'description' => $sourceConfig ? $sourceConfig['description'] : 'Data source'
                         ];
                         ?>
-                        <div class="source-card border border-gray-200 rounded-lg p-4 hover:border-primary-light hover:shadow-md transition-all duration-200 cursor-pointer" 
+                        <div class="source-card rounded-lg p-4 hover:shadow-md transition-all duration-200 cursor-pointer" 
                              data-type="<?php echo $type; ?>" 
                              data-category="<?php echo $info['category']; ?>"
                              data-title="<?php echo strtolower($module->getTitle()); ?>"
@@ -1502,11 +1502,6 @@ $canAddSource = count($sources) < $maxSources;
                                 <div class="flex-1 min-w-0">
                                     <h4 class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($module->getTitle()); ?></h4>
                                     <p class="text-xs text-gray-500 mt-1"><?php echo $info['description']; ?></p>
-                                    <div class="mt-2">
-                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            <?php echo ucfirst($info['category']); ?>
-                                        </span>
-                                    </div>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <i class="fas fa-plus text-gray-400"></i>

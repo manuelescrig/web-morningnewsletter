@@ -686,6 +686,16 @@ button,
     border: none !important;
 }
 
+/* Source Cards */
+.source-card {
+    background-color: #f9fafb;
+    border: none;
+}
+
+.source-card:hover {
+    background-color: #f3f4f6;
+}
+
 /* Source category headers */
 .source-category {
     border-radius: 8px;
