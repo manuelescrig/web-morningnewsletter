@@ -665,8 +665,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
-            removeButton.className = 'btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn';
-            removeButton.innerHTML = '<i class="fas fa-xmark"></i>';
+            removeButton.className = 'remove-time-button px-2 py-2 transition-all duration-200';
+            removeButton.innerHTML = '<i class="fas fa-xmark text-red-600"></i>';
             removeButton.onclick = function() { removeDailyTime(this); };
             
             timeSlotWrapper.appendChild(newSelect);

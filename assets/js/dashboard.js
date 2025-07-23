@@ -278,12 +278,12 @@ const Dashboard = {
                                 class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
                             ${timeOptions}
                         </select>
-                        <button type="button" onclick="removeDailyTime(this)" class="btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn" style="display: none;">
-                            <i class="fas fa-times"></i>
+                        <button type="button" onclick="removeDailyTime(this)" class="remove-time-button px-2 py-2 transition-all duration-200" style="display: none;">
+                            <i class="fas fa-xmark text-red-600"></i>
                         </button>
                     </div>
-                    <button type="button" onclick="addDailyTime()" class="btn-pill btn-secondary-light px-3 py-2 font-medium">
-                        <i class="fas fa-plus"></i>
+                    <button type="button" onclick="addDailyTime()" class="add-time-button px-3 py-2 font-medium transition-all duration-200" id="addTimeButton">
+                        <i class="fas fa-plus text-green-600"></i>
                     </button>
                 `;
             }

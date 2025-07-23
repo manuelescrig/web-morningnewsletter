@@ -880,7 +880,7 @@ button,
 /* Add/Remove Time Button Styles */
 .add-time-button {
     background-color: transparent;
-    border: 1px solid #e5e7eb;
+    border: none;
     border-radius: 0.375rem;
     cursor: pointer;
     display: inline-flex;
@@ -890,7 +890,6 @@ button,
 
 .add-time-button:hover {
     background-color: #f0fdf4; /* light green background on hover */
-    border-color: #86efac;
 }
 
 .add-time-button:disabled {
@@ -900,7 +899,6 @@ button,
 
 .add-time-button:disabled:hover {
     background-color: transparent;
-    border-color: #e5e7eb;
 }
 
 .remove-time-button {
