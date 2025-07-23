@@ -107,11 +107,19 @@ class Auth {
             return null;
         }
         
-        return User::findById($_SESSION['user_id']);
+        $user = User::findById($_SESSION['user_id']);
+        
+        // If user doesn't exist in database, clear the invalid session
+        if (!$user) {
+            $this->logout();
+            return null;
+        }
+        
+        return $user;
     }
     
     public function requireAuth() {
-        if (!$this->isLoggedIn()) {
+        if (!$this->isLoggedIn() || !$this->getCurrentUser()) {
             header('Location: /auth/login.php');
             exit;
         }
