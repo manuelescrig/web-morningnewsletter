@@ -1249,17 +1249,6 @@ $canAddSource = count($sources) < $maxSources;
                                    placeholder="100">
                             <p class="text-xs text-gray-500 mt-1">Number of shares you hold (e.g., 10, 100, 1000)</p>
                         </div>
-                        <script>
-                            function toggleStockHoldingsAmount() {
-                                const checkbox = document.getElementById('config_stock_show_holdings');
-                                const div = document.getElementById('stockHoldingsAmountDiv');
-                                if (checkbox.checked) {
-                                    div.classList.remove('hidden');
-                                } else {
-                                    div.classList.add('hidden');
-                                }
-                            }
-                        </script>
                     `;
                     break;
                 case 'rss':
@@ -1320,17 +1309,6 @@ $canAddSource = count($sources) < $maxSources;
                                    placeholder="0.5">
                             <p class="text-xs text-gray-500 mt-1">Amount of ${cryptoSymbol} you hold (e.g., 0.5, 1.25, 100)</p>
                         </div>
-                        <script>
-                            function toggleHoldingsAmount() {
-                                const checkbox = document.getElementById('config_show_holdings');
-                                const div = document.getElementById('holdingsAmountDiv');
-                                if (checkbox.checked) {
-                                    div.classList.remove('hidden');
-                                } else {
-                                    div.classList.add('hidden');
-                                }
-                            }
-                        </script>
                     `;
                     break;
                 case 'appstore':
@@ -1362,6 +1340,28 @@ $canAddSource = count($sources) < $maxSources;
             // Set up RSS validation for RSS sources
             if (sourceType === 'rss') {
                 setTimeout(validateRSSFeed, 100); // Small delay to ensure DOM is ready
+            }
+            
+            // Set up holdings toggle for crypto sources
+            if (['bitcoin', 'ethereum', 'xrp', 'binancecoin'].includes(sourceType)) {
+                setTimeout(() => {
+                    const checkbox = document.getElementById('config_show_holdings');
+                    if (checkbox) {
+                        // Set initial state
+                        toggleHoldingsAmount();
+                    }
+                }, 100);
+            }
+            
+            // Set up holdings toggle for stock source
+            if (sourceType === 'stock') {
+                setTimeout(() => {
+                    const checkbox = document.getElementById('config_stock_show_holdings');
+                    if (checkbox) {
+                        // Set initial state
+                        toggleStockHoldingsAmount();
+                    }
+                }, 100);
             }
         }
         
@@ -1646,6 +1646,31 @@ $canAddSource = count($sources) < $maxSources;
                     feedUrlInput.classList.remove('border-green-300');
                     feedUrlInput.classList.add('border-red-300');
                 });
+        }
+        
+        // Toggle functions for holdings
+        function toggleHoldingsAmount() {
+            const checkbox = document.getElementById('config_show_holdings');
+            const div = document.getElementById('holdingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleStockHoldingsAmount() {
+            const checkbox = document.getElementById('config_stock_show_holdings');
+            const div = document.getElementById('stockHoldingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
         }
     </script>
 
