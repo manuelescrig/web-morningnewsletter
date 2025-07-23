@@ -10,10 +10,10 @@ RULES:
 
 ## TASKS
 
-### Add Data Source Modal improvements
+### ~~Add Data Source Modal improvements~~ ✅ COMPLETED
 - The All category has a border. Remove it. All the category should behave the same, in fact remove all the borders in regular state and hover state for those filter categories.
 
-### Add Data Source Modal improvements
+### ~~Add Data Source Modal improvements~~ ✅ COMPLETED
 - The source-card box has a .border-gray-200, remove it. It looks nicer without it. Also  no need for the category tag in there. It's just too much info and redundant.
 
 ### Implement Finance sources

@@ -427,6 +427,15 @@ class Database {
                         'default_config' => json_encode([])
                     ],
                     [
+                        'type' => 'stock',
+                        'name' => 'Stock Price',
+                        'description' => 'Track individual stock prices with real-time updates',
+                        'category' => 'finance',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode(['symbol' => '', 'display_name' => ''])
+                    ],
+                    [
                         'type' => 'weather',
                         'name' => 'Weather',
                         'description' => 'Weather forecast using Norwegian Meteorological Institute',

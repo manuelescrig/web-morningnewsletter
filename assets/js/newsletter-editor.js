@@ -168,6 +168,10 @@ const NewsletterEditor = {
                 case 'sp500':
                     this.setFieldValue(`${prefix}_sp500_api_key`, config.api_key);
                     break;
+                case 'stock':
+                    this.setFieldValue(`${prefix}_stock_symbol`, config.symbol);
+                    this.setFieldValue(`${prefix}_stock_display_name`, config.display_name);
+                    break;
                 // Add other source types as needed
             }
         },

@@ -18,6 +18,7 @@ require_once __DIR__ . '/../modules/ethereum.php';
 require_once __DIR__ . '/../modules/xrp.php';
 require_once __DIR__ . '/../modules/binancecoin.php';
 require_once __DIR__ . '/../modules/sp500.php';
+require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
 require_once __DIR__ . '/../modules/appstore.php';
@@ -169,6 +170,7 @@ $moduleClasses = [
     'weather' => 'WeatherModule',
     'news' => 'NewsModule',
     'sp500' => 'SP500Module',
+    'stock' => 'StockModule',
     'stripe' => 'StripeModule',
     'appstore' => 'AppStoreModule'
 ];
@@ -1207,6 +1209,29 @@ $canAddSource = count($sources) < $maxSources;
                         </div>
                     `;
                     break;
+                case 'stock':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Stock Symbol *</label>
+                            <div class="relative">
+                                <input type="text" id="config_stock_search" 
+                                       placeholder="Search for a stock (e.g., AAPL, MSFT)..."
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <div id="stock_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                            </div>
+                            <input type="hidden" id="config_symbol" name="config[symbol]">
+                            <p class="text-xs text-gray-500 mt-1">Search and select a stock to track its price</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
+                            <input type="text" name="config[display_name]" 
+                                   id="config_display_name"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="e.g., Apple Inc.">
+                            <p class="text-xs text-gray-500 mt-1">Custom name to display instead of stock symbol</p>
+                        </div>
+                    `;
+                    break;
                 case 'bitcoin':
                 case 'ethereum':
                 case 'xrp':
@@ -1239,6 +1264,11 @@ $canAddSource = count($sources) < $maxSources;
             // Set up location search for weather sources
             if (sourceType === 'weather') {
                 setupAddLocationSearch();
+            }
+            
+            // Set up stock search for stock sources
+            if (sourceType === 'stock') {
+                setupStockSearch();
             }
         }
         
@@ -1387,6 +1417,99 @@ $canAddSource = count($sources) < $maxSources;
                 timeDiv.remove();
             }
         }
+        
+        // Stock search functionality
+        function setupStockSearch() {
+            const searchInput = document.getElementById('config_stock_search');
+            const resultsDiv = document.getElementById('stock_results');
+            const symbolInput = document.getElementById('config_symbol');
+            
+            if (!searchInput || !resultsDiv) return;
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toUpperCase();
+                
+                if (query.length < 1) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchStocks(query);
+                }, 300);
+            });
+            
+            // Hide results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                    resultsDiv.classList.add('hidden');
+                }
+            });
+        }
+        
+        function searchStocks(query) {
+            const resultsDiv = document.getElementById('stock_results');
+            
+            // Show loading state
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
+            resultsDiv.classList.remove('hidden');
+            
+            // Using Yahoo Finance autocomplete API
+            const apiUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0&enableFuzzyQuery=false&quotesQueryId=tss_match_phrase_query`;
+            
+            fetch(apiUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.quotes || data.quotes.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No stocks found</div>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = '';
+                // Filter to only show stocks and ETFs
+                const stocks = data.quotes.filter(q => q.quoteType === 'EQUITY' || q.quoteType === 'ETF');
+                
+                stocks.forEach(stock => {
+                    const stockDiv = document.createElement('div');
+                    stockDiv.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                    
+                    stockDiv.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-medium text-gray-900">${stock.symbol}</div>
+                                <div class="text-sm text-gray-600">${stock.shortname || stock.longname || ''}</div>
+                            </div>
+                            <div class="text-xs text-gray-500">${stock.exchange || ''}</div>
+                        </div>
+                    `;
+                    
+                    stockDiv.addEventListener('click', function() {
+                        selectStock(stock.symbol, stock.shortname || stock.longname || stock.symbol);
+                    });
+                    
+                    resultsDiv.appendChild(stockDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Stock search error:', error);
+                resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching stocks</div>';
+            });
+        }
+        
+        function selectStock(symbol, name) {
+            document.getElementById('config_stock_search').value = symbol;
+            document.getElementById('config_symbol').value = symbol;
+            document.getElementById('config_display_name').value = name;
+            document.getElementById('stock_results').classList.add('hidden');
+        }
     </script>
 
     <!-- Add Source Modal -->
@@ -1478,6 +1601,7 @@ $canAddSource = count($sources) < $maxSources;
                             'weather' => 'fas fa-cloud-sun',
                             'news' => 'fas fa-newspaper',
                             'sp500' => 'fas fa-chart-line',
+                            'stock' => 'fas fa-chart-line',
                             'stripe' => 'fab fa-stripe',
                             'appstore' => 'fab fa-app-store'
                         ];

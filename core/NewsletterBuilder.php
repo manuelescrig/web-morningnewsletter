@@ -10,6 +10,7 @@ require_once __DIR__ . '/../modules/ethereum.php';
 require_once __DIR__ . '/../modules/xrp.php';
 require_once __DIR__ . '/../modules/binancecoin.php';
 require_once __DIR__ . '/../modules/sp500.php';
+require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
 require_once __DIR__ . '/../modules/appstore.php';
@@ -136,6 +137,7 @@ class NewsletterBuilder {
             'xrp' => 'XrpModule',
             'binancecoin' => 'BinancecoinModule',
             'sp500' => 'SP500Module',
+            'stock' => 'StockModule',
             'weather' => 'WeatherModule',
             'news' => 'NewsModule',
             'appstore' => 'AppStoreModule',
