@@ -78,7 +78,7 @@ if ($newsletterId) {
                 <div class="flex space-x-3">
                     <?php if ($newsletterId): ?>
                         <a href="/dashboard/history.php" 
-                           class="btn-pill btn-secondary-dark px-4 py-2 font-medium">
+                           class="btn-pill pill-gray">
                             <i class="fas fa-list mr-2"></i>
                             All History
                         </a>
