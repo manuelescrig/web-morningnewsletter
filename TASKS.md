@@ -32,7 +32,7 @@ RULES:
 ### ~~Update Add Data Source & Newsletter Settings~~ ✅ COMPLETED
 - Update Add Data Source & Newsletter Settings modals to match on the screeen in smaller screens, currently there/s no padding, put some padding to make it look more natural. Also remove the blur in the background and put a shared of black. Currently it's not showing it.
 
-### Improve Crypto and Finance Sources 
+### ~~Improve Crypto and Finance Sources~~ ✅ COMPLETED
 - I want for crypto and finance sources to give the user the ability to show their holding value. Something like Show holding value and the ability to put 0.5x of the asset or something like 100x and then if the user has that enabled it will be calculated and shown in the preview and in the email newsletter. Format the numbers properly. And make this look nice.
 
 
