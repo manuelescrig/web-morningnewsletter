@@ -1663,25 +1663,24 @@ $canAddSource = count($sources) < $maxSources;
             resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
             resultsDiv.classList.remove('hidden');
             
-            // Using Yahoo Finance autocomplete API
-            const apiUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0&enableFuzzyQuery=false&quotesQueryId=tss_match_phrase_query`;
+            // Using local API endpoint to avoid CORS issues
+            const apiUrl = `/api/stock-search.php?q=${encodeURIComponent(query)}`;
             
-            fetch(apiUrl, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json'
-                }
-            })
+            fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                if (!data.quotes || data.quotes.length === 0) {
+                if (!data.success) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching stocks</div>';
+                    return;
+                }
+                
+                if (!data.results || data.results.length === 0) {
                     resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No stocks found</div>';
                     return;
                 }
                 
                 resultsDiv.innerHTML = '';
-                // Filter to only show stocks and ETFs
-                const stocks = data.quotes.filter(q => q.quoteType === 'EQUITY' || q.quoteType === 'ETF');
+                const stocks = data.results;
                 
                 stocks.forEach(stock => {
                     const stockDiv = document.createElement('div');
@@ -1690,12 +1689,12 @@ $canAddSource = count($sources) < $maxSources;
                         <div class="flex justify-between items-center">
                             <div>
                                 <div class="font-medium text-gray-900">${stock.symbol}</div>
-                                <div class="text-sm text-gray-600">${stock.shortname || stock.longname || ''}</div>
+                                <div class="text-sm text-gray-600">${stock.name || ''}</div>
                             </div>
                             <div class="text-xs text-gray-500">${stock.exchDisp || stock.exchange || ''}</div>
                         </div>
                     `;
-                    stockDiv.addEventListener('click', () => selectEditStock(stock.symbol, stock.shortname || stock.longname || stock.symbol));
+                    stockDiv.addEventListener('click', () => selectEditStock(stock.symbol, stock.name || stock.symbol));
                     resultsDiv.appendChild(stockDiv);
                 });
             })
@@ -1718,25 +1717,24 @@ $canAddSource = count($sources) < $maxSources;
             resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
             resultsDiv.classList.remove('hidden');
             
-            // Using Yahoo Finance autocomplete API
-            const apiUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0&enableFuzzyQuery=false&quotesQueryId=tss_match_phrase_query`;
+            // Using local API endpoint to avoid CORS issues
+            const apiUrl = `/api/stock-search.php?q=${encodeURIComponent(query)}`;
             
-            fetch(apiUrl, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json'
-                }
-            })
+            fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                if (!data.quotes || data.quotes.length === 0) {
+                if (!data.success) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching stocks</div>';
+                    return;
+                }
+                
+                if (!data.results || data.results.length === 0) {
                     resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No stocks found</div>';
                     return;
                 }
                 
                 resultsDiv.innerHTML = '';
-                // Filter to only show stocks and ETFs
-                const stocks = data.quotes.filter(q => q.quoteType === 'EQUITY' || q.quoteType === 'ETF');
+                const stocks = data.results;
                 
                 stocks.forEach(stock => {
                     const stockDiv = document.createElement('div');
@@ -1746,14 +1744,14 @@ $canAddSource = count($sources) < $maxSources;
                         <div class="flex justify-between items-center">
                             <div>
                                 <div class="font-medium text-gray-900">${stock.symbol}</div>
-                                <div class="text-sm text-gray-600">${stock.shortname || stock.longname || ''}</div>
+                                <div class="text-sm text-gray-600">${stock.name || ''}</div>
                             </div>
                             <div class="text-xs text-gray-500">${stock.exchange || ''}</div>
                         </div>
                     `;
                     
                     stockDiv.addEventListener('click', function() {
-                        selectStock(stock.symbol, stock.shortname || stock.longname || stock.symbol);
+                        selectStock(stock.symbol, stock.name || stock.symbol);
                     });
                     
                     resultsDiv.appendChild(stockDiv);
