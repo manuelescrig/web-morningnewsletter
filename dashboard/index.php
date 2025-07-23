@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>My Newsletters - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <?php include __DIR__ . '/includes/lucide-head.php'; ?>
+    
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 <body class="bg-gray-50">
@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200">
                 <div class="flex">
-                    <i class="icon-alert-triangle mr-2 mt-0.5"></i>
+                    <i class="fas fa-triangle-exclamation mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
                 </div>
             </div>
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($success): ?>
             <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200">
                 <div class="flex">
-                    <i class="icon-check-circle mr-2 mt-0.5"></i>
+                    <i class="fas fa-circle-check mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
                 </div>
             </div>
@@ -312,11 +312,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <?php endfor; ?>
                                     </select>
                                     <button type="button" onclick="removeDailyTime(this)" class="remove-time-button px-2 py-2 transition-all duration-200" style="display: none;">
-                                        <i class="icon-x text-red-600"></i>
+                                        <i class="fas fa-xmark text-red-600"></i>
                                     </button>
                                 </div>
                                 <button type="button" onclick="addDailyTime()" class="add-time-button px-3 py-2 font-medium transition-all duration-200" id="addTimeButton">
-                                    <i class="icon-plus text-green-600"></i>
+                                    <i class="fas fa-plus text-green-600"></i>
                                 </button>
                             </div>
                         </div>
@@ -331,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Cancel
                         </button>
                         <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">
-                            <i class="icon-plus mr-2"></i>
+                            <i class="fas fa-plus mr-2"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -359,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Get started with personalized morning briefings tailored just for you.
                         </p>
                         <button id="createButtonEmpty" onclick="showCreateForm()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-8 py-3 font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
-                            <i class="icon-plus mr-3"></i>
+                            <i class="fas fa-plus mr-3"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -394,7 +394,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                            target="_blank"
                                            onclick="event.stopPropagation();"
                                            class="inline-flex items-center px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
-                                            <i class="icon-eye mr-1.5 text-base"></i>
+                                            <i class="fas fa-eye mr-1.5 text-base"></i>
                                             Preview
                                         </a>
                                         
@@ -403,7 +403,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <button type="button" 
                                                     onclick="toggleNewsletterDropdown(<?php echo $newsletter->getId(); ?>)"
                                                     class="inline-flex items-center px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-full transition-all duration-200 leading-none">
-                                                <i class="icon-ellipsis mr-1.5 text-base"></i>
+                                                <i class="fas fa-ellipsis mr-1.5 text-base"></i>
                                                 More
                                             </button>
                                             
@@ -414,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <!-- Edit -->
                                                 <a href="/dashboard/newsletter.php?id=<?php echo $newsletter->getId(); ?>"
                                                    class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="icon-pencil mr-2"></i>
+                                                    <i class="fas fa-pencil mr-2"></i>
                                                     Edit Newsletter
                                                 </a>
                                                 
@@ -423,10 +423,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isPaused() ? 'false' : 'true'; ?>)"
                                                         class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     <?php if ($newsletter->isPaused()): ?>
-                                                        <i class="icon-play mr-2"></i>
+                                                        <i class="fas fa-play mr-2"></i>
                                                         Activate Newsletter
                                                     <?php else: ?>
-                                                        <i class="icon-pause mr-2"></i>
+                                                        <i class="fas fa-pause mr-2"></i>
                                                         Pause Newsletter
                                                     <?php endif; ?>
                                                 </button>
@@ -435,7 +435,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <button type="button" 
                                                         onclick="duplicateNewsletter(<?php echo $newsletter->getId(); ?>)"
                                                         class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    <i class="icon-copy mr-2"></i>
+                                                    <i class="fas fa-copy mr-2"></i>
                                                     Duplicate
                                                 </button>
                                                 
@@ -446,7 +446,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <button type="button" 
                                                         onclick="confirmDeleteNewsletter(<?php echo $newsletter->getId(); ?>, '<?php echo htmlspecialchars($newsletter->getTitle(), ENT_QUOTES); ?>')"
                                                         class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                                    <i class="icon-trash-2 mr-2"></i>
+                                                    <i class="fas fa-trash mr-2"></i>
                                                     Delete
                                                 </button>
                                             </div>
@@ -457,15 +457,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="space-y-2 text-sm text-gray-600">
                                     <p class="flex items-center">
                                         <?php if ($newsletter->isPaused()): ?>
-                                            <i class="icon-pause-circle mr-2 text-yellow-500"></i>
+                                            <i class="fas fa-circle-pause mr-2 text-yellow-500"></i>
                                             Paused
                                         <?php else: ?>
-                                            <i class="icon-calendar mr-2 text-green-500"></i>
+                                            <i class="fas fa-calendar mr-2 text-green-500"></i>
                                             Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?> (<?php echo $newsletter->getTimezone(); ?>)
                                         <?php endif; ?>
                                     </p>
                                     <p class="flex items-center">
-                                        <i class="icon-clock mr-2 text-primary"></i>
+                                        <i class="fas fa-clock mr-2 text-primary"></i>
                                         Last: <?php 
                                             if ($scheduleStatus['last_sent']) {
                                                 echo $scheduleStatus['last_sent']->format('M j, g:i A');
@@ -500,7 +500,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php else: ?>
                                     <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                                         <p class="text-sm text-yellow-800">
-                                            <i class="icon-alert-triangle mr-1"></i>
+                                            <i class="fas fa-triangle-exclamation mr-1"></i>
                                             No sources configured yet
                                         </p>
                                     </div>
@@ -666,7 +666,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.className = 'btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn';
-            removeButton.innerHTML = '<i class="icon-x"></i>';
+            removeButton.innerHTML = '<i class="fas fa-xmark"></i>';
             removeButton.onclick = function() { removeDailyTime(this); };
             
             timeSlotWrapper.appendChild(newSelect);
@@ -799,6 +799,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             updateAddButtonState();
         });
     </script>
-    <?php include __DIR__ . '/includes/lucide-init.php'; ?>
+
 </body>
 </html>

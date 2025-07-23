@@ -41,21 +41,21 @@ function getNavClass($page, $currentPage) {
             <!-- Centered Navigation Pills (Desktop) -->
             <div class="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex space-x-3">
                 <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                    <i class="icon-newspaper mr-2"></i>My Newsletters
+                    <i class="fas fa-newspaper mr-2"></i>My Newsletters
                 </a>
                 <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                    <i class="icon-archive mr-2"></i>History
+                    <i class="fas fa-archive mr-2"></i>History
                 </a>
             </div>
             
             <!-- Mobile Navigation Pills -->
             <div class="flex sm:hidden space-x-2">
                 <a href="/dashboard/" class="<?php echo getNavClass('dashboard', $currentPage); ?>">
-                    <i class="icon-newspaper"></i>
+                    <i class="fas fa-newspaper"></i>
                     <span class="sr-only">My Newsletters</span>
                 </a>
                 <a href="/dashboard/history.php" class="<?php echo getNavClass('history', $currentPage); ?>">
-                    <i class="icon-archive"></i>
+                    <i class="fas fa-archive"></i>
                     <span class="sr-only">History</span>
                 </a>
             </div>
@@ -82,7 +82,7 @@ function getNavClass($page, $currentPage) {
                                 </div>
                                 <!-- Dropdown arrow -->
                                 <div class="hidden lg:ml-2 lg:flex-shrink-0 lg:block">
-                                    <i class="icon-chevron-down text-gray-400 text-xs"></i>
+                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                                 </div>
                             </div>
                         </button>
@@ -100,19 +100,19 @@ function getNavClass($page, $currentPage) {
                         
                         <!-- Account option -->
                         <a href="/account" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-user mr-2"></i>
+                            <i class="fas fa-user mr-2"></i>
                             Account
                         </a>
                         
                         <!-- Billing/Upgrade option -->
                         <?php if ($user->getPlan() === 'free'): ?>
                         <a href="/upgrade" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-crown mr-2"></i>
+                            <i class="fas fa-crown mr-2"></i>
                             Upgrade Plan
                         </a>
                         <?php else: ?>
                         <a href="/billing" class="flex items-center px-4 py-2 text-nav text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-credit-card mr-2"></i>
+                            <i class="fas fa-credit-card mr-2"></i>
                             Billing
                         </a>
                         <?php endif; ?>
@@ -123,15 +123,15 @@ function getNavClass($page, $currentPage) {
                         <div class="border-t border-gray-200 my-1"></div>
                         
                         <a href="/dashboard/users.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-users mr-2"></i>
+                            <i class="fas fa-users mr-2"></i>
                             Users
                         </a>
                         <a href="/dashboard/sources.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-plug mr-2"></i>
+                            <i class="fas fa-plug mr-2"></i>
                             Source Config
                         </a>
                         <a href="/dashboard/cron_status.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
-                            <i class="icon-server mr-2"></i>
+                            <i class="fas fa-server mr-2"></i>
                             Cron Status
                         </a>
                         <?php endif; ?>
@@ -141,7 +141,7 @@ function getNavClass($page, $currentPage) {
                         
                         <!-- Logout option -->
                         <a href="/auth/logout.php" class="flex items-center px-4 py-2 text-nav text-red-700 hover:bg-red-50 hover:text-red-900" role="menuitem" tabindex="-1">
-                            <i class="icon-log-out mr-2"></i>
+                            <i class="fas fa-right-from-bracket mr-2"></i>
                             Sign out
                         </a>
                     </div>
