@@ -699,6 +699,78 @@ $canAddSource = count($sources) < $maxSources;
                         document.getElementById('edit_stripe_api_key').value = config.api_key || '';
                     } else if (source.type === 'sp500') {
                         document.getElementById('edit_sp500_api_key').value = config.api_key || '';
+                    } else if (source.type === 'bitcoin') {
+                        // Populate Bitcoin holdings fields
+                        const showHoldingsCheckbox = document.getElementById('edit_config_show_holdings');
+                        const holdingsAmountInput = document.getElementById('edit_config_holdings_amount');
+                        
+                        if (showHoldingsCheckbox) {
+                            showHoldingsCheckbox.checked = config.show_holdings === 'on';
+                            toggleEditHoldingsAmount(); // Update visibility
+                        }
+                        
+                        if (holdingsAmountInput && config.holdings_amount) {
+                            holdingsAmountInput.value = config.holdings_amount;
+                        }
+                    } else if (source.type === 'stock') {
+                        // Populate Stock fields
+                        document.getElementById('edit_config_stock_search').value = config.symbol || '';
+                        document.getElementById('edit_config_symbol').value = config.symbol || '';
+                        document.getElementById('edit_config_display_name').value = config.display_name || '';
+                        
+                        const showHoldingsCheckbox = document.getElementById('edit_config_stock_show_holdings');
+                        const holdingsAmountInput = document.getElementById('edit_config_stock_holdings_amount');
+                        
+                        if (showHoldingsCheckbox) {
+                            showHoldingsCheckbox.checked = config.show_holdings === 'on';
+                            toggleEditStockHoldingsAmount(); // Update visibility
+                        }
+                        
+                        if (holdingsAmountInput && config.holdings_amount) {
+                            holdingsAmountInput.value = config.holdings_amount;
+                        }
+                        
+                        // Setup stock search for edit modal
+                        setupEditStockSearch();
+                    } else if (source.type === 'ethereum') {
+                        // Populate Ethereum holdings fields
+                        const showHoldingsCheckbox = document.getElementById('edit_config_eth_show_holdings');
+                        const holdingsAmountInput = document.getElementById('edit_config_eth_holdings_amount');
+                        
+                        if (showHoldingsCheckbox) {
+                            showHoldingsCheckbox.checked = config.show_holdings === 'on';
+                            toggleEditEthHoldingsAmount(); // Update visibility
+                        }
+                        
+                        if (holdingsAmountInput && config.holdings_amount) {
+                            holdingsAmountInput.value = config.holdings_amount;
+                        }
+                    } else if (source.type === 'xrp') {
+                        // Populate XRP holdings fields
+                        const showHoldingsCheckbox = document.getElementById('edit_config_xrp_show_holdings');
+                        const holdingsAmountInput = document.getElementById('edit_config_xrp_holdings_amount');
+                        
+                        if (showHoldingsCheckbox) {
+                            showHoldingsCheckbox.checked = config.show_holdings === 'on';
+                            toggleEditXrpHoldingsAmount(); // Update visibility
+                        }
+                        
+                        if (holdingsAmountInput && config.holdings_amount) {
+                            holdingsAmountInput.value = config.holdings_amount;
+                        }
+                    } else if (source.type === 'binancecoin') {
+                        // Populate Binance Coin holdings fields
+                        const showHoldingsCheckbox = document.getElementById('edit_config_bnb_show_holdings');
+                        const holdingsAmountInput = document.getElementById('edit_config_bnb_holdings_amount');
+                        
+                        if (showHoldingsCheckbox) {
+                            showHoldingsCheckbox.checked = config.show_holdings === 'on';
+                            toggleEditBnbHoldingsAmount(); // Update visibility
+                        }
+                        
+                        if (holdingsAmountInput && config.holdings_amount) {
+                            holdingsAmountInput.value = config.holdings_amount;
+                        }
                     }
                 }
                 
@@ -1553,6 +1625,92 @@ $canAddSource = count($sources) < $maxSources;
             });
         }
         
+        function setupEditStockSearch() {
+            const searchInput = document.getElementById('edit_config_stock_search');
+            const resultsDiv = document.getElementById('edit_stock_results');
+            const symbolInput = document.getElementById('edit_config_symbol');
+            
+            if (!searchInput || !resultsDiv) return;
+            
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toUpperCase();
+                
+                if (query.length < 1) {
+                    resultsDiv.classList.add('hidden');
+                    return;
+                }
+                
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchEditStocks(query);
+                }, 300);
+            });
+            
+            // Hide results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                    resultsDiv.classList.add('hidden');
+                }
+            });
+        }
+        
+        function searchEditStocks(query) {
+            const resultsDiv = document.getElementById('edit_stock_results');
+            
+            // Show loading state
+            resultsDiv.innerHTML = '<div class="p-3 text-gray-500">Searching...</div>';
+            resultsDiv.classList.remove('hidden');
+            
+            // Using Yahoo Finance autocomplete API
+            const apiUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0&enableFuzzyQuery=false&quotesQueryId=tss_match_phrase_query`;
+            
+            fetch(apiUrl, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.quotes || data.quotes.length === 0) {
+                    resultsDiv.innerHTML = '<div class="p-3 text-gray-500">No stocks found</div>';
+                    return;
+                }
+                
+                resultsDiv.innerHTML = '';
+                // Filter to only show stocks and ETFs
+                const stocks = data.quotes.filter(q => q.quoteType === 'EQUITY' || q.quoteType === 'ETF');
+                
+                stocks.forEach(stock => {
+                    const stockDiv = document.createElement('div');
+                    stockDiv.className = 'p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                    stockDiv.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-medium text-gray-900">${stock.symbol}</div>
+                                <div class="text-sm text-gray-600">${stock.shortname || stock.longname || ''}</div>
+                            </div>
+                            <div class="text-xs text-gray-500">${stock.exchDisp || stock.exchange || ''}</div>
+                        </div>
+                    `;
+                    stockDiv.addEventListener('click', () => selectEditStock(stock.symbol, stock.shortname || stock.longname || stock.symbol));
+                    resultsDiv.appendChild(stockDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Stock search error:', error);
+                resultsDiv.innerHTML = '<div class="p-3 text-red-500">Error searching stocks</div>';
+            });
+        }
+        
+        function selectEditStock(symbol, name) {
+            document.getElementById('edit_config_stock_search').value = symbol;
+            document.getElementById('edit_config_symbol').value = symbol;
+            document.getElementById('edit_stock_results').classList.add('hidden');
+        }
+        
         function searchStocks(query) {
             const resultsDiv = document.getElementById('stock_results');
             
@@ -1662,6 +1820,66 @@ $canAddSource = count($sources) < $maxSources;
         function toggleHoldingsAmount() {
             const checkbox = document.getElementById('config_show_holdings');
             const div = document.getElementById('holdingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleEditHoldingsAmount() {
+            const checkbox = document.getElementById('edit_config_show_holdings');
+            const div = document.getElementById('editHoldingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleEditStockHoldingsAmount() {
+            const checkbox = document.getElementById('edit_config_stock_show_holdings');
+            const div = document.getElementById('editStockHoldingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleEditEthHoldingsAmount() {
+            const checkbox = document.getElementById('edit_config_eth_show_holdings');
+            const div = document.getElementById('editEthHoldingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleEditXrpHoldingsAmount() {
+            const checkbox = document.getElementById('edit_config_xrp_show_holdings');
+            const div = document.getElementById('editXrpHoldingsAmountDiv');
+            if (checkbox && div) {
+                if (checkbox.checked) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
+                }
+            }
+        }
+        
+        function toggleEditBnbHoldingsAmount() {
+            const checkbox = document.getElementById('edit_config_bnb_show_holdings');
+            const div = document.getElementById('editBnbHoldingsAmountDiv');
             if (checkbox && div) {
                 if (checkbox.checked) {
                     div.classList.remove('hidden');
@@ -1930,14 +2148,87 @@ $canAddSource = count($sources) < $maxSources;
                             </div>
                         </div>
                         
-                        <!-- Bitcoin Config (no config needed) -->
-                        <div id="editConfigBitcoin" class="hidden">
-                            <p class="text-sm text-gray-500">No configuration required for Bitcoin price data.</p>
+                        <!-- Stock Config -->
+                        <div id="editConfigStock" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Stock Symbol *</label>
+                                <div class="relative">
+                                    <input type="text" id="edit_config_stock_search" 
+                                           placeholder="Search for a stock..."
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <div id="edit_stock_results" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                                </div>
+                                <input type="hidden" id="edit_config_symbol" name="config[symbol]">
+                                <p class="text-xs text-gray-500 mt-1">Search and select a stock to track its price</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
+                                <input type="text" name="config[display_name]" id="edit_config_display_name"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="e.g., Apple Inc.">
+                            </div>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="config[show_holdings]" id="edit_config_stock_show_holdings" 
+                                           class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                           onchange="toggleEditStockHoldingsAmount()">
+                                    <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                                </label>
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your stock holdings</p>
+                            </div>
+                            
+                            <div id="editStockHoldingsAmountDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Number of shares</label>
+                                <input type="number" name="config[holdings_amount]" id="edit_config_stock_holdings_amount"
+                                       step="1" min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="100">
+                                <p class="text-xs text-gray-500 mt-1">Number of shares you hold (e.g., 10, 100, 1000)</p>
+                            </div>
                         </div>
                         
-                        <!-- Ethereum Config (no config needed) -->
+                        <!-- Bitcoin Config -->
+                        <div id="editConfigBitcoin" class="hidden">
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="config[show_holdings]" id="edit_config_show_holdings" 
+                                           class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                           onchange="toggleEditHoldingsAmount()">
+                                    <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                                </label>
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your BTC holdings</p>
+                            </div>
+                            
+                            <div id="editHoldingsAmountDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Holdings amount</label>
+                                <input type="number" name="config[holdings_amount]" id="edit_config_holdings_amount"
+                                       step="0.00000001" min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="0.5">
+                                <p class="text-xs text-gray-500 mt-1">Amount of BTC you hold (e.g., 0.5, 1.25, 100)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Ethereum Config -->
                         <div id="editConfigEthereum" class="hidden">
-                            <p class="text-sm text-gray-500">No configuration required for Ethereum price data.</p>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="config[show_holdings]" id="edit_config_eth_show_holdings" 
+                                           class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                           onchange="toggleEditEthHoldingsAmount()">
+                                    <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                                </label>
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your ETH holdings</p>
+                            </div>
+                            
+                            <div id="editEthHoldingsAmountDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Holdings amount</label>
+                                <input type="number" name="config[holdings_amount]" id="edit_config_eth_holdings_amount"
+                                       step="0.000001" min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="0.5">
+                                <p class="text-xs text-gray-500 mt-1">Amount of ETH you hold (e.g., 0.5, 1.25, 100)</p>
+                            </div>
                         </div>
                         
                         <!-- Tether Config (no config needed) -->
@@ -1945,14 +2236,48 @@ $canAddSource = count($sources) < $maxSources;
                             <p class="text-sm text-gray-500">No configuration required for Tether price data.</p>
                         </div>
                         
-                        <!-- XRP Config (no config needed) -->
+                        <!-- XRP Config -->
                         <div id="editConfigXrp" class="hidden">
-                            <p class="text-sm text-gray-500">No configuration required for XRP price data.</p>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="config[show_holdings]" id="edit_config_xrp_show_holdings" 
+                                           class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                           onchange="toggleEditXrpHoldingsAmount()">
+                                    <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                                </label>
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your XRP holdings</p>
+                            </div>
+                            
+                            <div id="editXrpHoldingsAmountDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Holdings amount</label>
+                                <input type="number" name="config[holdings_amount]" id="edit_config_xrp_holdings_amount"
+                                       step="0.000001" min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="1000">
+                                <p class="text-xs text-gray-500 mt-1">Amount of XRP you hold (e.g., 100, 1000, 10000)</p>
+                            </div>
                         </div>
                         
-                        <!-- Binance Coin Config (no config needed) -->
+                        <!-- Binance Coin Config -->
                         <div id="editConfigBinancecoin" class="hidden">
-                            <p class="text-sm text-gray-500">No configuration required for Binance Coin price data.</p>
+                            <div class="mb-4">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="config[show_holdings]" id="edit_config_bnb_show_holdings" 
+                                           class="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
+                                           onchange="toggleEditBnbHoldingsAmount()">
+                                    <span class="text-sm font-medium text-gray-700">Show holding value</span>
+                                </label>
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Display the value of your BNB holdings</p>
+                            </div>
+                            
+                            <div id="editBnbHoldingsAmountDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Holdings amount</label>
+                                <input type="number" name="config[holdings_amount]" id="edit_config_bnb_holdings_amount"
+                                       step="0.00001" min="0"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="1">
+                                <p class="text-xs text-gray-500 mt-1">Amount of BNB you hold (e.g., 0.5, 1, 10)</p>
+                            </div>
                         </div>
                         
                         <!-- AppStore Config -->
