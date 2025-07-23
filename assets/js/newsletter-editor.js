@@ -49,23 +49,23 @@ const NewsletterEditor = {
                             data-category="all" onclick="NewsletterEditor.filter.byCategory('all')">
                         All
                     </button>
-                    <button class="category-filter btn-secondary-light px-3 py-1 rounded-full text-sm font-medium" 
+                    <button class="category-filter pill-gray text-sm font-medium" 
                             data-category="crypto" onclick="NewsletterEditor.filter.byCategory('crypto')">
                         Crypto
                     </button>
-                    <button class="category-filter btn-secondary-light px-3 py-1 rounded-full text-sm font-medium" 
+                    <button class="category-filter pill-gray text-sm font-medium" 
                             data-category="finance" onclick="NewsletterEditor.filter.byCategory('finance')">
                         Finance
                     </button>
-                    <button class="category-filter btn-secondary-light px-3 py-1 rounded-full text-sm font-medium" 
+                    <button class="category-filter pill-gray text-sm font-medium" 
                             data-category="lifestyle" onclick="NewsletterEditor.filter.byCategory('lifestyle')">
                         Lifestyle
                     </button>
-                    <button class="category-filter btn-secondary-light px-3 py-1 rounded-full text-sm font-medium" 
+                    <button class="category-filter pill-gray text-sm font-medium" 
                             data-category="news" onclick="NewsletterEditor.filter.byCategory('news')">
                         News
                     </button>
-                    <button class="category-filter btn-secondary-light px-3 py-1 rounded-full text-sm font-medium" 
+                    <button class="category-filter pill-gray text-sm font-medium" 
                             data-category="business" onclick="NewsletterEditor.filter.byCategory('business')">
                         Business
                     </button>

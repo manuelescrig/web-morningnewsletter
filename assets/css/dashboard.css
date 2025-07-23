@@ -289,50 +289,7 @@ html body .newsletter-preview body {
     text-decoration: none !important;
 }
 
-/* Button utility classes */
-.btn-primary {
-    background-color: var(--pill-primary-bg);
-    color: var(--pill-primary-text);
-    border: 1px solid var(--pill-primary-border);
-    padding: 0.5rem 0.75rem;
-    font-size: var(--pill-font-size);
-    font-weight: var(--pill-font-weight);
-    border-radius: 0.375rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--pill-transition);
-}
-
-.btn-primary:hover {
-    background-color: var(--pill-primary-bg-hover);
-}
-
-.btn-secondary {
-    background-color: var(--pill-tertiary-bg);
-    color: var(--pill-tertiary-text);
-    border: 1px solid var(--pill-tertiary-border);
-    padding: 0.5rem 0.75rem;
-    font-size: var(--pill-font-size);
-    font-weight: var(--pill-font-weight);
-    border-radius: 0.375rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--pill-transition);
-}
-
-.btn-secondary:hover {
-    background-color: var(--pill-tertiary-bg-hover);
-    border-color: var(--pill-tertiary-border-hover);
-}
-
-/* Override for pill buttons */
-.btn-primary.btn-pill,
-.btn-secondary.btn-pill {
-    border-radius: var(--pill-border-radius) !important;
-    padding: var(--pill-padding-y) var(--pill-padding-x) !important;
-}
+/* Old btn-primary and btn-secondary classes removed - replaced with pill-primary, pill-secondary for consistency */
 
 /* Pill Button Variants */
 .pill-primary {
@@ -639,8 +596,8 @@ html body main .btn-pill {
 
 /* Responsive utilities */
 @media (max-width: 640px) {
-    .btn-primary,
-    .btn-secondary {
+    .pill-primary,
+    .pill-secondary {
         width: 100%;
         justify-content: center;
     }
@@ -659,8 +616,8 @@ html body main .btn-pill {
 
 /* Smooth transitions for all interactive elements */
 button,
-.btn-primary,
-.btn-secondary,
+.pill-primary,
+.pill-secondary,
 .toggle-switch,
 .source-item {
     transition: all 0.2s ease;
@@ -911,6 +868,45 @@ button,
 .pill-gray:hover {
     background-color: var(--pill-gray-bg-hover);
     color: var(--pill-gray-text-hover);
+}
+
+/* Primary pill button */
+.pill-primary {
+    background-color: var(--pill-primary-bg);
+    color: var(--pill-primary-text);
+    border: 1px solid var(--pill-primary-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    border-radius: var(--pill-border-radius);
+    font-weight: var(--pill-font-weight);
+    font-size: var(--pill-font-size);
+    transition: var(--pill-transition);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.pill-primary:hover {
+    background-color: var(--pill-primary-bg-hover);
+}
+
+/* Secondary pill button (blue background style) */
+.pill-secondary {
+    background-color: var(--pill-tertiary-bg);
+    color: var(--pill-tertiary-text);
+    border: 1px solid var(--pill-tertiary-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    border-radius: var(--pill-border-radius);
+    font-weight: var(--pill-font-weight);
+    font-size: var(--pill-font-size);
+    transition: var(--pill-transition);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.pill-secondary:hover {
+    background-color: var(--pill-tertiary-bg-hover);
+    border-color: var(--pill-tertiary-border-hover);
 }
 
 /* Add/Remove Time Button Styles */

@@ -226,8 +226,6 @@ form input.btn-pill {
 
 /* Ultimate override for CDN processing issues */
 .btn-pill,
-.btn-pill.btn-primary,
-.btn-pill.btn-secondary,
 .btn-pill.auth-button,
 .btn-pill.inline-flex,
 .btn-pill.block,

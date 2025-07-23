@@ -212,7 +212,7 @@ The frontend assets are organized in a modular structure under `/assets/`:
 - **`dashboard.css`**: Dashboard-specific styles including:
   - Toggle switch styling for newsletter pause functionality
   - Newsletter preview styling with grayed-out links
-  - Button utility classes (btn-primary, btn-secondary)
+  - Button utility classes (pill-primary, pill-secondary, pill-gray)
   - Dropdown positioning utilities
   - Modal backdrop styling
   - Source item drag and drop styles

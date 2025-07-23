@@ -1089,10 +1089,10 @@ $canAddSource = count($sources) < $maxSources;
             // Update button states
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-primary', 'text-white');
-                btn.classList.add('btn-secondary-light');
+                btn.classList.add('pill-gray');
             });
             event.target.classList.add('active', 'bg-primary', 'text-white');
-            event.target.classList.remove('btn-secondary-light');
+            event.target.classList.remove('pill-gray');
             
             // Filter source cards
             const cards = document.querySelectorAll('.source-card');
