@@ -873,16 +873,7 @@ button,
     color: var(--pill-gray-text-hover);
 }
 
-.btn-secondary-dark {
-    background-color: #4b5563; /* bg-gray-600 */
-    color: #ffffff; /* text-white */
-    transition: all 0.2s ease;
-}
-
-.btn-secondary-dark:hover {
-    background-color: #374151; /* bg-gray-700 */
-    color: #ffffff; /* text-white */
-}
+/* btn-secondary-dark removed - replaced with pill-gray for consistency */
 
 /* Standardized gray button */
 .btn-gray {
