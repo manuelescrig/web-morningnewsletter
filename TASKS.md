@@ -27,7 +27,7 @@ Jul 23, 9:14 AM
 
 But it's already Jul 23, 9:37 AM and the Jul 23, 9:14 AM was not sent. It looks like the mailing service it is working so can you check if it is something related to the the configuration? Please do a good deep dive and fix it.
 
-### Update transaction emails content
+### ~~Update transaction emails content~~ ✅ COMPLETED
 - Once a user signs up I want to send them a transcational email withis content:
 Hi [subscriber's first namel],
 

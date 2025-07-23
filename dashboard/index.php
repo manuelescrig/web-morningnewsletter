@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($error): ?>
             <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200">
                 <div class="flex">
-                    <i class="fas fa-exclamation-triangle mr-2 mt-0.5"></i>
+                    <i class="icon-alert-triangle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
                 </div>
             </div>
@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($success): ?>
             <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200">
                 <div class="flex">
-                    <i class="fas fa-check-circle mr-2 mt-0.5"></i>
+                    <i class="icon-check-circle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
                 </div>
             </div>
@@ -313,11 +313,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <?php endfor; ?>
                                     </select>
                                     <button type="button" onclick="removeDailyTime(this)" class="btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn" style="display: none;">
-                                        <i class="fas fa-times"></i>
+                                        <i class="icon-x"></i>
                                     </button>
                                 </div>
                                 <button type="button" onclick="addDailyTime()" class="btn-pill btn-secondary-light px-3 py-2 font-medium"
-                                    <i class="fas fa-plus"></i>
+                                    <i class="icon-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Cancel
                         </button>
                         <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">
-                            <i class="fas fa-plus mr-2"></i>
+                            <i class="icon-plus mr-2"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -360,7 +360,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Get started with personalized morning briefings tailored just for you.
                         </p>
                         <button id="createButtonEmpty" onclick="showCreateForm()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-8 py-3 font-semibold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
-                            <i class="fas fa-plus mr-3"></i>
+                            <i class="icon-plus mr-3"></i>
                             Create Newsletter
                         </button>
                     </div>
@@ -458,15 +458,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="space-y-2 text-sm text-gray-600">
                                     <p class="flex items-center">
                                         <?php if ($newsletter->isPaused()): ?>
-                                            <i class="fas fa-pause mr-2 text-yellow-500"></i>
+                                            <i class="icon-pause-circle mr-2 text-yellow-500"></i>
                                             Paused
                                         <?php else: ?>
-                                            <i class="fas fa-calendar mr-2 text-green-500"></i>
+                                            <i class="icon-calendar mr-2 text-green-500"></i>
                                             Next: <?php echo $scheduleStatus['next_send_object']->format('M j, g:i A'); ?> (<?php echo $newsletter->getTimezone(); ?>)
                                         <?php endif; ?>
                                     </p>
                                     <p class="flex items-center">
-                                        <i class="fas fa-clock mr-2 text-primary"></i>
+                                        <i class="icon-clock mr-2 text-primary"></i>
                                         Last: <?php 
                                             if ($scheduleStatus['last_sent']) {
                                                 echo $scheduleStatus['last_sent']->format('M j, g:i A');
@@ -501,7 +501,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php else: ?>
                                     <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                                         <p class="text-sm text-yellow-800">
-                                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                                            <i class="icon-alert-triangle mr-1"></i>
                                             No sources configured yet
                                         </p>
                                     </div>
@@ -655,7 +655,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.className = 'btn-pill px-2 py-2 text-red-600 hover:text-red-800 border border-red-300 hover:bg-red-50 remove-time-btn';
-            removeButton.innerHTML = '<i class="fas fa-times"></i>';
+            removeButton.innerHTML = '<i class="icon-x"></i>';
             removeButton.onclick = function() { removeDailyTime(this); };
             
             timeSlotWrapper.appendChild(newSelect);
