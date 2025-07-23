@@ -3,6 +3,58 @@
  * Custom styles for dashboard functionality
  */
 
+/* ===== CSS Variables for Pill Buttons ===== */
+:root {
+  /* Primary Pill Button */
+  --pill-primary-bg: #1d9bf0;
+  --pill-primary-bg-hover: #3db0f4;
+  --pill-primary-text: #ffffff;
+  --pill-primary-border: transparent;
+  
+  /* Secondary Pill Button (Grayish/White) */
+  --pill-secondary-bg: #ffffff;
+  --pill-secondary-bg-hover: #f9fafb;
+  --pill-secondary-text: #374151;
+  --pill-secondary-text-hover: #1f2937;
+  --pill-secondary-border: #d1d5db;
+  --pill-secondary-border-hover: #9ca3af;
+  
+  /* Tertiary Pill Button (Blue Background) */
+  --pill-tertiary-bg: #E9F5FF;
+  --pill-tertiary-bg-hover: #d4e9fe;
+  --pill-tertiary-text: #092F64;
+  --pill-tertiary-border: #93BFEF;
+  --pill-tertiary-border-hover: #468BE6;
+  
+  /* Danger Pill Button */
+  --pill-danger-bg: #ffffff;
+  --pill-danger-bg-hover: #fef2f2;
+  --pill-danger-text: #991b1b;
+  --pill-danger-text-hover: #7f1d1d;
+  --pill-danger-border: #fca5a5;
+  --pill-danger-border-hover: #ef4444;
+  
+  /* Success Pill Button */
+  --pill-success-bg: #d1fae5;
+  --pill-success-bg-hover: #a7f3d0;
+  --pill-success-text: #065f46;
+  --pill-success-border: #10b981;
+  
+  /* Pill Button Common Properties */
+  --pill-padding-x: 1.2rem;
+  --pill-padding-y: 0.6rem;
+  --pill-font-size: 0.875rem;
+  --pill-font-weight: 500;
+  --pill-border-radius: 9999px;
+  --pill-transition: all 0.2s ease;
+  
+  /* Badge/Status Pill Properties */
+  --pill-badge-padding-x: 0.625rem;
+  --pill-badge-padding-y: 0.125rem;
+  --pill-badge-font-size: 0.75rem;
+  --pill-badge-font-weight: 500;
+}
+
 /* Navigation font size utility */
 .text-nav {
     font-size: 0.9rem;
@@ -232,46 +284,180 @@ html body .newsletter-preview body {
 
 /* Button utility classes */
 .btn-primary {
-    background-color: #1d9bf0;
-    color: white;
-    border: 1px solid transparent;
+    background-color: var(--pill-primary-bg);
+    color: var(--pill-primary-text);
+    border: 1px solid var(--pill-primary-border);
     padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
     border-radius: 0.375rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--pill-transition);
 }
 
 .btn-primary:hover {
-    background-color: #3db0f4;
+    background-color: var(--pill-primary-bg-hover);
 }
 
 .btn-secondary {
-    background-color: #E9F5FF;
-    color: #092F64;
-    border: 1px solid #93BFEF;
+    background-color: var(--pill-tertiary-bg);
+    color: var(--pill-tertiary-text);
+    border: 1px solid var(--pill-tertiary-border);
     padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
     border-radius: 0.375rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: var(--pill-transition);
 }
 
 .btn-secondary:hover {
-    background-color: #d4e9fe;
+    background-color: var(--pill-tertiary-bg-hover);
+    border-color: var(--pill-tertiary-border-hover);
 }
 
 /* Override for pill buttons */
 .btn-primary.btn-pill,
 .btn-secondary.btn-pill {
-    border-radius: 9999px !important;
-    padding: 0.6rem 1.2rem !important;
+    border-radius: var(--pill-border-radius) !important;
+    padding: var(--pill-padding-y) var(--pill-padding-x) !important;
+}
+
+/* Pill Button Variants */
+.pill-primary {
+    background-color: var(--pill-primary-bg);
+    color: var(--pill-primary-text);
+    border: 1px solid var(--pill-primary-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-primary:hover {
+    background-color: var(--pill-primary-bg-hover);
+}
+
+.pill-secondary {
+    background-color: var(--pill-secondary-bg);
+    color: var(--pill-secondary-text);
+    border: 1px solid var(--pill-secondary-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-secondary:hover {
+    background-color: var(--pill-secondary-bg-hover);
+    color: var(--pill-secondary-text-hover);
+    border-color: var(--pill-secondary-border-hover);
+}
+
+.pill-tertiary {
+    background-color: var(--pill-tertiary-bg);
+    color: var(--pill-tertiary-text);
+    border: 1px solid var(--pill-tertiary-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-tertiary:hover {
+    background-color: var(--pill-tertiary-bg-hover);
+    border-color: var(--pill-tertiary-border-hover);
+}
+
+.pill-danger {
+    background-color: var(--pill-danger-bg);
+    color: var(--pill-danger-text);
+    border: 1px solid var(--pill-danger-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-danger:hover {
+    background-color: var(--pill-danger-bg-hover);
+    color: var(--pill-danger-text-hover);
+    border-color: var(--pill-danger-border-hover);
+}
+
+.pill-success {
+    background-color: var(--pill-success-bg);
+    color: var(--pill-success-text);
+    border: 1px solid var(--pill-success-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    font-size: var(--pill-font-size);
+    font-weight: var(--pill-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-success:hover {
+    background-color: var(--pill-success-bg-hover);
+}
+
+/* Status Badge Pills */
+.pill-badge {
+    padding: var(--pill-badge-padding-y) var(--pill-badge-padding-x);
+    font-size: var(--pill-badge-font-size);
+    font-weight: var(--pill-badge-font-weight);
+    border-radius: var(--pill-border-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--pill-transition);
+}
+
+.pill-badge-success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.pill-badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.pill-badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.pill-badge-info {
+    background-color: var(--pill-tertiary-bg);
+    color: var(--pill-tertiary-text);
+}
+
+.pill-badge-gray {
+    background-color: #f3f4f6;
+    color: #374151;
 }
 
 /* Additional comprehensive overrides for dashboard pages */
@@ -283,14 +469,14 @@ html body form .btn-pill,
 html body div .btn-pill,
 html body section .btn-pill,
 html body main .btn-pill {
-    border-radius: 9999px !important;
-    padding: 0.6rem 1.2rem !important;
+    border-radius: var(--pill-border-radius) !important;
+    padding: var(--pill-padding-y) var(--pill-padding-x) !important;
 }
 
 /* Catch-all for dashboard elements */
 [class*="btn-pill"] {
-    border-radius: 9999px !important;
-    padding: 0.6rem 1.2rem !important;
+    border-radius: var(--pill-border-radius) !important;
+    padding: var(--pill-padding-y) var(--pill-padding-x) !important;
 }
 
 /* Dropdown positioning utilities */

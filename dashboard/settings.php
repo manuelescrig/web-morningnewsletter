@@ -60,7 +60,7 @@ $csrfToken = $auth->generateCSRFToken();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-</head>
+    <link rel="stylesheet" href="/assets/css/custom.css"></head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
@@ -212,7 +212,7 @@ $csrfToken = $auth->generateCSRFToken();
                         <div class="flex flex-col sm:flex-row gap-4">
                             <?php if (!$subscriptionInfo['cancel_at_period_end']): ?>
                                 <button onclick="cancelSubscription()" 
-                                        class="btn-pill inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                        class="pill-danger inline-flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                     <i class="fas fa-times mr-2"></i>
                                     Cancel Subscription
                                 </button>
@@ -220,7 +220,7 @@ $csrfToken = $auth->generateCSRFToken();
                             
                             <?php if ($subscriptionInfo['stripe_customer_id']): ?>
                                 <button onclick="manageBilling()" 
-                                        class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
+                                        class="pill-secondary inline-flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary">
                                     <i class="fas fa-credit-card mr-2"></i>
                                     Manage Billing
                                 </button>
@@ -245,7 +245,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <li><i class="fas fa-check text-green-500 mr-2"></i>Daily delivery</li>
                                     </ul>
                                     <button onclick="subscribeToPlan('starter')" 
-                                            class="btn-pill w-full bg-primary hover-bg-primary-dark text-white font-medium py-2 px-4">
+                                            class="pill-primary w-full">
                                         Choose Starter
                                     </button>
                                 </div>
@@ -253,7 +253,7 @@ $csrfToken = $auth->generateCSRFToken();
                                 <!-- Pro Plan -->
                                 <div class="border-2 border-primary rounded-lg p-4 relative">
                                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                                        <span class="bg-primary text-white px-3 py-1 text-sm font-medium rounded-full">Popular</span>
+                                        <span class="pill-badge pill-badge-info font-medium">Popular</span>
                                     </div>
                                     <h5 class="font-medium text-gray-900 mb-2">Pro</h5>
                                     <p class="text-2xl font-bold text-gray-900 mb-2">$15<span class="text-sm font-normal">/month</span></p>

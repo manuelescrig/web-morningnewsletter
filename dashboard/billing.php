@@ -27,6 +27,7 @@ $currentPage = 'billing';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="stylesheet" href="/assets/css/custom.css">
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -55,23 +56,23 @@ $currentPage = 'billing';
                                     <?php if ($planInfo['subscription_status']): ?>
                                         <p class="text-sm text-gray-600">
                                             Status: 
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                            <span class="pill-badge inline-flex items-center 
                                                 <?php 
                                                 switch($planInfo['subscription_status']) {
                                                     case 'active':
-                                                        echo 'bg-green-100 text-green-800';
+                                                        echo 'pill-badge-success';
                                                         break;
                                                     case 'trialing':
-                                                        echo 'bg-primary-lightest text-primary-dark';
+                                                        echo 'pill-badge-info';
                                                         break;
                                                     case 'past_due':
-                                                        echo 'bg-yellow-100 text-yellow-800';
+                                                        echo 'pill-badge-warning';
                                                         break;
                                                     case 'canceled':
-                                                        echo 'bg-red-100 text-red-800';
+                                                        echo 'pill-badge-danger';
                                                         break;
                                                     default:
-                                                        echo 'bg-gray-100 text-gray-800';
+                                                        echo 'pill-badge-gray';
                                                 }
                                                 ?>">
                                                 <?php echo ucfirst($planInfo['subscription_status']); ?>
@@ -93,20 +94,20 @@ $currentPage = 'billing';
                         
                         <div class="flex flex-col space-y-2">
                             <?php if ($planInfo['plan'] === 'free'): ?>
-                                <a href="/#pricing" class="btn-pill inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark">
+                                <a href="/#pricing" class="pill-primary inline-flex items-center">
                                     <i class="fas fa-arrow-up mr-2"></i>
                                     Upgrade Plan
                                 </a>
                             <?php else: ?>
                                 <?php if ($planInfo['stripe_customer_id']): ?>
-                                    <button onclick="manageBilling()" class="btn-pill inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    <button onclick="manageBilling()" class="pill-secondary inline-flex items-center">
                                         <i class="fas fa-cog mr-2"></i>
                                         Manage Billing
                                     </button>
                                 <?php endif; ?>
                                 
                                 <?php if (!$planInfo['cancel_at_period_end'] && $planInfo['subscription_status'] === 'active'): ?>
-                                    <button onclick="cancelSubscription()" class="btn-pill inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50">
+                                    <button onclick="cancelSubscription()" class="pill-danger inline-flex items-center">
                                         <i class="fas fa-times mr-2"></i>
                                         Cancel Subscription
                                     </button>
@@ -141,7 +142,7 @@ $currentPage = 'billing';
                         <div class="border rounded-lg p-4 <?php echo isset($plan['popular']) ? 'border-primary bg-primary-lightest' : 'border-gray-200'; ?>">
                             <?php if (isset($plan['popular'])): ?>
                                 <div class="text-center mb-2">
-                                    <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-primary text-white">
+                                    <span class="pill-badge pill-badge-info font-semibold">
                                         Most Popular
                                     </span>
                                 </div>
@@ -154,7 +155,7 @@ $currentPage = 'billing';
                                     <span class="text-gray-500">/month</span>
                                 </div>
                                 <div class="mt-2">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="pill-badge pill-badge-success inline-flex items-center">
                                         <i class="fas fa-gift mr-1"></i>
                                         7-day free trial
                                     </span>
@@ -173,7 +174,7 @@ $currentPage = 'billing';
                                 </ul>
                                 
                                 <button onclick="subscribeToPlan('<?php echo $planKey; ?>')" 
-                                        class="btn-pill mt-4 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium text-white bg-primary hover-bg-primary-dark">
+                                        class="pill-primary mt-4 w-full inline-flex justify-center items-center">
                                     Start Free Trial
                                 </button>
                             </div>
@@ -256,20 +257,20 @@ $currentPage = 'billing';
                                 </p>
                                 <?php endif; ?>
                             </div>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                            <span class="pill-badge inline-flex items-center 
                                 <?php 
                                 switch($subscription['status']) {
                                     case 'active':
-                                        echo 'bg-green-100 text-green-800';
+                                        echo 'pill-badge-success';
                                         break;
                                     case 'trialing':
-                                        echo 'bg-primary-lightest text-primary-dark';
+                                        echo 'pill-badge-info';
                                         break;
                                     case 'canceled':
-                                        echo 'bg-red-100 text-red-800';
+                                        echo 'pill-badge-danger';
                                         break;
                                     default:
-                                        echo 'bg-gray-100 text-gray-800';
+                                        echo 'pill-badge-gray';
                                 }
                                 ?>">
                                 <?php echo ucfirst($subscription['status']); ?>

@@ -72,7 +72,7 @@ $csrfToken = $auth->generateCSRFToken();
     <?php include __DIR__ . '/includes/lucide-head.php'; ?>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <meta http-equiv="refresh" content="60"> <!-- Auto refresh every minute -->
+    <link rel="stylesheet" href="/assets/css/custom.css">    <meta http-equiv="refresh" content="60"> <!-- Auto refresh every minute -->
 </head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>

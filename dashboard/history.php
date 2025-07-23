@@ -57,7 +57,7 @@ if ($newsletterId) {
     <?php include __DIR__ . '/includes/lucide-head.php'; ?>
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
-</head>
+    <link rel="stylesheet" href="/assets/css/custom.css"></head>
 <body class="bg-gray-50">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
