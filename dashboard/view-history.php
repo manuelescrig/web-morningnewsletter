@@ -155,8 +155,26 @@ $currentPage = 'history';
             
             <!-- Newsletter content with proper styling -->
             <div id="newsletter-content" class="newsletter-display" style="background-color: #f8f9fa; padding: 0;">
+                <?php
+                // Inject CSS to disable all links in the newsletter content
+                $disableLinksCss = '
+                <style>
+                    a, a:hover, a:visited, a:active {
+                        color: #93BFEF !important;
+                        cursor: not-allowed !important;
+                        text-decoration: none !important;
+                        pointer-events: none !important;
+                    }
+                    a * {
+                        pointer-events: none !important;
+                    }
+                </style>';
+                
+                // Add the CSS to the beginning of the content
+                $contentWithDisabledLinks = $disableLinksCss . $historyEntry['content'];
+                ?>
                 <iframe 
-                    srcdoc="<?php echo htmlspecialchars($historyEntry['content'], ENT_QUOTES); ?>" 
+                    srcdoc="<?php echo htmlspecialchars($contentWithDisabledLinks, ENT_QUOTES); ?>" 
                     class="w-full border-0" 
                     style="min-height: 600px; background: white;"
                     onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';">
