@@ -1862,35 +1862,28 @@ $canAddSource = count($sources) < $maxSources;
                                 </div>
                             </div>
                             
-                            <div class="flex justify-end space-x-3 pt-4">
-                                <button type="button" onclick="Dashboard.modal.close('editSettingsModal')" 
-                                        class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
-                                    Cancel
+                            <div class="flex justify-between items-center pt-4">
+                                <!-- Delete button on the left -->
+                                <button type="button" onclick="deleteNewsletter()" 
+                                        class="text-red-600 hover:text-red-700 text-sm font-medium transition-colors duration-200">
+                                    <i class="fas fa-trash mr-1"></i>
+                                    Delete Newsletter
                                 </button>
-                                <button type="submit" 
-                                        class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
-                                    <i class="fas fa-save mr-2"></i>
-                                    Update Settings
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <!-- Danger Zone -->
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <div class="bg-red-50 border border-red-200 rounded-lg p-6">
-                                <div class="text-center">
-                                    <h4 class="text-sm font-medium text-red-900 mb-2">Delete this newsletter</h4>
-                                    <p class="text-sm text-red-700 mb-4">
-                                        Permanently delete this newsletter and all its data. This action cannot be undone.
-                                    </p>
-                                    <button onclick="deleteNewsletter()" 
-                                            class="btn-pill bg-red-600 hover:bg-red-700 text-white px-4 py-2 font-medium transition-colors duration-200">
-                                        <i class="fas fa-trash mr-2"></i>
-                                        Delete Newsletter
+                                
+                                <!-- Action buttons on the right -->
+                                <div class="flex space-x-3">
+                                    <button type="button" onclick="Dashboard.modal.close('editSettingsModal')" 
+                                            class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                            class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
+                                        <i class="fas fa-save mr-2"></i>
+                                        Update Settings
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
             </div>
         </div>
