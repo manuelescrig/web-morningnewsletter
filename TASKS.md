@@ -10,6 +10,83 @@ RULES:
 
 ## TASKS
 
+### Remove custom.css
+- We already have the dashboard.css so let's move all the code from custom.css to dashboard.css, I forgot about that. Also update all the places were we use it to make sure it works. Double check where we use custom.css and change it to dashbaord.css
+
+### Clean up files
+- Clean up files, looks like these files are no longer needed. If they are needed, do the refacotring and them remove them. I do not want to execute code on the server, I mean the .sh file.
+convert-pill-classes.php
+pill-button-mapping.md
+update-pill-buttons.sh
+
+### Clean up more files
+- Clean up files, looks like these files are no longer needed. 
+debug-scheduler.php
+fix-scheduler-timezone.patch
+test-scheduler.php
+
+### Implement constants
+- These are define constants, can you go one by one and make sure they are implement it and working in the dashboard?
+Make sure you implement and test them and do not finish until they are working.
+
+// Newsletter Configuration
+define('MAX_DAILY_TIMES', 4); // Maximum number of times a newsletter can be sent per day
+define('MAX_NEWSLETTERS_PER_USER', 10); // Maximum number of newsletters per user
+
+// Time Configuration
+define('DEFAULT_SEND_TIME', '06:00'); // Default newsletter send time
+define('DEFAULT_TIMEZONE', 'UTC'); // Default timezone for new users // Remove this one, it should be taken from the user, I do not want to hard-code this.
+
+// Email Configuration
+define('EMAIL_FROM_NAME', 'MorningNewsletter');
+define('EMAIL_FROM_ADDRESS', 'noreply@morningnewsletter.com');
+define('EMAIL_REPLY_TO', 'support@morningnewsletter.com');
+
+// Plan Limits
+define('FREE_PLAN_SOURCE_LIMIT', 1);
+define('STARTER_PLAN_SOURCE_LIMIT', 5);
+define('PRO_PLAN_SOURCE_LIMIT', 15);
+define('UNLIMITED_PLAN_SOURCE_LIMIT', 1000);
+
+// Registration Configuration
+define('REQUIRE_EMAIL_VERIFICATION', true);
+define('REGISTRATION_RATE_LIMIT', 5); // Max registrations per IP per 5 minutes
+define('REGISTRATION_RATE_WINDOW', 300); // 5 minutes in seconds
+
+// Session Configuration
+define('SESSION_LIFETIME', 86400); // 24 hours
+define('REMEMBER_ME_DURATION', 2592000); // 30 days
+
+// API Rate Limits
+define('API_RATE_LIMIT_PER_MINUTE', 60);
+define('API_RATE_LIMIT_PER_HOUR', 1000);
+
+// File Upload Limits
+define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024); // 5MB
+define('ALLOWED_IMAGE_TYPES', ['jpg', 'jpeg', 'png', 'gif']);
+
+// Cache Configuration
+define('CACHE_ENABLED', true);
+define('CACHE_DURATION', 3600); // 1 hour
+define('CACHE_DIRECTORY', __DIR__ . '/../cache');
+
+// Debug Mode
+define('DEBUG_MODE', false);
+define('LOG_ERRORS', true);
+define('ERROR_LOG_PATH', __DIR__ . '/../logs/error.log');
+
+### Remove lucide icons
+- Let's remove all the lucide icons and go back to the font-awasome. 
+
+### Create New Newsletter box
+- The Create New Newsletter box on the dashboard looks different when openning it for the first time than if we close it and openning it again, it should always look the same. Maybe we have redundant code so make sure it always looks the same and we don't have repeated code for this. It should look like the first time. And on top of that we don-t want the border: 1px solid #e5e7eb; for the add plus icon button and we don't want the border neither, this could be the style class="px-3 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 remove-time-btn" and put the same border radious as the plus button. 
+
+### Newsletter Settings modal
+- Update the design. I'm not sure how to improve it but bottom part with the delete box looks bad. Too big and out of place so think about a good design practice and where it should be implement it and do it.
+
+
+
+
 ### ~~Refactor Dashboard Pill Buttons to Use Centralized CSS Variables~~ ✅ COMPLETED
 I want to have everywhere we have a pill button either the blue blackground or the grayish/white backgroudn. Ok, go trough the whole dashboard files and make sure where we have the grayish bakcground to 
   create a new background color constant if we don't have it and use it everywhere in those places, also do the same for the other button properties, basically I'd like to have in the custom.css the option to 
@@ -40,7 +117,7 @@ Manuel
 ### ~~Update icons on the newsletter cards~~ ✅ COMPLETED
 - In the dashboard in the index page where we see all the newsletters cards. Update the icons of the cards to use the new lucide icons. Make sure they look centered with the text. Keep the current colors for those icons, basically jus swap them to lucide icons.
 
-### Update Create New Newsletter box
+### ~~Update Create New Newsletter box~~ ✅ COMPLETED
 - The plus sign button on the right of the times, the first time the Create New Newsletter box opens the icon is not visible. I want to remove the background color of the button, only keep the background color for the hover state. Then the icon color make it green.
 Also for the delete time icon, remove the border and only leave the red x icon and Keep the background color for the hover state.
 Also the whole Create New Newsletter box make it larger if the user adds more times so it doesn't break.
