@@ -10,22 +10,22 @@ RULES:
 
 ## TASKS
 
-### Remove custom.css
+### ~~Remove custom.css~~ ✅ COMPLETED
 - We already have the dashboard.css so let's move all the code from custom.css to dashboard.css, I forgot about that. Also update all the places were we use it to make sure it works. Double check where we use custom.css and change it to dashbaord.css
 
-### Clean up files
+### ~~Clean up files~~ ✅ COMPLETED
 - Clean up files, looks like these files are no longer needed. If they are needed, do the refacotring and them remove them. I do not want to execute code on the server, I mean the .sh file.
 convert-pill-classes.php
 pill-button-mapping.md
 update-pill-buttons.sh
 
-### Clean up more files
+### ~~Clean up more files~~ ✅ COMPLETED
 - Clean up files, looks like these files are no longer needed. 
 debug-scheduler.php
 fix-scheduler-timezone.patch
 test-scheduler.php
 
-### Implement constants
+### ~~Implement constants~~ ✅ COMPLETED
 - These are define constants, can you go one by one and make sure they are implement it and working in the dashboard?
 Make sure you implement and test them and do not finish until they are working.
 
@@ -75,13 +75,13 @@ define('DEBUG_MODE', false);
 define('LOG_ERRORS', true);
 define('ERROR_LOG_PATH', __DIR__ . '/../logs/error.log');
 
-### Remove lucide icons
+### ~~Remove lucide icons~~ ✅ COMPLETED
 - Let's remove all the lucide icons and go back to the font-awasome. 
 
-### Create New Newsletter box
+### ~~Create New Newsletter box~~ ✅ COMPLETED
 - The Create New Newsletter box on the dashboard looks different when openning it for the first time than if we close it and openning it again, it should always look the same. Maybe we have redundant code so make sure it always looks the same and we don't have repeated code for this. It should look like the first time. And on top of that we don-t want the border: 1px solid #e5e7eb; for the add plus icon button and we don't want the border neither, this could be the style class="px-3 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 remove-time-btn" and put the same border radious as the plus button. 
 
-### Newsletter Settings modal
+### ~~Newsletter Settings modal~~ ✅ COMPLETED
 - Update the design. I'm not sure how to improve it but bottom part with the delete box looks bad. Too big and out of place so think about a good design practice and where it should be implement it and do it.
 
 
