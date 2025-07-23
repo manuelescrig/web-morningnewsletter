@@ -1,8 +1,10 @@
 <?php
 // Dashboard error diagnostic
-header('Content-Type: text/plain');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// Start output buffering to prevent header issues
+ob_start();
 
 echo "=== DASHBOARD ERROR DIAGNOSTIC ===\n\n";
 
@@ -27,9 +29,9 @@ try {
     echo "- Auth instance created\n";
     
     // Don't require auth for this test
-    echo "- Checking if user is logged in: " . ($auth->isAuthenticated() ? "Yes" : "No") . "\n";
+    echo "- Checking if user is logged in: " . ($auth->isLoggedIn() ? "Yes" : "No") . "\n";
     
-    if ($auth->isAuthenticated()) {
+    if ($auth->isLoggedIn()) {
         echo "\n3. Testing User methods...\n";
         $user = $auth->getCurrentUser();
         echo "- User ID: " . $user->getId() . "\n";
@@ -86,3 +88,7 @@ try {
     echo "Line: " . $e->getLine() . "\n";
     echo "\nStack trace:\n" . $e->getTraceAsString() . "\n";
 }
+
+// Send output
+header('Content-Type: text/plain');
+ob_end_flush();
