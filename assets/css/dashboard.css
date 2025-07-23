@@ -124,9 +124,19 @@
     opacity: 1;
 }
 
-/* Reduce backdrop opacity for less blur effect */
+/* Modal backdrop with black overlay instead of blur */
 .modal-backdrop {
-    background-color: rgba(75, 85, 99, 0.2) !important; /* Reduced from 30% to 20% */
+    background-color: rgba(0, 0, 0, 0.5) !important; /* Black overlay at 50% opacity */
+    backdrop-filter: none !important; /* Remove blur effect */
+}
+
+/* Modal responsive padding for smaller screens */
+@media (max-width: 640px) {
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
 }
 
 /* Modal title styling */

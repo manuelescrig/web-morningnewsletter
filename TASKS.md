@@ -23,7 +23,7 @@ RULES:
 - Do a double check to see what you are missing and please fix it. I want the user to select the Stock Source, to have the option to search for a stock with autocompletion and then select it and add it to the newsletter and recieve it.
 - Make sure to make it editable for the user and to add it to the Sources screen so the admin can enable/disable it.
 
-### Implement News Sources
+### ~~Implement News Sources~~ ✅ COMPLETED
 - I belive there's a document explaining how to add a source, otherwise we will create one because we are going to add more sources.
 - I want to give the user to add an RSS as a news source, the user can put a RSS, then the RSS will be validated and if it is valid add it. The user can choose the number of the RSS items to be fetched, the options houls be like 1,3,5. Then if the RSS is valid the user will able to receive in the newsletter those items. Make them look nice on the newsletter and try to match the style we have.
 - Do a double check to see what you are missing and please fix it. I want the user to select the Stock Source, to have the option to search for a stock with autocompletion and then select it and add it to the newsletter and recieve it.
