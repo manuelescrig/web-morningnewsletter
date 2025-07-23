@@ -407,7 +407,7 @@ $canAddSource = count($sources) < $maxSources;
                 </div>
                 <div class="flex space-x-3">
                     <button onclick="openEditSettingsModal()" 
-                            class="btn-pill btn-secondary-light px-4 py-2 font-medium">
+                            class="btn-pill pill-gray">
                         <i class="fas fa-cog mr-2"></i>
                         Edit Settings
                     </button>
@@ -1539,7 +1539,7 @@ $canAddSource = count($sources) < $maxSources;
                             
                             <div class="flex justify-end space-x-3 pt-4">
                                 <button type="button" onclick="Dashboard.modal.close('addSourceModal')" 
-                                        class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                        class="btn-pill pill-gray">
                                     Cancel
                                 </button>
                                 <button type="submit" 
@@ -1671,7 +1671,7 @@ $canAddSource = count($sources) < $maxSources;
                     
                     <div class="mt-6 flex justify-end space-x-2">
                         <button type="button" onclick="Dashboard.modal.close('editSourceModal')" 
-                                class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                class="btn-pill pill-gray">
                             Cancel
                         </button>
                         <button type="submit" 
@@ -1873,7 +1873,7 @@ $canAddSource = count($sources) < $maxSources;
                                 <!-- Action buttons on the right -->
                                 <div class="flex space-x-3">
                                     <button type="button" onclick="Dashboard.modal.close('editSettingsModal')" 
-                                            class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                            class="btn-pill pill-gray">
                                         Cancel
                                     </button>
                                     <button type="submit" 

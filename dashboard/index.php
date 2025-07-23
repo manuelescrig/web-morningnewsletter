@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <!-- Second row for buttons -->
                     <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideCreateForm()" class="btn-pill btn-secondary-light px-6 py-2 font-medium">
+                        <button type="button" onclick="hideCreateForm()" class="btn-pill pill-gray">
                             Cancel
                         </button>
                         <button type="submit" class="btn-pill bg-primary hover-bg-primary-dark text-white px-6 py-2 font-medium transition-colors duration-200 inline-flex items-center">
@@ -549,7 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <div class="mt-6 flex justify-end space-x-2">
                         <button type="button" onclick="closeEditModal()" 
-                                class="btn-pill bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 transition-colors duration-200">
+                                class="btn-pill pill-gray">
                             Cancel
                         </button>
                         <button type="submit" 

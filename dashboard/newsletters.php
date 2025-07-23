@@ -269,7 +269,7 @@ $currentPage = 'dashboard';
                     <!-- Form fields would go here -->
                     <div class="mt-4 flex justify-end space-x-2">
                         <button type="button" onclick="closeEditModal()" 
-                                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md">Cancel</button>
+                                class="btn-gray">Cancel</button>
                         <button type="submit" 
                                 class="bg-primary hover-bg-primary-dark text-white px-4 py-2 rounded-md">Update</button>
                     </div>

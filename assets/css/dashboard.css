@@ -40,6 +40,13 @@
   --pill-success-text: #065f46;
   --pill-success-border: #10b981;
   
+  /* Gray Pill Button (Standardized) */
+  --pill-gray-bg: #e5e7eb; /* bg-gray-200 */
+  --pill-gray-bg-hover: #d1d5db; /* bg-gray-300 */
+  --pill-gray-text: #374151; /* text-gray-700 */
+  --pill-gray-text-hover: #1f2937; /* text-gray-800 */
+  --pill-gray-border: transparent;
+  
   /* Pill Button Common Properties */
   --pill-padding-x: 1.2rem;
   --pill-padding-y: 0.6rem;
@@ -854,16 +861,16 @@ button,
     box-shadow: 0 4px 6px -1px rgba(70, 139, 230, 0.3);
 }
 
-/* Custom secondary button styles */
+/* Custom secondary button styles - Updated to use CSS variables */
 .btn-secondary-light {
-    background-color: #f3f4f6; /* bg-gray-100 */
-    color: #374151; /* text-gray-700 - darker than original */
-    transition: all 0.2s ease;
+    background-color: var(--pill-gray-bg);
+    color: var(--pill-gray-text);
+    transition: var(--pill-transition);
 }
 
 .btn-secondary-light:hover {
-    background-color: #e5e7eb; /* bg-gray-200 */
-    color: #1f2937; /* text-gray-800 - even darker on hover */
+    background-color: var(--pill-gray-bg-hover);
+    color: var(--pill-gray-text-hover);
 }
 
 .btn-secondary-dark {
@@ -875,6 +882,44 @@ button,
 .btn-secondary-dark:hover {
     background-color: #374151; /* bg-gray-700 */
     color: #ffffff; /* text-white */
+}
+
+/* Standardized gray button */
+.btn-gray {
+    background-color: var(--pill-gray-bg);
+    color: var(--pill-gray-text);
+    border: 1px solid var(--pill-gray-border);
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: var(--pill-transition);
+    cursor: pointer;
+}
+
+.btn-gray:hover {
+    background-color: var(--pill-gray-bg-hover);
+    color: var(--pill-gray-text-hover);
+}
+
+/* For pill-style gray buttons */
+.pill-gray {
+    background-color: var(--pill-gray-bg);
+    color: var(--pill-gray-text);
+    border: 1px solid var(--pill-gray-border);
+    padding: var(--pill-padding-y) var(--pill-padding-x);
+    border-radius: var(--pill-border-radius);
+    font-weight: var(--pill-font-weight);
+    font-size: var(--pill-font-size);
+    transition: var(--pill-transition);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.pill-gray:hover {
+    background-color: var(--pill-gray-bg-hover);
+    color: var(--pill-gray-text-hover);
 }
 
 /* Add/Remove Time Button Styles */
