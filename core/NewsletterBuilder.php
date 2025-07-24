@@ -324,8 +324,10 @@ class NewsletterBuilder {
                   </div>";
         
         // Main temperature section
+        $iconClass = $main['icon_class'] ?? 'fa-cloud-sun';
+        $svgIcon = $this->getWeatherSvgIcon($iconClass);
         $html .= "<div style='text-align: center; margin-bottom: 24px;'>
-                    <div style='font-size: 48px; margin-bottom: 8px;'>" . $main['icon'] . "</div>
+                    <div style='margin-bottom: 8px; display: inline-block;'>{$svgIcon}</div>
                     <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
                     <div style='font-size: 18px; color: #6b7280; margin-top: 8px;'>" . htmlspecialchars($main['description']) . "</div>
                   </div>";
@@ -339,14 +341,40 @@ class NewsletterBuilder {
             
             foreach ($columns as $index => $column) {
                 $borderStyle = $index < $columnCount - 1 ? 'border-right: 1px solid #e5e7eb;' : '';
+                $iconClass = $column['icon_class'] ?? 'fa-circle';
                 
-                $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>
-                            <div style='font-size: 20px; margin-bottom: 4px;'>" . $column['icon'] . "</div>
-                            <div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>
-                            <div style='font-size: 24px; font-weight: 600; color: #111827;'>" . htmlspecialchars($column['value']) . "</div>";
+                $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>";
                 
-                if (!empty($column['subtitle'])) {
-                    $html .= "<div style='font-size: 14px; color: #6b7280; margin-top: 2px;'>" . htmlspecialchars($column['subtitle']) . "</div>";
+                // Icon
+                $svgColumnIcon = $this->getWeatherColumnIcon($iconClass);
+                $html .= "<div style='margin-bottom: 4px; display: inline-block;'>{$svgColumnIcon}</div>";
+                
+                // Label
+                $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
+                
+                // Handle high/low temperature display
+                if (!empty($column['high_low'])) {
+                    // High/Low temperatures with same font size
+                    $arrowUp = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 5l-7 7M12 5l7 7" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    $arrowDown = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M12 19l7-7M12 19l-7-7" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    
+                    $html .= "<div style='display: inline-block;'>
+                                <div style='display: inline-block; margin-right: 8px;'>
+                                    <span style='display: inline-block; vertical-align: middle; margin-right: 2px;'>{$arrowUp}</span>
+                                    <span style='font-size: 20px; font-weight: 600; color: #111827; vertical-align: middle;'>" . htmlspecialchars($column['value']) . "</span>
+                                </div>
+                                <div style='display: inline-block;'>
+                                    <span style='display: inline-block; vertical-align: middle; margin-right: 2px;'>{$arrowDown}</span>
+                                    <span style='font-size: 20px; font-weight: 600; color: #111827; vertical-align: middle;'>" . htmlspecialchars($column['subtitle']) . "</span>
+                                </div>
+                              </div>";
+                } else {
+                    // Regular value display
+                    $html .= "<div style='font-size: 24px; font-weight: 600; color: #111827;'>" . htmlspecialchars($column['value']) . "</div>";
+                    
+                    if (!empty($column['subtitle'])) {
+                        $html .= "<div style='font-size: 14px; color: #6b7280; margin-top: 2px;'>" . htmlspecialchars($column['subtitle']) . "</div>";
+                    }
                 }
                 
                 $html .= "</div>";
@@ -364,6 +392,46 @@ class NewsletterBuilder {
         $html .= "</div>";
         
         return $html;
+    }
+    
+    private function getWeatherSvgIcon($iconClass) {
+        // Simplified SVG icons for email compatibility
+        $icons = [
+            'fa-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="#f59e0b" stroke-width="2" fill="#fbbf24"/><path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M22 12h-4M6 12H2M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83M19.07 19.07l-2.83-2.83M7.76 7.76L4.93 4.93"/></svg>',
+            'fa-cloud-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M18 10h-.35A5.65 5.65 0 0012 4.35V4M5.08 11.42A7 7 0 1012 21h6a5 5 0 10-1.84-9.78" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
+            'fa-cloud' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#e5e7eb"/></svg>',
+            'fa-cloud-rain' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><path stroke="#3b82f6" stroke-width="2" stroke-linecap="round" d="M8 19v2M8 13v2M16 19v2M16 13v2M12 21v2M12 15v2"/></svg>',
+            'fa-snowflake' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#60a5fa" stroke-width="2" stroke-linecap="round" d="M12 2v20M12 2l3 3M12 2l-3 3M12 22l3-3M12 22l-3-3M20.66 7L3.34 17M20.66 7l-4.24 1.5M20.66 7L19 4M3.34 17l4.24-1.5M3.34 17L5 20M3.34 7l17.32 10M3.34 7l4.24 1.5M3.34 7L5 4M20.66 17l-4.24-1.5M20.66 17L19 20"/></svg>',
+            'fa-cloud-bolt' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 10.13A8 8 0 115.2 10a5 5 0 109.6 6H19a5 5 0 110-5.87z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><path d="M13 11l-4 6h6l-4 6" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
+            'fa-smog' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#9ca3af" stroke-width="2" stroke-linecap="round" d="M3 12h18M5 16h14M7 20h10M4 8h16"/></svg>',
+            'fa-cloud-meatball' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><circle cx="8" cy="19" r="1" fill="#60a5fa"/><circle cx="12" cy="19" r="1" fill="#60a5fa"/><circle cx="16" cy="19" r="1" fill="#60a5fa"/></svg>'
+        ];
+        
+        return $icons[$iconClass] ?? $icons['fa-cloud'];
+    }
+    
+    private function getWeatherColumnIcon($iconClass) {
+        // Smaller SVG icons for columns
+        $icons = [
+            'fa-droplet' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0L12 2.69z" stroke="#3b82f6" stroke-width="2" stroke-linejoin="round" fill="#dbeafe"/></svg>',
+            'fa-wind' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#6b7280" stroke-width="2" stroke-linecap="round" d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>',
+            'fa-gauge' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13a1 1 0 100-2 1 1 0 000 2z" fill="#6b7280"/><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" fill="#6b7280"/><path d="M12 6v6" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/></svg>',
+            'fa-temperature-half' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#e5e7eb"/></svg>'
+        ];
+        
+        // Use weather icons for forecast
+        if (strpos($iconClass, 'fa-') === 0 && !isset($icons[$iconClass])) {
+            $mainIcons = [
+                'fa-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="#f59e0b" stroke-width="2" fill="#fbbf24"/><path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M22 12h-4M6 12H2M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83M19.07 19.07l-2.83-2.83M7.76 7.76L4.93 4.93"/></svg>',
+                'fa-cloud-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M18 10h-.35A5.65 5.65 0 0012 4.35V4M5.08 11.42A7 7 0 1012 21h6a5 5 0 10-1.84-9.78" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
+                'fa-cloud' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#e5e7eb"/></svg>',
+                'fa-cloud-rain' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><path stroke="#3b82f6" stroke-width="2" stroke-linecap="round" d="M8 19v2M8 13v2M16 19v2M16 13v2M12 21v2M12 15v2"/></svg>',
+                'fa-snowflake' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#60a5fa" stroke-width="2" stroke-linecap="round" d="M12 2v20M12 2l3 3M12 2l-3 3M12 22l3-3M12 22l-3-3M20.66 7L3.34 17M20.66 7l-4.24 1.5M20.66 7L19 4M3.34 17l4.24-1.5M3.34 17L5 20M3.34 7l17.32 10M3.34 7l4.24 1.5M3.34 7L5 4M20.66 17l-4.24-1.5M20.66 17L19 20"/></svg>'
+            ];
+            return $mainIcons[$iconClass] ?? $icons['fa-temperature-half'];
+        }
+        
+        return $icons[$iconClass] ?? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#6b7280" stroke-width="2" fill="none"/></svg>';
     }
     
     private function formatDateInUserTimezone($format) {

@@ -80,6 +80,7 @@ class WeatherModule extends BaseSourceModule {
             $result['main'] = [
                 'temperature' => "{$temp}°C",
                 'icon' => $weatherIcon,
+                'icon_class' => $this->getWeatherIconClass($currentSymbol),
                 'description' => $description,
                 'location' => $location
             ];
@@ -91,7 +92,7 @@ class WeatherModule extends BaseSourceModule {
                 $columns[] = [
                     'label' => 'Humidity',
                     'value' => "{$humidity}%",
-                    'icon' => '💧'
+                    'icon_class' => 'fa-droplet'
                 ];
             }
             
@@ -100,7 +101,7 @@ class WeatherModule extends BaseSourceModule {
                     'label' => 'Wind',
                     'value' => "{$windSpeed} km/h",
                     'subtitle' => $windDirection,
-                    'icon' => '💨'
+                    'icon_class' => 'fa-wind'
                 ];
             }
             
@@ -108,7 +109,7 @@ class WeatherModule extends BaseSourceModule {
                 $columns[] = [
                     'label' => 'Pressure',
                     'value' => "{$pressure} hPa",
-                    'icon' => '🌡️'
+                    'icon_class' => 'fa-gauge'
                 ];
             }
             
@@ -130,7 +131,8 @@ class WeatherModule extends BaseSourceModule {
                         'label' => 'Today',
                         'value' => "{$high}°",
                         'subtitle' => "{$low}°",
-                        'icon' => '📊'
+                        'icon_class' => 'fa-temperature-half',
+                        'high_low' => true
                     ];
                 }
             }
@@ -154,12 +156,12 @@ class WeatherModule extends BaseSourceModule {
                     if (!empty($tomorrowTemps) && $tomorrowSymbol) {
                         $tomorrowHigh = round(max($tomorrowTemps));
                         $tomorrowLow = round(min($tomorrowTemps));
-                        $tomorrowEmoji = $this->getWeatherEmoji($tomorrowSymbol);
                         $columns[] = [
                             'label' => 'Tomorrow',
                             'value' => "{$tomorrowHigh}°",
                             'subtitle' => "{$tomorrowLow}°",
-                            'icon' => $tomorrowEmoji
+                            'icon_class' => $this->getWeatherIconClass($tomorrowSymbol),
+                            'high_low' => true
                         ];
                     }
                 }
@@ -334,5 +336,28 @@ class WeatherModule extends BaseSourceModule {
         $directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
         $index = round($degrees / 22.5) % 16;
         return $directions[$index];
+    }
+    
+    private function getWeatherIconClass(string $symbolCode): string {
+        // MET Norway symbol codes to Font Awesome icon mapping
+        if (strpos($symbolCode, 'clearsky') !== false) {
+            return 'fa-sun';
+        } elseif (strpos($symbolCode, 'fair') !== false || strpos($symbolCode, 'partlycloudy') !== false) {
+            return 'fa-cloud-sun';
+        } elseif (strpos($symbolCode, 'cloudy') !== false) {
+            return 'fa-cloud';
+        } elseif (strpos($symbolCode, 'rain') !== false) {
+            return 'fa-cloud-rain';
+        } elseif (strpos($symbolCode, 'sleet') !== false) {
+            return 'fa-cloud-meatball';
+        } elseif (strpos($symbolCode, 'snow') !== false) {
+            return 'fa-snowflake';
+        } elseif (strpos($symbolCode, 'fog') !== false) {
+            return 'fa-smog';
+        } elseif (strpos($symbolCode, 'thunderstorm') !== false) {
+            return 'fa-cloud-bolt';
+        } else {
+            return 'fa-cloud-sun';
+        }
     }
 }
