@@ -20,6 +20,17 @@ $success = '';
 
 $currentPage = 'dashboard';
 
+// Helper function to properly format source type names
+function formatSourceType($type) {
+    $specialCases = [
+        'rss' => 'RSS',
+        'sp500' => 'S&P 500',
+        'appstore' => 'App Store'
+    ];
+    
+    return $specialCases[$type] ?? ucfirst($type);
+}
+
 // Common timezones for dropdown
 $timezones = [
     'UTC' => 'UTC',
@@ -488,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="flex flex-wrap gap-1">
                                             <?php foreach (array_slice($sources, 0, 3) as $source): ?>
                                                 <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded">
-                                                    <?php echo htmlspecialchars($source['name'] ?: ucfirst($source['type'])); ?>
+                                                    <?php echo htmlspecialchars($source['name'] ?: formatSourceType($source['type'])); ?>
                                                 </span>
                                             <?php endforeach; ?>
                                             <?php if ($sourceCount > 3): ?>

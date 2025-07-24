@@ -31,6 +31,17 @@ $auth->requireAuth();
 $user = $auth->getCurrentUser();
 $newsletterId = (int)($_GET['id'] ?? 0);
 
+// Helper function to properly format source type names
+function formatSourceType($type) {
+    $specialCases = [
+        'rss' => 'RSS',
+        'sp500' => 'S&P 500',
+        'appstore' => 'App Store'
+    ];
+    
+    return $specialCases[$type] ?? ucfirst($type);
+}
+
 if (!$newsletterId) {
     header('Location: /dashboard/');
     exit;
@@ -518,9 +529,9 @@ $canAddSource = count($sources) < $maxSources;
                                                     </div>
                                                     <div>
                                                         <h3 class="font-medium text-gray-900">
-                                                            <?php echo htmlspecialchars($source['name'] ?: ucfirst($source['type'])); ?>
+                                                            <?php echo htmlspecialchars($source['name'] ?: formatSourceType($source['type'])); ?>
                                                         </h3>
-                                                        <p class="text-sm text-gray-600"><?php echo ucfirst($source['type']); ?></p>
+                                                        <p class="text-sm text-gray-600"><?php echo formatSourceType($source['type']); ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -771,6 +782,11 @@ $canAddSource = count($sources) < $maxSources;
                         if (holdingsAmountInput && config.holdings_amount) {
                             holdingsAmountInput.value = config.holdings_amount;
                         }
+                    } else if (source.type === 'rss') {
+                        // Populate RSS fields
+                        document.getElementById('edit_config_feed_url').value = config.feed_url || '';
+                        document.getElementById('edit_config_item_limit').value = config.item_limit || '3';
+                        document.getElementById('edit_config_display_name').value = config.display_name || '';
                     }
                 }
                 
@@ -2275,6 +2291,33 @@ $canAddSource = count($sources) < $maxSources;
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
                                        placeholder="1">
                                 <p class="text-xs text-gray-500 mt-1">Amount of BNB you hold (e.g., 0.5, 1, 10)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- RSS Config -->
+                        <div id="editConfigRss" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">RSS Feed URL *</label>
+                                <input type="url" name="config[feed_url]" id="edit_config_feed_url" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="https://example.com/feed.xml">
+                                <p class="text-xs text-gray-500 mt-1">Enter the full URL of the RSS feed</p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Number of items *</label>
+                                <select name="config[item_limit]" id="edit_config_item_limit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="1">1 item</option>
+                                    <option value="3">3 items</option>
+                                    <option value="5">5 items</option>
+                                </select>
+                                <p class="text-xs text-gray-500 mt-1">How many items to show from the feed</p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
+                                <input type="text" name="config[display_name]" id="edit_config_display_name"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="e.g., Tech News">
+                                <p class="text-xs text-gray-500 mt-1">Custom name to display instead of feed title</p>
                             </div>
                         </div>
                         
