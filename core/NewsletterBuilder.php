@@ -320,7 +320,7 @@ class NewsletterBuilder {
         // Header with location
         $html .= "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
                     <h2 style='margin: 0; color: #111827; font-size: 18px; font-weight: 600;'>$title</h2>
-                    <span style='color: #6b7280; font-size: 14px;'>📍 " . htmlspecialchars($main['location']) . "</span>
+                    <span style='color: #6b7280; font-size: 14px;'>" . htmlspecialchars($main['location']) . "</span>
                   </div>";
         
         // Main temperature section
@@ -355,17 +355,19 @@ class NewsletterBuilder {
                 // Handle high/low temperature display
                 if (!empty($column['high_low'])) {
                     // High/Low temperatures with same font size
-                    $arrowUp = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 5l-7 7M12 5l7 7" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-                    $arrowDown = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M12 19l7-7M12 19l-7-7" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    $arrowUp = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 19V5M12 5l-7 7M12 5l7 7" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    $arrowDown = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M12 19l7-7M12 19l-7-7" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
                     
-                    $html .= "<div style='display: inline-block;'>
-                                <div style='display: inline-block; margin-right: 8px;'>
-                                    <span style='display: inline-block; vertical-align: middle; margin-right: 2px;'>{$arrowUp}</span>
-                                    <span style='font-size: 20px; font-weight: 600; color: #111827; vertical-align: middle;'>" . htmlspecialchars($column['value']) . "</span>
-                                </div>
-                                <div style='display: inline-block;'>
-                                    <span style='display: inline-block; vertical-align: middle; margin-right: 2px;'>{$arrowDown}</span>
-                                    <span style='font-size: 20px; font-weight: 600; color: #111827; vertical-align: middle;'>" . htmlspecialchars($column['subtitle']) . "</span>
+                    $html .= "<div style='text-align: center;'>
+                                <div style='display: inline-flex; align-items: center; justify-content: center; gap: 12px;'>
+                                    <div style='display: inline-flex; align-items: center; gap: 4px;'>
+                                        <span style='display: inline-block;'>{$arrowUp}</span>
+                                        <span style='font-size: 20px; font-weight: 600; color: #111827;'>" . htmlspecialchars($column['value']) . "</span>
+                                    </div>
+                                    <div style='display: inline-flex; align-items: center; gap: 4px;'>
+                                        <span style='display: inline-block;'>{$arrowDown}</span>
+                                        <span style='font-size: 20px; font-weight: 600; color: #111827;'>" . htmlspecialchars($column['subtitle']) . "</span>
+                                    </div>
                                 </div>
                               </div>";
                 } else {
@@ -398,7 +400,7 @@ class NewsletterBuilder {
         // Simplified SVG icons for email compatibility
         $icons = [
             'fa-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="#f59e0b" stroke-width="2" fill="#fbbf24"/><path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M22 12h-4M6 12H2M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83M19.07 19.07l-2.83-2.83M7.76 7.76L4.93 4.93"/></svg>',
-            'fa-cloud-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M18 10h-.35A5.65 5.65 0 0012 4.35V4M5.08 11.42A7 7 0 1012 21h6a5 5 0 10-1.84-9.78" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
+            'fa-cloud-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><circle cx="8" cy="8" r="3" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M3.5 8h1M8 3.5v1M11.5 4.5l-.7.7M12.5 11.5l-.7-.7M4.5 11.5l.7-.7M18 10h-.35A5.65 5.65 0 0012 4.35a7 7 0 10-6.92 7.05A5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
             'fa-cloud' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#e5e7eb"/></svg>',
             'fa-cloud-rain' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><path stroke="#3b82f6" stroke-width="2" stroke-linecap="round" d="M8 19v2M8 13v2M16 19v2M16 13v2M12 21v2M12 15v2"/></svg>',
             'fa-snowflake' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#60a5fa" stroke-width="2" stroke-linecap="round" d="M12 2v20M12 2l3 3M12 2l-3 3M12 22l3-3M12 22l-3-3M20.66 7L3.34 17M20.66 7l-4.24 1.5M20.66 7L19 4M3.34 17l4.24-1.5M3.34 17L5 20M3.34 7l17.32 10M3.34 7l4.24 1.5M3.34 7L5 4M20.66 17l-4.24-1.5M20.66 17L19 20"/></svg>',
@@ -423,7 +425,7 @@ class NewsletterBuilder {
         if (strpos($iconClass, 'fa-') === 0 && !isset($icons[$iconClass])) {
             $mainIcons = [
                 'fa-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5" stroke="#f59e0b" stroke-width="2" fill="#fbbf24"/><path stroke="#f59e0b" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M22 12h-4M6 12H2M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83M19.07 19.07l-2.83-2.83M7.76 7.76L4.93 4.93"/></svg>',
-                'fa-cloud-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="7" r="4" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M18 10h-.35A5.65 5.65 0 0012 4.35V4M5.08 11.42A7 7 0 1012 21h6a5 5 0 10-1.84-9.78" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
+                'fa-cloud-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><circle cx="8" cy="8" r="3" stroke="#f59e0b" stroke-width="1.5" fill="#fbbf24"/><path d="M3.5 8h1M8 3.5v1M11.5 4.5l-.7.7M12.5 11.5l-.7-.7M4.5 11.5l.7-.7M18 10h-.35A5.65 5.65 0 0012 4.35a7 7 0 10-6.92 7.05A5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" fill="#e5e7eb"/></svg>',
                 'fa-cloud' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#e5e7eb"/></svg>',
                 'fa-cloud-rain' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h-.35A5.65 5.65 0 0012 4.35v-.01A7 7 0 105.08 11.4 5 5 0 108 21h10a5 5 0 000-10z" stroke="#9ca3af" stroke-width="2" fill="#e5e7eb"/><path stroke="#3b82f6" stroke-width="2" stroke-linecap="round" d="M8 19v2M8 13v2M16 19v2M16 13v2M12 21v2M12 15v2"/></svg>',
                 'fa-snowflake' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#60a5fa" stroke-width="2" stroke-linecap="round" d="M12 2v20M12 2l3 3M12 2l-3 3M12 22l3-3M12 22l-3-3M20.66 7L3.34 17M20.66 7l-4.24 1.5M20.66 7L19 4M3.34 17l4.24-1.5M3.34 17L5 20M3.34 7l17.32 10M3.34 7l4.24 1.5M3.34 7L5 4M20.66 17l-4.24-1.5M20.66 17L19 20"/></svg>'
