@@ -6,6 +6,10 @@ class WeatherModule extends BaseSourceModule {
         return "Weather";
     }
     
+    public function getCustomLayout(): bool {
+        return true; // This module uses custom layout
+    }
+    
     public function getData(): array {
         try {
             $latitude = $this->config['latitude'] ?? '';
@@ -55,91 +59,113 @@ class WeatherModule extends BaseSourceModule {
             $weatherIcon = $this->getWeatherEmoji($currentSymbol);
             $description = $this->getWeatherDescription($currentSymbol);
             
-            $result = [
-                [
-                    'label' => 'Current Temperature',
-                    'value' => "{$weatherIcon} {$temp}°C",
-                    'delta' => null
-                ],
-                [
-                    'label' => 'Conditions',
-                    'value' => $description,
-                    'delta' => null
-                ],
-                [
-                    'label' => 'Humidity',
-                    'value' => "💧 {$humidity}%",
-                    'delta' => null
-                ],
-                [
-                    'label' => 'Wind',
-                    'value' => "💨 {$windSpeed} km/h {$windDirection}",
-                    'delta' => null
-                ]
+            // Get configured fields to display
+            $displayFields = json_decode($this->config['display_fields'] ?? '{}', true);
+            if (empty($displayFields)) {
+                // Default fields if none selected
+                $displayFields = [
+                    'temperature' => true,
+                    'conditions' => true,
+                    'humidity' => true,
+                    'wind' => true,
+                    'pressure' => true,
+                    'today_range' => true,
+                    'tomorrow' => true
+                ];
+            }
+            
+            $result = [];
+            
+            // Always include main temperature with large display
+            $result['main'] = [
+                'temperature' => "{$temp}°C",
+                'icon' => $weatherIcon,
+                'description' => $description,
+                'location' => $location
             ];
             
-            // Add pressure if available
-            if ($pressure > 0) {
-                $result[] = [
+            // Build columns based on selected fields
+            $columns = [];
+            
+            if (!empty($displayFields['humidity'])) {
+                $columns[] = [
+                    'label' => 'Humidity',
+                    'value' => "{$humidity}%",
+                    'icon' => '💧'
+                ];
+            }
+            
+            if (!empty($displayFields['wind'])) {
+                $columns[] = [
+                    'label' => 'Wind',
+                    'value' => "{$windSpeed} km/h",
+                    'subtitle' => $windDirection,
+                    'icon' => '💨'
+                ];
+            }
+            
+            if (!empty($displayFields['pressure']) && $pressure > 0) {
+                $columns[] = [
                     'label' => 'Pressure',
-                    'value' => "🌡️ {$pressure} hPa",
-                    'delta' => null
+                    'value' => "{$pressure} hPa",
+                    'icon' => '🌡️'
                 ];
             }
             
-            // Get today's high/low from next 24 hours
-            $todayTemps = [];
-            $next24Hours = array_slice($timeseries, 0, 24);
-            
-            foreach ($next24Hours as $entry) {
-                if (isset($entry['data']['instant']['details']['air_temperature'])) {
-                    $todayTemps[] = $entry['data']['instant']['details']['air_temperature'];
-                }
-            }
-            
-            if (!empty($todayTemps)) {
-                $high = round(max($todayTemps));
-                $low = round(min($todayTemps));
-                $result[] = [
-                    'label' => 'Today\'s Range',
-                    'value' => "📊 {$low}°C - {$high}°C",
-                    'delta' => null
-                ];
-            }
-            
-            // Tomorrow's forecast (24-48 hours ahead)
-            $tomorrowEntries = array_slice($timeseries, 24, 24);
-            if (!empty($tomorrowEntries)) {
-                $tomorrowTemps = [];
-                $tomorrowSymbol = null;
+            // Get today's high/low
+            if (!empty($displayFields['today_range'])) {
+                $todayTemps = [];
+                $next24Hours = array_slice($timeseries, 0, 24);
                 
-                foreach ($tomorrowEntries as $entry) {
+                foreach ($next24Hours as $entry) {
                     if (isset($entry['data']['instant']['details']['air_temperature'])) {
-                        $tomorrowTemps[] = $entry['data']['instant']['details']['air_temperature'];
-                    }
-                    if (!$tomorrowSymbol && isset($entry['data']['next_1_hours']['summary']['symbol_code'])) {
-                        $tomorrowSymbol = $entry['data']['next_1_hours']['summary']['symbol_code'];
+                        $todayTemps[] = $entry['data']['instant']['details']['air_temperature'];
                     }
                 }
                 
-                if (!empty($tomorrowTemps) && $tomorrowSymbol) {
-                    $tomorrowHigh = round(max($tomorrowTemps));
-                    $tomorrowLow = round(min($tomorrowTemps));
-                    $tomorrowEmoji = $this->getWeatherEmoji($tomorrowSymbol);
-                    $result[] = [
-                        'label' => 'Tomorrow',
-                        'value' => "{$tomorrowEmoji} {$tomorrowLow}°C - {$tomorrowHigh}°C",
-                        'delta' => null
+                if (!empty($todayTemps)) {
+                    $high = round(max($todayTemps));
+                    $low = round(min($todayTemps));
+                    $columns[] = [
+                        'label' => 'Today',
+                        'value' => "{$high}°",
+                        'subtitle' => "{$low}°",
+                        'icon' => '📊'
                     ];
                 }
             }
             
-            // Add location info
-            $result[] = [
-                'label' => 'Location',
-                'value' => "📍 $location",
-                'delta' => null
-            ];
+            // Tomorrow's forecast
+            if (!empty($displayFields['tomorrow'])) {
+                $tomorrowEntries = array_slice($timeseries, 24, 24);
+                if (!empty($tomorrowEntries)) {
+                    $tomorrowTemps = [];
+                    $tomorrowSymbol = null;
+                    
+                    foreach ($tomorrowEntries as $entry) {
+                        if (isset($entry['data']['instant']['details']['air_temperature'])) {
+                            $tomorrowTemps[] = $entry['data']['instant']['details']['air_temperature'];
+                        }
+                        if (!$tomorrowSymbol && isset($entry['data']['next_1_hours']['summary']['symbol_code'])) {
+                            $tomorrowSymbol = $entry['data']['next_1_hours']['summary']['symbol_code'];
+                        }
+                    }
+                    
+                    if (!empty($tomorrowTemps) && $tomorrowSymbol) {
+                        $tomorrowHigh = round(max($tomorrowTemps));
+                        $tomorrowLow = round(min($tomorrowTemps));
+                        $tomorrowEmoji = $this->getWeatherEmoji($tomorrowSymbol);
+                        $columns[] = [
+                            'label' => 'Tomorrow',
+                            'value' => "{$tomorrowHigh}°",
+                            'subtitle' => "{$tomorrowLow}°",
+                            'icon' => $tomorrowEmoji
+                        ];
+                    }
+                }
+            }
+            
+            $result['columns'] = $columns;
             
             return $result;
             
@@ -162,6 +188,7 @@ class WeatherModule extends BaseSourceModule {
                 $displayMessage = 'Network error';
             }
             
+            // Return error in legacy format for compatibility
             return [
                 [
                     'label' => 'Weather',
@@ -206,6 +233,20 @@ class WeatherModule extends BaseSourceModule {
                 'label' => 'Longitude',
                 'required' => true,
                 'default' => '-74.0060'
+            ],
+            [
+                'name' => 'display_fields',
+                'type' => 'weather_display_fields',
+                'label' => 'Display Fields',
+                'required' => false,
+                'description' => 'Choose which weather information to display',
+                'default' => json_encode([
+                    'humidity' => true,
+                    'wind' => true,
+                    'pressure' => true,
+                    'today_range' => true,
+                    'tomorrow' => true
+                ])
             ]
         ];
     }

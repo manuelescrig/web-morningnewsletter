@@ -246,6 +246,12 @@ class NewsletterBuilder {
     }
     
     private function renderSource($source) {
+        // Check if this source has custom layout
+        if ($source['type'] === 'weather' && isset($source['data']['main'])) {
+            return $this->renderWeatherSource($source);
+        }
+        
+        // Default rendering for other sources
         $title = htmlspecialchars($source['title']);
         $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
@@ -293,6 +299,64 @@ class NewsletterBuilder {
         
         if ($lastUpdated) {
             $html .= "<div style='margin-top: 4px; text-align: right;'>
+                        <span style='color: #9ca3af; font-size: 12px;'>Updated: $lastUpdated</span>
+                      </div>";
+        }
+        
+        $html .= "</div>";
+        
+        return $html;
+    }
+    
+    private function renderWeatherSource($source) {
+        $title = htmlspecialchars($source['title']);
+        $data = $source['data'];
+        $main = $data['main'];
+        $columns = $data['columns'] ?? [];
+        $lastUpdated = $source['last_updated'];
+        
+        $html = "<div style='margin-bottom: 20px; padding: 24px; background-color: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb;'>";
+        
+        // Header with location
+        $html .= "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
+                    <h2 style='margin: 0; color: #111827; font-size: 18px; font-weight: 600;'>$title</h2>
+                    <span style='color: #6b7280; font-size: 14px;'>📍 " . htmlspecialchars($main['location']) . "</span>
+                  </div>";
+        
+        // Main temperature section
+        $html .= "<div style='text-align: center; margin-bottom: 24px;'>
+                    <div style='font-size: 48px; margin-bottom: 8px;'>" . $main['icon'] . "</div>
+                    <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
+                    <div style='font-size: 18px; color: #6b7280; margin-top: 8px;'>" . htmlspecialchars($main['description']) . "</div>
+                  </div>";
+        
+        // Columns section
+        if (!empty($columns)) {
+            $columnCount = count($columns);
+            $columnWidth = $columnCount > 0 ? floor(100 / $columnCount) : 100;
+            
+            $html .= "<div style='display: table; width: 100%; table-layout: fixed; border-top: 1px solid #e5e7eb; padding-top: 20px;'>";
+            
+            foreach ($columns as $index => $column) {
+                $borderStyle = $index < $columnCount - 1 ? 'border-right: 1px solid #e5e7eb;' : '';
+                
+                $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>
+                            <div style='font-size: 20px; margin-bottom: 4px;'>" . $column['icon'] . "</div>
+                            <div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>
+                            <div style='font-size: 24px; font-weight: 600; color: #111827;'>" . htmlspecialchars($column['value']) . "</div>";
+                
+                if (!empty($column['subtitle'])) {
+                    $html .= "<div style='font-size: 14px; color: #6b7280; margin-top: 2px;'>" . htmlspecialchars($column['subtitle']) . "</div>";
+                }
+                
+                $html .= "</div>";
+            }
+            
+            $html .= "</div>";
+        }
+        
+        if ($lastUpdated) {
+            $html .= "<div style='margin-top: 16px; text-align: right;'>
                         <span style='color: #9ca3af; font-size: 12px;'>Updated: $lastUpdated</span>
                       </div>";
         }

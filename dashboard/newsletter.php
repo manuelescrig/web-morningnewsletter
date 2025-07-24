@@ -699,8 +699,24 @@ $canAddSource = count($sources) < $maxSources;
                         document.getElementById('edit_weather_latitude').value = config.latitude || '';
                         document.getElementById('edit_weather_longitude').value = config.longitude || '';
                         
+                        // Set up display fields
+                        const displayFields = config.display_fields ? JSON.parse(config.display_fields) : {
+                            humidity: true,
+                            wind: true,
+                            pressure: true,
+                            today_range: true,
+                            tomorrow: true
+                        };
+                        
+                        document.getElementById('edit_weather_field_humidity').checked = displayFields.humidity || false;
+                        document.getElementById('edit_weather_field_wind').checked = displayFields.wind || false;
+                        document.getElementById('edit_weather_field_pressure').checked = displayFields.pressure || false;
+                        document.getElementById('edit_weather_field_today').checked = displayFields.today_range || false;
+                        document.getElementById('edit_weather_field_tomorrow').checked = displayFields.tomorrow || false;
+                        
                         // Set up location search
                         setupEditLocationSearch();
+                        setupEditWeatherDisplayFields();
                     } else if (source.type === 'news') {
                         document.getElementById('edit_news_api_key').value = config.api_key || '';
                         document.getElementById('edit_news_country').value = config.country || 'us';
@@ -866,6 +882,54 @@ $canAddSource = count($sources) < $maxSources;
                 searchTimeout = setTimeout(() => {
                     searchEditLocations(query);
                 }, 300);
+            });
+        }
+        
+        function setupWeatherDisplayFields() {
+            const checkboxes = document.querySelectorAll('#weather_field_humidity, #weather_field_wind, #weather_field_pressure, #weather_field_today, #weather_field_tomorrow');
+            const hiddenField = document.getElementById('weather_display_fields');
+            
+            if (!hiddenField || checkboxes.length === 0) return;
+            
+            function updateHiddenField() {
+                const fields = {};
+                checkboxes.forEach(checkbox => {
+                    const fieldName = checkbox.value;
+                    fields[fieldName] = checkbox.checked;
+                });
+                hiddenField.value = JSON.stringify(fields);
+            }
+            
+            // Initial update
+            updateHiddenField();
+            
+            // Add event listeners
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateHiddenField);
+            });
+        }
+        
+        function setupEditWeatherDisplayFields() {
+            const checkboxes = document.querySelectorAll('#edit_weather_field_humidity, #edit_weather_field_wind, #edit_weather_field_pressure, #edit_weather_field_today, #edit_weather_field_tomorrow');
+            const hiddenField = document.getElementById('edit_weather_display_fields');
+            
+            if (!hiddenField || checkboxes.length === 0) return;
+            
+            function updateHiddenField() {
+                const fields = {};
+                checkboxes.forEach(checkbox => {
+                    const fieldName = checkbox.value;
+                    fields[fieldName] = checkbox.checked;
+                });
+                hiddenField.value = JSON.stringify(fields);
+            }
+            
+            // Initial update
+            updateHiddenField();
+            
+            // Add event listeners
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateHiddenField);
             });
         }
         
@@ -1245,6 +1309,32 @@ $canAddSource = count($sources) < $maxSources;
                             <input type="hidden" id="config_longitude" name="config_longitude">
                             <p class="text-xs text-gray-500 mt-1">Search and select your city for accurate weather data</p>
                         </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Fields</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="weather_field_humidity" value="humidity" checked class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                    <span class="text-sm text-gray-700">Humidity</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="weather_field_wind" value="wind" checked class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                    <span class="text-sm text-gray-700">Wind Speed & Direction</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="weather_field_pressure" value="pressure" checked class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                    <span class="text-sm text-gray-700">Pressure</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="weather_field_today" value="today_range" checked class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                    <span class="text-sm text-gray-700">Today's High/Low</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="weather_field_tomorrow" value="tomorrow" checked class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                    <span class="text-sm text-gray-700">Tomorrow's Forecast</span>
+                                </label>
+                            </div>
+                            <input type="hidden" id="weather_display_fields" name="config_display_fields">
+                        </div>
                     `;
                     break;
                 case 'news':
@@ -1411,6 +1501,7 @@ $canAddSource = count($sources) < $maxSources;
             // Set up location search for weather sources
             if (sourceType === 'weather') {
                 setupAddLocationSearch();
+                setupWeatherDisplayFields();
             }
             
             // Set up stock search for stock sources
@@ -2092,6 +2183,32 @@ $canAddSource = count($sources) < $maxSources;
                                 <input type="hidden" id="edit_weather_location" name="config_location">
                                 <input type="hidden" id="edit_weather_latitude" name="config_latitude">
                                 <input type="hidden" id="edit_weather_longitude" name="config_longitude">
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Fields</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="edit_weather_field_humidity" value="humidity" class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                        <span class="text-sm text-gray-700">Humidity</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="edit_weather_field_wind" value="wind" class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                        <span class="text-sm text-gray-700">Wind Speed & Direction</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="edit_weather_field_pressure" value="pressure" class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                        <span class="text-sm text-gray-700">Pressure</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="edit_weather_field_today" value="today_range" class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                        <span class="text-sm text-gray-700">Today's High/Low</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" id="edit_weather_field_tomorrow" value="tomorrow" class="mr-2 rounded border-gray-300 text-primary focus-ring-primary">
+                                        <span class="text-sm text-gray-700">Tomorrow's Forecast</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" id="edit_weather_display_fields" name="config_display_fields">
                             </div>
                         </div>
                         
