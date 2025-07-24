@@ -727,7 +727,6 @@ $canAddSource = count($sources) < $maxSources;
                         // Populate Stock fields
                         document.getElementById('edit_config_stock_search').value = config.symbol || '';
                         document.getElementById('edit_config_symbol').value = config.symbol || '';
-                        document.getElementById('edit_config_display_name').value = config.display_name || '';
                         
                         const showHoldingsCheckbox = document.getElementById('edit_config_stock_show_holdings');
                         const holdingsAmountInput = document.getElementById('edit_config_stock_holdings_amount');
@@ -786,7 +785,6 @@ $canAddSource = count($sources) < $maxSources;
                         // Populate RSS fields
                         document.getElementById('edit_config_feed_url').value = config.feed_url || '';
                         document.getElementById('edit_config_item_limit').value = config.item_limit || '3';
-                        document.getElementById('edit_config_display_name').value = config.display_name || '';
                     }
                 }
                 
@@ -1322,14 +1320,6 @@ $canAddSource = count($sources) < $maxSources;
                             <input type="hidden" id="config_symbol" name="config[symbol]">
                             <p class="text-xs text-gray-500 mt-1">Search and select a stock to track its price</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
-                            <input type="text" name="config[display_name]" 
-                                   id="config_display_name"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
-                                   placeholder="e.g., Apple Inc.">
-                            <p class="text-xs text-gray-500 mt-1">Custom name to display instead of stock symbol</p>
-                        </div>
                         <div class="mb-4">
                             <label class="flex items-center">
                                 <input type="checkbox" name="config[show_holdings]" id="config_stock_show_holdings" 
@@ -1366,13 +1356,6 @@ $canAddSource = count($sources) < $maxSources;
                                 <option value="5">5 items</option>
                             </select>
                             <p class="text-xs text-gray-500 mt-1">How many items to show from the feed</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
-                            <input type="text" name="config[display_name]" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
-                                   placeholder="e.g., Tech News">
-                            <p class="text-xs text-gray-500 mt-1">Custom name to display instead of feed title</p>
                         </div>
                     `;
                     break;
@@ -1782,7 +1765,6 @@ $canAddSource = count($sources) < $maxSources;
         function selectStock(symbol, name) {
             document.getElementById('config_stock_search').value = symbol;
             document.getElementById('config_symbol').value = symbol;
-            document.getElementById('config_display_name').value = name;
             document.getElementById('stock_results').classList.add('hidden');
         }
         
@@ -2175,12 +2157,6 @@ $canAddSource = count($sources) < $maxSources;
                                 <input type="hidden" id="edit_config_symbol" name="config[symbol]">
                                 <p class="text-xs text-gray-500 mt-1">Search and select a stock to track its price</p>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
-                                <input type="text" name="config[display_name]" id="edit_config_display_name"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
-                                       placeholder="e.g., Apple Inc.">
-                            </div>
                             <div class="mb-4">
                                 <label class="flex items-center">
                                     <input type="checkbox" name="config[show_holdings]" id="edit_config_stock_show_holdings" 
@@ -2311,13 +2287,6 @@ $canAddSource = count($sources) < $maxSources;
                                     <option value="5">5 items</option>
                                 </select>
                                 <p class="text-xs text-gray-500 mt-1">How many items to show from the feed</p>
-                            </div>
-                            <div class="mt-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Display Name (Optional)</label>
-                                <input type="text" name="config[display_name]" id="edit_config_display_name"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
-                                       placeholder="e.g., Tech News">
-                                <p class="text-xs text-gray-500 mt-1">Custom name to display instead of feed title</p>
                             </div>
                         </div>
                         

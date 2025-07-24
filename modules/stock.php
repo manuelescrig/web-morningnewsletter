@@ -45,7 +45,8 @@ class StockModule extends BaseSourceModule {
             $formattedChange = ($change >= 0 ? '+' : '') . $currencySymbol . $this->formatNumber(abs($change), 2);
             $formattedPercent = ($changePercent >= 0 ? '↑' : '↓') . ' ' . $this->formatNumber(abs($changePercent), 2) . '%';
             
-            $displayName = !empty($this->config['display_name']) ? $this->config['display_name'] : $symbol;
+            // Just use the symbol as display name
+            $displayName = $symbol;
             
             $result = [
                 [
@@ -112,14 +113,6 @@ class StockModule extends BaseSourceModule {
                 'required' => true,
                 'description' => 'Search and select a stock (e.g., AAPL for Apple)',
                 'placeholder' => 'Search for a stock...'
-            ],
-            [
-                'name' => 'display_name',
-                'type' => 'text',
-                'label' => 'Display Name (Optional)',
-                'required' => false,
-                'description' => 'Custom name to display instead of symbol',
-                'placeholder' => 'e.g., Apple Inc.'
             ],
             [
                 'name' => 'show_holdings',

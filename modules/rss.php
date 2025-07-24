@@ -45,8 +45,8 @@ class RSSModule extends BaseSourceModule {
                 throw new Exception('Unsupported RSS format');
             }
             
-            // Get custom display name or use feed title
-            $displayName = !empty($this->config['display_name']) ? $this->config['display_name'] : $feedTitle;
+            // Use feed title
+            $displayName = $feedTitle;
             
             // Process items up to the limit
             $count = 0;
@@ -144,14 +144,6 @@ class RSSModule extends BaseSourceModule {
                 ],
                 'default' => '3',
                 'description' => 'How many items to show from the feed'
-            ],
-            [
-                'name' => 'display_name',
-                'type' => 'text',
-                'label' => 'Display Name (Optional)',
-                'required' => false,
-                'description' => 'Custom name to display instead of feed title',
-                'placeholder' => 'e.g., Tech News'
             ]
         ];
     }
