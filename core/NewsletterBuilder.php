@@ -261,11 +261,8 @@ class NewsletterBuilder {
         $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
         
-        // Get icon emoji for source type
-        $iconEmoji = $this->getSourceIcon($type);
-        
         $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
-            <h2 style='margin: 0 0 0px 0; color: #111827; font-size: 16px; font-weight: 600;'>$iconEmoji $title</h2>";
+            <h2 style='margin: 0 0 0px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {
             $html .= "<div style='space-y: 12px;'>";
@@ -404,11 +401,8 @@ class NewsletterBuilder {
         $title = htmlspecialchars($source['title']);
         $lastUpdated = $source['last_updated'];
         
-        // Get icon emoji for RSS
-        $iconEmoji = $this->getSourceIcon('rss');
-        
         $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
-            <h2 style='margin: 0 0 16px 0; color: #111827; font-size: 16px; font-weight: 600;'>$iconEmoji $title</h2>";
+            <h2 style='margin: 0 0 16px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {
             foreach ($source['data'] as $item) {
