@@ -186,22 +186,6 @@ class NewsletterBuilder {
             $editUrl = $baseUrl . '/dashboard/newsletter.php?id=' . $this->newsletter->getId();
         }
         
-        // Generate view in browser section
-        $viewInBrowserSection = '';
-        if ($historyId) {
-            if ($isPreview) {
-                // Gray out the view in browser link for preview/history view
-                $viewInBrowserSection = '<p style="margin: 15px 0 0 0; font-size: 12px; color: #6b7280; text-align: center;">
-                    Having trouble viewing this email? 
-                    <span style="color: #9ca3af; text-decoration: none; font-weight: 500; cursor: not-allowed;">View in browser</span>
-                </p>';
-            } else {
-                $viewInBrowserSection = '<p style="margin: 15px 0 0 0; font-size: 12px; color: #6b7280; text-align: center;">
-                    Having trouble viewing this email? 
-                    <a href="' . htmlspecialchars($viewUrl) . '" style="color: #468BE6; text-decoration: none; font-weight: 500;">View in browser</a>
-                </p>';
-            }
-        }
         
         // Handle footer links based on preview mode
         if ($isPreview) {
@@ -223,7 +207,6 @@ class NewsletterBuilder {
         $html = str_replace('{{UNSUBSCRIBE_TOKEN}}', $unsubscribeToken, $html);
         $html = str_replace('{{BASE_URL}}', $baseUrl, $html);
         $html = str_replace('{{CURRENT_YEAR}}', $this->formatDateInUserTimezone('Y'), $html);
-        $html = str_replace('{{VIEW_IN_BROWSER_SECTION}}', $viewInBrowserSection, $html);
         $html = str_replace('{{SOURCES_CONTENT}}', $this->renderSources($sourceData), $html);
         
         return $html;
@@ -258,7 +241,6 @@ class NewsletterBuilder {
         
         // Default rendering for other sources
         $title = htmlspecialchars($source['title']);
-        $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
         
         $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
@@ -598,24 +580,6 @@ class NewsletterBuilder {
         
         // Return as img tag with base64 data URI
         return '<img src="data:image/svg+xml;base64,' . $base64 . '" width="20" height="20" alt="Weather detail" style="display: inline-block;">';
-    }
-    
-    private function getSourceIcon($type) {
-        $icons = [
-            'bitcoin' => '₿',
-            'ethereum' => 'Ξ',
-            'xrp' => '💰',
-            'binancecoin' => '🪙',
-            'sp500' => '📈',
-            'stock' => '📊',
-            'weather' => '🌤️',
-            'news' => '📰',
-            'rss' => '📰',
-            'stripe' => '💳',
-            'appstore' => '📱'
-        ];
-        
-        return $icons[$type] ?? '📊';
     }
     
     private function getEmailTemplate() {
