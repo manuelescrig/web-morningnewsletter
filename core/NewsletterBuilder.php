@@ -251,13 +251,21 @@ class NewsletterBuilder {
             return $this->renderWeatherSource($source);
         }
         
+        // Check if this is RSS source for custom layout
+        if ($source['type'] === 'rss') {
+            return $this->renderRSSSource($source);
+        }
+        
         // Default rendering for other sources
         $title = htmlspecialchars($source['title']);
         $type = htmlspecialchars($source['type']);
         $lastUpdated = $source['last_updated'];
         
+        // Get icon emoji for source type
+        $iconEmoji = $this->getSourceIcon($type);
+        
         $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
-            <h2 style='margin: 0 0 0px 0; color: #111827; font-size: 16px; font-weight: 600;'>$title</h2>";
+            <h2 style='margin: 0 0 0px 0; color: #111827; font-size: 16px; font-weight: 600;'>$iconEmoji $title</h2>";
         
         if (!empty($source['data']) && is_array($source['data'])) {
             $html .= "<div style='space-y: 12px;'>";
@@ -268,10 +276,12 @@ class NewsletterBuilder {
                     $value = htmlspecialchars($item['value']);
                     $delta = $item['delta'] ?? null;
                     
-                    $html .= "<div style='display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #e5e7eb; flex-direction: row; align-items: baseline;'>
-                                <span style='color: #6b7280; font-weight: 500;'>$label:</span>
-                                <div style='text-align: right;'>
-                                    <span style='color: #1f2937; font-weight: 600; font-size: 20px; letter-spacing: 0.5px;'>$value</span>";
+                    // Use table layout for better email client compatibility
+                    $html .= "<table style='width: 100%; border-collapse: collapse; margin: 6px 0;'>
+                                <tr>
+                                    <td style='padding: 6px 0; border-bottom: 1px solid #e5e7eb; color: #6b7280; font-weight: 500; text-align: left;'>$label:</td>
+                                    <td style='padding: 6px 0; border-bottom: 1px solid #e5e7eb; text-align: right;'>
+                                        <span style='color: #1f2937; font-weight: 600; font-size: 20px; letter-spacing: 0.5px;'>$value</span>";
                     
                     if ($delta !== null) {
                         if (is_array($delta) && isset($delta['value'], $delta['color'])) {
@@ -288,7 +298,7 @@ class NewsletterBuilder {
                         }
                     }
                     
-                    $html .= "</div></div>";
+                    $html .= "</td></tr></table>";
                 }
             }
             
@@ -359,6 +369,7 @@ class NewsletterBuilder {
                     $arrowDown = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M12 19l7-7M12 19l-7-7" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
                     
                     // Use vertical layout for temperature to prevent column breaking
+                    // Show min (subtitle) on top, max (value) on bottom
                     $html .= "<div style='text-align: center;'>
                                 <div style='margin-bottom: 4px;'>
                                     <span style='display: inline-block; vertical-align: middle; margin-right: 4px;'>{$arrowDown}</span>
@@ -382,6 +393,63 @@ class NewsletterBuilder {
             }
             
             $html .= "</div>";
+        }
+        
+        if ($lastUpdated) {
+            $html .= "<div style='margin-top: 16px; text-align: right;'>
+                        <span style='color: #9ca3af; font-size: 12px;'>Updated: $lastUpdated</span>
+                      </div>";
+        }
+        
+        $html .= "</div>";
+        
+        return $html;
+    }
+    
+    private function renderRSSSource($source) {
+        $title = htmlspecialchars($source['title']);
+        $lastUpdated = $source['last_updated'];
+        
+        // Get icon emoji for RSS
+        $iconEmoji = $this->getSourceIcon('rss');
+        
+        $html = "<div style='margin-bottom: 20px; padding: 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;'>
+            <h2 style='margin: 0 0 16px 0; color: #111827; font-size: 16px; font-weight: 600;'>$iconEmoji $title</h2>";
+        
+        if (!empty($source['data']) && is_array($source['data'])) {
+            foreach ($source['data'] as $item) {
+                if (is_array($item) && isset($item['label'], $item['value'])) {
+                    // Skip header items
+                    if (isset($item['is_header']) && $item['is_header']) {
+                        continue;
+                    }
+                    
+                    $label = htmlspecialchars($item['label']);
+                    $value = htmlspecialchars($item['value']);
+                    $delta = $item['delta'] ?? null;
+                    
+                    // Single column layout with stacked title and description
+                    $html .= "<div style='margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;'>
+                                <div style='color: #111827; font-weight: 600; font-size: 15px; margin-bottom: 4px;'>$label</div>
+                                <div style='color: #6b7280; font-size: 14px; line-height: 1.5;'>$value</div>";
+                    
+                    // Add "Read more" link if available
+                    if ($delta !== null && is_array($delta) && isset($delta['value'], $delta['link']) && !empty($delta['link'])) {
+                        $linkText = htmlspecialchars($delta['value']);
+                        $linkUrl = htmlspecialchars($delta['link']);
+                        $html .= "<div style='margin-top: 6px;'>
+                                    <a href='$linkUrl' style='color: #468BE6; text-decoration: none; font-size: 13px;'>$linkText</a>
+                                  </div>";
+                    }
+                    
+                    $html .= "</div>";
+                }
+            }
+            
+            // Remove border from last item
+            $html = preg_replace('/(border-bottom: 1px solid #e5e7eb;)(?!.*border-bottom: 1px solid #e5e7eb;)/', '', $html);
+        } else {
+            $html .= "<p style='color: #6b7280; font-style: italic;'>No data available</p>";
         }
         
         if ($lastUpdated) {
@@ -514,6 +582,24 @@ class NewsletterBuilder {
             error_log("Error getting issue number from history: " . $e->getMessage());
             return 1;
         }
+    }
+    
+    private function getSourceIcon($type) {
+        $icons = [
+            'bitcoin' => '₿',
+            'ethereum' => 'Ξ',
+            'xrp' => '💰',
+            'binancecoin' => '🪙',
+            'sp500' => '📈',
+            'stock' => '📊',
+            'weather' => '🌤️',
+            'news' => '📰',
+            'rss' => '📰',
+            'stripe' => '💳',
+            'appstore' => '📱'
+        ];
+        
+        return $icons[$type] ?? '📊';
     }
     
     private function getEmailTemplate() {

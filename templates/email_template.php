@@ -131,12 +131,6 @@
             margin: 0 0 15px 0;
         }
         
-        .source-title::before {
-            content: '📊';
-            margin-right: 8px;
-            font-size: 16px;
-        }
-        
         .source-item {
             margin-bottom: 12px;
             padding: 8px 0;
@@ -171,14 +165,6 @@
             color: #6b7280;
             font-weight: 500;
         }
-        
-        /* Custom icons for different source types */
-        .source-section[data-type="bitcoin"] .source-title::before { content: '₿'; }
-        .source-section[data-type="sp500"] .source-title::before { content: '📈'; }
-        .source-section[data-type="weather"] .source-title::before { content: '🌤️'; }
-        .source-section[data-type="news"] .source-title::before { content: '📰'; }
-        .source-section[data-type="stripe"] .source-title::before { content: '💳'; }
-        .source-section[data-type="appstore"] .source-title::before { content: '📱'; }
         
         /* Footer */
         .email-footer {
