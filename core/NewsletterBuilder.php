@@ -324,17 +324,23 @@ class NewsletterBuilder {
         
         $html = "<div style='margin-bottom: 20px; padding: 24px; background-color: #ffffff; border-radius: 16px; border: 1px solid #e5e7eb;'>";
         
-        // Header with location
-        $html .= "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
-                    <h2 style='margin: 0; color: #111827; font-size: 18px; font-weight: 600;'>$title</h2>
-                    <span style='color: #6b7280; font-size: 14px;'>" . htmlspecialchars($main['location']) . "</span>
-                  </div>";
+        // Header with location using table for Gmail compatibility
+        $html .= "<table style='width: 100%; margin-bottom: 20px;'>
+                    <tr>
+                        <td style='text-align: left;'>
+                            <h2 style='margin: 0; color: #111827; font-size: 18px; font-weight: 600;'>$title</h2>
+                        </td>
+                        <td style='text-align: right;'>
+                            <span style='color: #6b7280; font-size: 14px;'>" . htmlspecialchars($main['location']) . "</span>
+                        </td>
+                    </tr>
+                  </table>";
         
         // Main temperature section
         $iconClass = $main['icon_class'] ?? 'fa-cloud-sun';
-        $svgIcon = $this->getWeatherSvgIcon($iconClass);
+        $svgIcon = $this->getWeatherSvgImage($iconClass);
         $html .= "<div style='text-align: center; margin-bottom: 24px;'>
-                    <div style='margin-bottom: 8px; display: inline-block;'>{$svgIcon}</div>
+                    <div style='margin-bottom: 8px;'>{$svgIcon}</div>
                     <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
                     <div style='font-size: 18px; color: #6b7280; margin-top: 8px;'>" . htmlspecialchars($main['description']) . "</div>
                   </div>";
@@ -353,8 +359,8 @@ class NewsletterBuilder {
                 $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>";
                 
                 // Icon
-                $svgColumnIcon = $this->getWeatherColumnIcon($iconClass);
-                $html .= "<div style='margin-bottom: 4px; display: inline-block;'>{$svgColumnIcon}</div>";
+                $svgColumnIcon = $this->getWeatherColumnImage($iconClass);
+                $html .= "<div style='margin-bottom: 4px;'>{$svgColumnIcon}</div>";
                 
                 // Label
                 $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
@@ -570,6 +576,28 @@ class NewsletterBuilder {
             error_log("Error getting issue number from history: " . $e->getMessage());
             return 1;
         }
+    }
+    
+    private function getWeatherSvgImage($iconClass) {
+        // Get SVG content and convert to base64 data URI
+        $svg = $this->getWeatherSvgIcon($iconClass);
+        
+        // Extract the SVG content and encode it
+        $base64 = base64_encode($svg);
+        
+        // Return as img tag with base64 data URI
+        return '<img src="data:image/svg+xml;base64,' . $base64 . '" width="48" height="48" alt="Weather icon" style="display: inline-block;">';
+    }
+    
+    private function getWeatherColumnImage($iconClass) {
+        // Get SVG content and convert to base64 data URI
+        $svg = $this->getWeatherColumnIcon($iconClass);
+        
+        // Extract the SVG content and encode it
+        $base64 = base64_encode($svg);
+        
+        // Return as img tag with base64 data URI
+        return '<img src="data:image/svg+xml;base64,' . $base64 . '" width="20" height="20" alt="Weather detail" style="display: inline-block;">';
     }
     
     private function getSourceIcon($type) {
