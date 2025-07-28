@@ -729,14 +729,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         async function toggleNewsletterStatus(newsletterId, newPausedStatus) {
-            const action = newPausedStatus === 'true' ? 'pause' : 'activate';
+            const isPausing = newPausedStatus === 'true';
+            const action = isPausing ? 'pause' : 'activate';
+            
+            const message = isPausing 
+                ? 'Are you sure you want to pause this newsletter? It will stop being sent until you reactivate it.'
+                : 'Are you sure you want to activate this newsletter? It will start being sent at the scheduled time.';
             
             const confirmed = await MorningNewsletter.confirm(
-                `Are you sure you want to ${action} this newsletter?`,
+                message,
                 {
-                    title: action === 'pause' ? 'Pause Newsletter' : 'Activate Newsletter',
-                    confirmText: `Yes, ${action.charAt(0).toUpperCase() + action.slice(1)}`,
-                    cancelText: 'Cancel'
+                    title: isPausing ? 'Pause Newsletter' : 'Activate Newsletter',
+                    confirmText: isPausing ? 'Yes, Pause' : 'Yes, Activate',
+                    cancelText: 'Cancel',
+                    dangerous: isPausing
                 }
             );
             
