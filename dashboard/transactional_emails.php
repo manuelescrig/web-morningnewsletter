@@ -6,12 +6,13 @@ require_once __DIR__ . '/../core/User.php';
 require_once __DIR__ . '/../core/TransactionalEmailManager.php';
 
 // Check if user is logged in
-if (!Auth::isLoggedIn()) {
+$auth = new Auth();
+if (!$auth->isLoggedIn()) {
     header('Location: /auth/login.php');
     exit;
 }
 
-$user = Auth::getCurrentUser();
+$user = $auth->getUser();
 
 // Check if user is admin
 if (!$user->isAdmin()) {
