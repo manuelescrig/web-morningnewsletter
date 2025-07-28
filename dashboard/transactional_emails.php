@@ -762,23 +762,23 @@ $triggerEvents = [
             });
         });
         
-        // Tab styles - using primary color variables
+        // Tab styles - using CSS variables for consistency
         const style = document.createElement('style');
         style.textContent = `
             .tab-active {
-                background-color: var(--color-primary);
-                color: white;
-                border-color: var(--color-primary);
+                background-color: var(--color-primary) !important;
+                color: var(--color-white) !important;
+                border-color: var(--color-primary) !important;
             }
             .tab-inactive {
-                background-color: transparent;
-                color: rgb(107, 114, 128);
-                border: 1px solid rgb(229, 231, 235);
+                background-color: var(--color-white);
+                color: var(--color-gray-600);
+                border: 1px solid var(--color-gray-200);
             }
             .tab-inactive:hover {
-                background-color: rgb(249, 250, 251);
-                color: rgb(55, 65, 81);
-                border-color: rgb(209, 213, 219);
+                background-color: var(--color-gray-50);
+                color: var(--color-gray-800);
+                border-color: var(--color-gray-300);
             }
         `;
         document.head.appendChild(style);
