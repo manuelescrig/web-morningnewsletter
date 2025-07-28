@@ -321,7 +321,7 @@ class NewsletterBuilder {
         
         // Main temperature section
         $iconClass = $main['icon_class'] ?? 'fa-cloud-sun';
-        $iconHtml = WeatherIconProvider::getHtmlIcon($iconClass);
+        $iconHtml = WeatherIconProvider::getHtmlIcon($iconClass, 'large');
         $html .= "<div style='text-align: center; margin-bottom: 24px;'>
                     <div style='margin-bottom: 8px; line-height: 1;'>{$iconHtml}</div>
                     <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
@@ -343,7 +343,7 @@ class NewsletterBuilder {
                 
                 // Icon - Fixed height container to ensure consistent alignment
                 $columnIconHtml = WeatherIconProvider::getHtmlIcon($iconClass, 'small');
-                $html .= "<div style='height: 24px; line-height: 24px; margin-bottom: 4px; vertical-align: middle;'>{$columnIconHtml}</div>";
+                $html .= "<div style='height: 28px; line-height: 28px; margin-bottom: 4px; vertical-align: middle;'>{$columnIconHtml}</div>";
                 
                 // Label
                 $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
