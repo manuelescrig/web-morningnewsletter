@@ -212,7 +212,7 @@ const MorningNewsletter = {
         if (!container) {
             container = document.createElement('div');
             container.id = 'notification-container';
-            container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
+            container.className = 'fixed top-20 right-4 z-50 flex flex-col gap-2';
             document.body.appendChild(container);
         }
 
@@ -225,8 +225,8 @@ const MorningNewsletter = {
             'bg-purple-50 border border-purple-200 text-purple-700'
         }`;
         
-        // Start with transform for animation
-        alertDiv.style.transform = 'translateX(400px)';
+        // Start with transform for animation (fade in from top)
+        alertDiv.style.transform = 'translateY(-20px) scale(0.95)';
         alertDiv.style.opacity = '0';
         
         alertDiv.innerHTML = `
@@ -249,7 +249,7 @@ const MorningNewsletter = {
         
         // Trigger animation
         setTimeout(() => {
-            alertDiv.style.transform = 'translateX(0)';
+            alertDiv.style.transform = 'translateY(0) scale(1)';
             alertDiv.style.opacity = '1';
         }, 10);
         
@@ -270,8 +270,8 @@ const MorningNewsletter = {
             clearTimeout(parseInt(alertDiv.dataset.timeoutId));
         }
         
-        // Animate out
-        alertDiv.style.transform = 'translateX(400px)';
+        // Animate out (fade and shrink)
+        alertDiv.style.transform = 'translateY(-10px) scale(0.9)';
         alertDiv.style.opacity = '0';
         
         // Remove after animation completes
