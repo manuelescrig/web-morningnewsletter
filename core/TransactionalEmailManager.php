@@ -51,7 +51,7 @@ class TransactionalEmailManager {
      * Update a template
      */
     public function updateTemplate($id, $data) {
-        $allowedFields = ['name', 'description', 'subject', 'html_template', 'is_enabled'];
+        $allowedFields = ['name', 'description', 'subject', 'html_template', 'is_enabled', 'trigger_event', 'delay_hours', 'conditions'];
         $updates = [];
         $values = [];
         
@@ -206,42 +206,44 @@ class TransactionalEmailManager {
      * Schedule delayed transactional emails based on an event
      */
     public function scheduleEmailsForEvent($event, $userId, $variables = []) {
-        // Get all enabled rules for this event
+        // Get all enabled templates for this event
         $stmt = $this->db->prepare("
-            SELECT r.*, t.type as template_type
-            FROM transactional_email_rules r
-            JOIN transactional_email_templates t ON r.template_id = t.id
-            WHERE r.trigger_event = ? AND r.is_enabled = 1 AND t.is_enabled = 1
+            SELECT * FROM transactional_email_templates
+            WHERE trigger_event = ? AND is_enabled = 1
         ");
         $stmt->execute([$event]);
-        $rules = $stmt->fetchAll();
+        $templates = $stmt->fetchAll();
         
-        foreach ($rules as $rule) {
+        foreach ($templates as $template) {
             // Check conditions if any
-            if ($rule['conditions']) {
-                $conditions = json_decode($rule['conditions'], true);
+            if ($template['conditions']) {
+                $conditions = json_decode($template['conditions'], true);
                 if (!$this->checkConditions($conditions, $userId, $variables)) {
                     continue;
                 }
             }
             
-            // Calculate scheduled time
-            $scheduledFor = date('Y-m-d H:i:s', strtotime("+{$rule['delay_hours']} hours"));
-            
-            // Add to queue
-            $stmt = $this->db->prepare("
-                INSERT INTO transactional_email_queue 
-                (user_id, rule_id, template_id, scheduled_for, variables) 
-                VALUES (?, ?, ?, ?, ?)
-            ");
-            
-            $stmt->execute([
-                $userId,
-                $rule['id'],
-                $rule['template_id'],
-                $scheduledFor,
-                json_encode($variables)
-            ]);
+            // If no delay, send immediately
+            if (empty($template['delay_hours']) || $template['delay_hours'] == 0) {
+                $this->sendTransactionalEmail($template['type'], $userId, $variables);
+            } else {
+                // Calculate scheduled time
+                $scheduledFor = date('Y-m-d H:i:s', strtotime("+{$template['delay_hours']} hours"));
+                
+                // Add to queue
+                $stmt = $this->db->prepare("
+                    INSERT INTO transactional_email_queue 
+                    (user_id, rule_id, template_id, scheduled_for, variables) 
+                    VALUES (?, NULL, ?, ?, ?)
+                ");
+                
+                $stmt->execute([
+                    $userId,
+                    $template['id'],
+                    $scheduledFor,
+                    json_encode($variables)
+                ]);
+            }
         }
     }
     

@@ -36,7 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'name' => $_POST['name'] ?? '',
                         'subject' => $_POST['subject'] ?? '',
                         'html_template' => $_POST['html_template'] ?? '',
-                        'is_enabled' => isset($_POST['is_enabled']) ? 1 : 0
+                        'is_enabled' => isset($_POST['is_enabled']) ? 1 : 0,
+                        'trigger_event' => $_POST['trigger_event'] ?? null,
+                        'delay_hours' => $_POST['delay_hours'] ?? 0,
+                        'conditions' => $_POST['conditions'] ?? null
                     ];
                     
                     if ($transactionalManager->updateTemplate($templateId, $data)) {
@@ -44,57 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $response['message'] = 'Template updated successfully';
                     } else {
                         $response['message'] = 'Failed to update template';
-                    }
-                }
-                break;
-                
-            case 'create_rule':
-                $data = [
-                    'name' => $_POST['name'] ?? '',
-                    'trigger_event' => $_POST['trigger_event'] ?? '',
-                    'delay_hours' => $_POST['delay_hours'] ?? 0,
-                    'template_id' => $_POST['template_id'] ?? null,
-                    'is_enabled' => isset($_POST['is_enabled']) ? 1 : 0,
-                    'conditions' => $_POST['conditions'] ?? null
-                ];
-                
-                if ($transactionalManager->createRule($data)) {
-                    $response['success'] = true;
-                    $response['message'] = 'Rule created successfully';
-                } else {
-                    $response['message'] = 'Failed to create rule';
-                }
-                break;
-                
-            case 'update_rule':
-                $ruleId = $_POST['rule_id'] ?? null;
-                if ($ruleId) {
-                    $data = [
-                        'name' => $_POST['name'] ?? '',
-                        'trigger_event' => $_POST['trigger_event'] ?? '',
-                        'delay_hours' => $_POST['delay_hours'] ?? 0,
-                        'template_id' => $_POST['template_id'] ?? null,
-                        'is_enabled' => isset($_POST['is_enabled']) ? 1 : 0,
-                        'conditions' => $_POST['conditions'] ?? null
-                    ];
-                    
-                    if ($transactionalManager->updateRule($ruleId, $data)) {
-                        $response['success'] = true;
-                        $response['message'] = 'Rule updated successfully';
-                    } else {
-                        $response['message'] = 'Failed to update rule';
-                    }
-                }
-                break;
-                
-            case 'delete_rule':
-                $ruleId = $_POST['rule_id'] ?? null;
-                if ($ruleId) {
-                    if ($transactionalManager->deleteRule($ruleId)) {
-                        $response['success'] = true;
-                        $response['message'] = 'Rule deleted successfully';
-                    } else {
-                        $response['message'] = 'Failed to delete rule';
                     }
                 }
                 break;
@@ -158,7 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get data for display
 $templates = $transactionalManager->getTemplates();
-$rules = $transactionalManager->getRules();
 $logs = $transactionalManager->getEmailLogs(50);
 $queueItems = $transactionalManager->getQueueItems(null, 50);
 
@@ -222,9 +173,6 @@ $triggerEvents = [
                 <button onclick="showTab('templates')" id="tab-templates" class="btn-pill tab-active px-4 py-2 text-sm font-medium">
                     Email Templates
                 </button>
-                <button onclick="showTab('rules')" id="tab-rules" class="btn-pill tab-inactive px-4 py-2 text-sm font-medium">
-                    Follow-up Rules
-                </button>
                 <button onclick="showTab('logs')" id="tab-logs" class="btn-pill tab-inactive px-4 py-2 text-sm font-medium">
                     Email Logs
                 </button>
@@ -249,6 +197,18 @@ $triggerEvents = [
                                 <p class="text-sm text-gray-600"><?php echo htmlspecialchars($template['description']); ?></p>
                                 <div class="mt-2 flex items-center space-x-2">
                                     <span class="text-xs text-gray-500">Type: <code class="bg-gray-100 px-1 rounded"><?php echo htmlspecialchars($template['type']); ?></code></span>
+                                    <?php if (!empty($template['trigger_event'])): ?>
+                                    <span class="text-xs text-gray-500">
+                                        <i class="fas fa-bolt mr-1"></i>
+                                        Trigger: <?php echo htmlspecialchars($triggerEvents[$template['trigger_event']] ?? $template['trigger_event']); ?>
+                                    </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($template['delay_hours']) && $template['delay_hours'] > 0): ?>
+                                    <span class="text-xs text-gray-500">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        Delay: <?php echo $template['delay_hours'] < 24 ? $template['delay_hours'] . 'h' : ($template['delay_hours'] / 24) . 'd'; ?>
+                                    </span>
+                                    <?php endif; ?>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $template['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
                                         <i class="fas fa-<?php echo $template['is_enabled'] ? 'check' : 'times'; ?> mr-1"></i>
                                         <?php echo $template['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
@@ -289,70 +249,6 @@ $triggerEvents = [
                         </div>
                     </div>
                     <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Rules Tab -->
-        <div id="content-rules" class="tab-content hidden">
-            <div class="bg-white shadow rounded-lg">
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                    <h2 class="text-lg font-semibold text-gray-900">Follow-up Rules</h2>
-                    <button onclick="createRule()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
-                        <i class="fas fa-plus mr-2"></i>Create Rule
-                    </button>
-                </div>
-                <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trigger</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delay</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Template</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php foreach ($rules as $rule): ?>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <?php echo htmlspecialchars($rule['name']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?php echo htmlspecialchars($triggerEvents[$rule['trigger_event']] ?? $rule['trigger_event']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?php 
-                                        if ($rule['delay_hours'] == 0) {
-                                            echo 'Immediately';
-                                        } elseif ($rule['delay_hours'] < 24) {
-                                            echo $rule['delay_hours'] . ' hour' . ($rule['delay_hours'] > 1 ? 's' : '');
-                                        } else {
-                                            $days = $rule['delay_hours'] / 24;
-                                            echo $days . ' day' . ($days > 1 ? 's' : '');
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?php echo htmlspecialchars($rule['template_name']); ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="<?php echo $rule['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?> px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
-                                            <?php echo $rule['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="editRule(<?php echo $rule['id']; ?>)" class="text-primary hover:text-primary-dark mr-3 font-medium">Edit</button>
-                                        <button onclick="deleteRule(<?php echo $rule['id']; ?>)" class="text-red-600 hover:text-red-800 font-medium">Delete</button>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
@@ -485,8 +381,31 @@ $triggerEvents = [
                             </div>
                             
                             <div>
+                                <label class="block text-sm font-medium text-gray-700">Trigger Event</label>
+                                <select name="trigger_event" id="edit-template-trigger" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary">
+                                    <option value="">No automatic trigger</option>
+                                    <?php foreach ($triggerEvents as $value => $label): ?>
+                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <p class="mt-1 text-sm text-gray-500">When this email should be automatically sent</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Delay (hours)</label>
+                                <input type="number" name="delay_hours" id="edit-template-delay" min="0" value="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary">
+                                <p class="mt-1 text-sm text-gray-500">0 for immediate, 24 for 1 day, 168 for 1 week</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Conditions (Optional)</label>
+                                <textarea name="conditions" id="edit-template-conditions" rows="2" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" placeholder='{"subscription_plan": ["starter", "pro", "unlimited"]}'></textarea>
+                                <p class="mt-1 text-sm text-gray-500">JSON conditions for when to send (leave empty for always)</p>
+                            </div>
+                            
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">HTML Template</label>
-                                <textarea name="html_template" id="edit-template-html" rows="15" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary"></textarea>
+                                <textarea name="html_template" id="edit-template-html" rows="10" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary"></textarea>
                             </div>
                             
                             <div class="flex items-center">
@@ -503,76 +422,6 @@ $triggerEvents = [
                             Save Changes
                         </button>
                         <button type="button" onclick="closeModal('edit-template-modal')" class="btn-pill mt-3 w-full inline-flex justify-center border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Create/Edit Rule Modal -->
-    <div id="edit-rule-modal" class="hidden fixed z-10 inset-0 overflow-y-auto">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form id="edit-rule-form" method="POST">
-                    <input type="hidden" name="action" id="rule-action" value="create_rule">
-                    <input type="hidden" name="rule_id" id="edit-rule-id">
-                    
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="rule-modal-title">Create Follow-up Rule</h3>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Rule Name</label>
-                                <input type="text" name="name" id="edit-rule-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Trigger Event</label>
-                                <select name="trigger_event" id="edit-rule-trigger" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
-                                    <?php foreach ($triggerEvents as $value => $label): ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Delay (hours)</label>
-                                <input type="number" name="delay_hours" id="edit-rule-delay" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
-                                <p class="mt-1 text-sm text-gray-500">Enter 0 for immediate, 24 for 1 day, 168 for 1 week</p>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Email Template</label>
-                                <select name="template_id" id="edit-rule-template" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
-                                    <?php foreach ($templates as $template): ?>
-                                    <option value="<?php echo $template['id']; ?>"><?php echo htmlspecialchars($template['name']); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Conditions (JSON)</label>
-                                <textarea name="conditions" id="edit-rule-conditions" rows="3" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" placeholder='{"subscription_plan": ["starter", "pro", "unlimited"]}'></textarea>
-                            </div>
-                            
-                            <div class="flex items-center">
-                                <input type="checkbox" name="is_enabled" id="edit-rule-enabled" class="h-4 w-4 text-primary focus-ring-primary border-gray-300 rounded" checked>
-                                <label for="edit-rule-enabled" class="ml-2 block text-sm text-gray-900">
-                                    Enable this rule
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" class="btn-pill w-full inline-flex justify-center border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:ml-3 sm:w-auto sm:text-sm">
-                            Save Rule
-                        </button>
-                        <button type="button" onclick="closeModal('edit-rule-modal')" class="btn-pill mt-3 w-full inline-flex justify-center border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             Cancel
                         </button>
                     </div>
@@ -607,7 +456,6 @@ $triggerEvents = [
         
         // Templates data for editing
         const templatesData = <?php echo json_encode($templates); ?>;
-        const rulesData = <?php echo json_encode($rules); ?>;
         
         // Edit template
         function editTemplate(templateId) {
@@ -618,6 +466,9 @@ $triggerEvents = [
                 document.getElementById('edit-template-subject').value = template.subject;
                 document.getElementById('edit-template-html').value = template.html_template;
                 document.getElementById('edit-template-enabled').checked = template.is_enabled == 1;
+                document.getElementById('edit-template-trigger').value = template.trigger_event || '';
+                document.getElementById('edit-template-delay').value = template.delay_hours || 0;
+                document.getElementById('edit-template-conditions').value = template.conditions || '';
                 
                 document.getElementById('edit-template-modal').classList.remove('hidden');
             }
@@ -650,58 +501,6 @@ $triggerEvents = [
             }
         }
         
-        // Create rule
-        function createRule() {
-            document.getElementById('rule-action').value = 'create_rule';
-            document.getElementById('rule-modal-title').textContent = 'Create Follow-up Rule';
-            document.getElementById('edit-rule-form').reset();
-            document.getElementById('edit-rule-id').value = '';
-            document.getElementById('edit-rule-enabled').checked = true;
-            document.getElementById('edit-rule-modal').classList.remove('hidden');
-        }
-        
-        // Edit rule
-        function editRule(ruleId) {
-            const rule = rulesData.find(r => r.id == ruleId);
-            if (rule) {
-                document.getElementById('rule-action').value = 'update_rule';
-                document.getElementById('rule-modal-title').textContent = 'Edit Follow-up Rule';
-                document.getElementById('edit-rule-id').value = rule.id;
-                document.getElementById('edit-rule-name').value = rule.name;
-                document.getElementById('edit-rule-trigger').value = rule.trigger_event;
-                document.getElementById('edit-rule-delay').value = rule.delay_hours;
-                document.getElementById('edit-rule-template').value = rule.template_id;
-                document.getElementById('edit-rule-conditions').value = rule.conditions || '';
-                document.getElementById('edit-rule-enabled').checked = rule.is_enabled == 1;
-                
-                document.getElementById('edit-rule-modal').classList.remove('hidden');
-            }
-        }
-        
-        // Delete rule
-        function deleteRule(ruleId) {
-            if (confirm('Are you sure you want to delete this rule?')) {
-                const formData = new FormData();
-                formData.append('action', 'delete_rule');
-                formData.append('rule_id', ruleId);
-                
-                fetch(window.location.href, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    } else {
-                        MorningNewsletter.showAlert(data.message || 'Failed to delete rule', 'error');
-                    }
-                });
-            }
-        }
         
         // Close modal
         function closeModal(modalId) {
@@ -731,27 +530,6 @@ $triggerEvents = [
             });
         });
         
-        document.getElementById('edit-rule-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            fetch(window.location.href, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.reload();
-                } else {
-                    MorningNewsletter.showAlert(data.message || 'Failed to save rule', 'error');
-                }
-            });
-        });
         
         // Close modals on background click
         document.querySelectorAll('.fixed.z-10').forEach(modal => {
