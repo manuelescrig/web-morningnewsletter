@@ -432,7 +432,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 
                                                 <!-- Pause/Activate Toggle -->
                                                 <button type="button" 
-                                                        onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, <?php echo $newsletter->isPaused() ? 'false' : 'true'; ?>)"
+                                                        onclick="toggleNewsletterStatus(<?php echo $newsletter->getId(); ?>, '<?php echo $newsletter->isPaused() ? 'false' : 'true'; ?>')"
                                                         class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     <?php if ($newsletter->isPaused()): ?>
                                                         <i class="fas fa-play mr-2"></i>
