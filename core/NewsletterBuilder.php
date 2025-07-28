@@ -16,6 +16,7 @@ require_once __DIR__ . '/../modules/news.php';
 require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
+require_once __DIR__ . '/WeatherIconProvider.php';
 
 class NewsletterBuilder {
     private $newsletter;
@@ -320,9 +321,11 @@ class NewsletterBuilder {
         
         // Main temperature section
         $iconClass = $main['icon_class'] ?? 'fa-cloud-sun';
-        $svgIcon = $this->getWeatherSvgIcon($iconClass);
+        $iconUrl = WeatherIconProvider::getBase64Icon($iconClass);
         $html .= "<div style='text-align: center; margin-bottom: 24px;'>
-                    <div style='margin-bottom: 8px; display: inline-block;'>{$svgIcon}</div>
+                    <div style='margin-bottom: 8px;'>
+                        <img src='{$iconUrl}' alt='" . htmlspecialchars($main['description']) . "' width='48' height='48' style='display: inline-block; vertical-align: middle;' />
+                    </div>
                     <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
                     <div style='font-size: 18px; color: #6b7280; margin-top: 8px;'>" . htmlspecialchars($main['description']) . "</div>
                   </div>";
@@ -341,8 +344,10 @@ class NewsletterBuilder {
                 $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>";
                 
                 // Icon
-                $svgColumnIcon = $this->getWeatherColumnIcon($iconClass);
-                $html .= "<div style='margin-bottom: 4px; display: inline-block;'>{$svgColumnIcon}</div>";
+                $iconUrl = WeatherIconProvider::getBase64Icon($iconClass);
+                $html .= "<div style='margin-bottom: 4px;'>
+                            <img src='{$iconUrl}' alt='" . htmlspecialchars($column['label']) . "' width='20' height='20' style='display: inline-block; vertical-align: middle;' />
+                          </div>";
                 
                 // Label
                 $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
@@ -437,46 +442,6 @@ class NewsletterBuilder {
         $html .= "</div>";
         
         return $html;
-    }
-    
-    private function getWeatherSvgIcon($iconClass) {
-        // Using Feather Icons - simple, clean SVGs that work well in emails
-        $icons = [
-            'fa-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
-            'fa-cloud-sun' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 1.5v2m-6.364.636l1.414 1.414M1.5 10.5h2m.636 6.364l1.414-1.414"></path><circle cx="10.5" cy="10.5" r="3.5" stroke="#f59e0b"></circle><path d="M16 16.13A4 4 0 0014.11 8a6 6 0 10-6.09 9.89"></path><path d="M18 10h.01M22 10a4 4 0 01-4 4H8a4 4 0 110-8c.085 0 .17.003.254.009A6 6 0 1116 16.13"></path></svg>',
-            'fa-cloud' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"></path></svg>',
-            'fa-cloud-rain' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="13" x2="16" y2="21" stroke="#3b82f6"></line><line x1="8" y1="13" x2="8" y2="21" stroke="#3b82f6"></line><line x1="12" y1="15" x2="12" y2="23" stroke="#3b82f6"></line><path d="M20 16.58A5 5 0 0018 7h-1.26A8 8 0 104 15.25"></path></svg>',
-            'fa-snowflake' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="22" y1="12" x2="2" y2="12"></line><path d="M17 7l-5 5-5-5m10 10l-5-5-5 5"></path></svg>',
-            'fa-cloud-bolt' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 16.9A5 5 0 0018 7h-1.26a8 8 0 10-11.62 9"></path><polyline points="13 11 9 17 15 17 11 23" stroke="#f59e0b"></polyline></svg>',
-            'fa-smog' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
-            'fa-cloud-meatball' => '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.58A5 5 0 0018 8h-1.26A8 8 0 104 16.25"></path><line x1="8" y1="16" x2="8.01" y2="16" stroke="#60a5fa" stroke-width="4"></line><line x1="8" y1="20" x2="8.01" y2="20" stroke="#60a5fa" stroke-width="4"></line><line x1="12" y1="18" x2="12.01" y2="18" stroke="#60a5fa" stroke-width="4"></line><line x1="12" y1="22" x2="12.01" y2="22" stroke="#60a5fa" stroke-width="4"></line><line x1="16" y1="16" x2="16.01" y2="16" stroke="#60a5fa" stroke-width="4"></line><line x1="16" y1="20" x2="16.01" y2="20" stroke="#60a5fa" stroke-width="4"></line></svg>'
-        ];
-        
-        return $icons[$iconClass] ?? $icons['fa-cloud'];
-    }
-    
-    private function getWeatherColumnIcon($iconClass) {
-        // Smaller Feather Icons for columns
-        $icons = [
-            'fa-droplet' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"></path></svg>',
-            'fa-wind' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"></path></svg>',
-            'fa-gauge' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>',
-            'fa-temperature-half' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"></path></svg>'
-        ];
-        
-        // Use weather icons for forecast - smaller versions
-        if (strpos($iconClass, 'fa-') === 0 && !isset($icons[$iconClass])) {
-            $mainIcons = [
-                'fa-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
-                'fa-cloud-sun' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" stroke="#f59e0b"></circle><path d="M12 2v4M21.95 12.95h-4M17.64 17.64l-2.83-2.83M12 22v-4M6.36 17.64l2.83-2.83M2.05 12.95h4M6.36 6.36l2.83 2.83"></path><path d="M15.91 16.64A5 5 0 0114 8.02 7 7 0 105.2 16.2"></path></svg>',
-                'fa-cloud' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"></path></svg>',
-                'fa-cloud-rain' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="13" x2="16" y2="21" stroke="#3b82f6"></line><line x1="8" y1="13" x2="8" y2="21" stroke="#3b82f6"></line><line x1="12" y1="15" x2="12" y2="23" stroke="#3b82f6"></line><path d="M20 16.58A5 5 0 0018 7h-1.26A8 8 0 104 15.25"></path></svg>',
-                'fa-snowflake' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="22" y1="12" x2="2" y2="12"></line><path d="M17 7l-5 5-5-5m10 10l-5-5-5 5"></path></svg>'
-            ];
-            return $mainIcons[$iconClass] ?? $icons['fa-temperature-half'];
-        }
-        
-        return $icons[$iconClass] ?? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>';
     }
     
     private function formatDateInUserTimezone($format) {
