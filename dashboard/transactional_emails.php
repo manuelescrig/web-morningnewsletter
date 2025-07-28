@@ -6,7 +6,7 @@ require_once __DIR__ . '/../core/User.php';
 require_once __DIR__ . '/../core/TransactionalEmailManager.php';
 
 // Check if user is logged in
-$auth = new Auth();
+$auth = Auth::getInstance();
 if (!$auth->isLoggedIn()) {
     header('Location: /auth/login.php');
     exit;

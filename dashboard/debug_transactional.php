@@ -25,7 +25,7 @@ try {
     echo "<p style='color: green;'>✓ TransactionalEmailManager loaded</p>";
     
     echo "<h2>Step 2: Checking authentication</h2>";
-    $auth = new Auth();
+    $auth = Auth::getInstance();
     if (!$auth->isLoggedIn()) {
         echo "<p style='color: red;'>✗ Not logged in - would redirect to login</p>";
     } else {
