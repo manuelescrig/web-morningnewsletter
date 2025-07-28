@@ -70,23 +70,41 @@ class WeatherIconProvider {
      * Get simple HTML-only weather icon
      * This uses Unicode symbols that work in all email clients
      */
-    public static function getHtmlIcon($iconClass) {
+    public static function getHtmlIcon($iconClass, $size = 'large') {
         // Use HTML entities and simple styling for maximum compatibility
-        $htmlIcons = [
-            'fa-sun' => '<span style="color: #f59e0b; font-size: 36px;">☀</span>',
-            'fa-cloud-sun' => '<span style="color: #9ca3af; font-size: 36px;">⛅</span>',
-            'fa-cloud' => '<span style="color: #9ca3af; font-size: 36px;">☁</span>',
-            'fa-cloud-rain' => '<span style="color: #3b82f6; font-size: 36px;">🌧</span>',
-            'fa-snowflake' => '<span style="color: #60a5fa; font-size: 36px;">❄</span>',
-            'fa-cloud-bolt' => '<span style="color: #f59e0b; font-size: 36px;">⚡</span>',
-            'fa-smog' => '<span style="color: #9ca3af; font-size: 36px;">🌫</span>',
-            'fa-cloud-meatball' => '<span style="color: #60a5fa; font-size: 36px;">🌨</span>',
-            'fa-droplet' => '<span style="color: #6b7280; font-size: 20px;">💧</span>',
-            'fa-wind' => '<span style="color: #6b7280; font-size: 20px;">💨</span>',
-            'fa-gauge' => '<span style="color: #6b7280; font-size: 20px;">◉</span>',
-            'fa-temperature-half' => '<span style="color: #6b7280; font-size: 20px;">🌡</span>'
-        ];
         
-        return $htmlIcons[$iconClass] ?? '<span style="color: #9ca3af; font-size: 36px;">☁</span>';
+        if ($size === 'small') {
+            // Small icons for columns
+            $htmlIcons = [
+                'fa-sun' => '<span style="color: #f59e0b; font-size: 20px; display: inline-block;">☀</span>',
+                'fa-cloud-sun' => '<span style="color: #9ca3af; font-size: 20px; display: inline-block;">⛅</span>',
+                'fa-cloud' => '<span style="color: #9ca3af; font-size: 20px; display: inline-block;">☁</span>',
+                'fa-cloud-rain' => '<span style="color: #3b82f6; font-size: 20px; display: inline-block;">🌧</span>',
+                'fa-snowflake' => '<span style="color: #60a5fa; font-size: 20px; display: inline-block;">❄</span>',
+                'fa-cloud-bolt' => '<span style="color: #f59e0b; font-size: 20px; display: inline-block;">⚡</span>',
+                'fa-smog' => '<span style="color: #9ca3af; font-size: 20px; display: inline-block;">🌫</span>',
+                'fa-cloud-meatball' => '<span style="color: #60a5fa; font-size: 20px; display: inline-block;">🌨</span>',
+                'fa-droplet' => '<span style="color: #6b7280; font-size: 20px; display: inline-block;">💧</span>',
+                'fa-wind' => '<span style="color: #6b7280; font-size: 20px; display: inline-block;">💨</span>',
+                'fa-gauge' => '<span style="color: #6b7280; font-size: 20px; display: inline-block;">◉</span>',
+                'fa-temperature-half' => '<span style="color: #6b7280; font-size: 20px; display: inline-block;">🌡</span>'
+            ];
+            
+            return $htmlIcons[$iconClass] ?? '<span style="color: #9ca3af; font-size: 20px; display: inline-block;">☁</span>';
+        } else {
+            // Large icons for main weather display
+            $htmlIcons = [
+                'fa-sun' => '<span style="color: #f59e0b; font-size: 36px;">☀</span>',
+                'fa-cloud-sun' => '<span style="color: #9ca3af; font-size: 36px;">⛅</span>',
+                'fa-cloud' => '<span style="color: #9ca3af; font-size: 36px;">☁</span>',
+                'fa-cloud-rain' => '<span style="color: #3b82f6; font-size: 36px;">🌧</span>',
+                'fa-snowflake' => '<span style="color: #60a5fa; font-size: 36px;">❄</span>',
+                'fa-cloud-bolt' => '<span style="color: #f59e0b; font-size: 36px;">⚡</span>',
+                'fa-smog' => '<span style="color: #9ca3af; font-size: 36px;">🌫</span>',
+                'fa-cloud-meatball' => '<span style="color: #60a5fa; font-size: 36px;">🌨</span>'
+            ];
+            
+            return $htmlIcons[$iconClass] ?? '<span style="color: #9ca3af; font-size: 36px;">☁</span>';
+        }
     }
 }

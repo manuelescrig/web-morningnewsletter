@@ -116,11 +116,16 @@ class WeatherModule extends BaseSourceModule {
             // Get today's high/low
             if (!empty($displayFields['today_range'])) {
                 $todayTemps = [];
+                $todaySymbol = null;
                 $next24Hours = array_slice($timeseries, 0, 24);
                 
                 foreach ($next24Hours as $entry) {
                     if (isset($entry['data']['instant']['details']['air_temperature'])) {
                         $todayTemps[] = $entry['data']['instant']['details']['air_temperature'];
+                    }
+                    // Get the most common weather symbol for today
+                    if (!$todaySymbol && isset($entry['data']['next_1_hours']['summary']['symbol_code'])) {
+                        $todaySymbol = $entry['data']['next_1_hours']['summary']['symbol_code'];
                     }
                 }
                 
@@ -131,7 +136,7 @@ class WeatherModule extends BaseSourceModule {
                         'label' => 'Today',
                         'value' => "{$high}°",
                         'subtitle' => "{$low}°",
-                        'icon_class' => 'fa-temperature-half',
+                        'icon_class' => $todaySymbol ? $this->getWeatherIconClass($todaySymbol) : 'fa-temperature-half',
                         'high_low' => true
                     ];
                 }

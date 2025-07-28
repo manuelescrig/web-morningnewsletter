@@ -341,9 +341,9 @@ class NewsletterBuilder {
                 
                 $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>";
                 
-                // Icon
-                $columnIconHtml = WeatherIconProvider::getHtmlIcon($iconClass);
-                $html .= "<div style='margin-bottom: 4px; line-height: 1;'>{$columnIconHtml}</div>";
+                // Icon - Fixed height container to ensure consistent alignment
+                $columnIconHtml = WeatherIconProvider::getHtmlIcon($iconClass, 'small');
+                $html .= "<div style='height: 24px; line-height: 24px; margin-bottom: 4px; vertical-align: middle;'>{$columnIconHtml}</div>";
                 
                 // Label
                 $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
