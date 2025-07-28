@@ -74,6 +74,7 @@ try {
     // Update default templates with trigger events
     $defaultTriggers = [
         'email_verification' => ['event' => 'user_registered', 'delay' => 0],
+        'email_change_verification' => ['event' => 'email_change_requested', 'delay' => 0],
         'password_reset' => ['event' => 'password_reset_requested', 'delay' => 0],
         'welcome' => ['event' => 'email_verified', 'delay' => 0],
         'subscription_created' => ['event' => 'subscription_created', 'delay' => 0],

@@ -117,6 +117,7 @@ $queueItems = $transactionalManager->getQueueItems(null, 50);
 $triggerEvents = [
     'user_registered' => 'User Registration',
     'email_verified' => 'Email Verified',
+    'email_change_requested' => 'Email Change Verification',
     'password_reset' => 'Password Reset',
     'subscription_created' => 'Subscription Created',
     'subscription_cancelled' => 'Subscription Cancelled',
