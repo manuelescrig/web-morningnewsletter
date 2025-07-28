@@ -207,36 +207,85 @@ const MorningNewsletter = {
     },
 
     showAlert(message, type = 'info') {
+        // Create or get notification container
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.className = 'fixed top-4 right-4 z-50 flex flex-col gap-2';
+            document.body.appendChild(container);
+        }
+
         // Create alert element
         const alertDiv = document.createElement('div');
-        alertDiv.className = `fixed top-4 right-4 max-w-sm p-4 rounded-md shadow-lg z-50 ${
+        alertDiv.className = `notification max-w-sm p-4 rounded-md shadow-lg transform transition-all duration-300 ease-out ${
             type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' :
             type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' :
+            type === 'info' ? 'bg-blue-50 border border-blue-200 text-blue-700' :
             'bg-purple-50 border border-purple-200 text-purple-700'
         }`;
         
+        // Start with transform for animation
+        alertDiv.style.transform = 'translateX(400px)';
+        alertDiv.style.opacity = '0';
+        
         alertDiv.innerHTML = `
-            <div class="flex items-center">
+            <div class="flex items-start">
                 <i class="fas ${
-                    type === 'success' ? 'fa-check-circle' :
-                    type === 'error' ? 'fa-exclamation-triangle' :
-                    'fa-info-circle'
-                } mr-2"></i>
-                <span class="text-sm">${message}</span>
-                <button class="ml-auto text-sm opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
+                    type === 'success' ? 'fa-check-circle text-green-500' :
+                    type === 'error' ? 'fa-exclamation-triangle text-red-500' :
+                    type === 'info' ? 'fa-info-circle text-blue-500' :
+                    'fa-bell text-purple-500'
+                } mr-3 mt-0.5"></i>
+                <span class="text-sm flex-1 pr-4">${message}</span>
+                <button class="ml-4 text-sm opacity-60 hover:opacity-100 transition-opacity" onclick="MorningNewsletter.removeNotification(this.parentElement.parentElement)">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         `;
         
-        document.body.appendChild(alertDiv);
+        // Insert at the beginning of container (new notifications on top)
+        container.insertBefore(alertDiv, container.firstChild);
+        
+        // Trigger animation
+        setTimeout(() => {
+            alertDiv.style.transform = 'translateX(0)';
+            alertDiv.style.opacity = '1';
+        }, 10);
         
         // Auto remove after 5 seconds
+        const removeTimeout = setTimeout(() => {
+            this.removeNotification(alertDiv);
+        }, 5000);
+        
+        // Store timeout ID so we can cancel it if user manually closes
+        alertDiv.dataset.timeoutId = removeTimeout;
+    },
+    
+    removeNotification(alertDiv) {
+        if (!alertDiv || !alertDiv.parentElement) return;
+        
+        // Clear the auto-remove timeout if it exists
+        if (alertDiv.dataset.timeoutId) {
+            clearTimeout(parseInt(alertDiv.dataset.timeoutId));
+        }
+        
+        // Animate out
+        alertDiv.style.transform = 'translateX(400px)';
+        alertDiv.style.opacity = '0';
+        
+        // Remove after animation completes
         setTimeout(() => {
             if (alertDiv.parentElement) {
                 alertDiv.remove();
+                
+                // Remove container if empty
+                const container = document.getElementById('notification-container');
+                if (container && container.children.length === 0) {
+                    container.remove();
+                }
             }
-        }, 5000);
+        }, 300);
     },
 
     // Form validation helpers

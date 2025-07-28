@@ -656,6 +656,36 @@ html body div form button.btn-pill {
     animation: modalFadeIn 0.2s ease-out;
 }
 
+/* Notification System */
+#notification-container {
+    max-width: 400px;
+}
+
+#notification-container .notification {
+    min-width: 300px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#notification-container .notification:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure smooth stacking animations */
+#notification-container > * + * {
+    margin-top: 0.5rem;
+}
+
+/* Notification close button styling */
+#notification-container .notification button {
+    padding: 0.25rem;
+    margin: -0.25rem;
+    border-radius: 0.25rem;
+}
+
+#notification-container .notification button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .source-grid {
