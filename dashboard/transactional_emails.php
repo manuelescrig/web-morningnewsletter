@@ -188,9 +188,9 @@ $triggerEvents = [
         .template-preview {
             max-height: 400px;
             overflow-y: auto;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--color-gray-200);
             border-radius: 0.5rem;
-            background: #f9fafb;
+            background: var(--color-gray-50);
         }
         .template-editor {
             font-family: 'Monaco', 'Courier New', monospace;
@@ -198,8 +198,8 @@ $triggerEvents = [
             line-height: 1.5;
         }
         .variable-tag {
-            background: #dbeafe;
-            color: #1e40af;
+            background: var(--pill-primary-bg-lightest);
+            color: var(--color-primary);
             padding: 0.125rem 0.5rem;
             border-radius: 0.25rem;
             font-size: 0.75rem;
@@ -219,16 +219,16 @@ $triggerEvents = [
         <!-- Tabs -->
         <div class="mb-6">
             <nav class="flex space-x-4" aria-label="Tabs">
-                <button onclick="showTab('templates')" id="tab-templates" class="tab-active px-4 py-2 text-sm font-medium rounded-md">
+                <button onclick="showTab('templates')" id="tab-templates" class="btn-pill tab-active px-4 py-2 text-sm font-medium">
                     Email Templates
                 </button>
-                <button onclick="showTab('rules')" id="tab-rules" class="tab-inactive px-4 py-2 text-sm font-medium rounded-md">
+                <button onclick="showTab('rules')" id="tab-rules" class="btn-pill tab-inactive px-4 py-2 text-sm font-medium">
                     Follow-up Rules
                 </button>
-                <button onclick="showTab('logs')" id="tab-logs" class="tab-inactive px-4 py-2 text-sm font-medium rounded-md">
+                <button onclick="showTab('logs')" id="tab-logs" class="btn-pill tab-inactive px-4 py-2 text-sm font-medium">
                     Email Logs
                 </button>
-                <button onclick="showTab('queue')" id="tab-queue" class="tab-inactive px-4 py-2 text-sm font-medium rounded-md">
+                <button onclick="showTab('queue')" id="tab-queue" class="btn-pill tab-inactive px-4 py-2 text-sm font-medium">
                     Queue
                 </button>
             </nav>
@@ -249,16 +249,17 @@ $triggerEvents = [
                                 <p class="text-sm text-gray-600"><?php echo htmlspecialchars($template['description']); ?></p>
                                 <div class="mt-2 flex items-center space-x-2">
                                     <span class="text-xs text-gray-500">Type: <code class="bg-gray-100 px-1 rounded"><?php echo htmlspecialchars($template['type']); ?></code></span>
-                                    <span class="<?php echo $template['is_enabled'] ? 'text-green-600' : 'text-red-600'; ?> text-xs font-medium">
-                                        <?php echo $template['is_enabled'] ? '● Enabled' : '● Disabled'; ?>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo $template['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
+                                        <i class="fas fa-<?php echo $template['is_enabled'] ? 'check' : 'times'; ?> mr-1"></i>
+                                        <?php echo $template['is_enabled'] ? 'Enabled' : 'Disabled'; ?>
                                     </span>
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                <button onclick="editTemplate(<?php echo $template['id']; ?>)" class="text-blue-600 hover:text-blue-800">
+                                <button onclick="editTemplate(<?php echo $template['id']; ?>)" class="btn-pill inline-flex items-center px-2 py-1 text-sm text-primary border border-primary-light hover:bg-primary-lightest">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button onclick="sendTestEmail(<?php echo $template['id']; ?>)" class="text-green-600 hover:text-green-800">
+                                <button onclick="sendTestEmail(<?php echo $template['id']; ?>)" class="btn-pill inline-flex items-center px-2 py-1 text-sm text-green-600 border border-green-300 hover:bg-green-50">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             </div>
@@ -297,7 +298,7 @@ $triggerEvents = [
             <div class="bg-white shadow rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                     <h2 class="text-lg font-semibold text-gray-900">Follow-up Rules</h2>
-                    <button onclick="createRule()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    <button onclick="createRule()" class="btn-pill bg-primary hover-bg-primary-dark text-white px-4 py-2 font-medium transition-colors duration-200">
                         <i class="fas fa-plus mr-2"></i>Create Rule
                     </button>
                 </div>
@@ -344,8 +345,8 @@ $triggerEvents = [
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="editRule(<?php echo $rule['id']; ?>)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
-                                        <button onclick="deleteRule(<?php echo $rule['id']; ?>)" class="text-red-600 hover:text-red-900">Delete</button>
+                                        <button onclick="editRule(<?php echo $rule['id']; ?>)" class="text-primary hover:text-primary-dark mr-3 font-medium">Edit</button>
+                                        <button onclick="deleteRule(<?php echo $rule['id']; ?>)" class="text-red-600 hover:text-red-800 font-medium">Delete</button>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -475,21 +476,21 @@ $triggerEvents = [
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Template Name</label>
-                                <input type="text" name="name" id="edit-template-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" name="name" id="edit-template-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary">
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Subject</label>
-                                <input type="text" name="subject" id="edit-template-subject" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="text" name="subject" id="edit-template-subject" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary">
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">HTML Template</label>
-                                <textarea name="html_template" id="edit-template-html" rows="15" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                                <textarea name="html_template" id="edit-template-html" rows="15" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary"></textarea>
                             </div>
                             
                             <div class="flex items-center">
-                                <input type="checkbox" name="is_enabled" id="edit-template-enabled" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <input type="checkbox" name="is_enabled" id="edit-template-enabled" class="h-4 w-4 text-primary focus-ring-primary border-gray-300 rounded">
                                 <label for="edit-template-enabled" class="ml-2 block text-sm text-gray-900">
                                     Enable this template
                                 </label>
@@ -498,10 +499,10 @@ $triggerEvents = [
                     </div>
                     
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="submit" class="btn-pill w-full inline-flex justify-center border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:ml-3 sm:w-auto sm:text-sm">
                             Save Changes
                         </button>
-                        <button type="button" onclick="closeModal('edit-template-modal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="button" onclick="closeModal('edit-template-modal')" class="btn-pill mt-3 w-full inline-flex justify-center border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             Cancel
                         </button>
                     </div>
@@ -526,12 +527,12 @@ $triggerEvents = [
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Rule Name</label>
-                                <input type="text" name="name" id="edit-rule-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                <input type="text" name="name" id="edit-rule-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Trigger Event</label>
-                                <select name="trigger_event" id="edit-rule-trigger" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                <select name="trigger_event" id="edit-rule-trigger" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
                                     <?php foreach ($triggerEvents as $value => $label): ?>
                                     <option value="<?php echo $value; ?>"><?php echo $label; ?></option>
                                     <?php endforeach; ?>
@@ -540,13 +541,13 @@ $triggerEvents = [
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Delay (hours)</label>
-                                <input type="number" name="delay_hours" id="edit-rule-delay" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                <input type="number" name="delay_hours" id="edit-rule-delay" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
                                 <p class="mt-1 text-sm text-gray-500">Enter 0 for immediate, 24 for 1 day, 168 for 1 week</p>
                             </div>
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Email Template</label>
-                                <select name="template_id" id="edit-rule-template" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                <select name="template_id" id="edit-rule-template" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" required>
                                     <?php foreach ($templates as $template): ?>
                                     <option value="<?php echo $template['id']; ?>"><?php echo htmlspecialchars($template['name']); ?></option>
                                     <?php endforeach; ?>
@@ -555,11 +556,11 @@ $triggerEvents = [
                             
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Conditions (JSON)</label>
-                                <textarea name="conditions" id="edit-rule-conditions" rows="3" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder='{"subscription_plan": ["starter", "pro", "unlimited"]}'></textarea>
+                                <textarea name="conditions" id="edit-rule-conditions" rows="3" class="template-editor mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus-ring-primary" placeholder='{"subscription_plan": ["starter", "pro", "unlimited"]}'></textarea>
                             </div>
                             
                             <div class="flex items-center">
-                                <input type="checkbox" name="is_enabled" id="edit-rule-enabled" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
+                                <input type="checkbox" name="is_enabled" id="edit-rule-enabled" class="h-4 w-4 text-primary focus-ring-primary border-gray-300 rounded" checked>
                                 <label for="edit-rule-enabled" class="ml-2 block text-sm text-gray-900">
                                     Enable this rule
                                 </label>
@@ -568,10 +569,10 @@ $triggerEvents = [
                     </div>
                     
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="submit" class="btn-pill w-full inline-flex justify-center border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover-bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:ml-3 sm:w-auto sm:text-sm">
                             Save Rule
                         </button>
-                        <button type="button" onclick="closeModal('edit-rule-modal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="button" onclick="closeModal('edit-rule-modal')" class="btn-pill mt-3 w-full inline-flex justify-center border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             Cancel
                         </button>
                     </div>
@@ -761,20 +762,23 @@ $triggerEvents = [
             });
         });
         
-        // Tab styles
+        // Tab styles - using primary color variables
         const style = document.createElement('style');
         style.textContent = `
             .tab-active {
-                background-color: rgb(59, 130, 246);
+                background-color: var(--color-primary);
                 color: white;
+                border-color: var(--color-primary);
             }
             .tab-inactive {
                 background-color: transparent;
                 color: rgb(107, 114, 128);
+                border: 1px solid rgb(229, 231, 235);
             }
             .tab-inactive:hover {
-                background-color: rgb(243, 244, 246);
+                background-color: rgb(249, 250, 251);
                 color: rgb(55, 65, 81);
+                border-color: rgb(209, 213, 219);
             }
         `;
         document.head.appendChild(style);
