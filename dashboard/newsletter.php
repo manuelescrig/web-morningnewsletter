@@ -448,7 +448,7 @@ $canAddSource = count($sources) < $maxSources;
 
         <!-- Messages -->
         <?php if ($error): ?>
-            <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200" data-notification="error">
+            <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200" data-notification="error" style="display: none;">
                 <div class="flex">
                     <i class="fas fa-exclamation-triangle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
@@ -457,7 +457,7 @@ $canAddSource = count($sources) < $maxSources;
         <?php endif; ?>
 
         <?php if ($success): ?>
-            <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200" data-notification="success">
+            <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200" data-notification="success" style="display: none;">
                 <div class="flex">
                     <i class="fas fa-check-circle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
