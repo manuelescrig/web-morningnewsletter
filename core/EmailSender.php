@@ -269,6 +269,26 @@ class EmailSender {
     }
     
     public function sendVerificationEmail($email, $token) {
+        // Try to use the new transactional email system
+        try {
+            require_once __DIR__ . '/TransactionalEmailManager.php';
+            $transactionalManager = new TransactionalEmailManager();
+            
+            // Find user by email to get ID
+            $user = User::findByEmail($email);
+            if ($user) {
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $verificationUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $token;
+                
+                return $transactionalManager->sendTransactionalEmail('email_verification', $user->getId(), [
+                    'verification_url' => $verificationUrl
+                ]);
+            }
+        } catch (Exception $e) {
+            error_log("Failed to use transactional email system, falling back to hardcoded: " . $e->getMessage());
+        }
+        
+        // Fallback to hardcoded email
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $verificationUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/auth/verify_email.php?token=" . $token;
         $subject = "Verify your MorningNewsletter account";
@@ -314,6 +334,21 @@ class EmailSender {
     }
     
     public function sendWelcomeEmail($email, $name = '') {
+        // Try to use the new transactional email system
+        try {
+            require_once __DIR__ . '/TransactionalEmailManager.php';
+            $transactionalManager = new TransactionalEmailManager();
+            
+            // Find user by email to get ID
+            $user = User::findByEmail($email);
+            if ($user) {
+                return $transactionalManager->sendTransactionalEmail('welcome_email', $user->getId());
+            }
+        } catch (Exception $e) {
+            error_log("Failed to use transactional email system for welcome email, falling back to hardcoded: " . $e->getMessage());
+        }
+        
+        // Fallback to hardcoded email
         $subject = "Welcome to MorningNewsletter!";
         
         // Extract first name from full name or email
@@ -376,6 +411,27 @@ class EmailSender {
     }
     
     public function sendPasswordResetEmail($email, $token) {
+        // Try to use the new transactional email system
+        try {
+            require_once __DIR__ . '/TransactionalEmailManager.php';
+            $transactionalManager = new TransactionalEmailManager();
+            
+            // Find user by email to get ID
+            $user = User::findByEmail($email);
+            if ($user) {
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+                $resetUrl = $protocol . "://" . $host . "/auth/reset_password.php?token=" . $token;
+                
+                return $transactionalManager->sendTransactionalEmail('password_reset', $user->getId(), [
+                    'reset_url' => $resetUrl
+                ]);
+            }
+        } catch (Exception $e) {
+            error_log("Failed to use transactional email system for password reset, falling back to hardcoded: " . $e->getMessage());
+        }
+        
+        // Fallback to hardcoded email
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
         $resetUrl = $protocol . "://" . $host . "/auth/reset_password.php?token=" . $token;
@@ -427,6 +483,29 @@ class EmailSender {
     }
     
     public function sendEmailChangeVerification($newEmail, $token, $currentEmail) {
+        // Try to use the new transactional email system
+        try {
+            require_once __DIR__ . '/TransactionalEmailManager.php';
+            $transactionalManager = new TransactionalEmailManager();
+            
+            // Find user by current email to get ID
+            $user = User::findByEmail($currentEmail);
+            if ($user) {
+                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
+                $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $token . "&type=email_change";
+                
+                return $transactionalManager->sendTransactionalEmail('email_change_verification', $user->getId(), [
+                    'current_email' => $currentEmail,
+                    'new_email' => $newEmail,
+                    'verification_url' => $verificationUrl
+                ]);
+            }
+        } catch (Exception $e) {
+            error_log("Failed to use transactional email system for email change verification, falling back to hardcoded: " . $e->getMessage());
+        }
+        
+        // Fallback to hardcoded email
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host = $_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com';
         $verificationUrl = $protocol . "://" . $host . "/auth/verify_email.php?token=" . $token . "&type=email_change";

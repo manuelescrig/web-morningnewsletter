@@ -74,6 +74,31 @@ try {
             
             if ($result) {
                 error_log("Successfully processed subscription.deleted for subscription: " . $subscription['id']);
+                
+                // Schedule follow-up emails for subscription cancellation
+                try {
+                    $dbSubscription = $subscriptionManager->getSubscriptionByStripeId($subscription['id']);
+                    if ($dbSubscription && $dbSubscription['user_id']) {
+                        require_once __DIR__ . '/../core/TransactionalEmailManager.php';
+                        $transactionalManager = new TransactionalEmailManager();
+                        
+                        // Get the user to check their plan
+                        require_once __DIR__ . '/../core/User.php';
+                        $user = User::findById($dbSubscription['user_id']);
+                        
+                        if ($user) {
+                            $variables = [
+                                'subscription_plan' => $user->getPlan(),
+                                'reactivation_url' => 'https://' . ($_SERVER['HTTP_HOST'] ?? 'morningnewsletter.com') . '/upgrade'
+                            ];
+                            
+                            $transactionalManager->scheduleEmailsForEvent('subscription_cancelled', $dbSubscription['user_id'], $variables);
+                            error_log("Scheduled follow-up emails for cancelled subscription: " . $subscription['id']);
+                        }
+                    }
+                } catch (Exception $e) {
+                    error_log("Failed to schedule follow-up emails for cancelled subscription: " . $e->getMessage());
+                }
             } else {
                 error_log("Failed to process subscription.deleted for subscription: " . $subscription['id']);
             }

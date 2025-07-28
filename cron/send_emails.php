@@ -84,6 +84,17 @@ function main() {
             logMessage("No emails scheduled for this time window");
         }
         
+        // Process transactional email queue
+        logMessage("Processing transactional email queue");
+        try {
+            require_once __DIR__ . '/../core/TransactionalEmailManager.php';
+            $transactionalManager = new TransactionalEmailManager();
+            $transactionalManager->processQueue();
+            logMessage("Transactional email queue processed successfully");
+        } catch (Exception $e) {
+            logMessage("Error processing transactional email queue: " . $e->getMessage(), 'ERROR');
+        }
+        
     } catch (Exception $e) {
         logMessage("Fatal error in cron job: " . $e->getMessage(), 'ERROR');
         logMessage("Stack trace: " . $e->getTraceAsString(), 'ERROR');

@@ -293,6 +293,9 @@ class Database {
             // Set up default admin user
             $this->setupDefaultAdmin();
             
+            // Add transactional emails tables
+            $this->migrateAddTransactionalEmailsTables();
+            
         } catch (Exception $e) {
             error_log("Database migration error: " . $e->getMessage());
         }
@@ -778,6 +781,438 @@ class Database {
             
         } catch (Exception $e) {
             error_log("Database setup error during admin promotion: " . $e->getMessage());
+        }
+    }
+    
+    private function migrateAddTransactionalEmailsTables() {
+        try {
+            // Create transactional_email_templates table
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS transactional_email_templates (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    type TEXT UNIQUE NOT NULL,
+                    name TEXT NOT NULL,
+                    description TEXT,
+                    subject TEXT NOT NULL,
+                    html_template TEXT NOT NULL,
+                    is_enabled INTEGER DEFAULT 1,
+                    variables TEXT, -- JSON array of available variables
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            ");
+            
+            // Create transactional_email_logs table for tracking sent transactional emails
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS transactional_email_logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    template_id INTEGER NOT NULL,
+                    email TEXT NOT NULL,
+                    subject TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    error_message TEXT,
+                    metadata TEXT, -- JSON with additional data
+                    sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+                    FOREIGN KEY (template_id) REFERENCES transactional_email_templates (id)
+                )
+            ");
+            
+            // Create transactional_email_rules table for follow-up emails
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS transactional_email_rules (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    trigger_event TEXT NOT NULL, -- e.g., 'subscription_cancelled'
+                    delay_hours INTEGER DEFAULT 0, -- hours after event
+                    template_id INTEGER NOT NULL,
+                    is_enabled INTEGER DEFAULT 1,
+                    conditions TEXT, -- JSON conditions
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (template_id) REFERENCES transactional_email_templates (id) ON DELETE CASCADE
+                )
+            ");
+            
+            // Create transactional_email_queue table for delayed emails
+            $this->pdo->exec("
+                CREATE TABLE IF NOT EXISTS transactional_email_queue (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    rule_id INTEGER,
+                    template_id INTEGER NOT NULL,
+                    scheduled_for DATETIME NOT NULL,
+                    status TEXT DEFAULT 'pending',
+                    attempts INTEGER DEFAULT 0,
+                    variables TEXT, -- JSON with template variables
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    processed_at DATETIME,
+                    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+                    FOREIGN KEY (rule_id) REFERENCES transactional_email_rules (id) ON DELETE CASCADE,
+                    FOREIGN KEY (template_id) REFERENCES transactional_email_templates (id)
+                )
+            ");
+            
+            // Insert default email templates
+            $this->insertDefaultTransactionalTemplates();
+            
+            error_log("Database migration: Added transactional email tables");
+            
+        } catch (Exception $e) {
+            error_log("Database migration error for transactional emails: " . $e->getMessage());
+        }
+    }
+    
+    private function insertDefaultTransactionalTemplates() {
+        $defaultTemplates = [
+            [
+                'type' => 'email_verification',
+                'name' => 'Email Verification',
+                'description' => 'Sent when a user needs to verify their email address',
+                'subject' => 'Verify your MorningNewsletter account',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #468BE6;">Welcome to MorningNewsletter!</h1>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <p>Thank you for signing up! Please verify your email address to complete your registration.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{verification_url}}" 
+               style="background-color: #468BE6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Verify Email Address
+            </a>
+        </div>
+        
+        <p style="font-size: 14px; color: #666;">
+            If the button doesn\'t work, copy and paste this link into your browser:
+        </p>
+        <div style="background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;">
+            <a href="{{verification_url}}" style="color: #468BE6; text-decoration: none; font-size: 12px;">{{verification_url}}</a>
+        </div>
+    </div>
+    
+    <div style="font-size: 12px; color: #666; text-align: center;">
+        <p>If you didn\'t create an account with us, please ignore this email.</p>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['email', 'verification_url']),
+                'is_enabled' => 1
+            ],
+            [
+                'type' => 'welcome_email',
+                'name' => 'Welcome Email',
+                'description' => 'Sent after successful email verification',
+                'subject' => 'Welcome to MorningNewsletter!',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to MorningNewsletter</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+        <p style="font-size: 16px; margin-bottom: 20px;">Hi {{first_name}},</p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            My name is Manuel, and I\'m the founder of MorningNewsletter. Thanks so much for signing up!
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            If you ever have any questions or just want to share your thoughts, just reply to this email, I read every response.
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            Manuel
+        </p>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
+            <p style="font-size: 14px; color: #666; text-align: center;">
+                You\'re receiving this because you signed up for MorningNewsletter.<br>
+                <a href="https://morningnewsletter.com" style="color: #468BE6; text-decoration: none;">morningnewsletter.com</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['email', 'first_name', 'name']),
+                'is_enabled' => 1
+            ],
+            [
+                'type' => 'password_reset',
+                'name' => 'Password Reset',
+                'description' => 'Sent when user requests password reset',
+                'subject' => 'Reset your MorningNewsletter password',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Your Password</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #468BE6;">Password Reset Request</h1>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <p>You have requested to reset your password for your MorningNewsletter account.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{reset_url}}" 
+               style="background-color: #dc2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Reset Password
+            </a>
+        </div>
+        
+        <p style="font-size: 14px; color: #666;">
+            If the button doesn\'t work, copy and paste this link into your browser:
+        </p>
+        <div style="background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;">
+            <a href="{{reset_url}}" style="color: #468BE6; text-decoration: none; font-size: 12px;">{{reset_url}}</a>
+        </div>
+        
+        <p style="font-size: 14px; color: #666; margin-top: 20px;">
+            <strong>This link will expire in 1 hour.</strong>
+        </p>
+    </div>
+    
+    <div style="font-size: 12px; color: #666; text-align: center;">
+        <p>If you didn\'t request a password reset, please ignore this email. Your password will remain unchanged.</p>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['email', 'reset_url']),
+                'is_enabled' => 1
+            ],
+            [
+                'type' => 'email_change_verification',
+                'name' => 'Email Change Verification',
+                'description' => 'Sent to new email address when user changes email',
+                'subject' => 'Verify your new email address - MorningNewsletter',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your New Email Address</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #468BE6;">Email Address Change Request</h1>
+    </div>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <p>You have requested to change your email address from <strong>{{current_email}}</strong> to <strong>{{new_email}}</strong>.</p>
+        
+        <p>To complete this change, please click the button below to verify your new email address:</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{verification_url}}" 
+               style="background-color: #468BE6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Verify New Email Address
+            </a>
+        </div>
+        
+        <p style="font-size: 14px; color: #666;">
+            If the button doesn\'t work, copy and paste this link into your browser:
+        </p>
+        <div style="background-color: #e5e7eb; padding: 10px; border-radius: 4px; margin: 10px 0; word-break: break-all;">
+            <a href="{{verification_url}}" style="color: #468BE6; text-decoration: none; font-size: 12px;">{{verification_url}}</a>
+        </div>
+        
+        <p style="font-size: 14px; color: #666; margin-top: 20px;">
+            <strong>This verification link will expire in 1 hour.</strong>
+        </p>
+    </div>
+    
+    <div style="font-size: 12px; color: #666; text-align: center;">
+        <p>If you didn\'t request this email change, please ignore this email or contact support if you\'re concerned about your account security.</p>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['current_email', 'new_email', 'verification_url']),
+                'is_enabled' => 1
+            ],
+            [
+                'type' => 'subscription_cancelled_day_2',
+                'name' => 'Subscription Cancelled - Day 2',
+                'description' => 'Sent 2 days after subscription cancellation',
+                'subject' => 'We\'re sorry to see you go',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We\'re sorry to see you go</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+        <p style="font-size: 16px; margin-bottom: 20px;">Hi {{first_name}},</p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            I noticed you cancelled your MorningNewsletter subscription. I\'m sorry to see you go.
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            If there\'s anything we could have done better, I\'d love to hear from you. Just reply to this email and let me know.
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            Remember, you can always come back. Your account will remain active, and you can reactivate your subscription anytime.
+        </p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{reactivation_url}}" 
+               style="background-color: #468BE6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Reactivate Subscription
+            </a>
+        </div>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            Best,<br>
+            Manuel
+        </p>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['email', 'first_name', 'reactivation_url']),
+                'is_enabled' => 1
+            ],
+            [
+                'type' => 'subscription_cancelled_week_1',
+                'name' => 'Subscription Cancelled - Week 1',
+                'description' => 'Sent 1 week after subscription cancellation',
+                'subject' => 'We miss you at MorningNewsletter',
+                'html_template' => '<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We miss you</title>
+</head>
+<body style="font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+        <p style="font-size: 16px; margin-bottom: 20px;">Hi {{first_name}},</p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            It\'s been a week since you left MorningNewsletter, and we miss having you as part of our community.
+        </p>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            We\'ve been working on some exciting improvements based on user feedback. Here\'s what\'s new:
+        </p>
+        
+        <ul style="font-size: 16px; margin-bottom: 20px;">
+            <li>More customization options for your daily brief</li>
+            <li>New data sources including crypto and stock market updates</li>
+            <li>Improved email design for better readability</li>
+        </ul>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            Want to give us another try? Use code <strong>COMEBACK20</strong> for 20% off your first month.
+        </p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{reactivation_url}}?code=COMEBACK20" 
+               style="background-color: #468BE6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                Get 20% Off
+            </a>
+        </div>
+        
+        <p style="font-size: 16px; margin-bottom: 20px;">
+            Best,<br>
+            Manuel
+        </p>
+    </div>
+</body>
+</html>',
+                'variables' => json_encode(['email', 'first_name', 'reactivation_url']),
+                'is_enabled' => 0
+            ]
+        ];
+        
+        foreach ($defaultTemplates as $template) {
+            try {
+                $stmt = $this->pdo->prepare("
+                    INSERT OR IGNORE INTO transactional_email_templates 
+                    (type, name, description, subject, html_template, variables, is_enabled) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $template['type'],
+                    $template['name'],
+                    $template['description'],
+                    $template['subject'],
+                    $template['html_template'],
+                    $template['variables'],
+                    $template['is_enabled']
+                ]);
+            } catch (Exception $e) {
+                error_log("Failed to insert template {$template['type']}: " . $e->getMessage());
+            }
+        }
+        
+        // Insert default follow-up rules
+        $this->insertDefaultTransactionalRules();
+    }
+    
+    private function insertDefaultTransactionalRules() {
+        $defaultRules = [
+            [
+                'name' => 'Cancellation Follow-up - Day 2',
+                'trigger_event' => 'subscription_cancelled',
+                'delay_hours' => 48,
+                'template_type' => 'subscription_cancelled_day_2',
+                'is_enabled' => 1,
+                'conditions' => json_encode(['subscription_plan' => ['starter', 'pro', 'unlimited']])
+            ],
+            [
+                'name' => 'Cancellation Follow-up - Week 1',
+                'trigger_event' => 'subscription_cancelled',
+                'delay_hours' => 168, // 7 days
+                'template_type' => 'subscription_cancelled_week_1',
+                'is_enabled' => 0,
+                'conditions' => json_encode(['subscription_plan' => ['starter', 'pro', 'unlimited']])
+            ]
+        ];
+        
+        foreach ($defaultRules as $rule) {
+            try {
+                // Get template ID
+                $stmt = $this->pdo->prepare("SELECT id FROM transactional_email_templates WHERE type = ?");
+                $stmt->execute([$rule['template_type']]);
+                $template = $stmt->fetch();
+                
+                if ($template) {
+                    $stmt = $this->pdo->prepare("
+                        INSERT OR IGNORE INTO transactional_email_rules 
+                        (name, trigger_event, delay_hours, template_id, is_enabled, conditions) 
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $rule['name'],
+                        $rule['trigger_event'],
+                        $rule['delay_hours'],
+                        $template['id'],
+                        $rule['is_enabled'],
+                        $rule['conditions']
+                    ]);
+                }
+            } catch (Exception $e) {
+                error_log("Failed to insert rule {$rule['name']}: " . $e->getMessage());
+            }
         }
     }
 }

@@ -134,6 +134,10 @@ function getNavClass($page, $currentPage) {
                             <i class="fas fa-server mr-2"></i>
                             Cron Status
                         </a>
+                        <a href="/dashboard/transactional_emails.php" class="flex items-center px-4 py-2 text-nav text-purple-500 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                            <i class="fas fa-envelope-open-text mr-2"></i>
+                            Transactional Emails
+                        </a>
                         <?php endif; ?>
                         
                         <!-- Divider -->
