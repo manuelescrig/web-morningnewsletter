@@ -479,6 +479,9 @@ $triggerEvents = [
         function sendTestEmail(templateId) {
             const testEmail = prompt('Enter email address for test:', '<?php echo $user->getEmail(); ?>');
             if (testEmail) {
+                // Show loading notification
+                MorningNewsletter.showAlert('Sending test email...', 'info');
+                
                 const formData = new FormData();
                 formData.append('action', 'send_test');
                 formData.append('template_id', templateId);
@@ -498,6 +501,9 @@ $triggerEvents = [
                     } else {
                         MorningNewsletter.showAlert(data.message || 'Failed to send test email', 'error');
                     }
+                })
+                .catch(error => {
+                    MorningNewsletter.showAlert('An error occurred while sending the test email.', 'error');
                 });
             }
         }
@@ -512,6 +518,11 @@ $triggerEvents = [
         document.getElementById('edit-template-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+            submitButton.disabled = true;
+            
             const formData = new FormData(this);
             
             fetch(window.location.href, {
@@ -524,10 +535,22 @@ $triggerEvents = [
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.reload();
+                    MorningNewsletter.showAlert(data.message || 'Template updated successfully!', 'success');
+                    // Close modal and reload after a short delay to show the success message
+                    setTimeout(() => {
+                        document.getElementById('edit-template-modal').classList.add('hidden');
+                        window.location.reload();
+                    }, 1500);
                 } else {
                     MorningNewsletter.showAlert(data.message || 'Failed to update template', 'error');
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
                 }
+            })
+            .catch(error => {
+                MorningNewsletter.showAlert('An error occurred. Please try again.', 'error');
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
             });
         });
         
