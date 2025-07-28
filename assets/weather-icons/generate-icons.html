@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Weather Icons</title>
+    <script>
+    // This HTML file helps generate PNG images from SVGs using browser's canvas
+    const icons = {
+        'sun': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
+            size: 48
+        },
+        'cloud-sun': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 1.5v2m-6.364.636l1.414 1.414M1.5 10.5h2m.636 6.364l1.414-1.414"></path><circle cx="10.5" cy="10.5" r="3.5" stroke="#f59e0b"></circle><path d="M16 16.13A4 4 0 0014.11 8a6 6 0 10-6.09 9.89"></path><path d="M18 10h.01M22 10a4 4 0 01-4 4H8a4 4 0 110-8c.085 0 .17.003.254.009A6 6 0 1116 16.13"></path></svg>',
+            size: 48
+        },
+        'cloud': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"></path></svg>',
+            size: 48
+        },
+        'cloud-rain': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="13" x2="16" y2="21" stroke="#3b82f6"></line><line x1="8" y1="13" x2="8" y2="21" stroke="#3b82f6"></line><line x1="12" y1="15" x2="12" y2="23" stroke="#3b82f6"></line><path d="M20 16.58A5 5 0 0018 7h-1.26A8 8 0 104 15.25"></path></svg>',
+            size: 48
+        },
+        'snowflake': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="22" y1="12" x2="2" y2="12"></line><path d="M17 7l-5 5-5-5m10 10l-5-5-5 5"></path></svg>',
+            size: 48
+        },
+        'cloud-bolt': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 16.9A5 5 0 0018 7h-1.26a8 8 0 10-11.62 9"></path><polyline points="13 11 9 17 15 17 11 23" stroke="#f59e0b"></polyline></svg>',
+            size: 48
+        },
+        'smog': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
+            size: 48
+        },
+        'cloud-meatball': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.58A5 5 0 0018 8h-1.26A8 8 0 104 16.25"></path><line x1="8" y1="16" x2="8.01" y2="16" stroke="#60a5fa" stroke-width="4"></line><line x1="8" y1="20" x2="8.01" y2="20" stroke="#60a5fa" stroke-width="4"></line><line x1="12" y1="18" x2="12.01" y2="18" stroke="#60a5fa" stroke-width="4"></line><line x1="12" y1="22" x2="12.01" y2="22" stroke="#60a5fa" stroke-width="4"></line><line x1="16" y1="16" x2="16.01" y2="16" stroke="#60a5fa" stroke-width="4"></line><line x1="16" y1="20" x2="16.01" y2="20" stroke="#60a5fa" stroke-width="4"></line></svg>',
+            size: 48
+        },
+        'droplet': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"></path></svg>',
+            size: 20
+        },
+        'wind': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"></path></svg>',
+            size: 20
+        },
+        'gauge': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>',
+            size: 20
+        },
+        'temperature-half': {
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"></path></svg>',
+            size: 20
+        }
+    };
+
+    function generateIcon(name, data) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size with some padding
+        const padding = 4;
+        canvas.width = data.size + padding * 2;
+        canvas.height = data.size + padding * 2;
+        
+        // Clear background (transparent)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Create an image from SVG
+        const img = new Image();
+        const svgBlob = new Blob([data.svg], {type: 'image/svg+xml'});
+        const url = URL.createObjectURL(svgBlob);
+        
+        img.onload = function() {
+            ctx.drawImage(img, padding, padding, data.size, data.size);
+            
+            // Convert to PNG and trigger download
+            canvas.toBlob(function(blob) {
+                const link = document.createElement('a');
+                link.download = name + '.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        };
+        
+        img.src = url;
+    }
+
+    function generateAllIcons() {
+        let index = 0;
+        const iconNames = Object.keys(icons);
+        
+        function generateNext() {
+            if (index < iconNames.length) {
+                const name = iconNames[index];
+                generateIcon(name, icons[name]);
+                index++;
+                setTimeout(generateNext, 500); // Delay to prevent overwhelming the browser
+            }
+        }
+        
+        generateNext();
+    }
+    </script>
+</head>
+<body>
+    <h1>Weather Icon Generator</h1>
+    <p>Click the button below to generate PNG versions of all weather icons.</p>
+    <p>The icons will be downloaded to your Downloads folder.</p>
+    <button onclick="generateAllIcons()" style="padding: 10px 20px; font-size: 16px;">Generate All Icons</button>
+    
+    <h2>Preview:</h2>
+    <div id="preview" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+        <script>
+        // Show preview of all icons
+        for (const [name, data] of Object.entries(icons)) {
+            document.write(`
+                <div style="text-align: center;">
+                    <div style="background: #f0f0f0; padding: 10px; border-radius: 8px;">
+                        ${data.svg}
+                    </div>
+                    <p style="margin: 5px 0;">${name}</p>
+                </div>
+            `);
+        }
+        </script>
+    </div>
+</body>
+</html>

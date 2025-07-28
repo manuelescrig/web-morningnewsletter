@@ -321,11 +321,9 @@ class NewsletterBuilder {
         
         // Main temperature section
         $iconClass = $main['icon_class'] ?? 'fa-cloud-sun';
-        $iconUrl = WeatherIconProvider::getBase64Icon($iconClass);
+        $iconHtml = WeatherIconProvider::getHtmlIcon($iconClass);
         $html .= "<div style='text-align: center; margin-bottom: 24px;'>
-                    <div style='margin-bottom: 8px;'>
-                        <img src='{$iconUrl}' alt='" . htmlspecialchars($main['description']) . "' width='48' height='48' style='display: inline-block; vertical-align: middle;' />
-                    </div>
+                    <div style='margin-bottom: 8px; line-height: 1;'>{$iconHtml}</div>
                     <div style='font-size: 56px; font-weight: 700; color: #111827; line-height: 1;'>" . htmlspecialchars($main['temperature']) . "</div>
                     <div style='font-size: 18px; color: #6b7280; margin-top: 8px;'>" . htmlspecialchars($main['description']) . "</div>
                   </div>";
@@ -344,10 +342,8 @@ class NewsletterBuilder {
                 $html .= "<div style='display: table-cell; width: {$columnWidth}%; padding: 0 12px; text-align: center; vertical-align: top; $borderStyle'>";
                 
                 // Icon
-                $iconUrl = WeatherIconProvider::getBase64Icon($iconClass);
-                $html .= "<div style='margin-bottom: 4px;'>
-                            <img src='{$iconUrl}' alt='" . htmlspecialchars($column['label']) . "' width='20' height='20' style='display: inline-block; vertical-align: middle;' />
-                          </div>";
+                $columnIconHtml = WeatherIconProvider::getHtmlIcon($iconClass);
+                $html .= "<div style='margin-bottom: 4px; line-height: 1;'>{$columnIconHtml}</div>";
                 
                 // Label
                 $html .= "<div style='font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;'>" . htmlspecialchars($column['label']) . "</div>";
