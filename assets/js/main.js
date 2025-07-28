@@ -293,8 +293,8 @@ const MorningNewsletter = {
                 title: 'Confirm Action',
                 confirmText: 'Confirm',
                 cancelText: 'Cancel',
-                confirmClass: 'bg-primary hover:bg-primary-dark text-white',
-                cancelClass: 'bg-gray-300 hover:bg-gray-400 text-gray-800',
+                confirmClass: 'bg-primary hover:bg-primary-dark text-white border border-transparent',
+                cancelClass: 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300',
                 dangerous: false
             };
             
@@ -320,10 +320,10 @@ const MorningNewsletter = {
                     <h3 class="text-lg font-semibold text-gray-900 mb-2">${settings.title}</h3>
                     <p class="text-gray-600 mb-6">${message}</p>
                     <div class="flex justify-end space-x-3">
-                        <button class="px-4 py-2 rounded-md font-medium transition-colors ${settings.cancelClass}" data-action="cancel">
+                        <button class="btn-pill px-4 py-2 font-medium transition-colors ${settings.cancelClass}" data-action="cancel">
                             ${settings.cancelText}
                         </button>
-                        <button class="px-4 py-2 rounded-md font-medium transition-colors ${settings.confirmClass}" data-action="confirm">
+                        <button class="btn-pill px-4 py-2 font-medium transition-colors ${settings.confirmClass}" data-action="confirm">
                             ${settings.confirmText}
                         </button>
                     </div>
