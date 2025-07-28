@@ -184,8 +184,8 @@ class TransactionalEmailManager {
         $htmlContent = $this->replaceVariables($template['html_template'], $variables);
         
         try {
-            // Send the email
-            $success = $this->emailSender->sendEmail(
+            // Send the email using reflection to access private method
+            $success = $this->sendEmail(
                 $user->getEmail(),
                 $subject,
                 $htmlContent
