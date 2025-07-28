@@ -352,7 +352,17 @@ $currentPage = 'billing';
         }
 
         async function cancelSubscription() {
-            if (!confirm('Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.')) {
+            const confirmed = await MorningNewsletter.confirm(
+                'Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.',
+                {
+                    title: 'Cancel Subscription',
+                    confirmText: 'Yes, Cancel',
+                    cancelText: 'Keep Subscription',
+                    dangerous: true
+                }
+            );
+            
+            if (!confirmed) {
                 return;
             }
 

@@ -71,14 +71,14 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
 
         <?php if ($error): ?>
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded" data-notification="error">
             <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded" data-notification="success">
             <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
@@ -506,7 +506,17 @@ $csrfToken = $auth->generateCSRFToken();
         }
 
         async function cancelSubscription() {
-            if (!confirm('Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.')) {
+            const confirmed = await MorningNewsletter.confirm(
+                'Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.',
+                {
+                    title: 'Cancel Subscription',
+                    confirmText: 'Yes, Cancel',
+                    cancelText: 'Keep Subscription',
+                    dangerous: true
+                }
+            );
+            
+            if (!confirmed) {
                 return;
             }
 
@@ -568,6 +578,54 @@ $csrfToken = $auth->generateCSRFToken();
             if (!button && !dropdown?.contains(event.target)) {
                 dropdown?.classList.add('hidden');
             }
+        });
+        
+        // Convert inline confirmations to async
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle plan change confirmations
+            document.querySelectorAll('form button[onclick*="confirm"]').forEach(button => {
+                const form = button.closest('form');
+                const originalOnclick = button.getAttribute('onclick');
+                button.removeAttribute('onclick');
+                
+                button.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // Extract the confirmation message
+                    let message = '';
+                    let title = 'Confirm Action';
+                    let dangerous = false;
+                    
+                    if (originalOnclick.includes('delete your account')) {
+                        message = 'Are you sure you want to delete your account? This action cannot be undone.';
+                        title = 'Delete Account';
+                        dangerous = true;
+                    } else if (originalOnclick.includes('Change your plan')) {
+                        const planMatch = originalOnclick.match(/Change your plan to ([^?]+)/);
+                        if (planMatch) {
+                            message = `Change your plan to ${planMatch[1]}?`;
+                            title = 'Change Plan';
+                        }
+                    } else if (originalOnclick.includes('Switch to')) {
+                        const planMatch = originalOnclick.match(/Switch to ([^?]+) plan/);
+                        if (planMatch) {
+                            message = `Switch to ${planMatch[1]} plan?`;
+                            title = 'Switch Plan';
+                        }
+                    }
+                    
+                    const confirmed = await MorningNewsletter.confirm(message, {
+                        title: title,
+                        confirmText: dangerous ? 'Yes, Delete' : 'Confirm',
+                        cancelText: 'Cancel',
+                        dangerous: dangerous
+                    });
+                    
+                    if (confirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 

@@ -289,8 +289,18 @@ $currentPage = 'dashboard';
             document.getElementById('editModal').classList.add('hidden');
         }
         
-        function deleteNewsletter(newsletterId) {
-            if (confirm('Are you sure you want to delete this newsletter? This action cannot be undone.')) {
+        async function deleteNewsletter(newsletterId) {
+            const confirmed = await MorningNewsletter.confirm(
+                'Are you sure you want to delete this newsletter? This action cannot be undone.',
+                {
+                    title: 'Delete Newsletter',
+                    confirmText: 'Yes, Delete',
+                    cancelText: 'Cancel',
+                    dangerous: true
+                }
+            );
+            
+            if (confirmed) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.innerHTML = `

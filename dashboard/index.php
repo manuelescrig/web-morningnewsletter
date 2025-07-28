@@ -728,9 +728,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             dropdown.classList.toggle('hidden');
         }
         
-        function toggleNewsletterStatus(newsletterId, newPausedStatus) {
+        async function toggleNewsletterStatus(newsletterId, newPausedStatus) {
             const action = newPausedStatus === 'true' ? 'pause' : 'activate';
-            if (confirm(`Are you sure you want to ${action} this newsletter?`)) {
+            
+            const confirmed = await MorningNewsletter.confirm(
+                `Are you sure you want to ${action} this newsletter?`,
+                {
+                    title: action === 'pause' ? 'Pause Newsletter' : 'Activate Newsletter',
+                    confirmText: `Yes, ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+                    cancelText: 'Cancel'
+                }
+            );
+            
+            if (confirmed) {
                 // Create form and submit
                 const form = document.createElement('form');
                 form.method = 'POST';
@@ -745,8 +755,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        function duplicateNewsletter(newsletterId) {
-            if (confirm('Are you sure you want to duplicate this newsletter?')) {
+        async function duplicateNewsletter(newsletterId) {
+            const confirmed = await MorningNewsletter.confirm(
+                'Are you sure you want to duplicate this newsletter?',
+                {
+                    title: 'Duplicate Newsletter',
+                    confirmText: 'Yes, Duplicate',
+                    cancelText: 'Cancel'
+                }
+            );
+            
+            if (confirmed) {
                 // Create form and submit
                 const form = document.createElement('form');
                 form.method = 'POST';
@@ -760,8 +779,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        function confirmDeleteNewsletter(newsletterId, title) {
-            if (confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
+        async function confirmDeleteNewsletter(newsletterId, title) {
+            const confirmed = await MorningNewsletter.confirm(
+                `Are you sure you want to delete "${title}"? This action cannot be undone.`,
+                {
+                    title: 'Delete Newsletter',
+                    confirmText: 'Yes, Delete',
+                    cancelText: 'Cancel',
+                    dangerous: true
+                }
+            );
+            
+            if (confirmed) {
                 // Create form and submit
                 const form = document.createElement('form');
                 form.method = 'POST';

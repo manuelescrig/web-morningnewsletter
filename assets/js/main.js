@@ -285,6 +285,127 @@ const MorningNewsletter = {
         }, 300);
     },
 
+    // Modal confirmation system
+    confirm(message, options = {}) {
+        return new Promise((resolve) => {
+            // Default options
+            const defaults = {
+                title: 'Confirm Action',
+                confirmText: 'Confirm',
+                cancelText: 'Cancel',
+                confirmClass: 'bg-primary hover:bg-primary-dark text-white',
+                cancelClass: 'bg-gray-300 hover:bg-gray-400 text-gray-800',
+                dangerous: false
+            };
+            
+            const settings = { ...defaults, ...options };
+            
+            // If dangerous action, use red colors
+            if (settings.dangerous) {
+                settings.confirmClass = 'bg-red-600 hover:bg-red-700 text-white';
+            }
+            
+            // Create modal backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fade-in';
+            backdrop.style.animation = 'fadeIn 0.2s ease-out';
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'bg-white rounded-lg shadow-xl max-w-md w-full transform transition-all animate-modal-in';
+            modal.style.animation = 'modalIn 0.3s ease-out';
+            
+            modal.innerHTML = `
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">${settings.title}</h3>
+                    <p class="text-gray-600 mb-6">${message}</p>
+                    <div class="flex justify-end space-x-3">
+                        <button class="px-4 py-2 rounded-md font-medium transition-colors ${settings.cancelClass}" data-action="cancel">
+                            ${settings.cancelText}
+                        </button>
+                        <button class="px-4 py-2 rounded-md font-medium transition-colors ${settings.confirmClass}" data-action="confirm">
+                            ${settings.confirmText}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            backdrop.appendChild(modal);
+            document.body.appendChild(backdrop);
+            
+            // Focus confirm button
+            const confirmBtn = modal.querySelector('[data-action="confirm"]');
+            confirmBtn.focus();
+            
+            // Handle clicks
+            const handleClick = (e) => {
+                const action = e.target.dataset.action;
+                if (action === 'confirm') {
+                    cleanup();
+                    resolve(true);
+                } else if (action === 'cancel' || e.target === backdrop) {
+                    cleanup();
+                    resolve(false);
+                }
+            };
+            
+            // Handle escape key
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    cleanup();
+                    resolve(false);
+                }
+            };
+            
+            // Cleanup function
+            const cleanup = () => {
+                backdrop.removeEventListener('click', handleClick);
+                document.removeEventListener('keydown', handleEscape);
+                backdrop.style.opacity = '0';
+                modal.style.transform = 'scale(0.95)';
+                modal.style.opacity = '0';
+                setTimeout(() => backdrop.remove(), 200);
+            };
+            
+            // Add event listeners
+            backdrop.addEventListener('click', handleClick);
+            document.addEventListener('keydown', handleEscape);
+        });
+    },
+
+    // Check for server-side notifications and display them
+    checkServerNotifications() {
+        // Check for success messages
+        const successElements = document.querySelectorAll('.bg-green-50.border-green-200, [data-notification="success"]');
+        successElements.forEach(el => {
+            const message = el.textContent.trim().replace(/^\s*[✓✔]\s*/, '');
+            if (message) {
+                this.showAlert(message, 'success');
+                el.style.display = 'none'; // Hide the server-side notification
+            }
+        });
+        
+        // Check for error messages
+        const errorElements = document.querySelectorAll('.bg-red-50.border-red-200, [data-notification="error"]');
+        errorElements.forEach(el => {
+            const message = el.textContent.trim().replace(/^\s*[⚠✕]\s*/, '');
+            if (message) {
+                this.showAlert(message, 'error');
+                el.style.display = 'none'; // Hide the server-side notification
+            }
+        });
+        
+        // Check for info messages
+        const infoElements = document.querySelectorAll('.bg-blue-50.border-blue-200, [data-notification="info"]');
+        infoElements.forEach(el => {
+            const message = el.textContent.trim().replace(/^\s*[ℹ]\s*/, '');
+            if (message) {
+                this.showAlert(message, 'info');
+                el.style.display = 'none'; // Hide the server-side notification
+            }
+        });
+    },
+
     // Form validation helpers
     validateForm(formElement) {
         const inputs = formElement.querySelectorAll('input[required]');
@@ -397,6 +518,8 @@ async function subscribeToPlan(plan) {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     MorningNewsletter.init();
+    // Check for server-side notifications
+    MorningNewsletter.checkServerNotifications();
 });
 
 // Export for use in other files

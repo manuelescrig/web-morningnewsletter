@@ -448,7 +448,7 @@ $canAddSource = count($sources) < $maxSources;
 
         <!-- Messages -->
         <?php if ($error): ?>
-            <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200">
+            <div class="mb-6 p-4 rounded-md bg-red-50 text-red-800 border border-red-200" data-notification="error">
                 <div class="flex">
                     <i class="fas fa-exclamation-triangle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($error); ?></div>
@@ -457,7 +457,7 @@ $canAddSource = count($sources) < $maxSources;
         <?php endif; ?>
 
         <?php if ($success): ?>
-            <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200">
+            <div class="mb-6 p-4 rounded-md bg-green-50 text-green-800 border border-green-200" data-notification="success">
                 <div class="flex">
                     <i class="fas fa-check-circle mr-2 mt-0.5"></i>
                     <div><?php echo htmlspecialchars($success); ?></div>
@@ -991,7 +991,7 @@ $canAddSource = count($sources) < $maxSources;
         }
 
         // Delegate to external newsletter editor
-        function deleteSource(sourceId) {
+        async function deleteSource(sourceId) {
             // Find the source data from the sources array
             const sources = <?php echo json_encode($sources); ?>;
             const source = sources.find(s => s.id == sourceId);
@@ -1000,7 +1000,14 @@ $canAddSource = count($sources) < $maxSources;
                 const sourceName = source.name || source.type;
                 const message = `Are you sure you want to delete "${sourceName}"? This action cannot be undone.`;
                 
-                if (confirm(message)) {
+                const confirmed = await MorningNewsletter.confirm(message, {
+                    title: 'Delete Source',
+                    confirmText: 'Yes, Delete',
+                    cancelText: 'Cancel',
+                    dangerous: true
+                });
+                
+                if (confirmed) {
                     // Create form and submit
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -1015,11 +1022,18 @@ $canAddSource = count($sources) < $maxSources;
             }
         }
         
-        function deleteNewsletter() {
+        async function deleteNewsletter() {
             const newsletterTitle = "<?php echo addslashes($newsletter->getTitle()); ?>";
             const message = `Are you sure you want to delete the newsletter "${newsletterTitle}"?\n\nThis will permanently delete:\n• All sources and configurations\n• Newsletter history and analytics\n• Scheduled delivery settings\n\nThis action cannot be undone.`;
             
-            if (confirm(message)) {
+            const confirmed = await MorningNewsletter.confirm(message, {
+                title: 'Delete Newsletter',
+                confirmText: 'Yes, Delete Everything',
+                cancelText: 'Cancel',
+                dangerous: true
+            });
+            
+            if (confirmed) {
                 // Create form and submit
                 const form = document.createElement('form');
                 form.method = 'POST';

@@ -178,14 +178,14 @@ $csrfToken = $auth->generateCSRFToken();
 
         <!-- Alert Messages -->
         <?php if ($error): ?>
-        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md" data-notification="error">
             <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+        <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md" data-notification="success">
             <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
@@ -400,9 +400,40 @@ $csrfToken = $auth->generateCSRFToken();
     </div>
 
     <script>
-        function confirmDeletion() {
-            return confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.');
+        async function confirmDeletion() {
+            const confirmed = await MorningNewsletter.confirm(
+                'Are you absolutely sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.',
+                {
+                    title: 'Delete Account',
+                    confirmText: 'Yes, Delete My Account',
+                    cancelText: 'Cancel',
+                    dangerous: true
+                }
+            );
+            return confirmed;
         }
+        
+        // Handle cancel email change
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelEmailButton = document.querySelector('button[onclick*="cancel the email change"]');
+            if (cancelEmailButton) {
+                cancelEmailButton.removeAttribute('onclick');
+                cancelEmailButton.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const confirmed = await MorningNewsletter.confirm(
+                        'Are you sure you want to cancel the email change request?',
+                        {
+                            title: 'Cancel Email Change',
+                            confirmText: 'Yes, Cancel',
+                            cancelText: 'Keep Request'
+                        }
+                    );
+                    if (confirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            }
+        });
         
         // Password confirmation validation
         document.getElementById('confirm_password').addEventListener('input', function() {

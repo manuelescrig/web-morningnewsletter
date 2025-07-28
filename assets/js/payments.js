@@ -61,7 +61,17 @@ const Payments = {
      * Cancel subscription
      */
     cancelSubscription: async function() {
-        if (!confirm('Are you sure you want to cancel your subscription? This will take effect at the end of your current billing period.')) {
+        const confirmed = await MorningNewsletter.confirm(
+            'Are you sure you want to cancel your subscription? This will take effect at the end of your current billing period.',
+            {
+                title: 'Cancel Subscription',
+                confirmText: 'Yes, Cancel',
+                cancelText: 'Keep Subscription',
+                dangerous: true
+            }
+        );
+        
+        if (!confirmed) {
             return;
         }
 

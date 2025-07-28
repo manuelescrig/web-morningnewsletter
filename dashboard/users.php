@@ -342,14 +342,14 @@ $csrfToken = $auth->generateCSRFToken();
         </div>
 
         <?php if ($error): ?>
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded" data-notification="error">
             <i class="fas fa-exclamation-triangle mr-2"></i>
             <?php echo htmlspecialchars($error); ?>
         </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded" data-notification="success">
             <i class="fas fa-check-circle mr-2"></i>
             <?php echo htmlspecialchars($success); ?>
         </div>
@@ -792,6 +792,76 @@ $csrfToken = $auth->generateCSRFToken();
 
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+    
+    <script>
+        // Convert inline confirmations to async
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle all forms with onsubmit confirmations
+            document.querySelectorAll('form[onsubmit*="confirm"]').forEach(form => {
+                const originalOnsubmit = form.getAttribute('onsubmit');
+                form.removeAttribute('onsubmit');
+                
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Extract the confirmation message and context
+                    let message = '';
+                    let title = 'Confirm Action';
+                    let dangerous = false;
+                    
+                    if (originalOnsubmit.includes('permanently DELETE')) {
+                        const emailMatch = originalOnsubmit.match(/DELETE ([^?]+)\?/);
+                        if (emailMatch) {
+                            message = `Are you sure you want to permanently DELETE ${emailMatch[1]}? This will remove all their data including sources and email logs. This action cannot be undone!`;
+                            title = 'Delete User';
+                            dangerous = true;
+                        }
+                    } else if (originalOnsubmit.includes('remove admin access')) {
+                        const emailMatch = originalOnsubmit.match(/from ([^?]+)\?/);
+                        if (emailMatch) {
+                            message = `Are you sure you want to remove admin access from ${emailMatch[1]}?`;
+                            title = 'Remove Admin Access';
+                        }
+                    } else if (originalOnsubmit.includes('grant admin access')) {
+                        const emailMatch = originalOnsubmit.match(/to ([^?]+)\?/);
+                        if (emailMatch) {
+                            message = `Are you sure you want to grant admin access to ${emailMatch[1]}?`;
+                            title = 'Grant Admin Access';
+                        }
+                    } else if (originalOnsubmit.includes('Promote')) {
+                        const match = originalOnsubmit.match(/Promote ([^?]+) to ([^?]+) plan/);
+                        if (match) {
+                            message = `Promote ${match[1]} to ${match[2]} plan?`;
+                            title = 'Promote User Plan';
+                        }
+                    } else if (originalOnsubmit.includes('Demote')) {
+                        const match = originalOnsubmit.match(/Demote ([^?]+) to ([^?]+) plan/);
+                        if (match) {
+                            message = `Demote ${match[1]} to ${match[2]} plan?`;
+                            title = 'Demote User Plan';
+                        }
+                    } else if (originalOnsubmit.includes('Resend verification')) {
+                        const emailMatch = originalOnsubmit.match(/to ([^?]+)\?/);
+                        if (emailMatch) {
+                            message = `Resend verification email to ${emailMatch[1]}?`;
+                            title = 'Resend Verification';
+                        }
+                    }
+                    
+                    const confirmed = await MorningNewsletter.confirm(message, {
+                        title: title,
+                        confirmText: dangerous ? 'Yes, Delete' : 'Confirm',
+                        cancelText: 'Cancel',
+                        dangerous: dangerous
+                    });
+                    
+                    if (confirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 
     
     <script>

@@ -141,8 +141,9 @@ const Dashboard = {
      * Form utilities
      */
     form: {
-        submitWithConfirmation: function(formData, message) {
-            if (confirm(message)) {
+        submitWithConfirmation: async function(formData, message, options = {}) {
+            const confirmed = await MorningNewsletter.confirm(message, options);
+            if (confirmed) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 
@@ -351,6 +352,11 @@ const Dashboard = {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     Dashboard.init();
+    
+    // Check for server-side notifications
+    if (window.MorningNewsletter && window.MorningNewsletter.checkServerNotifications) {
+        window.MorningNewsletter.checkServerNotifications();
+    }
 });
 
 // Export for use in other scripts
