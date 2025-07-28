@@ -12,7 +12,7 @@ if (!$auth->isLoggedIn()) {
     exit;
 }
 
-$user = $auth->getUser();
+$user = $auth->getCurrentUser();
 
 // Check if user is admin
 if (!$user->isAdmin()) {

@@ -31,7 +31,7 @@ try {
     } else {
         echo "<p style='color: green;'>✓ User is logged in</p>";
         
-        $user = $auth->getUser();
+        $user = $auth->getCurrentUser();
         echo "<p>User ID: " . $user->getId() . "</p>";
         echo "<p>User Email: " . $user->getEmail() . "</p>";
         echo "<p>Is Admin: " . ($user->isAdmin() ? 'Yes' : 'No') . "</p>";
