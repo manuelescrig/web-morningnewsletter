@@ -218,15 +218,14 @@ const MorningNewsletter = {
 
         // Create alert element
         const alertDiv = document.createElement('div');
-        alertDiv.className = `notification max-w-sm p-4 rounded-md shadow-lg transform transition-all duration-300 ease-out ${
+        alertDiv.className = `notification max-w-sm p-4 rounded-md shadow-lg transition-opacity duration-300 ease-out ${
             type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' :
             type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' :
             type === 'info' ? 'bg-blue-50 border border-blue-200 text-blue-700' :
             'bg-purple-50 border border-purple-200 text-purple-700'
         }`;
         
-        // Start with transform for animation (fade in from top)
-        alertDiv.style.transform = 'translateY(-20px) scale(0.95)';
+        // Start with fade animation
         alertDiv.style.opacity = '0';
         
         alertDiv.innerHTML = `
@@ -249,7 +248,6 @@ const MorningNewsletter = {
         
         // Trigger animation
         setTimeout(() => {
-            alertDiv.style.transform = 'translateY(0) scale(1)';
             alertDiv.style.opacity = '1';
         }, 10);
         
@@ -270,8 +268,7 @@ const MorningNewsletter = {
             clearTimeout(parseInt(alertDiv.dataset.timeoutId));
         }
         
-        // Animate out (fade and shrink)
-        alertDiv.style.transform = 'translateY(-10px) scale(0.9)';
+        // Animate out (fade)
         alertDiv.style.opacity = '0';
         
         // Remove after animation completes

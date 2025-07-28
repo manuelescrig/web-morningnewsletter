@@ -320,7 +320,7 @@ $currentPage = 'billing';
                 }
                 
                 console.error('Error creating checkout session:', error);
-                alert('Error: ' + error.message);
+                MorningNewsletter.showAlert('Error: ' + error.message, 'error');
             }
         }
 
@@ -347,7 +347,7 @@ $currentPage = 'billing';
 
             } catch (error) {
                 console.error('Error opening billing portal:', error);
-                alert('Error opening billing portal: ' + error.message);
+                MorningNewsletter.showAlert('Error opening billing portal: ' + error.message, 'error');
             }
         }
 
@@ -371,7 +371,7 @@ $currentPage = 'billing';
                 const data = await response.json();
 
                 if (data.success) {
-                    alert('Your subscription has been cancelled. You will continue to have access until the end of your current billing period.');
+                    MorningNewsletter.showAlert('Your subscription has been cancelled. You will continue to have access until the end of your current billing period.', 'success');
                     location.reload();
                 } else {
                     throw new Error(data.error || 'Unknown error');
@@ -379,7 +379,7 @@ $currentPage = 'billing';
 
             } catch (error) {
                 console.error('Error cancelling subscription:', error);
-                alert('Error cancelling subscription. Please try again.');
+                MorningNewsletter.showAlert('Error cancelling subscription. Please try again.', 'error');
             }
         }
     </script>

@@ -23,11 +23,11 @@ const Payments = {
                 // Redirect to Stripe Checkout
                 window.location.href = data.checkout_url;
             } else {
-                alert('Error: ' + (data.message || 'Failed to create checkout session'));
+                MorningNewsletter.showAlert(data.message || 'Failed to create checkout session', 'error');
             }
         } catch (error) {
             console.error('Subscription error:', error);
-            alert('An error occurred while processing your request.');
+            MorningNewsletter.showAlert('An error occurred while processing your request. Please try again.', 'error');
         }
     },
 
@@ -49,11 +49,11 @@ const Payments = {
                 // Redirect to billing portal
                 window.location.href = data.portal_url;
             } else {
-                alert('Error: ' + (data.message || 'Failed to access billing portal'));
+                MorningNewsletter.showAlert(data.message || 'Failed to access billing portal', 'error');
             }
         } catch (error) {
             console.error('Billing portal error:', error);
-            alert('An error occurred while accessing the billing portal.');
+            MorningNewsletter.showAlert('An error occurred while accessing the billing portal. Please try again.', 'error');
         }
     },
 
@@ -76,15 +76,15 @@ const Payments = {
             const data = await response.json();
 
             if (data.success) {
-                alert('Your subscription has been cancelled. It will remain active until the end of your current billing period.');
+                MorningNewsletter.showAlert('Your subscription has been cancelled. It will remain active until the end of your current billing period.', 'success');
                 // Reload the page to update the UI
                 window.location.reload();
             } else {
-                alert('Error: ' + (data.message || 'Failed to cancel subscription'));
+                MorningNewsletter.showAlert(data.message || 'Failed to cancel subscription', 'error');
             }
         } catch (error) {
             console.error('Cancellation error:', error);
-            alert('An error occurred while cancelling your subscription.');
+            MorningNewsletter.showAlert('An error occurred while cancelling your subscription. Please try again.', 'error');
         }
     },
 

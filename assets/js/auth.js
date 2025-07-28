@@ -208,45 +208,15 @@ const AuthManager = {
         return emailRegex.test(email);
     },
 
-    // Show toast message
+    // Show toast message (delegate to MorningNewsletter notification system)
     showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `fixed top-4 right-4 max-w-sm p-4 rounded-md shadow-lg z-50 transform translate-x-full transition-transform duration-300 ${
-            type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' :
-            type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' :
-            'bg-purple-50 border border-purple-200 text-purple-700'
-        }`;
-        
-        toast.innerHTML = `
-            <div class="flex items-center">
-                <i class="fas ${
-                    type === 'success' ? 'fa-check-circle' :
-                    type === 'error' ? 'fa-exclamation-triangle' :
-                    'fa-info-circle'
-                } mr-2"></i>
-                <span class="text-sm">${message}</span>
-                <button class="ml-auto text-sm opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Animate in
-        setTimeout(() => {
-            toast.classList.remove('translate-x-full');
-        }, 100);
-        
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            toast.classList.add('translate-x-full');
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.remove();
-                }
-            }, 300);
-        }, 5000);
+        if (window.MorningNewsletter && window.MorningNewsletter.showAlert) {
+            window.MorningNewsletter.showAlert(message, type);
+        } else {
+            // Fallback if main.js isn't loaded yet
+            console.warn('MorningNewsletter.showAlert not available, falling back to console');
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
     },
 
     // Handle form errors from server

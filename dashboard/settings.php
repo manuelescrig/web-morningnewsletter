@@ -501,7 +501,7 @@ $csrfToken = $auth->generateCSRFToken();
                 button.disabled = false;
                 
                 console.error('Error creating checkout session:', error);
-                alert('Error: ' + error.message);
+                MorningNewsletter.showAlert('Error: ' + error.message, 'error');
             }
         }
 
@@ -528,7 +528,7 @@ $csrfToken = $auth->generateCSRFToken();
 
             } catch (error) {
                 console.error('Error cancelling subscription:', error);
-                alert('Error: ' + error.message);
+                MorningNewsletter.showAlert('Error: ' + error.message, 'error');
             }
         }
 
@@ -551,7 +551,7 @@ $csrfToken = $auth->generateCSRFToken();
 
             } catch (error) {
                 console.error('Error accessing billing portal:', error);
-                alert('Error: ' + error.message);
+                MorningNewsletter.showAlert('Error: ' + error.message, 'error');
             }
         }
 

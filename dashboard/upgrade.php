@@ -253,7 +253,7 @@ $currentPage = 'upgrade';
                 }
                 
                 console.error('Error creating checkout session:', error);
-                alert('Error: ' + error.message);
+                MorningNewsletter.showAlert('Error: ' + error.message, 'error');
             }
         }
 
