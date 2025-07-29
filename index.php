@@ -86,6 +86,17 @@ try {
                         <div class="mac-window-title">Morning Newsletter - 6:00 AM Daily</div>
                     </div>
                     <div class="mac-window-content">
+                        <!-- Animated Content Icons -->
+                        <div class="content-icons-animation">
+                            <div class="floating-icon">₿</div>
+                            <div class="floating-icon">📰</div>
+                            <div class="floating-icon">☀️</div>
+                            <div class="floating-icon">📈</div>
+                            <div class="floating-icon">💬</div>
+                            <div class="floating-icon">📊</div>
+                            <div class="floating-icon">🌡️</div>
+                            <div class="floating-icon">📱</div>
+                        </div>
                         <div class="newsletter-preview">
                             <div class="newsletter-preview-header">
                                 <h3 class="text-xl font-bold">Your Morning Newsletter</h3>

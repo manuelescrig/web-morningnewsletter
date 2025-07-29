@@ -7,6 +7,13 @@
 .hero-section {
     position: relative;
     padding-bottom: 0;
+    overflow: visible;
+}
+
+/* Mac window that extends to bottom */
+.hero-section .mac-window {
+    height: auto;
+    margin-bottom: -100px; /* Cut off bottom */
 }
 
 /* Navigation Hover Underline Override */
@@ -106,8 +113,7 @@
     overflow: hidden;
     transform: perspective(1000px) rotateX(-5deg);
     transition: transform 0.3s ease;
-    height: calc(100vh - 400px);
-    min-height: 500px;
+    position: relative;
 }
 
 .mac-window:hover {
@@ -153,7 +159,7 @@
 
 .mac-window-content {
     background: #f0f0f0;
-    height: calc(100% - 41px);
+    height: 600px;
     overflow: hidden;
     position: relative;
     padding: 1.5rem;
@@ -165,6 +171,130 @@
     overflow: hidden;
     border-radius: 0.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Animated Content Icons */
+.content-icons-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-icon {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0;
+    animation: floatIntoNewsletter 8s infinite;
+    filter: drop-shadow(0 0 10px rgba(70, 139, 230, 0.5));
+}
+
+@keyframes floatIntoNewsletter {
+    0% {
+        opacity: 0;
+        transform: translate(var(--start-x), var(--start-y)) scale(0.5) rotate(0deg);
+    }
+    20% {
+        opacity: 0.8;
+        transform: translate(var(--mid-x), var(--mid-y)) scale(1.2) rotate(180deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(calc(var(--mid-x) + 50px), calc(var(--mid-y) + 30px)) scale(1) rotate(360deg);
+    }
+    80% {
+        opacity: 0.6;
+        transform: translate(var(--end-x), var(--end-y)) scale(0.8) rotate(540deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--end-x), var(--end-y)) scale(0.3) rotate(720deg);
+    }
+}
+
+/* Individual icon positioning */
+.floating-icon:nth-child(1) {
+    --start-x: -50px;
+    --start-y: 50px;
+    --mid-x: 150px;
+    --mid-y: 100px;
+    --end-x: 350px;
+    --end-y: 200px;
+    animation-delay: 0s;
+}
+
+.floating-icon:nth-child(2) {
+    --start-x: 850px;
+    --start-y: 100px;
+    --mid-x: 650px;
+    --mid-y: 150px;
+    --end-x: 450px;
+    --end-y: 250px;
+    animation-delay: 1s;
+}
+
+.floating-icon:nth-child(3) {
+    --start-x: -50px;
+    --start-y: 300px;
+    --mid-x: 200px;
+    --mid-y: 250px;
+    --end-x: 400px;
+    --end-y: 300px;
+    animation-delay: 2s;
+}
+
+.floating-icon:nth-child(4) {
+    --start-x: 850px;
+    --start-y: 200px;
+    --mid-x: 600px;
+    --mid-y: 300px;
+    --end-x: 350px;
+    --end-y: 350px;
+    animation-delay: 3s;
+}
+
+.floating-icon:nth-child(5) {
+    --start-x: -50px;
+    --start-y: 450px;
+    --mid-x: 250px;
+    --mid-y: 400px;
+    --end-x: 450px;
+    --end-y: 450px;
+    animation-delay: 4s;
+}
+
+.floating-icon:nth-child(6) {
+    --start-x: 850px;
+    --start-y: 350px;
+    --mid-x: 550px;
+    --mid-y: 350px;
+    --end-x: 300px;
+    --end-y: 400px;
+    animation-delay: 5s;
+}
+
+.floating-icon:nth-child(7) {
+    --start-x: -50px;
+    --start-y: 150px;
+    --mid-x: 300px;
+    --mid-y: 200px;
+    --end-x: 500px;
+    --end-y: 150px;
+    animation-delay: 6s;
+}
+
+.floating-icon:nth-child(8) {
+    --start-x: 850px;
+    --start-y: 450px;
+    --mid-x: 500px;
+    --mid-y: 450px;
+    --end-x: 250px;
+    --end-y: 500px;
+    animation-delay: 7s;
 }
 
 .newsletter-preview-header {
