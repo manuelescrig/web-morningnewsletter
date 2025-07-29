@@ -3,6 +3,48 @@
 /* Hero Section Styles - Use original mesh background from main.css */
 /* The mesh-bg class is already defined in main.css with the original blue gradient mesh */
 
+/* Typewriter Animation */
+.typewriter-container {
+    height: 1.2em;
+    display: inline-block;
+    position: relative;
+}
+
+.typewriter-text {
+    display: inline-block;
+    position: relative;
+}
+
+.typewriter-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1.2em;
+    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
+    animation: blink 1s infinite;
+    position: absolute;
+    top: 0;
+    right: -8px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.typewriter-word {
+    opacity: 0;
+    animation: fadeInWord 0.5s ease-out forwards;
+}
+
+@keyframes fadeInWord {
+    to { opacity: 1; }
+}
+
 /* Adjust hero section to accommodate larger preview */
 .hero-section {
     position: relative;

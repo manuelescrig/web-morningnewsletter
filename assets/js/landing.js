@@ -1,6 +1,49 @@
 // Landing Page Specific JavaScript
 
+// Typewriter Effect
+class TypewriterEffect {
+    constructor() {
+        this.element = document.getElementById('typewriter');
+        this.words = ['Informed', 'Productive', 'Focused', 'Prepared', 'Connected'];
+        this.currentIndex = 0;
+        this.currentWord = '';
+        this.isDeleting = false;
+        this.speed = 100;
+        
+        if (this.element) {
+            this.type();
+        }
+    }
+    
+    type() {
+        const fullWord = this.words[this.currentIndex % this.words.length];
+        
+        if (this.isDeleting) {
+            this.currentWord = fullWord.substring(0, this.currentWord.length - 1);
+        } else {
+            this.currentWord = fullWord.substring(0, this.currentWord.length + 1);
+        }
+        
+        this.element.textContent = this.currentWord;
+        
+        let typeSpeed = this.isDeleting ? 50 : this.speed;
+        
+        if (!this.isDeleting && this.currentWord === fullWord) {
+            typeSpeed = 2000; // Pause at end
+            this.isDeleting = true;
+        } else if (this.isDeleting && this.currentWord === '') {
+            this.isDeleting = false;
+            this.currentIndex++;
+            typeSpeed = 500; // Pause before new word
+        }
+        
+        setTimeout(() => this.type(), typeSpeed);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize typewriter
+    new TypewriterEffect();
     // Handle hero email form submission
     const heroForm = document.getElementById('hero-signup-form');
     if (heroForm) {

@@ -50,8 +50,9 @@ try {
                 <!-- Main Heading -->
                 <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
                     Start Every Day 
-                    <span class="gradient-text">
-                        Informed
+                    <span class="gradient-text typewriter-container">
+                        <span class="typewriter-text" id="typewriter">Informed</span>
+                        <span class="typewriter-cursor"></span>
                     </span>
                     Not Overwhelmed
                 </h1>
