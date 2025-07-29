@@ -43,23 +43,22 @@ try {
                 <!-- Badge -->
                 <div class="mb-8">
                     <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary-dark ring-1 ring-inset ring-primary-dark/10">
-                        <i class="fas fa-sparkles mr-2" aria-hidden="true"></i>
-                        AI-Powered Content Curation
+                        ✨ AI-Powered Content Curation
                     </span>
                 </div>
                 
                 <!-- Main Heading -->
                 <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
-                    Hey there! Your 
+                    Start Every Day 
                     <span class="gradient-text">
-                        Morning Brief
+                        Informed
                     </span>
-                    Awaits
+                    Not Overwhelmed
                 </h1>
                 
                 <!-- Subtitle -->
                 <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
-                    Wake up to everything that matters to you—your business metrics, crypto prices, weather, news, and important messages—all in one beautiful email. No more app-hopping!
+                    Wake up to everything that matters to you: your business metrics, crypto prices, weather, news, and important messages. All in one beautiful email that takes 2 minutes to read.
                 </p>
                 
                 <!-- Email Input and CTA -->
@@ -76,40 +75,66 @@ try {
                     </form>
                 </div>
                 
-                <!-- Newsletter Preview -->
-                <div class="newsletter-preview">
-                    <div class="newsletter-preview-header">
-                        <h3 class="text-xl font-bold">Your Morning Newsletter</h3>
-                        <p class="text-sm opacity-90 mt-1">Delivered daily at 6:00 AM</p>
+                <!-- Newsletter Preview in Mac Window -->
+                <div class="mac-window">
+                    <div class="mac-window-header">
+                        <div class="mac-window-buttons">
+                            <div class="mac-window-button"></div>
+                            <div class="mac-window-button"></div>
+                            <div class="mac-window-button"></div>
+                        </div>
+                        <div class="mac-window-title">Morning Newsletter - 6:00 AM Daily</div>
                     </div>
-                    <div class="newsletter-preview-content">
-                        <div class="preview-section">
-                            <h4 class="preview-title">📈 Business Metrics</h4>
-                            <div class="preview-metric">
-                                <span class="preview-label">Monthly Revenue</span>
-                                <span class="preview-value">$45,231 <span class="text-green-500 text-sm">↑ 12%</span></span>
+                    <div class="mac-window-content">
+                        <div class="newsletter-preview">
+                            <div class="newsletter-preview-header">
+                                <h3 class="text-xl font-bold">Your Morning Newsletter</h3>
+                                <p class="text-sm opacity-90 mt-1">Delivered daily at 6:00 AM</p>
                             </div>
-                            <div class="preview-metric">
-                                <span class="preview-label">Active Users</span>
-                                <span class="preview-value">1,429 <span class="text-green-500 text-sm">↑ 8%</span></span>
-                            </div>
-                        </div>
-                        <div class="preview-section">
-                            <h4 class="preview-title">₿ Crypto Markets</h4>
-                            <div class="preview-metric">
-                                <span class="preview-label">Bitcoin</span>
-                                <span class="preview-value">$43,567 <span class="text-green-500 text-sm">↑ 3.2%</span></span>
-                            </div>
-                            <div class="preview-metric">
-                                <span class="preview-label">Ethereum</span>
-                                <span class="preview-value">$2,341 <span class="text-red-500 text-sm">↓ 1.5%</span></span>
-                            </div>
-                        </div>
-                        <div class="preview-section">
-                            <h4 class="preview-title">☀️ Weather</h4>
-                            <div class="preview-metric">
-                                <span class="preview-label">Today in San Francisco</span>
-                                <span class="preview-value">72°F Sunny</span>
+                            <div class="newsletter-preview-content">
+                                <div class="preview-section">
+                                    <h4 class="preview-title">📈 Business Metrics</h4>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Monthly Revenue</span>
+                                        <span class="preview-value">$45,231 <span class="text-green-500 text-sm">↑ 12%</span></span>
+                                    </div>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Active Users</span>
+                                        <span class="preview-value">1,429 <span class="text-green-500 text-sm">↑ 8%</span></span>
+                                    </div>
+                                </div>
+                                <div class="preview-section">
+                                    <h4 class="preview-title">₿ Crypto Markets</h4>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Bitcoin</span>
+                                        <span class="preview-value">$43,567 <span class="text-green-500 text-sm">↑ 3.2%</span></span>
+                                    </div>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Ethereum</span>
+                                        <span class="preview-value">$2,341 <span class="text-red-500 text-sm">↓ 1.5%</span></span>
+                                    </div>
+                                </div>
+                                <div class="preview-section">
+                                    <h4 class="preview-title">☀️ Weather</h4>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Today in San Francisco</span>
+                                        <span class="preview-value">72°F Sunny</span>
+                                    </div>
+                                </div>
+                                <div class="preview-section">
+                                    <h4 class="preview-title">📰 Top News</h4>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Tech News</span>
+                                        <span class="preview-value">AI Startup Raises $50M Series B</span>
+                                    </div>
+                                </div>
+                                <div class="preview-section">
+                                    <h4 class="preview-title">💬 Messages</h4>
+                                    <div class="preview-metric">
+                                        <span class="preview-label">Slack</span>
+                                        <span class="preview-value">3 unread in #general</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

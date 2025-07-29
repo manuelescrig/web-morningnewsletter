@@ -3,6 +3,14 @@
 /* Hero Section Styles - Use original mesh background from main.css */
 /* The mesh-bg class is already defined in main.css with the original blue gradient mesh */
 
+/* Navigation Hover Underline Override */
+.hover\:nav-underline:hover {
+    border-bottom: 2px solid rgba(70, 139, 230, 0.4) !important;
+    border-radius: 1px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: -2px !important;
+}
+
 /* Primary Button Styles - Pill/Capsule Style */
 .btn-primary {
     background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
@@ -58,15 +66,15 @@
     flex: 1;
     padding: 0.75rem 1.5rem;
     border: 2px solid #e5e7eb;
-    border-radius: 0.5rem;
+    border-radius: 9999px; /* Pill shape to match button */
     font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .email-input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #468BE6;
+    box-shadow: 0 0 0 3px rgba(70, 139, 230, 0.1);
 }
 
 /* Popular Tag Fix */
@@ -82,20 +90,69 @@
     font-weight: 600;
 }
 
-/* Newsletter Preview */
-.newsletter-preview {
+/* Newsletter Preview - Mac Window Style */
+.mac-window {
     max-width: 600px;
     margin: 3rem auto 0;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: #f6f6f6;
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     transform: perspective(1000px) rotateX(-5deg);
     transition: transform 0.3s ease;
 }
 
-.newsletter-preview:hover {
+.mac-window:hover {
     transform: perspective(1000px) rotateX(0deg);
+}
+
+.mac-window-header {
+    background: #e5e5e5;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.mac-window-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mac-window-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f57;
+}
+
+.mac-window-button:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.mac-window-button:nth-child(3) {
+    background: #28ca42;
+}
+
+.mac-window-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.mac-window-content {
+    background: white;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.newsletter-preview {
+    height: 100%;
+    overflow: hidden;
 }
 
 .newsletter-preview-header {
