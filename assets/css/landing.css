@@ -118,9 +118,7 @@
     position: relative;
 }
 
-.mac-window:hover {
-    transform: perspective(1000px) rotateX(0deg);
-}
+/* Hover effect removed for static presentation */
 
 .mac-window-header {
     background: #e5e5e5;
