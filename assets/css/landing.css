@@ -3,6 +3,69 @@
 /* Hero Section Styles - Use original mesh background from main.css */
 /* The mesh-bg class is already defined in main.css with the original blue gradient mesh */
 
+/* Animated Gradient Wave Background */
+@keyframes gradientWave {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-wave-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        -45deg,
+        #468BE6,
+        #1A5799,
+        #6B46C1,
+        #468BE6,
+        #1A5799
+    );
+    background-size: 400% 400%;
+    animation: gradientWave 15s ease infinite;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* Wave overlay effect */
+.wave-overlay {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.wave-overlay svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+}
+
+@keyframes waveAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.wave-path {
+    animation: waveAnimation 20s linear infinite;
+}
+
 /* Adjust hero section to accommodate larger preview */
 .hero-section {
     position: relative;
