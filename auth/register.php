@@ -67,6 +67,9 @@ $formStartTime = time();
 
 // Get user's timezone for default selection
 $userTimezone = date_default_timezone_get();
+
+// Get email from URL parameter if provided
+$prefilledEmail = isset($_GET['email']) ? trim($_GET['email']) : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +134,7 @@ $userTimezone = date_default_timezone_get();
                            required
                            class="auth-input"
                            placeholder="Enter your email"
-                           value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                           value="<?php echo htmlspecialchars($_POST['email'] ?? $prefilledEmail); ?>">
                 </div>
 
                 <div class="auth-input-group">

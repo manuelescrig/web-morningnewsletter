@@ -31,6 +31,7 @@ try {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
 </head>
 <body class="bg-white">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -49,39 +50,68 @@ try {
                 
                 <!-- Main Heading -->
                 <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
-                    Your Personalized 
+                    Hey there! Your 
                     <span class="gradient-text">
                         Morning Brief
                     </span>
+                    Awaits
                 </h1>
                 
                 <!-- Subtitle -->
                 <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
-                    Start your day with clarity. Get everything that matters—KPIs, market updates, weather, news, and messages—delivered in one beautiful email.
+                    Wake up to everything that matters to you—your business metrics, crypto prices, weather, news, and important messages—all in one beautiful email. No more app-hopping!
                 </p>
                 
-                <!-- Call to Action Buttons -->
-                <div class="mt-10 flex items-center justify-center">
-                    <a href="/auth/register.php" 
-                       class="btn-pill group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-primary to-purple-600 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-                        Start for Free
-                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-200" aria-hidden="true"></i>
-                    </a>
+                <!-- Email Input and CTA -->
+                <div class="mt-10">
+                    <form id="hero-signup-form" class="email-input-group">
+                        <input type="email" 
+                               id="hero-email" 
+                               placeholder="Enter your email" 
+                               class="email-input" 
+                               required>
+                        <button type="submit" class="btn-primary">
+                            Create Your Newsletter
+                        </button>
+                    </form>
                 </div>
                 
-                <!-- Benefits List -->
-                <div class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-gray-600">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
-                        <span>7-day free trial</span>
+                <!-- Newsletter Preview -->
+                <div class="newsletter-preview">
+                    <div class="newsletter-preview-header">
+                        <h3 class="text-xl font-bold">Your Morning Newsletter</h3>
+                        <p class="text-sm opacity-90 mt-1">Delivered daily at 6:00 AM</p>
                     </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
-                        <span>Plans starting at $5/mo</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>
-                        <span>Cancel anytime</span>
+                    <div class="newsletter-preview-content">
+                        <div class="preview-section">
+                            <h4 class="preview-title">📈 Business Metrics</h4>
+                            <div class="preview-metric">
+                                <span class="preview-label">Monthly Revenue</span>
+                                <span class="preview-value">$45,231 <span class="text-green-500 text-sm">↑ 12%</span></span>
+                            </div>
+                            <div class="preview-metric">
+                                <span class="preview-label">Active Users</span>
+                                <span class="preview-value">1,429 <span class="text-green-500 text-sm">↑ 8%</span></span>
+                            </div>
+                        </div>
+                        <div class="preview-section">
+                            <h4 class="preview-title">₿ Crypto Markets</h4>
+                            <div class="preview-metric">
+                                <span class="preview-label">Bitcoin</span>
+                                <span class="preview-value">$43,567 <span class="text-green-500 text-sm">↑ 3.2%</span></span>
+                            </div>
+                            <div class="preview-metric">
+                                <span class="preview-label">Ethereum</span>
+                                <span class="preview-value">$2,341 <span class="text-red-500 text-sm">↓ 1.5%</span></span>
+                            </div>
+                        </div>
+                        <div class="preview-section">
+                            <h4 class="preview-title">☀️ Weather</h4>
+                            <div class="preview-metric">
+                                <span class="preview-label">Today in San Francisco</span>
+                                <span class="preview-value">72°F Sunny</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,10 +130,10 @@ try {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Tired of Information Overload?
+                    Ugh, Information Overload Much?
                 </h2>
                 <p class="mt-4 text-xl text-gray-500">
-                    Every morning, you're drowning in a sea of notifications, emails, and updates.
+                    We get it. Every morning you're drowning in notifications, emails, and a million different apps.
                 </p>
             </div>
             <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -111,22 +141,22 @@ try {
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-clock text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Wasting Precious Time</h3>
-                    <p class="text-gray-600">Spending 30+ minutes every morning checking multiple apps and platforms for updates.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Time Down the Drain</h3>
+                    <p class="text-gray-600">You're spending 30+ minutes every morning jumping between apps. That's 3.5 hours a week!</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-exclamation-triangle text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Missing Important Updates</h3>
-                    <p class="text-gray-600">Critical information gets lost in the noise of countless notifications and messages.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Missing the Important Stuff</h3>
+                    <p class="text-gray-600">That important DM? Buried. Market crash? You'll find out later. It's chaos out there.</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-8">
                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
                         <i class="fas fa-bolt text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Starting Your Day Stressed</h3>
-                    <p class="text-gray-600">Feeling overwhelmed before your day even begins, affecting your productivity.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Already Stressed at 7 AM</h3>
+                    <p class="text-gray-600">You're overwhelmed before your coffee kicks in. Not the vibe we're going for.</p>
                 </div>
             </div>
         </div>
@@ -213,7 +243,7 @@ try {
             <div class="text-center">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Features</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Everything you need to start your day
+                    Everything you actually care about
                 </p>
             </div>
 
@@ -232,7 +262,7 @@ try {
                             </div>
                         </div>
                         <p class="mt-4 text-gray-600">
-                            Track your business metrics and KPIs with customizable dashboards and alerts. Get instant insights into your business performance.
+                            Your revenue, user stats, conversion rates—whatever metrics matter to you. We'll fetch them and serve them fresh.
                         </p>
                     </div>
 
@@ -249,7 +279,7 @@ try {
                             </div>
                         </div>
                         <p class="mt-4 text-gray-600">
-                            Stay updated with market movements, crypto prices, and financial news. Make informed decisions with real-time market data.
+                            Bitcoin pumping? Stocks dumping? We've got you covered with real-time updates on everything you're tracking.
                         </p>
                     </div>
 
@@ -266,7 +296,7 @@ try {
                             </div>
                         </div>
                         <p class="mt-4 text-gray-600">
-                            Get your local weather forecast and breaking news updates. Stay informed about what matters in your area.
+                            Should you grab an umbrella? What's happening in your city? We'll let you know so you can plan your day.
                         </p>
                     </div>
 
@@ -283,7 +313,7 @@ try {
                             </div>
                         </div>
                         <p class="mt-4 text-gray-600">
-                            Never miss important messages from Twitter, Slack, and Discord. Stay connected with your team and community.
+                            Important DMs from Twitter, Slack messages, Discord pings—we'll make sure nothing important slips through the cracks.
                         </p>
                     </div>
                 </div>
@@ -297,10 +327,10 @@ try {
             <div class="text-center">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Pricing</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Simple, transparent pricing
+                    Pricing that makes sense
                 </p>
                 <p class="mt-4 text-xl text-gray-500">
-                    Choose the plan that best fits your needs
+                    Pick what works for you. No hidden fees, no BS.
                 </p>
             </div>
 
@@ -341,7 +371,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/auth/register.php" class="btn-primary block w-full text-center">
                                 Start for Free
                             </a>
                         </div>
@@ -350,11 +380,9 @@ try {
 
                 <!-- Pro Tier -->
                 <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 border-2 border-purple-400 relative h-full flex flex-col mt-6">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 z-20">
-                        <span class="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-primary px-4 py-2 text-sm font-semibold text-white shadow-lg">
-                            Popular
-                        </span>
-                    </div>
+                    <span class="popular-tag">
+                        Popular
+                    </span>
                     <div class="px-6 py-8 pt-10 flex-1 flex flex-col">
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Pro</h3>
                         <p class="mt-4 text-gray-500">Great for professionals who want more control</p>
@@ -395,7 +423,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/auth/register.php" class="btn-primary block w-full text-center">
                                 Start for Free
                             </a>
                         </div>
@@ -444,7 +472,7 @@ try {
                             </li>
                         </ul>
                         <div class="mt-8">
-                            <a href="/register" class="btn-pill block w-full bg-gradient-to-r from-purple-600 to-primary hover:from-purple-700 hover:to-primary-dark text-white font-medium text-sm px-5 py-2.5 text-center transition-all duration-300">
+                            <a href="/auth/register.php" class="btn-primary block w-full text-center">
                                 Start for Free
                             </a>
                         </div>
@@ -460,7 +488,7 @@ try {
             <div class="text-center">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Testimonials</h2>
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Loved by professionals worldwide
+                    Real people, real results
                 </p>
             </div>
 
@@ -475,7 +503,7 @@ try {
                                 <p class="text-gray-600">CEO, TechCorp</p>
                             </div>
                         </div>
-                        <p class="text-gray-600">"MorningNewsletter has transformed how I start my day. Having all my important updates in one place saves me countless hours."</p>
+                        <p class="text-gray-600">"I used to spend 45 minutes every morning checking different apps. Now? 5 minutes with my coffee and I'm good to go."</p>
                     </div>
 
                     <!-- Testimonial 2 -->
@@ -487,7 +515,7 @@ try {
                                 <p class="text-gray-600">Product Manager</p>
                             </div>
                         </div>
-                        <p class="text-gray-600">"The KPI tracking feature is a game-changer. I can now monitor all my business metrics without logging into multiple platforms."</p>
+                        <p class="text-gray-600">"My business metrics, crypto portfolio, and important messages all in one place? This is exactly what I needed."</p>
                     </div>
 
                     <!-- Testimonial 3 -->
@@ -499,7 +527,7 @@ try {
                                 <p class="text-gray-600">Crypto Trader</p>
                             </div>
                         </div>
-                        <p class="text-gray-600">"As a crypto trader, having market updates and news in my morning brief helps me make better trading decisions."</p>
+                        <p class="text-gray-600">"Caught the Bitcoin pump early thanks to my morning brief. This thing pays for itself."</p>
                     </div>
                 </div>
             </div>
@@ -566,14 +594,14 @@ try {
     <div class="gradient-bg py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                Ready to transform your morning routine?
+                Ready to actually enjoy your mornings?
             </h2>
             <p class="mt-4 text-xl text-gray-600">
-                Join thousands of professionals who start their day with MorningNewsletter.
+                Join thousands who've already ditched the morning chaos.
             </p>
             <div class="mt-8">
-                <a href="/register" class="btn-pill inline-flex items-center text-white bg-gradient-to-br from-purple-600 to-primary hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus-ring-primary font-medium px-8 py-4 text-center md:py-4 md:text-lg md:px-10">
-                    Start for Free<i class="fas fa-arrow-right ml-2"></i>
+                <a href="/auth/register.php" class="btn-primary ripple">
+                    Start for Free <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
@@ -586,5 +614,6 @@ try {
         const isLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
     </script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/landing.js"></script>
 </body>
 </html> 
