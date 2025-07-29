@@ -113,7 +113,6 @@
     border-radius: 0.75rem;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    transform: perspective(1000px) rotateX(-5deg);
     transition: transform 0.3s ease;
     position: relative;
 }
