@@ -8,7 +8,7 @@ class TypewriterEffect {
         this.currentIndex = 0;
         this.currentWord = '';
         this.isDeleting = false;
-        this.speed = 100;
+        this.baseSpeed = 150; // Slower typing for smoother effect
         
         if (this.element) {
             this.type();
@@ -26,15 +26,16 @@ class TypewriterEffect {
         
         this.element.textContent = this.currentWord;
         
-        let typeSpeed = this.isDeleting ? 50 : this.speed;
+        // Variable speed for more natural typing
+        let typeSpeed = this.isDeleting ? 80 : this.baseSpeed + Math.random() * 50;
         
         if (!this.isDeleting && this.currentWord === fullWord) {
-            typeSpeed = 2000; // Pause at end
+            typeSpeed = 2500; // Longer pause at end
             this.isDeleting = true;
         } else if (this.isDeleting && this.currentWord === '') {
             this.isDeleting = false;
             this.currentIndex++;
-            typeSpeed = 500; // Pause before new word
+            typeSpeed = 700; // Pause before new word
         }
         
         setTimeout(() => this.type(), typeSpeed);

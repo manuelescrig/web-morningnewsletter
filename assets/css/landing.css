@@ -25,14 +25,14 @@
 
 .typewriter-cursor {
     display: inline-block;
-    width: 3px;
-    height: 1.2em;
-    background: #468BE6;
-    animation: blink 1s infinite;
-    margin-left: 2px;
-    vertical-align: baseline;
-    -webkit-text-fill-color: initial;
-    -webkit-background-clip: initial;
+    width: 4px;
+    height: 1em;
+    background-color: #468BE6;
+    animation: blink 1s ease-in-out infinite;
+    margin-left: 3px;
+    vertical-align: middle;
+    transform: translateY(0.1em);
+    border-radius: 1px;
 }
 
 /* Override gradient-text for typewriter container */
@@ -44,8 +44,9 @@
 }
 
 @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%, 45% { opacity: 1; }
+    50%, 95% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @keyframes typing {
