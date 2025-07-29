@@ -38,21 +38,6 @@ try {
 
     <!-- Hero Section -->
     <div class="relative mesh-bg hero-section pt-24 sm:pt-32 lg:pt-40 pb-0">
-        <!-- Animated Gradient Wave Background -->
-        <div class="gradient-wave-bg"></div>
-        
-        <!-- Wave SVG at bottom -->
-        <div class="wave-overlay">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <defs>
-                    <pattern id="wave-pattern" x="0" y="0" width="2400" height="120" patternUnits="userSpaceOnUse">
-                        <path d="M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 C1350,80 1550,0 1800,40 C2050,80 2250,0 2400,40 L2400,120 L0,120 Z" fill="white" class="wave-path"/>
-                    </pattern>
-                </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="url(#wave-pattern)"/>
-            </svg>
-        </div>
-        
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
