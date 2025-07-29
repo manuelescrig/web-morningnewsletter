@@ -37,7 +37,7 @@ try {
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
-    <div class="relative mesh-bg py-24 sm:py-32 lg:py-40 overflow-hidden">
+    <div class="relative mesh-bg hero-section py-24 sm:py-32 lg:py-40 overflow-hidden">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
@@ -92,47 +92,66 @@ try {
                                 <p class="text-sm opacity-90 mt-1">Delivered daily at 6:00 AM</p>
                             </div>
                             <div class="newsletter-preview-content">
-                                <div class="preview-section">
-                                    <h4 class="preview-title">📈 Business Metrics</h4>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Monthly Revenue</span>
-                                        <span class="preview-value">$45,231 <span class="text-green-500 text-sm">↑ 12%</span></span>
+                                <div class="widget-container">
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">💰 Monthly Revenue</h3>
+                                        <p class="widget-value">$45,231</p>
+                                        <p class="widget-subtitle">Total revenue this month</p>
+                                        <span class="widget-change positive">↑ 12% from last month</span>
                                     </div>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Active Users</span>
-                                        <span class="preview-value">1,429 <span class="text-green-500 text-sm">↑ 8%</span></span>
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">👥 Active Users</h3>
+                                        <p class="widget-value">1,429</p>
+                                        <p class="widget-subtitle">Currently active</p>
+                                        <span class="widget-change positive">↑ 8% from yesterday</span>
                                     </div>
-                                </div>
-                                <div class="preview-section">
-                                    <h4 class="preview-title">₿ Crypto Markets</h4>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Bitcoin</span>
-                                        <span class="preview-value">$43,567 <span class="text-green-500 text-sm">↑ 3.2%</span></span>
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">₿ Bitcoin</h3>
+                                        <p class="widget-value">$43,567</p>
+                                        <p class="widget-subtitle">Current price</p>
+                                        <span class="widget-change positive">↑ 3.2% today</span>
+                                        <div class="widget-details">
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">24h High</span>
+                                                <span class="widget-detail-value">$44,234</span>
+                                            </div>
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">24h Low</span>
+                                                <span class="widget-detail-value">$42,100</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Ethereum</span>
-                                        <span class="preview-value">$2,341 <span class="text-red-500 text-sm">↓ 1.5%</span></span>
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">☀️ San Francisco Weather</h3>
+                                        <p class="widget-value">72°F</p>
+                                        <p class="widget-subtitle">Sunny all day</p>
+                                        <div class="widget-details">
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">High</span>
+                                                <span class="widget-detail-value">78°F</span>
+                                            </div>
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">Low</span>
+                                                <span class="widget-detail-value">65°F</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="preview-section">
-                                    <h4 class="preview-title">☀️ Weather</h4>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Today in San Francisco</span>
-                                        <span class="preview-value">72°F Sunny</span>
-                                    </div>
-                                </div>
-                                <div class="preview-section">
-                                    <h4 class="preview-title">📰 Top News</h4>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Tech News</span>
-                                        <span class="preview-value">AI Startup Raises $50M Series B</span>
-                                    </div>
-                                </div>
-                                <div class="preview-section">
-                                    <h4 class="preview-title">💬 Messages</h4>
-                                    <div class="preview-metric">
-                                        <span class="preview-label">Slack</span>
-                                        <span class="preview-value">3 unread in #general</span>
+                                    <div class="widget-card full-width">
+                                        <h3 class="widget-title">📰 Top News</h3>
+                                        <div class="widget-details" style="border-top: none; margin-top: 0; padding-top: 0;">
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">Tech</span>
+                                                <span class="widget-detail-value">AI Startup Raises $50M Series B</span>
+                                            </div>
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">Business</span>
+                                                <span class="widget-detail-value">Market Hits New All-Time High</span>
+                                            </div>
+                                            <div class="widget-detail-item">
+                                                <span class="widget-detail-label">World</span>
+                                                <span class="widget-detail-value">Climate Summit Reaches Agreement</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
