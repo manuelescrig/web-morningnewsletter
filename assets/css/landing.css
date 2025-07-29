@@ -16,7 +16,7 @@
     position: relative;
 }
 
-.typewriter-text span {
+#typewriter {
     background: linear-gradient(to right, #468BE6, #1A5799);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -27,10 +27,12 @@
     display: inline-block;
     width: 3px;
     height: 1.2em;
-    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
+    background: #468BE6;
     animation: blink 1s infinite;
     margin-left: 2px;
     vertical-align: baseline;
+    -webkit-text-fill-color: initial;
+    -webkit-background-clip: initial;
 }
 
 /* Override gradient-text for typewriter container */
