@@ -37,7 +37,7 @@ try {
     <?php include __DIR__ . '/includes/navigation.php'; ?>
 
     <!-- Hero Section -->
-    <div class="relative mesh-bg hero-section py-24 sm:py-32 lg:py-40 overflow-hidden">
+    <div class="relative mesh-bg hero-section pt-24 sm:pt-32 lg:pt-40 pb-0">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
@@ -163,6 +163,18 @@ try {
                                                 <span class="widget-detail-value">Climate Summit Reaches Agreement</span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">💼 Stripe Revenue</h3>
+                                        <p class="widget-value">$12,450</p>
+                                        <p class="widget-subtitle">Last 30 days</p>
+                                        <span class="widget-change positive">↑ 23% from last period</span>
+                                    </div>
+                                    <div class="widget-card">
+                                        <h3 class="widget-title">📱 App Store Downloads</h3>
+                                        <p class="widget-value">3,241</p>
+                                        <p class="widget-subtitle">This week</p>
+                                        <span class="widget-change negative">↓ 5% from last week</span>
                                     </div>
                                 </div>
                             </div>

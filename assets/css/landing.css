@@ -7,13 +7,15 @@
 .hero-section {
     position: relative;
     padding-bottom: 0;
-    overflow: visible;
+    overflow: hidden; /* Hide the cut-off part */
 }
 
 /* Mac window that extends to bottom */
 .hero-section .mac-window {
     height: auto;
-    margin-bottom: -100px; /* Cut off bottom */
+    margin-bottom: -200px; /* Extend beyond hero section */
+    position: relative;
+    z-index: 10;
 }
 
 /* Navigation Hover Underline Override */
@@ -159,7 +161,7 @@
 
 .mac-window-content {
     background: #f0f0f0;
-    height: 600px;
+    height: 700px; /* Increased height to extend further */
     overflow: hidden;
     position: relative;
     padding: 1.5rem;
