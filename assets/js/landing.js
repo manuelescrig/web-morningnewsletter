@@ -1,6 +1,130 @@
 // Landing Page Specific JavaScript
 
+// Particle Animation System
+class ParticleSystem {
+    constructor() {
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.mouseX = 0;
+        this.mouseY = 0;
+        
+        this.init();
+    }
+    
+    init() {
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.top = '0';
+        this.canvas.style.left = '0';
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = '100%';
+        this.canvas.style.pointerEvents = 'none';
+        this.canvas.style.zIndex = '1';
+        
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            heroSection.style.position = 'relative';
+            heroSection.appendChild(this.canvas);
+        }
+        
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('mousemove', (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+        });
+        
+        // Create initial particles
+        for (let i = 0; i < 50; i++) {
+            this.particles.push(this.createParticle());
+        }
+        
+        this.animate();
+    }
+    
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = this.canvas.parentElement.offsetHeight;
+    }
+    
+    createParticle() {
+        return {
+            x: Math.random() * this.canvas.width,
+            y: Math.random() * this.canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 3 + 1,
+            opacity: Math.random() * 0.5 + 0.2,
+            color: Math.random() > 0.5 ? '#468BE6' : '#1A5799'
+        };
+    }
+    
+    updateParticle(particle) {
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        
+        // Mouse interaction
+        const dx = this.mouseX - particle.x;
+        const dy = this.mouseY - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 100) {
+            const force = (100 - distance) / 100;
+            particle.vx += (dx / distance) * force * 0.02;
+            particle.vy += (dy / distance) * force * 0.02;
+        }
+        
+        // Damping
+        particle.vx *= 0.99;
+        particle.vy *= 0.99;
+        
+        // Wrap around edges
+        if (particle.x < 0) particle.x = this.canvas.width;
+        if (particle.x > this.canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = this.canvas.height;
+        if (particle.y > this.canvas.height) particle.y = 0;
+    }
+    
+    drawParticle(particle) {
+        this.ctx.globalAlpha = particle.opacity;
+        this.ctx.fillStyle = particle.color;
+        this.ctx.beginPath();
+        this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Draw connections
+        this.particles.forEach(other => {
+            const dx = particle.x - other.x;
+            const dy = particle.y - other.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 150 && distance > 0) {
+                this.ctx.globalAlpha = (1 - distance / 150) * 0.2;
+                this.ctx.strokeStyle = particle.color;
+                this.ctx.lineWidth = 0.5;
+                this.ctx.beginPath();
+                this.ctx.moveTo(particle.x, particle.y);
+                this.ctx.lineTo(other.x, other.y);
+                this.ctx.stroke();
+            }
+        });
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach(particle => {
+            this.updateParticle(particle);
+            this.drawParticle(particle);
+        });
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize particle system
+    new ParticleSystem();
     // Handle hero email form submission
     const heroForm = document.getElementById('hero-signup-form');
     if (heroForm) {
