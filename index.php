@@ -41,14 +41,14 @@ try {
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
-                <div class="mb-8">
+                <div class="mb-8 reveal-item">
                     <span class="inline-flex items-center rounded-full bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-primary-dark ring-1 ring-inset ring-primary-dark/10">
                         ✨ AI-Powered Content Curation
                     </span>
                 </div>
                 
                 <!-- Main Heading -->
-                <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
+                <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl reveal-item">
                     Start Every Day 
                     <span class="gradient-text">
                         Informed
@@ -57,12 +57,12 @@ try {
                 </h1>
                 
                 <!-- Subtitle -->
-                <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
+                <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto reveal-item">
                     Wake up to everything that matters to you: your business metrics, crypto prices, weather, news, and important messages. All in one beautiful email that takes 2 minutes to read.
                 </p>
                 
                 <!-- Email Input and CTA -->
-                <div class="mt-10">
+                <div class="mt-10 reveal-item">
                     <form id="hero-signup-form" class="email-input-group">
                         <input type="email" 
                                id="hero-email" 
