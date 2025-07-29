@@ -10,6 +10,133 @@
     overflow: hidden; /* Hide the cut-off part */
 }
 
+/* Matrix Rain Effect */
+.matrix-rain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.15;
+}
+
+.matrix-column {
+    position: absolute;
+    top: -100%;
+    font-family: monospace;
+    font-size: 20px;
+    line-height: 1.2;
+    color: #468BE6;
+    animation: matrixFall linear infinite;
+    text-shadow: 0 0 5px rgba(70, 139, 230, 0.8);
+}
+
+@keyframes matrixFall {
+    to {
+        transform: translateY(200vh);
+    }
+}
+
+/* Column styles with different data */
+.matrix-column:nth-child(1) {
+    left: 5%;
+    animation-duration: 15s;
+    animation-delay: 0s;
+}
+.matrix-column:nth-child(1)::before {
+    content: "BTC\A$67,452\A+2.3%\AETH\A$3,189\A-0.8%\AXRP\A$0.52\A+5.1%";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(2) {
+    left: 15%;
+    animation-duration: 18s;
+    animation-delay: 2s;
+}
+.matrix-column:nth-child(2)::before {
+    content: "72°F\ASunny\A6:42AM\A7:28PM\AHumid:65%\AWinds:12mph";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(3) {
+    left: 25%;
+    animation-duration: 20s;
+    animation-delay: 5s;
+}
+.matrix-column:nth-child(3)::before {
+    content: "S&P500\A4,512.10\A+0.45%\ANASDAQ\A14,239\A+0.82%";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(4) {
+    left: 35%;
+    animation-duration: 16s;
+    animation-delay: 8s;
+}
+.matrix-column:nth-child(4)::before {
+    content: "NEWS\ATech Rally\AMarkets Up\AEarnings Beat\AIPO Success";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(5) {
+    left: 45%;
+    animation-duration: 22s;
+    animation-delay: 3s;
+}
+.matrix-column:nth-child(5)::before {
+    content: "$12,450\A+18.2%\A142 Sales\A89 Active\A$2.1M ARR";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(6) {
+    left: 55%;
+    animation-duration: 19s;
+    animation-delay: 7s;
+}
+.matrix-column:nth-child(6)::before {
+    content: "Downloads\A+4,291\A★★★★★\A#12 Rank\ARevenue +27%";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(7) {
+    left: 65%;
+    animation-duration: 17s;
+    animation-delay: 1s;
+}
+.matrix-column:nth-child(7)::before {
+    content: "Meeting 9AM\ALunch 12:30\ACall 3PM\ADeadline Fri";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(8) {
+    left: 75%;
+    animation-duration: 21s;
+    animation-delay: 4s;
+}
+.matrix-column:nth-child(8)::before {
+    content: "EUR/USD\A1.0852\AGBP/USD\A1.2641\AJPY/USD\A150.23";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(9) {
+    left: 85%;
+    animation-duration: 16s;
+    animation-delay: 6s;
+}
+.matrix-column:nth-child(9)::before {
+    content: "Gmail: 47\ASlack: 12\ATeams: 8\ANotions: 23";
+    white-space: pre;
+}
+
+.matrix-column:nth-child(10) {
+    left: 95%;
+    animation-duration: 23s;
+    animation-delay: 9s;
+}
+.matrix-column:nth-child(10)::before {
+    content: "Tasks: 15\ADone: 8\AIn Progress: 5\ABlocked: 2";
+    white-space: pre;
+}
+
 /* Mac window that extends to bottom */
 .hero-section .mac-window {
     height: auto;
