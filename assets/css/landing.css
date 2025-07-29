@@ -14,6 +14,9 @@
 .typewriter-text {
     display: inline-block;
     position: relative;
+}
+
+.typewriter-text span {
     background: linear-gradient(to right, #468BE6, #1A5799);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -26,9 +29,8 @@
     height: 1.2em;
     background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
     animation: blink 1s infinite;
-    position: absolute;
-    top: 0;
-    right: -8px;
+    margin-left: 2px;
+    vertical-align: baseline;
 }
 
 /* Override gradient-text for typewriter container */

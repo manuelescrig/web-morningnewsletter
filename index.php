@@ -51,8 +51,9 @@ try {
                 <h1 class="hero-title text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
                     Start Every Day 
                     <span class="gradient-text typewriter-container">
-                        <span class="typewriter-text" id="typewriter">Informed</span>
-                        <span class="typewriter-cursor"></span>
+                        <span class="typewriter-text">
+                            <span id="typewriter">Informed</span><span class="typewriter-cursor"></span>
+                        </span>
                     </span>
                     <br>
                     Not Overwhelmed
