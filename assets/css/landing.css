@@ -115,6 +115,8 @@
     overflow: hidden;
     transition: transform 0.3s ease;
     position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
 /* Hover effect removed for static presentation */
