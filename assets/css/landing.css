@@ -1,28 +1,14 @@
 /* Landing Page Specific Styles */
 
-/* Hero Section Styles */
-.mesh-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    position: relative;
-}
+/* Hero Section Styles - Use original mesh background from main.css */
+/* The mesh-bg class is already defined in main.css with the original blue gradient mesh */
 
-.mesh-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-/* Primary Button Styles */
+/* Primary Button Styles - Pill/Capsule Style */
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
     color: white;
     padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
+    border-radius: 9999px; /* Full pill/capsule shape */
     font-weight: 600;
     border: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
@@ -34,7 +20,7 @@
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 20px rgba(70, 139, 230, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -113,7 +99,7 @@
 }
 
 .newsletter-preview-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
     color: white;
     padding: 1.5rem;
     text-align: center;
@@ -195,7 +181,7 @@ nav .btn-primary {
 
 /* Footer CTA */
 .footer-cta {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #468BE6 0%, #1A5799 100%);
     border-radius: 1rem;
     padding: 3rem;
     text-align: center;
