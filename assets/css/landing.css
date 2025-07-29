@@ -26,12 +26,12 @@
 .typewriter-cursor {
     display: inline-block;
     width: 6px;
-    height: 80px;
+    height: 70px;
     background-color: #468BE6;
-    animation: blink 1s ease-in-out infinite;
-    margin-left: 4px;
+    /* animation: blink 1s ease-in-out infinite; */
+    margin-left: 6px;
     vertical-align: middle;
-    /* transform: translateY(0.1em); */
+    transform: translateY(-0.09em);
     border-radius: 2px;
 }
 
