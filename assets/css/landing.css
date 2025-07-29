@@ -25,14 +25,14 @@
 
 .typewriter-cursor {
     display: inline-block;
-    width: 4px;
-    height: 1em;
-    background-color: #468BE6;
+    width: 6px;
+    height: 80px;
+    background-color: #1A5799;
     animation: blink 1s ease-in-out infinite;
-    margin-left: 3px;
+    margin-left: 4px;
     vertical-align: middle;
-    transform: translateY(0.1em);
-    border-radius: 1px;
+    /* transform: translateY(0.1em); */
+    border-radius: 2px;
 }
 
 /* Override gradient-text for typewriter container */
