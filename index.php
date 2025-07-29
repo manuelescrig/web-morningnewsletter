@@ -38,6 +38,16 @@ try {
 
     <!-- Hero Section -->
     <div class="relative mesh-bg hero-section pt-24 sm:pt-32 lg:pt-40 pb-0">
+        <!-- Floating Newsletter Cards Background -->
+        <div class="floating-cards-container">
+            <div class="floating-card"></div>
+            <div class="floating-card"></div>
+            <div class="floating-card"></div>
+            <div class="floating-card"></div>
+            <div class="floating-card"></div>
+            <div class="floating-card"></div>
+        </div>
+        
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
                 <!-- Badge -->
