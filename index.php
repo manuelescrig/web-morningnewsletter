@@ -54,6 +54,7 @@ try {
                         <span class="typewriter-text" id="typewriter">Informed</span>
                         <span class="typewriter-cursor"></span>
                     </span>
+                    <br>
                     Not Overwhelmed
                 </h1>
                 

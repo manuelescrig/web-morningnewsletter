@@ -8,11 +8,16 @@
     height: 1.2em;
     display: inline-block;
     position: relative;
+    min-width: 200px; /* Prevent layout shift */
 }
 
 .typewriter-text {
     display: inline-block;
     position: relative;
+    background: linear-gradient(to right, #468BE6, #1A5799);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .typewriter-cursor {
@@ -24,6 +29,14 @@
     position: absolute;
     top: 0;
     right: -8px;
+}
+
+/* Override gradient-text for typewriter container */
+.gradient-text.typewriter-container {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
 }
 
 @keyframes blink {
