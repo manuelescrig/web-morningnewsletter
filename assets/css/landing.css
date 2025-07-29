@@ -10,6 +10,41 @@
     overflow: hidden; /* Hide the cut-off part */
 }
 
+/* Staggered Reveal Animation */
+.reveal-item {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: revealUp 0.8s ease-out forwards;
+}
+
+.reveal-item:nth-child(1) { animation-delay: 0.1s; }
+.reveal-item:nth-child(2) { animation-delay: 0.2s; }
+.reveal-item:nth-child(3) { animation-delay: 0.3s; }
+.reveal-item:nth-child(4) { animation-delay: 0.4s; }
+.reveal-item:nth-child(5) { animation-delay: 0.5s; }
+.reveal-item:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes revealUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Newsletter preview special reveal */
+.mac-window {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    animation: revealWindow 1s ease-out 0.7s forwards;
+}
+
+@keyframes revealWindow {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 /* Mac window that extends to bottom */
 .hero-section .mac-window {
     height: auto;
