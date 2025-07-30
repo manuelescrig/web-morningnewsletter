@@ -695,49 +695,142 @@ include __DIR__ . '/includes/page-header.php';
     <!-- Testimonials Section -->
     <div id="testimonials" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Testimonials</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Real people, real results
+            <div class="text-center mb-16">
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">Success Stories</h2>
+                <h3 class="text-3xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl mb-6">
+                    Loved by Professionals Worldwide
+                </h3>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    See how MorningNewsletter is helping thousands save time and stay ahead
                 </p>
             </div>
 
-            <div class="mt-20">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <!-- Testimonial 1 -->
-                    <div class="bg-white rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="John Doe">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">John Doe</h4>
-                                <p class="text-gray-600">CEO, TechCorp</p>
-                            </div>
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
+                <!-- Testimonial 1 -->
+                <div class="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="absolute top-6 right-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
-                        <p class="text-gray-600">"I used to spend 45 minutes every morning checking different apps. Now? 5 minutes with my coffee and I'm good to go."</p>
                     </div>
-
-                    <!-- Testimonial 2 -->
-                    <div class="bg-white rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" alt="Jane Smith">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">Jane Smith</h4>
-                                <p class="text-gray-600">Product Manager</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600">"My business metrics, crypto portfolio, and important messages all in one place? This is exactly what I needed."</p>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-700 text-lg leading-relaxed italic">
+                            "I used to waste 45 minutes every morning jumping between apps. Now I get everything in one beautiful email while having my coffee. Game changer!"
+                        </p>
                     </div>
-
-                    <!-- Testimonial 3 -->
-                    <div class="bg-white rounded-2xl p-8">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full" src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold">Mike Johnson</h4>
-                                <p class="text-gray-600">Crypto Trader</p>
-                            </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                            SR
                         </div>
-                        <p class="text-gray-600">"Caught the Bitcoin pump early thanks to my morning brief. This thing pays for itself."</p>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-900">Sarah Robinson</h4>
+                            <p class="text-sm text-gray-600">CEO at TechFlow</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Verified Customer
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="absolute top-6 right-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-700 text-lg leading-relaxed italic">
+                            "Having my Stripe metrics, market data, and team updates in one place every morning? Absolute productivity boost. Worth every penny."
+                        </p>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                            MK
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-900">Marcus Kim</h4>
+                            <p class="text-sm text-gray-600">Product Manager at Scale</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Verified Customer
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="absolute top-6 right-6">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-700 text-lg leading-relaxed italic">
+                            "Caught the crypto rally early thanks to my morning brief. The ROI on this subscription is insane. Can't imagine starting my day without it."
+                        </p>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                            AJ
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold text-gray-900">Alex Johnson</h4>
+                            <p class="text-sm text-gray-600">Day Trader & Investor</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                        Verified Customer
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-gray-600">
+                    Join thousands of professionals who start their day informed
+                </p>
+                <div class="mt-4 flex items-center justify-center space-x-8">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-gray-900">4.9</span>
+                        <div class="ml-2">
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-500">Average rating</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300">•</div>
+                    <div>
+                        <span class="text-2xl font-bold text-gray-900">98%</span>
+                        <p class="text-xs text-gray-500">Would recommend</p>
                     </div>
                 </div>
             </div>
