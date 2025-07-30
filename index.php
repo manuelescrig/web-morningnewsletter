@@ -281,53 +281,167 @@ include __DIR__ . '/includes/page-header.php';
     </div>
 
     <!-- Transformation Section -->
-    <div class="py-20 bg-gray-50">
+    <div class="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Transform Your Morning Routine
-                </h2>
-                <p class="mt-4 text-xl text-gray-500">
-                    Start your day with clarity and confidence
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">The Solution</h2>
+                <h3 class="text-3xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl mb-6">
+                    One Email to <span class="gradient-text">Rule Them All</span>
+                </h3>
+                <p class="text-xl text-gray-600">
+                    See how MorningNewsletter transforms your chaotic mornings into productive powerhouse sessions
                 </p>
             </div>
-            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2">
-                <div class="bg-white rounded-2xl p-8 shadow-lg">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Before MorningNewsletter</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">Scattered information across multiple platforms</p>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">Missed important updates and messages</p>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-times text-red-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">Wasted time checking different apps</p>
-                        </li>
-                    </ul>
+            
+            <!-- Visual Comparison -->
+            <div class="relative max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Before Column -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-50 rounded-3xl p-8 shadow-xl border border-gray-200">
+                            <div class="absolute -top-4 -left-4 bg-gray-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                                😰 Before
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6 mt-2">The Old Way</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-red-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-mobile-alt text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">12 Apps to Check</h4>
+                                        <p class="text-sm text-gray-600">Email, Slack, News, Weather, Stocks...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-orange-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-clock text-orange-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">30+ Minutes Lost</h4>
+                                        <p class="text-sm text-gray-600">Every. Single. Morning.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-yellow-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Important Stuff Missed</h4>
+                                        <p class="text-sm text-gray-600">That urgent message? Didn't see it.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-gray-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-battery-quarter text-gray-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Drained Before 8AM</h4>
+                                        <p class="text-sm text-gray-600">Starting the day already exhausted</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow for desktop -->
+                    <div class="hidden lg:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full p-4 shadow-2xl animate-pulse">
+                            <i class="fas fa-arrow-right text-2xl"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow for mobile -->
+                    <div class="lg:hidden flex justify-center py-8">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full p-4 shadow-2xl animate-pulse">
+                            <i class="fas fa-arrow-down text-2xl"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- After Column -->
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 shadow-xl border border-blue-200">
+                            <div class="absolute -top-4 -right-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                                🚀 After
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6 mt-2">The MorningNewsletter Way</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-green-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-envelope-open-text text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">One Perfect Email</h4>
+                                        <p class="text-sm text-gray-600">Everything you need, nothing you don't</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-blue-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-bolt text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">5 Minutes & Done</h4>
+                                        <p class="text-sm text-gray-600">Get informed in record time</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-purple-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-shield-alt text-purple-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Never Miss Anything</h4>
+                                        <p class="text-sm text-gray-600">AI-curated to show what matters</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start bg-white rounded-xl p-4 shadow-sm">
+                                    <div class="bg-indigo-100 rounded-lg p-2 mr-3">
+                                        <i class="fas fa-battery-full text-indigo-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Start Fresh & Focused</h4>
+                                        <p class="text-sm text-gray-600">Ready to conquer your day</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white rounded-2xl p-8 shadow-lg">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">After MorningNewsletter</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">One concise email with everything you need</p>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">Never miss important updates</p>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
-                            <p class="text-gray-600">Start your day focused and productive</p>
-                        </li>
-                    </ul>
+                
+                <!-- Bottom Stats -->
+                <div class="mt-16 bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <div class="text-4xl font-bold gradient-text mb-2">83%</div>
+                            <p class="text-sm text-gray-600">Less time spent on morning routine</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold gradient-text mb-2">12→1</div>
+                            <p class="text-sm text-gray-600">Apps reduced to one email</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold gradient-text mb-2">2.5h</div>
+                            <p class="text-sm text-gray-600">Saved per week</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold gradient-text mb-2">100%</div>
+                            <p class="text-sm text-gray-600">Important updates captured</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Background decoration -->
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-20 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full opacity-20 blur-3xl"></div>
     </div>
 
     <!-- Social Proof Section -->
