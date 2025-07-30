@@ -107,10 +107,12 @@ nav a:not(.btn-primary) {
     padding: 0.5rem 1rem;
     border-radius: 9999px;
     transition: all 0.2s ease;
+    position: relative;
 }
 
 nav a:not(.btn-primary):hover {
     background: rgba(70, 139, 230, 0.1);
+    color: var(--tufts-blue);
 }
 
 /* Remove underline styles for capsule navigation */

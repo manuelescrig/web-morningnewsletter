@@ -67,19 +67,6 @@ include __DIR__ . '/includes/page-header.php';
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
-    <!-- Remove old hero -->
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                    Get <span class="gradient-text">Support</span>
-                </h1>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Need help with your MorningNewsletter account? Have a question or suggestion? We're here to help you get the most out of your personalized morning briefings.
-                </p>
-            </div>
-        </div>
-    </div>
-
     <!-- Contact Options Section -->
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">

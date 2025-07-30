@@ -20,19 +20,6 @@ include __DIR__ . '/includes/page-header.php';
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
-    <!-- Remove old hero section since we're using the include -->
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                    About <span class="gradient-text">MorningNewsletter</span>
-                </h1>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Hi, I'm Manuel Escrig, and I built MorningNewsletter to help professionals start their day with clarity and focus.
-                </p>
-            </div>
-        </div>
-    </div>
-
     <!-- Mission Section -->
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
