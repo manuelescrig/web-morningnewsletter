@@ -284,9 +284,10 @@ include __DIR__ . '/includes/page-header.php';
     <div class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">Meet MorningNewsletter</h2>
+                <h3 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
                     Transform Your Morning Routine
-                </h2>
+                </h3>
                 <p class="mt-4 text-xl text-gray-600">
                     Start your day with clarity and confidence
                 </p>
