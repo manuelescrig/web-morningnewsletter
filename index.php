@@ -789,75 +789,50 @@ include __DIR__ . '/includes/page-header.php';
                 <div class="space-y-4">
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
                         <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-clock text-blue-600 text-sm"></i>
-                                </div>
-                                <span class="text-lg font-medium text-gray-900">When do I get my newsletter?</span>
-                            </div>
+                            <span class="text-lg font-medium text-gray-900">When do I get my newsletter?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pl-16 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
                             Your personalized newsletter arrives at your chosen time (default is 6 AM) in your local timezone. You can adjust this anytime in your dashboard settings.
                         </div>
                     </div>
                     
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
                         <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-sliders-h text-green-600 text-sm"></i>
-                                </div>
-                                <span class="text-lg font-medium text-gray-900">Can I customize my sources?</span>
-                            </div>
+                            <span class="text-lg font-medium text-gray-900">Can I customize my sources?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pl-16 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
                             Absolutely! Add, remove, or reorder your data sources anytime. Choose from weather, stocks, crypto, news, business metrics, and more. Your newsletter, your way.
                         </div>
                     </div>
                     
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
                         <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-shield-alt text-purple-600 text-sm"></i>
-                                </div>
-                                <span class="text-lg font-medium text-gray-900">Is my data secure?</span>
-                            </div>
+                            <span class="text-lg font-medium text-gray-900">Is my data secure?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pl-16 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
                             Your security is our priority. All data is encrypted, we never sell your information, and you can delete everything with one click. We're GDPR compliant and transparent about our practices.
                         </div>
                     </div>
                     
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
                         <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-credit-card text-orange-600 text-sm"></i>
-                                </div>
-                                <span class="text-lg font-medium text-gray-900">How does billing work?</span>
-                            </div>
+                            <span class="text-lg font-medium text-gray-900">How does billing work?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pl-16 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
                             Start with a 7-day free trial, no credit card required. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. We use Stripe for secure payments.
                         </div>
                     </div>
                     
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
                         <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
-                            <div class="flex items-center">
-                                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-mobile-alt text-red-600 text-sm"></i>
-                                </div>
-                                <span class="text-lg font-medium text-gray-900">Do you have a mobile app?</span>
-                            </div>
+                            <span class="text-lg font-medium text-gray-900">Do you have a mobile app?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pl-16 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
                             Not yet, but our emails are perfectly optimized for mobile. You can read your morning brief on any device, and we're working on native apps for 2025.
                         </div>
                     </div>
