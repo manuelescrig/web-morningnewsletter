@@ -3,6 +3,29 @@
 /* Hero Section Styles - Use original mesh background from main.css */
 /* The mesh-bg class is already defined in main.css with the original blue gradient mesh */
 
+/* Subtle background noise texture */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.015; /* Very subtle - barely visible */
+    z-index: 1;
+    pointer-events: none;
+    background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0, 0, 0, 0.1) 2px, rgba(0, 0, 0, 0.1) 4px),
+        repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px);
+    background-size: 8px 8px;
+}
+
+/* Ensure content appears above noise */
+body > * {
+    position: relative;
+    z-index: 2;
+}
+
 /* Typewriter Animation */
 .typewriter-container {
     height: 1.2em;
