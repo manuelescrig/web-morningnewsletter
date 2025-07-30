@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../core/BlogPost.php';
+require_once __DIR__ . '/../core/Auth.php';
+
+$auth = Auth::getInstance();
+$isLoggedIn = $auth->isLoggedIn();
+$user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
 // Get the slug from URL parameter
 $slug = $_GET['slug'] ?? '';
@@ -38,14 +43,22 @@ try {
     include __DIR__ . '/../404.php';
     exit;
 }
+
+// Page configuration
+$pageTitle = $post->getSeoTitle() ?: $post->getTitle();
+$pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(strip_tags($post->getContent()), 0, 155);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($post->getSeoTitle() ?: $post->getTitle()); ?> - MorningNewsletter</title>
-    <meta name="description" content="<?php echo htmlspecialchars($post->getSeoDescription() ?: $post->getExcerpt() ?: substr(strip_tags($post->getContent()), 0, 155)); ?>">
+    <title><?php echo htmlspecialchars($pageTitle); ?> - MorningNewsletter</title>
+    <meta name="description" content="<?php echo htmlspecialchars($pageDescription); ?>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
@@ -65,10 +78,8 @@ try {
         <meta property="twitter:image" content="<?php echo htmlspecialchars($post->getFeaturedImage()); ?>">
     <?php endif; ?>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/assets/css/main.css">
     <style>
+        /* Custom prose styles for blog content */
         .prose {
             max-width: none;
         }
@@ -87,12 +98,19 @@ try {
         .prose blockquote { @apply border-l-4 border-primary-light pl-4 italic text-gray-600 mb-4; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <?php include __DIR__ . '/../includes/navigation.php'; ?>
 
-    <!-- Breadcrumb -->
-    <div class="bg-white border-b border-gray-200">
-        <div class="mx-auto max-w-4xl px-6 lg:px-8 py-4">
+    <?php 
+    // Hero section for blog post
+    $heroTitle = $post->getTitle();
+    $heroSubtitle = null; // We'll show meta info separately
+    include __DIR__ . '/../includes/hero-section.php';
+    ?>
+
+    <!-- Post Meta Info -->
+    <div class="text-center -mt-8 mb-8">
+        <div class="mx-auto max-w-4xl px-6 lg:px-8">
             <nav class="flex" aria-label="Breadcrumb">
                 <ol class="flex items-center space-x-4">
                     <li>
@@ -283,6 +301,4 @@ try {
         </div>
     </div>
 
-    <?php include __DIR__ . '/../includes/footer.php'; ?>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/page-footer.php'; ?>

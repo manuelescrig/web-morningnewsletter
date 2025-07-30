@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../core/BlogPost.php';
+require_once __DIR__ . '/../core/Auth.php';
+
+$auth = Auth::getInstance();
+$isLoggedIn = $auth->isLoggedIn();
+$user = $isLoggedIn ? $auth->getCurrentUser() : null;
 
 // Get all published blog posts
 try {
@@ -16,55 +21,29 @@ $selectedTag = $_GET['tag'] ?? '';
 if ($selectedTag) {
     $posts = BlogPost::getByTag($selectedTag, 10);
 }
+
+// Page configuration
+$pageTitle = $selectedTag ? "Posts tagged '$selectedTag'" : 'Blog';
+$pageDescription = $selectedTag ? "Blog posts about $selectedTag" : 'Insights, tips, and updates from the MorningNewsletter team';
+include __DIR__ . '/../includes/page-header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $selectedTag ? "Posts tagged '$selectedTag'" : 'Blog'; ?> - MorningNewsletter</title>
-    <meta name="description" content="<?php echo $selectedTag ? "Blog posts about $selectedTag" : 'Insights, tips, and updates from the MorningNewsletter team'; ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <?php include __DIR__ . '/../includes/navigation.php'; ?>
 
-    <!-- Hero Section -->
-    <div class="gradient-bg py-16 sm:py-24">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                    <?php if ($selectedTag): ?>
-                        Posts tagged "<?php echo htmlspecialchars($selectedTag); ?>"
-                    <?php else: ?>
-                        MorningNewsletter Blog
-                    <?php endif; ?>
-                </h1>
-                <p class="mt-6 text-lg leading-8 text-gray-600">
-                    <?php if ($selectedTag): ?>
-                        Explore our insights and tips about <?php echo htmlspecialchars($selectedTag); ?>
-                    <?php else: ?>
-                        Insights, tips, and updates to help you start your day with clarity and focus.
-                    <?php endif; ?>
-                </p>
-                <?php if ($selectedTag): ?>
-                    <div class="mt-6">
-                        <a href="/blog" class="text-primary hover:text-primary font-medium">
-                            <i class="fas fa-arrow-left mr-2"></i>
-                            View all posts
-                        </a>
-                    </div>
-                <?php endif; ?>
-            </div>
+    <?php 
+    // Hero section configuration
+    $heroTitle = $selectedTag ? "Posts tagged \"" . htmlspecialchars($selectedTag) . "\"" : "MorningNewsletter Blog";
+    $heroSubtitle = $selectedTag ? "Explore our insights and tips about " . htmlspecialchars($selectedTag) : "Insights, tips, and updates to help you start your day with clarity and focus.";
+    include __DIR__ . '/../includes/hero-section.php';
+    
+    if ($selectedTag): ?>
+        <div class="text-center -mt-8 mb-8">
+            <a href="/blog" class="text-primary hover:text-primary-dark font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                View all posts
+            </a>
         </div>
-    </div>
+    <?php endif; ?>
 
     <!-- Main Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
@@ -214,6 +193,4 @@ if ($selectedTag) {
         </div>
     </div>
 
-    <?php include __DIR__ . '/../includes/footer.php'; ?>
-</body>
-</html>
+<?php include __DIR__ . '/../includes/page-footer.php'; ?>

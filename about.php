@@ -4,40 +4,23 @@ require_once __DIR__ . '/core/Auth.php';
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
+
+// Page configuration
+$pageTitle = "About";
+$pageDescription = "Learn about MorningNewsletter's mission to help you start every day informed.";
+include __DIR__ . '/includes/page-header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - MorningNewsletter</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-        }
-        .nav-scrolled {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #468BE6 0%, #9333ea 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-    </style>
-</head>
 <body class="bg-white">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
+    
+    <?php 
+    // Hero section configuration
+    $heroTitle = "About MorningNewsletter";
+    $heroSubtitle = "Our mission to help you start every day informed";
+    include __DIR__ . '/includes/hero-section.php';
+    ?>
 
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-50 to-purple-50 py-20 pt-32">
+    <!-- Remove old hero section since we're using the include -->
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
@@ -220,6 +203,4 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
         </div>
     </div>
 
-    <?php include __DIR__ . '/includes/footer.php'; ?>
-</body>
-</html>
+<?php include __DIR__ . '/includes/page-footer.php'; ?>
