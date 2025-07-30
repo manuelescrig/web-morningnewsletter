@@ -68,7 +68,75 @@ h1.dashboard-title,
     font-weight: 800 !important;
 }
 
-/* Navigation Underline Styles */
+/* Navigation Capsule Styles */
+.nav-container {
+    padding: 1.5rem 1rem;
+}
+
+.nav-inner {
+    max-width: 1100px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 9999px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effect for nav capsule */
+.nav-inner:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* When scrolled, make the nav more opaque and full width */
+.nav-scrolled .nav-inner {
+    max-width: 100%;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.nav-scrolled.nav-container {
+    padding: 0;
+}
+
+/* Navigation link styles for capsule */
+nav a:not(.btn-primary) {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+}
+
+nav a:not(.btn-primary):hover {
+    background: rgba(70, 139, 230, 0.1);
+}
+
+/* Remove underline styles for capsule navigation */
+.nav-inner .hover\:nav-underline:hover {
+    border-bottom: none !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 0 !important;
+}
+
+/* Mobile responsiveness for capsule nav */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0.5rem;
+    }
+    
+    .nav-inner {
+        border-radius: 1rem;
+    }
+    
+    nav a:not(.btn-primary) {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Navigation Underline Styles (kept for other uses) */
 .nav-underline {
     border-bottom: 4px solid var(--nav-underline) !important;
     border-radius: 2px !important;
@@ -76,7 +144,7 @@ h1.dashboard-title,
     margin-bottom: -4px !important;
 }
 
-/* Navigation Hover Underline Styles */
+/* Navigation Hover Underline Styles (kept for other uses) */
 .hover\:nav-underline:hover {
     border-bottom: 4px solid var(--nav-underline) !important;
     border-radius: 2px !important;

@@ -13,9 +13,9 @@ require_once __DIR__ . '/logo.php';
 ?>
 
 <!-- Navigation -->
-<nav id="main-nav" class="bg-white/80 backdrop-blur-md fixed w-full z-50 transition-all duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
+<nav id="main-nav" class="nav-container fixed w-full z-50 transition-all duration-300">
+    <div class="nav-inner mx-auto">
+        <div class="flex justify-between h-16 items-center px-6">
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <?php renderLogo('md'); ?>
@@ -24,7 +24,7 @@ require_once __DIR__ . '/logo.php';
             <!-- Navigation Links -->
             <div class="hidden md:block flex-1">
                 <div class="flex justify-center">
-                    <div class="flex space-x-8">
+                    <div class="flex space-x-4">
                         <a href="/#features" 
                            class="text-gray-700 hover:text-primary hover:nav-underline px-3 py-2 transition-colors duration-200">
                             Features
