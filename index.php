@@ -368,43 +368,33 @@ include __DIR__ . '/includes/page-header.php';
     </div>
 
     <!-- Social Proof Section -->
-    <div class="py-16 bg-gradient-to-b from-white to-gray-50">
+    <div class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
+            <div class="text-center mb-10">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-3">Trusted by Industry Leaders</h2>
-                <div class="flex items-center justify-center gap-4 flex-wrap">
-                    <h3 class="text-3xl font-bold text-gray-900">
-                        <?php echo $displayCount; ?>+ Professionals
-                    </h3>
-                    <span class="text-gray-400">•</span>
-                    <h3 class="text-3xl font-bold text-gray-900">
-                        7 Countries
-                    </h3>
-                    <span class="text-gray-400">•</span>
-                    <h3 class="text-3xl font-bold text-gray-900">
-                        24/7 Delivery
-                    </h3>
-                </div>
+                <p class="text-2xl font-bold text-gray-900 mb-2">
+                    Join <?php echo $displayCount; ?>+ professionals who've transformed their mornings
+                </p>
                 <?php if ($todayCount > 0): ?>
-                    <div class="mt-4 inline-flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                    <div class="mt-3 inline-flex items-center text-sm text-green-600 font-medium">
                         <i class="fas fa-arrow-up mr-2"></i>
                         <?php echo $todayCount; ?> joined today
                     </div>
                 <?php endif; ?>
             </div>
             
-            <div class="relative">
+            <div class="relative mb-8">
                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
                     <div class="w-full border-t border-gray-200"></div>
                 </div>
                 <div class="relative flex justify-center">
-                    <span class="px-4 bg-gradient-to-b from-white to-gray-50 text-sm text-gray-500">
+                    <span class="px-4 bg-white text-sm text-gray-500">
                         Professionals from these companies use MorningNewsletter
                     </span>
                 </div>
             </div>
             
-            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center max-w-6xl mx-auto">
                 <div class="flex items-center justify-center p-4">
                     <img src="/assets/companies/Logo=google.svg" alt="Google" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
                 </div>
