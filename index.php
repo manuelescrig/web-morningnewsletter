@@ -180,38 +180,101 @@ include __DIR__ . '/includes/page-header.php';
         </div>
     </div>
 
-    <!-- Problem Agitation Section -->
+    <!-- The Morning Struggle Section -->
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Ugh, Information Overload Much?
-                </h2>
-                <p class="mt-4 text-xl text-gray-500">
-                    We get it. Every morning you're drowning in notifications, emails, and a million different apps.
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">The Problem</h2>
+                <h3 class="text-3xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl mb-6">
+                    Your Morning Routine is <span class="gradient-text">Broken</span>
+                </h3>
+                <p class="text-xl text-gray-600">
+                    Every day starts the same way: scattered information, wasted time, and that nagging feeling you're missing something important.
                 </p>
             </div>
-            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-                <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-clock text-xl"></i>
+            
+            <!-- Visual Timeline -->
+            <div class="relative max-w-5xl mx-auto">
+                <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-red-200 via-orange-200 to-yellow-200"></div>
+                
+                <div class="space-y-12">
+                    <!-- Timeline Item 1 -->
+                    <div class="relative flex items-center">
+                        <div class="flex items-center justify-center w-full md:w-1/2 md:pr-8">
+                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-red-100">
+                                <div class="flex items-center mb-4">
+                                    <div class="bg-red-50 rounded-full p-3 mr-4">
+                                        <i class="fas fa-mobile-alt text-red-500 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-900">6:45 AM</h4>
+                                        <p class="text-sm text-gray-500">The App Marathon Begins</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">Check email, then Slack, then weather, then news, then crypto prices...</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-red-400 rounded-full border-4 border-white"></div>
+                        <div class="hidden md:block md:w-1/2"></div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Time Down the Drain</h3>
-                    <p class="text-gray-600">You're spending 30+ minutes every morning jumping between apps. That's 3.5 hours a week!</p>
+                    
+                    <!-- Timeline Item 2 -->
+                    <div class="relative flex items-center">
+                        <div class="hidden md:block md:w-1/2"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-orange-400 rounded-full border-4 border-white"></div>
+                        <div class="flex items-center justify-center w-full md:w-1/2 md:pl-8">
+                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-orange-100">
+                                <div class="flex items-center mb-4">
+                                    <div class="bg-orange-50 rounded-full p-3 mr-4">
+                                        <i class="fas fa-clock text-orange-500 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-900">7:00 AM</h4>
+                                        <p class="text-sm text-gray-500">Lost in the Noise</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">15 minutes gone. Still haven't found that important message from yesterday.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline Item 3 -->
+                    <div class="relative flex items-center">
+                        <div class="flex items-center justify-center w-full md:w-1/2 md:pr-8">
+                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-yellow-100">
+                                <div class="flex items-center mb-4">
+                                    <div class="bg-yellow-50 rounded-full p-3 mr-4">
+                                        <i class="fas fa-exclamation-circle text-yellow-500 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-gray-900">7:15 AM</h4>
+                                        <p class="text-sm text-gray-500">The Realization</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">Market opened down 5%. That meeting got moved. You're already behind.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-yellow-400 rounded-full border-4 border-white"></div>
+                        <div class="hidden md:block md:w-1/2"></div>
+                    </div>
                 </div>
-                <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-exclamation-triangle text-xl"></i>
+            </div>
+            
+            <!-- Stats Bar -->
+            <div class="mt-16 bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <div class="text-3xl font-bold text-red-600 mb-2">30+ min</div>
+                        <p class="text-gray-600">Wasted every morning</p>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Missing the Important Stuff</h3>
-                    <p class="text-gray-600">That important DM? Buried. Market crash? You'll find out later. It's chaos out there.</p>
-                </div>
-                <div class="bg-gray-50 rounded-2xl p-8">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600 mb-4">
-                        <i class="fas fa-bolt text-xl"></i>
+                    <div>
+                        <div class="text-3xl font-bold text-orange-600 mb-2">7+ apps</div>
+                        <p class="text-gray-600">To check daily</p>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Already Stressed at 7 AM</h3>
-                    <p class="text-gray-600">You're overwhelmed before your coffee kicks in. Not the vibe we're going for.</p>
+                    <div>
+                        <div class="text-3xl font-bold text-yellow-600 mb-2">82%</div>
+                        <p class="text-gray-600">Miss important updates</p>
+                    </div>
                 </div>
             </div>
         </div>
