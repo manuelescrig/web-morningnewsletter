@@ -29,7 +29,6 @@
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
                 <ul class="mt-4 space-y-4">
                     <li><a href="/about/" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
-                    <li><a href="/jobs/" class="text-base text-gray-500 hover:text-gray-300">Careers</a></li>
                     <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Support</a></li>
                     <li><a href="/press/" class="text-base text-gray-500 hover:text-gray-300">Press</a></li>
                 </ul>
