@@ -430,74 +430,82 @@ include __DIR__ . '/includes/page-header.php';
                 </p>
             </div>
 
-            <div class="mt-20">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="mt-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     <!-- Feature 1 -->
-                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                                    <i class="fas fa-chart-line text-xl"></i>
-                                </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                            <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 inline-flex mb-6">
+                                <i class="fas fa-chart-line text-2xl text-primary"></i>
                             </div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-bold text-gray-900">Custom KPIs</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Business Metrics</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Track revenue, user stats, and conversion rates. Get your most important KPIs delivered fresh every morning.
+                            </p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Stripe</span>
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Analytics</span>
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Custom APIs</span>
                             </div>
                         </div>
-                        <p class="mt-4 text-gray-600">
-                            Your revenue, user stats, conversion rates—whatever metrics matter to you. We'll fetch them and serve them fresh.
-                        </p>
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                                    <i class="fas fa-coins text-xl"></i>
-                                </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                            <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 inline-flex mb-6">
+                                <i class="fas fa-coins text-2xl text-green-600"></i>
                             </div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-bold text-gray-900">Finance & Crypto Markets</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Market Updates</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Bitcoin, stocks, forex—track all your investments. Know exactly where the markets stand before trading begins.
+                            </p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Crypto</span>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Stocks</span>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Real-time</span>
                             </div>
                         </div>
-                        <p class="mt-4 text-gray-600">
-                            Bitcoin pumping? Stocks dumping? We've got you covered with real-time updates on everything you're tracking.
-                        </p>
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                                    <i class="fas fa-cloud-sun text-xl"></i>
-                                </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                            <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 inline-flex mb-6">
+                                <i class="fas fa-cloud-sun text-2xl text-orange-600"></i>
                             </div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-bold text-gray-900">Weather & Local News</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Weather & News</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Local weather forecast and breaking news from your area. Know if you need an umbrella or if there's traffic ahead.
+                            </p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">Weather</span>
+                                <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">Local News</span>
+                                <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">Alerts</span>
                             </div>
                         </div>
-                        <p class="mt-4 text-gray-600">
-                            Should you grab an umbrella? What's happening in your city? We'll let you know so you can plan your day.
-                        </p>
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="flex items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                                    <i class="fas fa-comments text-xl"></i>
-                                </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 inline-flex mb-6">
+                                <i class="fas fa-comments text-2xl text-purple-600"></i>
                             </div>
-                            <div class="ml-4">
-                                <h3 class="text-xl font-bold text-gray-900">Social Media DMs</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Important Messages</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Never miss critical DMs from Twitter, Slack, or Discord. We'll surface the messages that actually matter.
+                            </p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Twitter</span>
+                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Slack</span>
+                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Discord</span>
                             </div>
                         </div>
-                        <p class="mt-4 text-gray-600">
-                            Important DMs from Twitter, Slack messages, Discord pings—we'll make sure nothing important slips through the cracks.
-                        </p>
                     </div>
                 </div>
             </div>
