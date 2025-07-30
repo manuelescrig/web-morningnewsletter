@@ -38,11 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             
             if ($result['success']) {
-                $success = 'Thank you for contacting us! We\'ll get back to you within 24 hours.';
+                $success = 'Thank you for contacting me! I\'ll get back to you within 24 hours.';
                 // Clear form fields
                 $name = $email = $subject = $message = '';
             } else {
-                $error = 'There was an error sending your message. Please try again or email us directly at hello@morningnewsletter.com';
+                $error = 'There was an error sending your message. Please try again or email me directly at hello@morningnewsletter.com';
             }
         } catch (Exception $e) {
             $error = 'There was an error sending your message. Please try again or email us directly at hello@morningnewsletter.com';
@@ -54,7 +54,7 @@ $csrfToken = $auth->generateCSRFToken();
 
 // Page configuration
 $pageTitle = "Support";
-$pageDescription = "Get help with MorningNewsletter. We're here to assist you.";
+$pageDescription = "Get help with MorningNewsletter. I'm here to assist you.";
 include __DIR__ . '/includes/page-header.php';
 ?>
 <body class="bg-white">
@@ -62,7 +62,7 @@ include __DIR__ . '/includes/page-header.php';
     
     <?php 
     // Hero section configuration
-    $heroTitle = "How Can We Help?";
+    $heroTitle = "How Can I Help?";
     $heroSubtitle = "Get support for your MorningNewsletter account";
     include __DIR__ . '/includes/hero-section.php';
     ?>
@@ -76,7 +76,7 @@ include __DIR__ . '/includes/page-header.php';
                         <i class="fas fa-envelope text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Email Support</h3>
-                    <p class="text-gray-600 mb-4">Send us an email and we'll respond within 24 hours.</p>
+                    <p class="text-gray-600 mb-4">Send me an email and I'll respond within 24 hours.</p>
                     <a href="mailto:hello@morningnewsletter.com" class="text-primary hover:text-primary-dark font-medium">
                         hello@morningnewsletter.com
                     </a>
@@ -87,7 +87,7 @@ include __DIR__ . '/includes/page-header.php';
                         <i class="fas fa-question-circle text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Common Questions</h3>
-                    <p class="text-gray-600 mb-4">Check our FAQ section for quick answers to common questions.</p>
+                    <p class="text-gray-600 mb-4">Check the FAQ section for quick answers to common questions.</p>
                     <a href="/#faq" class="text-primary hover:text-primary-dark font-medium">
                         View FAQ
                     </a>
@@ -98,7 +98,7 @@ include __DIR__ . '/includes/page-header.php';
                         <i class="fas fa-comments text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Contact Form</h3>
-                    <p class="text-gray-600 mb-4">Fill out the form below and we'll get back to you quickly.</p>
+                    <p class="text-gray-600 mb-4">Fill out the form below and I'll get back to you quickly.</p>
                     <a href="#contact-form" class="text-primary hover:text-primary-dark font-medium">
                         Send Message
                     </a>
@@ -111,8 +111,8 @@ include __DIR__ . '/includes/page-header.php';
     <div id="contact-form" class="py-20 bg-gray-50">
         <div class="max-w-3xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Send Us a Message</h2>
-                <p class="text-xl text-gray-600">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Send Me a Message</h2>
+                <p class="text-xl text-gray-600">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
             </div>
             
             <div class="bg-white rounded-2xl p-8 shadow-lg">
@@ -194,10 +194,10 @@ include __DIR__ . '/includes/page-header.php';
     <div class="py-16 bg-white">
         <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <div class="bg-primary-lightest rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">We're Here to Help</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">I'm Here to Help</h3>
                 <p class="text-lg text-gray-600 mb-6">
-                    Our support team typically responds within 24 hours during business days. 
-                    For urgent issues, please email us directly at hello@morningnewsletter.com
+                    I typically respond within 24 hours during business days. 
+                    For urgent issues, please email me directly at hello@morningnewsletter.com
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                     <div class="flex items-start">

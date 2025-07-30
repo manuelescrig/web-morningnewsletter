@@ -9,7 +9,7 @@ seo_title: The Power of Curated Information - Beat Information Overload
 seo_description: Discover how curated information can transform your productivity and decision-making in our age of information overload.
 ---
 
-We live in the age of infinite information. Every day, we're bombarded with more data than entire civilizations had access to just decades ago. While this abundance seems like a blessing, it often becomes a curse that paralyzes rather than empowers us.
+I live in the age of infinite information. Every day, I'm bombarded with more data than entire civilizations had access to just decades ago. While this abundance seems like a blessing, it often becomes a curse that paralyzes rather than empowers me.
 
 The solution isn't consuming more information—it's consuming better information through the power of curation.
 
@@ -19,7 +19,7 @@ Consider these staggering statistics:
 - **2.5 quintillion bytes** of data are created every day
 - The average knowledge worker spends **2.5 hours daily** just searching for information
 - **90% of the world's data** was created in the last two years
-- We're exposed to **5x more information** than in 1986
+- People are exposed to **5x more information** than in 1986
 
 Yet despite having access to more information than ever before, studies show that:
 - Decision-making quality hasn't improved
@@ -54,10 +54,10 @@ Every piece of information you consume requires a micro-decision: Is this releva
 Jumping between different information sources and formats forces your brain to constantly readjust. This "context switching" can reduce productivity by up to 25%.
 
 ### Analysis Paralysis
-Too many options often lead to no decisions at all. When overwhelmed with information, we tend to procrastinate or make suboptimal choices just to reduce the cognitive load.
+Too many options often lead to no decisions at all. When overwhelmed with information, people tend to procrastinate or make suboptimal choices just to reduce the cognitive load.
 
 ### Recency Bias
-Without curation, we tend to overweight the most recent information we've seen, even if it's not the most important or accurate.
+Without curation, people tend to overweight the most recent information they've seen, even if it's not the most important or accurate.
 
 ## The Benefits of Curated Information
 
@@ -187,7 +187,7 @@ Track these metrics to evaluate your curation system:
 
 ## The Future of Information Curation
 
-As information volume continues to grow exponentially, curation will become even more critical. We're moving toward:
+As information volume continues to grow exponentially, curation will become even more critical. The world is moving toward:
 
 - **Hyper-personalization:** AI that understands individual context and preferences
 - **Real-time adaptation:** Systems that adjust to changing circumstances and priorities

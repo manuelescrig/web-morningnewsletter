@@ -16,7 +16,7 @@ include __DIR__ . '/includes/page-header.php';
     <?php 
     // Hero section configuration
     $heroTitle = "Privacy Policy";
-    $heroSubtitle = "How we protect and respect your data";
+    $heroSubtitle = "How I protect and respect your data";
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
@@ -26,14 +26,14 @@ include __DIR__ . '/includes/page-header.php';
             <div class="prose prose-lg max-w-none">
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Introduction</h2>
                 <p class="text-gray-700 mb-4">
-                    MorningNewsletter.com ("we," "us," or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.
+                    MorningNewsletter.com ("I," "me," or "my") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how I collect, use, disclose, and safeguard your information when you use this website and services.
                 </p>
 
-                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Information We Collect</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Information I Collect</h2>
                 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.1 Personal Information</h3>
                 <p class="text-gray-700 mb-4">
-                    We collect information you provide directly to us, including:
+                    I collect information you provide directly to me, including:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Email address (required for account creation and service delivery)</li>
@@ -45,7 +45,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.2 Usage Information</h3>
                 <p class="text-gray-700 mb-4">
-                    We automatically collect certain information about your use of our Service:
+                    I automatically collect certain information about your use of the Service:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Log data (IP address, browser type, operating system)</li>
@@ -57,7 +57,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.3 Third-Party Data</h3>
                 <p class="text-gray-700 mb-4">
-                    With your permission, we access data from third-party services you connect:
+                    With your permission, I access data from third-party services you connect:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Social media platforms (Twitter, LinkedIn, etc.)</li>
@@ -67,29 +67,29 @@ include __DIR__ . '/includes/page-header.php';
                     <li>Communication platforms (Slack, Discord)</li>
                 </ul>
 
-                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. How We Use Your Information</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. How I Use Your Information</h2>
                 <p class="text-gray-700 mb-4">
-                    We use your information to:
+                    I use your information to:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
-                    <li>Provide and deliver our personalized newsletter service</li>
+                    <li>Provide and deliver the personalized newsletter service</li>
                     <li>Process payments and manage subscriptions</li>
-                    <li>Personalize content and improve our algorithms</li>
+                    <li>Personalize content and improve the algorithms</li>
                     <li>Send service-related communications and updates</li>
                     <li>Provide customer support and respond to inquiries</li>
-                    <li>Analyze usage patterns and improve our Service</li>
+                    <li>Analyze usage patterns and improve the Service</li>
                     <li>Detect and prevent fraud and abuse</li>
                     <li>Comply with legal obligations</li>
                 </ul>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Information Sharing and Disclosure</h2>
                 <p class="text-gray-700 mb-4">
-                    We do not sell, trade, or rent your personal information to third parties. We may share your information in limited circumstances:
+                    I do not sell, trade, or rent your personal information to third parties. I may share your information in limited circumstances:
                 </p>
 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.1 Service Providers</h3>
                 <p class="text-gray-700 mb-4">
-                    We work with trusted third-party service providers who assist us in operating our Service:
+                    I work with trusted third-party service providers who assist me in operating the Service:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Email delivery services</li>
@@ -101,7 +101,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.2 Legal Requirements</h3>
                 <p class="text-gray-700 mb-4">
-                    We may disclose your information if required by law or in response to valid legal processes, such as court orders or government requests.
+                    I may disclose your information if required by law or in response to valid legal processes, such as court orders or government requests.
                 </p>
 
                 <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.3 Business Transfers</h3>
@@ -111,7 +111,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Data Security</h2>
                 <p class="text-gray-700 mb-4">
-                    We implement appropriate technical and organizational measures to protect your personal information:
+                    I implement appropriate technical and organizational measures to protect your personal information:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Encryption of data in transit and at rest</li>
@@ -123,7 +123,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. Data Retention</h2>
                 <p class="text-gray-700 mb-4">
-                    We retain your personal information for as long as necessary to provide our Service and fulfill the purposes outlined in this Privacy Policy. When you delete your account, we will delete your personal information within 30 days, except where we're required to retain it for legal compliance.
+                    I retain your personal information for as long as necessary to provide the Service and fulfill the purposes outlined in this Privacy Policy. When you delete your account, I will delete your personal information within 30 days, except where I'm required to retain it for legal compliance.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">7. Your Privacy Rights</h2>
@@ -135,13 +135,13 @@ include __DIR__ . '/includes/page-header.php';
                     <li><strong>Correction:</strong> Update or correct inaccurate information</li>
                     <li><strong>Deletion:</strong> Request deletion of your personal information</li>
                     <li><strong>Portability:</strong> Request transfer of your data</li>
-                    <li><strong>Restriction:</strong> Limit how we process your information</li>
+                    <li><strong>Restriction:</strong> Limit how I process your information</li>
                     <li><strong>Objection:</strong> Object to certain types of processing</li>
                 </ul>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">8. Cookies and Tracking Technologies</h2>
                 <p class="text-gray-700 mb-4">
-                    We use cookies and similar technologies to:
+                    I use cookies and similar technologies to:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Remember your preferences and settings</li>
@@ -155,22 +155,22 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">9. International Data Transfers</h2>
                 <p class="text-gray-700 mb-4">
-                    Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information during international transfers.
+                    Your information may be transferred to and processed in countries other than your own. I ensure appropriate safeguards are in place to protect your information during international transfers.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Children's Privacy</h2>
                 <p class="text-gray-700 mb-4">
-                    Our Service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will delete it promptly.
+                    The Service is not intended for children under 13 years of age. I do not knowingly collect personal information from children under 13. If I become aware that I have collected such information, I will delete it promptly.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">11. Changes to This Privacy Policy</h2>
                 <p class="text-gray-700 mb-4">
-                    We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through our Service. The updated policy will be effective when posted.
+                    I may update this Privacy Policy from time to time. I will notify you of any material changes by email or through the Service. The updated policy will be effective when posted.
                 </p>
 
-                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">12. Contact Us</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">12. Contact Me</h2>
                 <p class="text-gray-700 mb-4">
-                    If you have any questions about this Privacy Policy or our privacy practices, please contact us:
+                    If you have any questions about this Privacy Policy or my privacy practices, please contact me:
                 </p>
                 <p class="text-gray-700 mb-4">
                     Email: hello@morningnewsletter.com<br>

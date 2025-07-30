@@ -26,7 +26,7 @@ include __DIR__ . '/includes/page-header.php';
             <div class="prose prose-lg max-w-none">
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Agreement to Terms</h2>
                 <p class="text-gray-700 mb-4">
-                    By accessing and using MorningNewsletter.com (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. These Terms of Service ("Terms") govern your use of our website and services provided by MorningNewsletter.com ("we," "us," or "our").
+                    By accessing and using MorningNewsletter.com (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. These Terms of Service ("Terms") govern your use of this website and services provided by MorningNewsletter.com ("I," "me," or "my").
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
@@ -36,7 +36,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. User Accounts</h2>
                 <p class="text-gray-700 mb-4">
-                    To access certain features of our Service, you must register for an account. You agree to:
+                    To access certain features of the Service, you must register for an account. You agree to:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Provide accurate, current, and complete information during registration</li>
@@ -47,12 +47,12 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Subscription Plans and Billing</h2>
                 <p class="text-gray-700 mb-4">
-                    We offer various subscription plans with different features and pricing. By subscribing to a paid plan, you agree to:
+                    I offer various subscription plans with different features and pricing. By subscribing to a paid plan, you agree to:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Pay all applicable fees for your chosen subscription plan</li>
                     <li>Automatic renewal of your subscription unless cancelled</li>
-                    <li>Our right to change pricing with 30 days advance notice</li>
+                    <li>My right to change pricing with 30 days advance notice</li>
                     <li>No refunds for partial months of service</li>
                 </ul>
 
@@ -63,7 +63,7 @@ include __DIR__ . '/includes/page-header.php';
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Use the Service for any unlawful purpose or illegal activity</li>
                     <li>Share your account credentials with others</li>
-                    <li>Attempt to gain unauthorized access to our systems</li>
+                    <li>Attempt to gain unauthorized access to my systems</li>
                     <li>Interfere with or disrupt the Service or servers</li>
                     <li>Use automated systems to access the Service without permission</li>
                     <li>Reverse engineer or attempt to extract source code</li>
@@ -71,18 +71,18 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. Content and Data</h2>
                 <p class="text-gray-700 mb-4">
-                    Our Service aggregates content from various sources. We do not guarantee the accuracy, completeness, or timeliness of any content. You acknowledge that:
+                    The Service aggregates content from various sources. I do not guarantee the accuracy, completeness, or timeliness of any content. You acknowledge that:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 mb-4 ml-4">
                     <li>Content is provided for informational purposes only</li>
-                    <li>You should not rely solely on our content for financial or business decisions</li>
-                    <li>We may modify or discontinue content sources at any time</li>
-                    <li>We respect intellectual property rights of content providers</li>
+                    <li>You should not rely solely on the content for financial or business decisions</li>
+                    <li>I may modify or discontinue content sources at any time</li>
+                    <li>I respect intellectual property rights of content providers</li>
                 </ul>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">7. Privacy and Data Protection</h2>
                 <p class="text-gray-700 mb-4">
-                    Your privacy is important to us. Our collection and use of personal information is governed by our Privacy Policy, which is incorporated into these Terms by reference.
+                    Your privacy is important to me. My collection and use of personal information is governed by the Privacy Policy, which is incorporated into these Terms by reference.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">8. Intellectual Property</h2>
@@ -97,12 +97,12 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Termination</h2>
                 <p class="text-gray-700 mb-4">
-                    We may terminate or suspend your account immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties.
+                    I may terminate or suspend your account immediately, without prior notice, for conduct that I believe violates these Terms or is harmful to other users, me, or third parties.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">11. Changes to Terms</h2>
                 <p class="text-gray-700 mb-4">
-                    We reserve the right to modify these Terms at any time. We will notify users of significant changes via email or through the Service. Continued use after changes constitutes acceptance of the new Terms.
+                    I reserve the right to modify these Terms at any time. I will notify users of significant changes via email or through the Service. Continued use after changes constitutes acceptance of the new Terms.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">12. Governing Law</h2>
@@ -112,7 +112,7 @@ include __DIR__ . '/includes/page-header.php';
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">13. Contact Information</h2>
                 <p class="text-gray-700 mb-4">
-                    If you have any questions about these Terms of Service, please contact us at:
+                    If you have any questions about these Terms of Service, please contact me at:
                 </p>
                 <p class="text-gray-700 mb-4">
                     Email: hello@morningnewsletter.com<br>

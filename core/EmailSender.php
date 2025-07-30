@@ -325,7 +325,7 @@ class EmailSender {
             </div>
             
             <div style='font-size: 12px; color: #666; text-align: center;'>
-                <p>If you didn't create an account with us, please ignore this email.</p>
+                <p>If you didn't create an account with me, please ignore this email.</p>
             </div>
         </body>
         </html>";

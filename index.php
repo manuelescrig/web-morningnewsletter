@@ -498,7 +498,7 @@ include __DIR__ . '/includes/page-header.php';
                             </div>
                             <h3 class="text-xl font-bold text-gray-900 mb-3">Important Messages</h3>
                             <p class="text-gray-600 leading-relaxed">
-                                Never miss critical DMs from Twitter, Slack, or Discord. We'll surface the messages that actually matter.
+                                Never miss critical DMs from Twitter, Slack, or Discord. I'll surface the messages that actually matter.
                             </p>
                             <div class="mt-4 flex flex-wrap gap-2">
                                 <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Twitter</span>
@@ -813,7 +813,7 @@ include __DIR__ . '/includes/page-header.php';
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
-                            Your security is our priority. All data is encrypted, we never sell your information, and you can delete everything with one click. We're GDPR compliant and transparent about our practices.
+                            Your security is my priority. All data is encrypted, I never sell your information, and you can delete everything with one click. I'm GDPR compliant and transparent about my practices.
                         </div>
                     </div>
                     
@@ -823,7 +823,7 @@ include __DIR__ . '/includes/page-header.php';
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
-                            Start with a 7-day free trial, no credit card required. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. We use Stripe for secure payments.
+                            Start with a 7-day free trial, no credit card required. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. I use Stripe for secure payments.
                         </div>
                     </div>
                     

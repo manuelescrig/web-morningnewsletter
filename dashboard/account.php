@@ -284,7 +284,7 @@ $csrfToken = $auth->generateCSRFToken();
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-primary-dark">
-                                    We'll send a verification email to your new address. Click the link in that email to complete the change.
+                                    I'll send a verification email to your new address. Click the link in that email to complete the change.
                                 </p>
                             </div>
                         </div>
