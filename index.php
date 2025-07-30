@@ -368,26 +368,64 @@ include __DIR__ . '/includes/page-header.php';
     </div>
 
     <!-- Social Proof Section -->
-    <div class="py-12 bg-white">
+    <div class="py-16 bg-gradient-to-b from-white to-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <p class="text-gray-600 font-medium mb-4">Featured in</p>
-                <p class="text-gray-500 mb-2">Trusted by <?php echo $displayCount; ?> professionals worldwide</p>
+            <div class="text-center mb-12">
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-3">Trusted by Industry Leaders</h2>
+                <div class="flex items-center justify-center gap-4 flex-wrap">
+                    <h3 class="text-3xl font-bold text-gray-900">
+                        <?php echo $displayCount; ?>+ Professionals
+                    </h3>
+                    <span class="text-gray-400">•</span>
+                    <h3 class="text-3xl font-bold text-gray-900">
+                        7 Countries
+                    </h3>
+                    <span class="text-gray-400">•</span>
+                    <h3 class="text-3xl font-bold text-gray-900">
+                        24/7 Delivery
+                    </h3>
+                </div>
                 <?php if ($todayCount > 0): ?>
-                    <p class="text-sm text-primary font-medium">
-                        <i class="fas fa-user-plus mr-1"></i>
-                        <?php echo $todayCount; ?> <?php echo $todayCount === 1 ? 'professional joined' : 'professionals joined'; ?> today
-                    </p>
+                    <div class="mt-4 inline-flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <i class="fas fa-arrow-up mr-2"></i>
+                        <?php echo $todayCount; ?> joined today
+                    </div>
                 <?php endif; ?>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6 items-center justify-items-center max-w-5xl mx-auto">
-                <img src="/assets/companies/Logo=google.svg" alt="Google" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Logo=microsoft.svg" alt="Microsoft" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Logo=instagram_word.svg" alt="Instagram" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Press logo=Bloomberg.svg" alt="Bloomberg" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Press logo=Business Insider.svg" alt="Business Insider" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Press logo=The Guardian.svg" alt="The Guardian" class="trusted-by-logos h-8 opacity-60">
-                <img src="/assets/companies/Press logo=The New York Times (TNYT).svg" alt="The New York Times" class="trusted-by-logos h-8 opacity-60">
+            
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center">
+                    <span class="px-4 bg-gradient-to-b from-white to-gray-50 text-sm text-gray-500">
+                        Professionals from these companies use MorningNewsletter
+                    </span>
+                </div>
+            </div>
+            
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center max-w-6xl mx-auto">
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Logo=google.svg" alt="Google" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Logo=microsoft.svg" alt="Microsoft" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Logo=instagram_word.svg" alt="Instagram" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Press logo=Bloomberg.svg" alt="Bloomberg" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Press logo=Business Insider.svg" alt="Business Insider" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Press logo=The Guardian.svg" alt="The Guardian" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
+                <div class="flex items-center justify-center p-4">
+                    <img src="/assets/companies/Press logo=The New York Times (TNYT).svg" alt="The New York Times" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
+                </div>
             </div>
         </div>
     </div>
