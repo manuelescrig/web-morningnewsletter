@@ -21,17 +21,13 @@ try {
     // Silently fail and use fallback values
     error_log("Error getting user stats: " . $e->getMessage());
 }
+
+// Page configuration
+$pageTitle = "MorningNewsletter.com - Your Personalized Morning Brief";
+$pageDescription = "Start every day informed with personalized morning briefs. Get your business metrics, crypto prices, weather, news, and messages in one beautiful email.";
+include __DIR__ . '/includes/page-header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MorningNewsletter.com - Your Personalized Morning Brief</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/landing.css">
+    <link rel="stylesheet" href="/assets/css/landing.css"><!-- Additional landing page styles -->
 </head>
 <body class="bg-white">
     <?php include __DIR__ . '/includes/navigation.php'; ?>
@@ -666,13 +662,10 @@ try {
         </div>
     </div>
 
-    <?php include __DIR__ . '/includes/footer.php'; ?>
-
     <script>
         // Pass PHP variables to JavaScript
         const isLoggedIn = <?php echo $isLoggedIn ? 'true' : 'false'; ?>;
     </script>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/landing.js"></script>
-</body>
-</html> 
+    <script src="/assets/js/landing.js"></script><!-- Keep landing-specific JS -->
+    
+<?php include __DIR__ . '/includes/page-footer.php'; ?> 
