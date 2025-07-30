@@ -13,31 +13,40 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <title>Privacy Policy - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .nav-scrolled {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <?php include __DIR__ . '/../includes/navigation.php'; ?>
 
-    <!-- Content -->
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-24">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
-            <p class="text-gray-600 mb-8">Last updated: June 23, 2025</p>
+    <!-- Hero Section -->
+    <div class="relative mesh-bg pt-24 sm:pt-32 pb-16">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+            <div class="mx-auto max-w-4xl text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                    Privacy Policy
+                </h1>
+                <p class="mt-4 text-lg text-gray-600">
+                    How we protect and respect your data
+                </p>
+            </div>
+        </div>
+    </div>
 
-            <div class="prose max-w-none">
-                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Introduction</h2>
+    <!-- Content -->
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+            <p class="text-gray-500 mb-8 text-sm">Last updated: June 23, 2025</p>
+
+            <div class="prose prose-lg max-w-none">
+                <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Introduction</h2>
                 <p class="text-gray-700 mb-4">
                     MorningNewsletter.com ("we," "us," or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.
                 </p>
 
                 <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Information We Collect</h2>
                 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">2.1 Personal Information</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.1 Personal Information</h3>
                 <p class="text-gray-700 mb-4">
                     We collect information you provide directly to us, including:
                 </p>
@@ -49,7 +58,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <li>Custom integrations and API credentials you provide</li>
                 </ul>
 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">2.2 Usage Information</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.2 Usage Information</h3>
                 <p class="text-gray-700 mb-4">
                     We automatically collect certain information about your use of our Service:
                 </p>
@@ -61,7 +70,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <li>Performance and error data</li>
                 </ul>
 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">2.3 Third-Party Data</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">2.3 Third-Party Data</h3>
                 <p class="text-gray-700 mb-4">
                     With your permission, we access data from third-party services you connect:
                 </p>
@@ -93,7 +102,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     We do not sell, trade, or rent your personal information to third parties. We may share your information in limited circumstances:
                 </p>
 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">4.1 Service Providers</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.1 Service Providers</h3>
                 <p class="text-gray-700 mb-4">
                     We work with trusted third-party service providers who assist us in operating our Service:
                 </p>
@@ -105,12 +114,12 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     <li>Customer support platforms</li>
                 </ul>
 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">4.2 Legal Requirements</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.2 Legal Requirements</h3>
                 <p class="text-gray-700 mb-4">
                     We may disclose your information if required by law or in response to valid legal processes, such as court orders or government requests.
                 </p>
 
-                <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">4.3 Business Transfers</h3>
+                <h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">4.3 Business Transfers</h3>
                 <p class="text-gray-700 mb-4">
                     In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.
                 </p>
@@ -191,5 +200,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     </div>
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
+    
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

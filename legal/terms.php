@@ -13,24 +13,33 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     <title>Terms of Service - MorningNewsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .nav-scrolled {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/landing.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <?php include __DIR__ . '/../includes/navigation.php'; ?>
 
-    <!-- Content -->
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-24">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-8">Terms of Service</h1>
-            <p class="text-gray-600 mb-8">Last updated: June 23, 2025</p>
+    <!-- Hero Section -->
+    <div class="relative mesh-bg pt-24 sm:pt-32 pb-16">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+            <div class="mx-auto max-w-4xl text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                    Terms of Service
+                </h1>
+                <p class="mt-4 text-lg text-gray-600">
+                    The legal agreement for using MorningNewsletter
+                </p>
+            </div>
+        </div>
+    </div>
 
-            <div class="prose max-w-none">
-                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Agreement to Terms</h2>
+    <!-- Content -->
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+            <p class="text-gray-500 mb-8 text-sm">Last updated: June 23, 2025</p>
+
+            <div class="prose prose-lg max-w-none">
+                <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Agreement to Terms</h2>
                 <p class="text-gray-700 mb-4">
                     By accessing and using MorningNewsletter.com (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. These Terms of Service ("Terms") govern your use of our website and services provided by MorningNewsletter.com ("we," "us," or "our").
                 </p>
@@ -129,5 +138,7 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
     </div>
 
     <?php include __DIR__ . '/../includes/footer.php'; ?>
+    
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>
