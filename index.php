@@ -373,7 +373,7 @@ include __DIR__ . '/includes/page-header.php';
             <div class="text-center mb-10">
                 <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-3">Trusted by Industry Leaders</h2>
                 <p class="text-2xl font-bold text-gray-900 mb-2">
-                    Join <?php echo $displayCount; ?>+ professionals who've transformed their mornings
+                    Join <?php echo $displayCount; ?> professionals who've transformed their mornings
                 </p>
                 <?php if ($todayCount > 0): ?>
                     <div class="mt-3 inline-flex items-center text-sm text-green-600 font-medium">
