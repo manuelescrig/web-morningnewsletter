@@ -19,17 +19,24 @@ const MorningNewsletter = {
         // FAQ toggle function is defined globally for onclick handlers
         window.toggleFAQ = function(button) {
             const answer = button.nextElementSibling;
-            const icon = button.querySelector('i');
+            const icon = button.querySelector('.fa-plus, .fa-minus');
             
             if (answer.style.display === 'none' || answer.style.display === '') {
                 // Show answer
                 answer.style.display = 'block';
-                icon.style.transform = 'rotate(180deg)';
-                // Keep the same icon class, just rotate it
+                // Change icon from plus to minus
+                if (icon) {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                }
             } else {
                 // Hide answer
                 answer.style.display = 'none';
-                icon.style.transform = 'rotate(0deg)';
+                // Change icon from minus to plus
+                if (icon) {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                }
             }
         };
     },
