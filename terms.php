@@ -1,41 +1,26 @@
 <?php
-require_once __DIR__ . '/../core/Auth.php';
+require_once __DIR__ . '/core/Auth.php';
 
 $auth = Auth::getInstance();
 $isLoggedIn = $auth->isLoggedIn();
 $user = $isLoggedIn ? $auth->getCurrentUser() : null;
+
+// Page configuration
+$pageTitle = "Terms of Service";
+$pageDescription = "Read the terms and conditions for using MorningNewsletter's services.";
+include __DIR__ . '/includes/page-header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - MorningNewsletter</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/landing.css">
-</head>
 <body class="bg-white">
-    <?php include __DIR__ . '/../includes/navigation.php'; ?>
+    <?php include __DIR__ . '/includes/navigation.php'; ?>
+    
+    <?php 
+    // Hero section configuration
+    $heroTitle = "Terms of Service";
+    $heroSubtitle = "The legal agreement for using MorningNewsletter";
+    include __DIR__ . '/includes/hero-section.php';
+    ?>
 
-    <!-- Hero Section -->
-    <div class="relative mesh-bg pt-24 sm:pt-32 pb-16">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-            <div class="mx-auto max-w-4xl text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                    Terms of Service
-                </h1>
-                <p class="mt-4 text-lg text-gray-600">
-                    The legal agreement for using MorningNewsletter
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Content -->
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+    <?php include __DIR__ . '/includes/content-wrapper-start.php'; ?>
             <p class="text-gray-500 mb-8 text-sm">Last updated: June 23, 2025</p>
 
             <div class="prose prose-lg max-w-none">
@@ -134,11 +119,6 @@ $user = $isLoggedIn ? $auth->getCurrentUser() : null;
                     Website: MorningNewsletter.com
                 </p>
             </div>
-        </div>
-    </div>
+    <?php include __DIR__ . '/includes/content-wrapper-end.php'; ?>
 
-    <?php include __DIR__ . '/../includes/footer.php'; ?>
-    
-    <script src="/assets/js/main.js"></script>
-</body>
-</html>
+<?php include __DIR__ . '/includes/page-footer.php'; ?>
