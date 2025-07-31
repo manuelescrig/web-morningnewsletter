@@ -20,7 +20,7 @@ $subtitle = isset($heroSubtitle) ? $heroSubtitle : '';
                 <?php echo htmlspecialchars($title); ?>
             </h1>
             <?php if ($subtitle): ?>
-            <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="mt-6 text-lg text-primary-dark max-w-2xl mx-auto">
                 <?php echo htmlspecialchars($subtitle); ?>
             </p>
             <?php endif; ?>
