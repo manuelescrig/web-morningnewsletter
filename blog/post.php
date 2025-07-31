@@ -272,10 +272,12 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             border-radius: 0.5rem;
             padding: 1.5rem;
             max-width: 240px;
+            max-height: calc(100vh - 16rem); /* Ensures margin from top and bottom */
+            overflow: hidden;
         }
         
         .toc-nav {
-            max-height: calc(100vh - 200px);
+            max-height: calc(100vh - 22rem);
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: #d1d5db transparent;
@@ -300,8 +302,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         
         .toc-link {
             display: block;
-            padding: 0.25rem 0.5rem;
-            margin: 0.125rem 0;
+            padding: 0.125rem 0.5rem;
+            margin: 0;
             color: #6b7280;
             text-decoration: none;
             font-size: 0.875rem;
@@ -397,8 +399,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <article class="bg-white">
         <div class="relative">
             <!-- Table of Contents Sidebar -->
-            <aside class="hidden xl:block absolute left-0 top-0 w-80 h-full">
-                <div class="sticky top-24 ml-auto mr-8" id="table-of-contents">
+            <aside class="hidden xl:block absolute left-0 top-0 w-72 h-full py-12">
+                <div class="sticky top-32 ml-auto mr-4" id="table-of-contents">
                     <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
                     <nav class="toc-nav">
                         <!-- Will be populated by JavaScript -->
