@@ -33,7 +33,7 @@ include __DIR__ . '/../includes/page-header.php';
     <?php 
     // Hero section configuration
     $heroTitle = $selectedTag ? "Posts tagged \"" . htmlspecialchars($selectedTag) . "\"" : "MorningNewsletter Blog";
-    $heroSubtitle = $selectedTag ? "Explore our insights and tips about " . htmlspecialchars($selectedTag) : "Insights, tips, and updates to help you start your day with clarity and focus.";
+    $heroSubtitle = $selectedTag ? "Dive deep into our collection of articles, tutorials, and expert advice about " . htmlspecialchars($selectedTag) . " to enhance your morning routine" : "Expert insights, productivity tips, and the latest updates to help you master your mornings and stay ahead in business, tech, and life";
     include __DIR__ . '/../includes/hero-section.php';
     
     if ($selectedTag): ?>

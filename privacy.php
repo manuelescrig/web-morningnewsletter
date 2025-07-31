@@ -16,7 +16,7 @@ include __DIR__ . '/includes/page-header.php';
     <?php 
     // Hero section configuration
     $heroTitle = "Privacy Policy";
-    $heroSubtitle = "How I protect and respect your data";
+    $heroSubtitle = "Your privacy matters. Learn how I collect, use, and protect your personal information with transparency and care";
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
