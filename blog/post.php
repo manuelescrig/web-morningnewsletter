@@ -559,16 +559,18 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <?php endif; ?>
 
     <!-- Newsletter CTA -->
-    <div class="bg-gradient-to-br from-purple-600 to-purple-600 py-16">
-        <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">
+    <div class="relative overflow-hidden py-16">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-lightest via-primary-light to-primary opacity-90"></div>
+        <div class="absolute inset-0 mesh-bg opacity-30"></div>
+        <div class="relative mx-auto max-w-4xl px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-primary-darker mb-4">
                 Stay Updated with MorningNewsletter
             </h2>
-            <p class="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-primary-dark mb-8 max-w-2xl mx-auto">
                 Get personalized insights delivered to your inbox every morning. Join thousands of professionals who start their day informed.
             </p>
             <a href="/register" 
-               class="btn-pill inline-flex items-center bg-white text-primary font-semibold px-8 py-4 hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg">
+               class="btn-pill inline-flex items-center bg-white text-primary-dark font-semibold px-8 py-4 hover:bg-gray-50 transition-all duration-200 hover:scale-105 shadow-lg border border-white/50">
                 Start Your Free Trial
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>
