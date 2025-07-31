@@ -36,14 +36,7 @@ include __DIR__ . '/../includes/page-header.php';
     $heroSubtitle = $selectedTag ? "Posts about " . htmlspecialchars($selectedTag) : "Insights and tips to optimize your morning routine";
     include __DIR__ . '/../includes/hero-section.php';
     
-    if ($selectedTag): ?>
-        <div class="text-center -mt-8 mb-8">
-            <a href="/blog" class="text-primary hover:text-primary-dark font-medium transition-colors">
-                <i class="fas fa-arrow-left mr-2"></i>
-                View all posts
-            </a>
-        </div>
-    <?php endif; ?>
+    // Removed "View all posts" from here - moved to after posts list
 
     <!-- Main Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
@@ -120,6 +113,16 @@ include __DIR__ . '/../includes/page-header.php';
                             </article>
                         <?php endforeach; ?>
                     </div>
+                    
+                    <?php if ($selectedTag): ?>
+                        <!-- Breadcrumb to view all posts -->
+                        <div class="mt-8 pt-8 border-t border-gray-200">
+                            <a href="/blog" class="inline-flex items-center text-gray-500 hover:text-primary font-medium transition-colors">
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                <span>View all posts</span>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
 
