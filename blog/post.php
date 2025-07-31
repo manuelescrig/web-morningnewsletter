@@ -478,32 +478,41 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
 
             <!-- Article Footer -->
             <footer class="mt-12 pt-8 border-t border-gray-200">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div class="flex items-center space-x-4">
-                        <span class="text-gray-500 text-sm">Share this post:</span>
-                        <div class="flex space-x-2">
-                            <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&text=<?php echo urlencode($post->getTitle()); ?>" 
-                               target="_blank" 
-                               class="text-gray-400 hover:text-primary transition-colors">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
-                               target="_blank" 
-                               class="text-gray-400 hover:text-primary transition-colors">
-                                <i class="fab fa-facebook text-lg"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
-                               target="_blank" 
-                               class="text-gray-400 hover:text-primary-dark transition-colors">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                        </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-500 text-sm">Share this post:</span>
+                    <div class="flex space-x-3">
+                        <a href="https://x.com/intent/tweet?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&text=<?php echo urlencode($post->getTitle()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-gray-900 transition-colors"
+                           title="Share on X">
+                            <i class="fab fa-x-twitter text-lg"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-blue-600 transition-colors"
+                           title="Share on Facebook">
+                            <i class="fab fa-facebook text-lg"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-blue-700 transition-colors"
+                           title="Share on LinkedIn">
+                            <i class="fab fa-linkedin text-lg"></i>
+                        </a>
+                        <button onclick="copyPostLink()" 
+                                class="text-gray-400 hover:text-gray-900 transition-colors"
+                                title="Copy link">
+                            <i class="fas fa-link text-lg"></i>
+                        </button>
                     </div>
-                    
-                    <a href="/blog" class="text-primary hover:text-primary font-medium text-sm">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        Back to Blog
-                    </a>
+                </div>
+                
+                <!-- Copy Link Toast -->
+                <div id="copy-toast" class="hidden fixed bottom-4 right-4 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300 transform translate-y-full">
+                    <i class="fas fa-check mr-2"></i>Link copied to clipboard!
                 </div>
             </footer>
             </div>
@@ -730,6 +739,52 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             document.body.appendChild(modal);
         };
     });
+    
+    // Copy link functionality
+    function copyPostLink() {
+        const url = window.location.href;
+        
+        // Copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => {
+                showCopyToast();
+            }).catch(() => {
+                fallbackCopyToClipboard(url);
+            });
+        } else {
+            fallbackCopyToClipboard(url);
+        }
+    }
+    
+    function fallbackCopyToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showCopyToast();
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopyToast() {
+        const toast = document.getElementById('copy-toast');
+        toast.classList.remove('hidden', 'translate-y-full');
+        toast.classList.add('translate-y-0');
+        
+        setTimeout(() => {
+            toast.classList.remove('translate-y-0');
+            toast.classList.add('translate-y-full');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }, 3000);
+    }
     </script>
 
     <style>
