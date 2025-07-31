@@ -396,7 +396,14 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <?php 
     // Hero section for blog post
     $heroTitle = $post->getTitle();
-    $heroSubtitle = null; // We'll show meta info separately
+    
+    // Build subtitle with meta information
+    $metaParts = [];
+    $metaParts[] = 'By ' . htmlspecialchars($post->getAuthor());
+    $metaParts[] = $post->getFormattedDate();
+    $metaParts[] = $post->getReadingTime();
+    $heroSubtitle = implode(' • ', $metaParts);
+    
     include __DIR__ . '/../includes/hero-section.php';
     ?>
 
@@ -435,25 +442,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                             <?php echo htmlspecialchars($post->getExcerpt()); ?>
                         </p>
                     <?php endif; ?>
-                    
-                    <div class="flex items-center justify-center text-gray-500 text-sm space-x-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-user mr-2"></i>
-                            <span><?php echo htmlspecialchars($post->getAuthor()); ?></span>
-                        </div>
-                        <span>•</span>
-                        <div class="flex items-center">
-                            <i class="fas fa-calendar mr-2"></i>
-                            <time datetime="<?php echo $post->getDate(); ?>">
-                                <?php echo $post->getFormattedDate(); ?>
-                            </time>
-                        </div>
-                        <span>•</span>
-                        <div class="flex items-center">
-                            <i class="fas fa-clock mr-2"></i>
-                            <span><?php echo $post->getReadingTime(); ?></span>
-                        </div>
-                    </div>
                 </div>
                 
                 <?php if ($post->getFeaturedImage()): ?>
