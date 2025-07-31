@@ -271,7 +271,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
             padding: 1.5rem;
-            max-width: 240px;
+            max-width: 280px;
             max-height: calc(100vh - 16rem); /* Ensures margin from top and bottom */
             overflow: hidden;
             opacity: 0;
@@ -405,8 +405,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <article class="bg-white">
         <div class="relative">
             <!-- Table of Contents Sidebar -->
-            <aside class="hidden xl:block absolute left-0 top-0 w-72 h-full py-12">
-                <div class="sticky top-32 ml-auto mr-4" id="table-of-contents">
+            <aside class="hidden xl:block absolute left-0 top-0 w-80 h-full py-12">
+                <div class="sticky top-32 ml-auto mr-2" id="table-of-contents">
                     <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
                     <nav class="toc-nav">
                         <!-- Will be populated by JavaScript -->
