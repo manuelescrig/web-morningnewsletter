@@ -24,7 +24,7 @@ include __DIR__ . '/includes/page-header.php';
             <p class="text-gray-500 mb-8 text-sm">Last updated: June 23, 2025</p>
 
             <div class="prose prose-lg max-w-none">
-                <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Introduction</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Introduction</h2>
                 <p class="text-gray-700 mb-4">
                     MorningNewsletter.com ("I," "me," or "my") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how I collect, use, disclose, and safeguard your information when you use this website and services.
                 </p>

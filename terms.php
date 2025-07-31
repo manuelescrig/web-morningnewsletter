@@ -24,7 +24,7 @@ include __DIR__ . '/includes/page-header.php';
             <p class="text-gray-500 mb-8 text-sm">Last updated: June 23, 2025</p>
 
             <div class="prose prose-lg max-w-none">
-                <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 gradient-text">1. Agreement to Terms</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Agreement to Terms</h2>
                 <p class="text-gray-700 mb-4">
                     By accessing and using MorningNewsletter.com (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. These Terms of Service ("Terms") govern your use of this website and services provided by MorningNewsletter.com ("I," "me," or "my").
                 </p>
