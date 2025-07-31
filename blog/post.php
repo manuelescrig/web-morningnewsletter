@@ -264,6 +264,130 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         .prose > *:last-child {
             margin-bottom: 0;
         }
+        
+        /* Table of Contents Styles */
+        #table-of-contents {
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .toc-nav {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db transparent;
+        }
+        
+        .toc-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .toc-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .toc-nav::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 3px;
+        }
+        
+        .toc-nav::-webkit-scrollbar-thumb:hover {
+            background-color: #9ca3af;
+        }
+        
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            margin-left: 0;
+        }
+        
+        .toc-link:hover {
+            color: var(--tufts-blue);
+            background-color: rgba(70, 139, 230, 0.05);
+            text-decoration: none;
+        }
+        
+        .toc-link.toc-h2 {
+            font-weight: 500;
+        }
+        
+        .toc-link.toc-h3 {
+            padding-left: 1.75rem;
+            font-size: 0.8125rem;
+        }
+        
+        .toc-link.toc-h4 {
+            padding-left: 3rem;
+            font-size: 0.8125rem;
+            color: #9ca3af;
+        }
+        
+        .toc-link.active {
+            color: var(--tufts-blue);
+            font-weight: 600;
+            border-left-color: var(--tufts-blue);
+            background-color: rgba(70, 139, 230, 0.1);
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Scroll offset for fixed header */
+        .prose h2[id],
+        .prose h3[id],
+        .prose h4[id] {
+            scroll-margin-top: 100px;
+        }
+        
+        /* Progress indicator */
+        .toc-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            background-color: var(--tufts-blue);
+            transition: height 0.3s ease, top 0.3s ease;
+            border-radius: 1.5px;
+        }
+        
+        /* Mobile TOC button */
+        .mobile-toc-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3rem;
+            height: 3rem;
+            background-color: var(--tufts-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 40;
+            transition: all 0.2s ease;
+        }
+        
+        .mobile-toc-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        @media (min-width: 1024px) {
+            .mobile-toc-button {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -277,9 +401,22 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     ?>
 
 
-    <!-- Article -->
+    <!-- Article with Table of Contents -->
     <article class="bg-white">
-        <div class="mx-auto max-w-4xl px-6 lg:px-8 py-12">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Table of Contents Sidebar -->
+                <aside class="hidden lg:block lg:col-span-3">
+                    <div class="sticky top-24" id="table-of-contents">
+                        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
+                        <nav class="toc-nav space-y-1">
+                            <!-- Will be populated by JavaScript -->
+                        </nav>
+                    </div>
+                </aside>
+                
+                <!-- Main Article Content -->
+                <div class="lg:col-span-9 lg:pl-8">
             <!-- Article Header -->
             <header class="mb-8">
                 <div class="text-center mb-8">
@@ -330,7 +467,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             </header>
 
             <!-- Article Content -->
-            <div class="prose max-w-none">
+            <div class="prose max-w-none" id="article-content">
                 <?php echo $post->getHtmlContent(); ?>
             </div>
 
@@ -364,6 +501,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                     </a>
                 </div>
             </footer>
+                </div>
+            </div>
         </div>
     </article>
 
@@ -437,5 +576,175 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             </a>
         </div>
     </div>
+
+    <!-- Mobile TOC Button -->
+    <button class="mobile-toc-button lg:hidden" onclick="toggleMobileTOC()" aria-label="Table of Contents">
+        <i class="fas fa-list-ul"></i>
+    </button>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Generate Table of Contents
+        const articleContent = document.getElementById('article-content');
+        const tocNav = document.querySelector('.toc-nav');
+        const headings = articleContent.querySelectorAll('h2, h3, h4');
+        
+        if (headings.length === 0) return;
+        
+        // Create TOC progress indicator
+        const progressBar = document.createElement('div');
+        progressBar.className = 'toc-progress';
+        tocNav.style.position = 'relative';
+        tocNav.appendChild(progressBar);
+        
+        // Generate unique IDs and TOC links
+        headings.forEach((heading, index) => {
+            // Create ID from heading text
+            const text = heading.textContent.trim();
+            const id = text.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') + '-' + index;
+            heading.id = id;
+            
+            // Create TOC link
+            const link = document.createElement('a');
+            link.href = '#' + id;
+            link.className = 'toc-link toc-' + heading.tagName.toLowerCase();
+            link.textContent = text;
+            
+            // Add click handler with smooth scroll
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById(id);
+                if (target) {
+                    const offset = 100; // Account for fixed header
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+            
+            tocNav.appendChild(link);
+        });
+        
+        // Active section tracking
+        const tocLinks = tocNav.querySelectorAll('.toc-link');
+        let currentActiveIndex = -1;
+        
+        function updateActiveSection() {
+            const scrollPosition = window.scrollY + 150; // Offset for detection
+            let newActiveIndex = -1;
+            
+            // Find the current section
+            for (let i = headings.length - 1; i >= 0; i--) {
+                if (headings[i].offsetTop <= scrollPosition) {
+                    newActiveIndex = i;
+                    break;
+                }
+            }
+            
+            // Update active state only if changed
+            if (newActiveIndex !== currentActiveIndex) {
+                tocLinks.forEach(link => link.classList.remove('active'));
+                
+                if (newActiveIndex >= 0 && tocLinks[newActiveIndex]) {
+                    tocLinks[newActiveIndex].classList.add('active');
+                    
+                    // Update progress bar position
+                    const activeLink = tocLinks[newActiveIndex];
+                    const linkRect = activeLink.getBoundingClientRect();
+                    const navRect = tocNav.getBoundingClientRect();
+                    progressBar.style.top = (linkRect.top - navRect.top) + 'px';
+                    progressBar.style.height = linkRect.height + 'px';
+                    
+                    // Ensure active link is visible in scrollable TOC
+                    const tocNavRect = tocNav.getBoundingClientRect();
+                    if (linkRect.top < tocNavRect.top || linkRect.bottom > tocNavRect.bottom) {
+                        activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+                
+                currentActiveIndex = newActiveIndex;
+            }
+        }
+        
+        // Throttle scroll events for performance
+        let scrollTimeout;
+        function handleScroll() {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+            scrollTimeout = window.requestAnimationFrame(updateActiveSection);
+        }
+        
+        // Listen for scroll events
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', updateActiveSection);
+        
+        // Initial update
+        updateActiveSection();
+        
+        // Mobile TOC functionality
+        window.toggleMobileTOC = function() {
+            // Create mobile TOC modal
+            const existingModal = document.getElementById('mobile-toc-modal');
+            if (existingModal) {
+                existingModal.remove();
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.id = 'mobile-toc-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden';
+            modal.innerHTML = `
+                <div class="bg-white rounded-t-2xl absolute bottom-0 left-0 right-0 max-h-[80vh] overflow-hidden animate-slide-up">
+                    <div class="flex justify-between items-center p-4 border-b">
+                        <h3 class="text-lg font-semibold">Table of Contents</h3>
+                        <button onclick="toggleMobileTOC()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 overflow-y-auto max-h-[calc(80vh-4rem)]">
+                        ${tocNav.outerHTML}
+                    </div>
+                </div>
+            `;
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    toggleMobileTOC();
+                }
+            });
+            
+            document.body.appendChild(modal);
+        };
+    });
+    </script>
+
+    <style>
+    @keyframes slide-up {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-slide-up {
+        animation: slide-up 0.3s ease-out;
+    }
+    
+    #mobile-toc-modal .toc-nav {
+        max-height: none;
+    }
+    
+    #mobile-toc-modal .toc-progress {
+        display: none;
+    }
+    </style>
 
 <?php include __DIR__ . '/../includes/page-footer.php'; ?>
