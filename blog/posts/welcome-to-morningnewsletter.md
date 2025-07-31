@@ -34,6 +34,7 @@ MorningNewsletter isn't just another app to add to your morning routine. It's de
 This project is deeply personal. As someone who's spent years optimizing code and building systems, I couldn't stand the inefficiency of my own mornings. But more than that, I care about the human side of technology. We shouldn't have to adapt to our tools; they should adapt to us.
 
 Every feature in MorningNewsletter comes from a real need I experienced:
+
 - The customizable delivery time? Because I wanted my brief ready when I woke up, not when some algorithm decided.
 - The source flexibility? Because my interests and responsibilities change, and my tools should keep up.
 - The clean, scannable format? Because information should clarify, not clutter.
@@ -57,6 +58,7 @@ What excites me most is how AI transforms this experience. We're not just aggreg
 I believe in building in public and with my users. MorningNewsletter will grow and evolve based on what you need. I read every piece of feedback, because this isn't just my tool anymore; it's ours.
 
 Some things I'm excited to explore:
+
 - Voice assistants that can read your brief and answer questions about it
 - Smart notifications for truly urgent updates during the day
 - Team briefings for companies and organizations

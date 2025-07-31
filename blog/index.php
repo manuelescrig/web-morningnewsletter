@@ -35,8 +35,7 @@ include __DIR__ . '/../includes/page-header.php';
     $heroTitle = $selectedTag ? "Posts tagged \"" . htmlspecialchars($selectedTag) . "\"" : "Blog";
     $heroSubtitle = $selectedTag ? "Posts about " . htmlspecialchars($selectedTag) : "Insights and tips to optimize your morning routine";
     include __DIR__ . '/../includes/hero-section.php';
-    
-    // Removed "View all posts" from here - moved to after posts list
+    ?>
 
     <!-- Main Content -->
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
