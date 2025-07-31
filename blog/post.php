@@ -412,17 +412,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <div class="relative mesh-bg pt-36 sm:pt-44 pb-28 sm:pb-36">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
             <div class="mx-auto max-w-4xl text-center">
-                <?php if (!empty($heroTags)): ?>
-                    <div class="flex justify-center flex-wrap gap-2 mb-4">
-                        <?php foreach ($heroTags as $tag): ?>
-                            <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                               class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-white/80 text-primary-dark hover:bg-white transition-colors border border-white/50">
-                                <?php echo htmlspecialchars($tag); ?>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-                
                 <h1 class="text-4xl font-bold tracking-tight text-primary-darker sm:text-5xl">
                     <?php echo htmlspecialchars($heroTitle); ?>
                 </h1>
@@ -430,6 +419,17 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                 <p class="mt-6 text-lg text-primary-dark max-w-2xl mx-auto">
                     <?php echo htmlspecialchars($heroSubtitle); ?>
                 </p>
+                
+                <?php if (!empty($heroTags)): ?>
+                    <div class="flex justify-center flex-wrap gap-1.5 mt-4">
+                        <?php foreach ($heroTags as $tag): ?>
+                            <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
+                               class="inline-flex items-center px-2.5 py-0.5 text-xs font-medium bg-white/70 text-primary-dark hover:bg-white/90 transition-colors border border-white/30 rounded-full">
+                                <?php echo htmlspecialchars($tag); ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
