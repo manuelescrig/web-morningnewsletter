@@ -58,6 +58,16 @@ include __DIR__ . '/../includes/page-header.php';
                         <?php endif; ?>
                     </div>
                 <?php else: ?>
+                    <?php if ($selectedTag): ?>
+                        <!-- Breadcrumb to view all posts -->
+                        <div class="mb-8 pb-8 border-b border-gray-200">
+                            <a href="/blog" class="inline-flex items-center text-gray-500 hover:text-primary font-medium transition-colors">
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                <span>View all posts</span>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    
                     <div class="space-y-8">
                         <?php foreach ($posts as $post): ?>
                             <article class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
@@ -112,16 +122,6 @@ include __DIR__ . '/../includes/page-header.php';
                             </article>
                         <?php endforeach; ?>
                     </div>
-                    
-                    <?php if ($selectedTag): ?>
-                        <!-- Breadcrumb to view all posts -->
-                        <div class="mt-8 pt-8 border-t border-gray-200">
-                            <a href="/blog" class="inline-flex items-center text-gray-500 hover:text-primary font-medium transition-colors">
-                                <i class="fas fa-arrow-left mr-2"></i>
-                                <span>View all posts</span>
-                            </a>
-                        </div>
-                    <?php endif; ?>
                 <?php endif; ?>
             </div>
 

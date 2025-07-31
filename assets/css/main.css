@@ -32,19 +32,13 @@ label[for] {
     cursor: pointer !important;
 }
 
-/* Make text links more obvious with underline */
-a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]):not(.no-underline) {
-    text-decoration: underline;
-    text-decoration-color: currentColor;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-    opacity: 0.9;
-    transition: opacity 0.2s ease, text-decoration-thickness 0.2s ease;
+/* Links without forced underlines */
+a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]) {
+    transition: opacity 0.2s ease;
 }
 
-a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]):not(.no-underline):hover {
-    opacity: 1;
-    text-decoration-thickness: 2px;
+a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]):hover {
+    opacity: 0.8;
 }
 
 /* Background Color Utilities */
