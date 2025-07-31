@@ -175,10 +175,22 @@ class BlogPost {
         // Basic markdown parsing
         $html = $markdown;
         
+        // Convert image placeholders to gray boxes
+        $html = preg_replace('/\[IMAGE PLACEHOLDER: (.+?)\]/i', 
+            '<div class="bg-gray-200 rounded-lg p-8 my-6 text-center">
+                <i class="fas fa-image text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-500 text-sm mt-2">$1</p>
+            </div>', $html);
+        
         // Headers
         $html = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $html);
         $html = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $html);
         $html = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $html);
+        
+        // Lists (unordered)
+        $html = preg_replace('/^- (.+)$/m', '<li>$1</li>', $html);
+        $html = preg_replace('/(<li>.*<\/li>)(?=\n(?!<li>))/s', '<ul>$1</ul>', $html);
+        $html = preg_replace('/<\/li>\n<li>/s', '</li><li>', $html);
         
         // Bold and italic
         $html = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $html);
@@ -191,16 +203,23 @@ class BlogPost {
         $html = preg_replace('/```(.+?)```/s', '<pre><code>$1</code></pre>', $html);
         $html = preg_replace('/`(.+?)`/', '<code>$1</code>', $html);
         
+        // Line breaks
+        $html = preg_replace('/  \n/', '<br>', $html);
+        
         // Paragraphs
         $html = preg_replace('/\n\n/', '</p><p>', $html);
         $html = '<p>' . $html . '</p>';
         
         // Clean up empty paragraphs
-        $html = preg_replace('/<p><\/p>/', '', $html);
+        $html = preg_replace('/<p>\s*<\/p>/', '', $html);
         $html = preg_replace('/<p>(<h[1-6]>)/', '$1', $html);
         $html = preg_replace('/(<\/h[1-6]>)<\/p>/', '$1', $html);
         $html = preg_replace('/<p>(<pre>)/', '$1', $html);
         $html = preg_replace('/(<\/pre>)<\/p>/', '$1', $html);
+        $html = preg_replace('/<p>(<ul>)/', '$1', $html);
+        $html = preg_replace('/(<\/ul>)<\/p>/', '$1', $html);
+        $html = preg_replace('/<p>(<div)/', '$1', $html);
+        $html = preg_replace('/(<\/div>)<\/p>/', '$1', $html);
         
         return $html;
     }
