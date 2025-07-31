@@ -587,11 +587,13 @@ nav .btn-primary {
 
 /* Keep ring border on hover for popular pricing */
 .standard-box.popular-pricing.ring-2 {
-    border: 2px solid rgb(59, 130, 246);
+    border: 1px solid rgb(59, 130, 246);
+    box-shadow: 0 0 0 1px rgb(59, 130, 246), 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .standard-box.popular-pricing.ring-2:hover {
-    border: 2px solid rgb(59, 130, 246);
+    border: 1px solid rgb(59, 130, 246);
+    box-shadow: 0 0 0 1px rgb(59, 130, 246), 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
 /* Feature Box with gradient blur effect */
