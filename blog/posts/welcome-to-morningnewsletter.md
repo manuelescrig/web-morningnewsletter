@@ -62,7 +62,7 @@ Every feature in MorningNewsletter comes from a real need I experienced:
 
 What excites me most is how AI transforms this experience. We're not just aggregating data; we're using AI to create something truly intelligent.
 
-### 🤖 AI-Powered Features
+### AI-Powered Features 🤖
 
 #### **Summarize the Noise**
 Instead of reading 20 news articles, you get the essential insights that actually matter to your work and interests. Our AI:

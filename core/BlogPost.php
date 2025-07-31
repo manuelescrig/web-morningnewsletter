@@ -177,32 +177,66 @@ class BlogPost {
         
         // Convert image placeholders to gray boxes
         $html = preg_replace('/\[IMAGE PLACEHOLDER: (.+?)\]/i', 
-            '<div class="bg-gray-200 rounded-lg p-8 my-6 text-center">
-                <i class="fas fa-image text-4xl text-gray-400 mb-2"></i>
-                <p class="text-gray-500 text-sm mt-2">$1</p>
+            '<div class="image-placeholder">
+                <i class="fas fa-image"></i>
+                <p>$1</p>
             </div>', $html);
         
-        // Headers
+        // Process lists before headers to avoid conflicts
+        // Collect all list items into arrays for processing
+        $lines = explode("\n", $html);
+        $processed = [];
+        $currentList = [];
+        $listType = '';
+        
+        foreach ($lines as $line) {
+            // Check for ordered list items
+            if (preg_match('/^(\d+)\.\s+(.+)$/', $line, $matches)) {
+                if ($listType !== 'ol' && !empty($currentList)) {
+                    // Close previous list
+                    $processed[] = $this->wrapList($currentList, $listType);
+                    $currentList = [];
+                }
+                $listType = 'ol';
+                $currentList[] = '<li>' . $matches[2] . '</li>';
+            }
+            // Check for unordered list items
+            elseif (preg_match('/^-\s+(.+)$/', $line, $matches)) {
+                if ($listType !== 'ul' && !empty($currentList)) {
+                    // Close previous list
+                    $processed[] = $this->wrapList($currentList, $listType);
+                    $currentList = [];
+                }
+                $listType = 'ul';
+                $currentList[] = '<li>' . $matches[1] . '</li>';
+            }
+            else {
+                // Not a list item, close any open list
+                if (!empty($currentList)) {
+                    $processed[] = $this->wrapList($currentList, $listType);
+                    $currentList = [];
+                    $listType = '';
+                }
+                $processed[] = $line;
+            }
+        }
+        
+        // Close any remaining list
+        if (!empty($currentList)) {
+            $processed[] = $this->wrapList($currentList, $listType);
+        }
+        
+        $html = implode("\n", $processed);
+        
+        // Headers (process after lists to avoid conflicts)
         $html = preg_replace('/^#### (.+)$/m', '<h4>$1</h4>', $html);
         $html = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $html);
         $html = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $html);
         $html = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $html);
         
-        // Lists (unordered)
-        $html = preg_replace('/^- (.+)$/m', '<li>$1</li>', $html);
-        $html = preg_replace('/(<li>.*<\/li>)(?=\n(?!<li>))/s', '<ul>$1</ul>', $html);
-        $html = preg_replace('/<\/li>\n<li>/s', '</li><li>', $html);
-        
-        // Lists (ordered)
-        $html = preg_replace('/^\d+\. (.+)$/m', '<oli>$1</oli>', $html);
-        $html = preg_replace('/(<oli>.*<\/oli>)(?=\n(?!<oli>))/s', '<ol>$1</ol>', $html);
-        $html = preg_replace('/<\/oli>\n<oli>/s', '</oli><oli>', $html);
-        $html = str_replace('<oli>', '<li>', $html);
-        $html = str_replace('</oli>', '</li>', $html);
-        
-        // Bold and italic
-        $html = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $html);
-        $html = preg_replace('/\*(.+?)\*/', '<em>$1</em>', $html);
+        // Bold and italic (process before paragraphs)
+        $html = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $html);
+        $html = preg_replace('/\*([^\*\n]+?)\*/s', '<em>$1</em>', $html);
         
         // Links
         $html = preg_replace('/\[(.+?)\]\((.+?)\)/', '<a href="$2">$1</a>', $html);
@@ -211,25 +245,59 @@ class BlogPost {
         $html = preg_replace('/```(.+?)```/s', '<pre><code>$1</code></pre>', $html);
         $html = preg_replace('/`(.+?)`/', '<code>$1</code>', $html);
         
-        // Line breaks
+        // Line breaks (two spaces at end of line)
         $html = preg_replace('/  \n/', '<br>', $html);
         
-        // Paragraphs
-        $html = preg_replace('/\n\n/', '</p><p>', $html);
-        $html = '<p>' . $html . '</p>';
+        // Paragraphs (but not inside lists or headers)
+        $lines = explode("\n", $html);
+        $inBlock = false;
+        $paragraph = [];
+        $result = [];
         
-        // Clean up empty paragraphs
-        $html = preg_replace('/<p>\s*<\/p>/', '', $html);
-        $html = preg_replace('/<p>(<h[1-6]>)/', '$1', $html);
-        $html = preg_replace('/(<\/h[1-6]>)<\/p>/', '$1', $html);
-        $html = preg_replace('/<p>(<pre>)/', '$1', $html);
-        $html = preg_replace('/(<\/pre>)<\/p>/', '$1', $html);
-        $html = preg_replace('/<p>(<ul>)/', '$1', $html);
-        $html = preg_replace('/(<\/ul>)<\/p>/', '$1', $html);
-        $html = preg_replace('/<p>(<div)/', '$1', $html);
-        $html = preg_replace('/(<\/div>)<\/p>/', '$1', $html);
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            
+            // Check if line is a block element
+            if (preg_match('/^<(h[1-6]|ul|ol|li|pre|div|blockquote)/', $trimmed) ||
+                preg_match('/<\/(h[1-6]|ul|ol|li|pre|div|blockquote)>$/', $trimmed)) {
+                // Close any open paragraph
+                if (!empty($paragraph)) {
+                    $result[] = '<p>' . implode("\n", $paragraph) . '</p>';
+                    $paragraph = [];
+                }
+                $result[] = $line;
+                $inBlock = preg_match('/^<(ul|ol|pre|blockquote)/', $trimmed);
+            } elseif (empty($trimmed)) {
+                // Empty line - close paragraph if we have one
+                if (!empty($paragraph)) {
+                    $result[] = '<p>' . implode("\n", $paragraph) . '</p>';
+                    $paragraph = [];
+                }
+            } else {
+                // Regular text line
+                if (!$inBlock) {
+                    $paragraph[] = $line;
+                } else {
+                    $result[] = $line;
+                }
+            }
+        }
         
-        return $html;
+        // Close any remaining paragraph
+        if (!empty($paragraph)) {
+            $result[] = '<p>' . implode("\n", $paragraph) . '</p>';
+        }
+        
+        return implode("\n", $result);
+    }
+    
+    // Helper function to wrap list items
+    private function wrapList($items, $type) {
+        if ($type === 'ol') {
+            return '<ol>' . implode('', $items) . '</ol>';
+        } else {
+            return '<ul>' . implode('', $items) . '</ul>';
+        }
     }
     
     // Getters

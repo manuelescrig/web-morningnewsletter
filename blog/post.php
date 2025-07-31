@@ -82,21 +82,188 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         /* Custom prose styles for blog content */
         .prose {
             max-width: none;
+            color: #374151;
+            line-height: 1.75;
         }
-        .prose h1 { @apply text-3xl font-bold text-gray-900 mt-8 mb-4; }
-        .prose h2 { @apply text-2xl font-bold text-gray-900 mt-8 mb-4; }
-        .prose h3 { @apply text-xl font-bold text-gray-900 mt-6 mb-3; }
-        .prose h4 { @apply text-lg font-bold text-gray-900 mt-4 mb-2; }
-        .prose p { @apply text-gray-700 leading-relaxed mb-4; }
-        .prose a { @apply text-primary hover:text-primary-darker underline; }
-        .prose strong { @apply font-semibold text-gray-900; }
-        .prose em { @apply italic; }
-        .prose code { @apply bg-gray-100 text-gray-900 px-2 py-1 rounded text-sm font-mono; }
-        .prose pre { @apply bg-gray-100 text-gray-900 p-4 rounded-lg overflow-x-auto mb-4; }
-        .prose pre code { @apply bg-transparent p-0; }
-        .prose ul { @apply list-disc list-inside mb-4 space-y-1; }
-        .prose ol { @apply list-decimal list-inside mb-4 space-y-1; }
-        .prose blockquote { @apply border-l-4 border-primary-light pl-4 italic text-gray-600 mb-4; }
+        
+        /* Headers */
+        .prose h1 { 
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #111827;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .prose h2 { 
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .prose h3 { 
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .prose h4 { 
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        /* Paragraphs */
+        .prose p { 
+            font-size: 1.125rem;
+            color: #374151;
+            margin-bottom: 1.5rem;
+            line-height: 1.75;
+        }
+        
+        /* Links */
+        .prose a { 
+            color: var(--tufts-blue);
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        
+        .prose a:hover {
+            color: var(--cobalt-blue);
+        }
+        
+        /* Text styles */
+        .prose strong { 
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .prose em { 
+            font-style: italic;
+            color: #374151;
+        }
+        
+        /* Code */
+        .prose code { 
+            background-color: #f3f4f6;
+            color: #111827;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+        
+        .prose pre { 
+            background-color: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .prose pre code { 
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+        
+        /* Lists */
+        .prose ul { 
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .prose ol { 
+            list-style-type: decimal;
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .prose ul li, 
+        .prose ol li { 
+            margin-bottom: 0.5rem;
+            padding-left: 0.375rem;
+            font-size: 1.125rem;
+            color: #374151;
+            line-height: 1.75;
+        }
+        
+        .prose ul ul, 
+        .prose ol ol, 
+        .prose ul ol, 
+        .prose ol ul { 
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Blockquotes */
+        .prose blockquote { 
+            border-left: 4px solid var(--jordy-blue);
+            padding-left: 1rem;
+            font-style: italic;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Make emoji headers stand out */
+        .prose h3 .emoji,
+        .prose h4 .emoji { 
+            margin-right: 0.5rem;
+        }
+        
+        /* Image placeholder styling */
+        .image-placeholder { 
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .image-placeholder i { 
+            font-size: 3rem;
+            color: #9ca3af;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        
+        .image-placeholder p { 
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+        
+        /* First paragraph after header */
+        .prose h1 + p,
+        .prose h2 + p,
+        .prose h3 + p,
+        .prose h4 + p {
+            margin-top: 0.5rem;
+        }
+        
+        /* Spacing for sections */
+        .prose > *:first-child {
+            margin-top: 0;
+        }
+        
+        .prose > *:last-child {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body class="bg-white">
