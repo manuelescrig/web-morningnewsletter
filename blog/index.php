@@ -32,7 +32,7 @@ include __DIR__ . '/../includes/page-header.php';
 
     <?php 
     // Hero section configuration
-    $heroTitle = $selectedTag ? "Posts tagged \"" . htmlspecialchars($selectedTag) . "\"" : "MorningNewsletter Blog";
+    $heroTitle = $selectedTag ? "Posts tagged \"" . htmlspecialchars($selectedTag) . "\"" : "Blog";
     $heroSubtitle = $selectedTag ? "Posts about " . htmlspecialchars($selectedTag) : "Insights and tips to optimize your morning routine";
     include __DIR__ . '/../includes/hero-section.php';
     

@@ -63,7 +63,7 @@ include __DIR__ . '/includes/page-header.php';
     <?php 
     // Hero section configuration
     $heroTitle = "How Can I Help?";
-    $heroSubtitle = "Get help with your MorningNewsletter account";
+    $heroSubtitle = "Find help here";
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
