@@ -339,18 +339,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             background-color: rgba(70, 139, 230, 0.1);
         }
         
-        .toc-link.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 70%;
-            background-color: var(--tufts-blue);
-            border-radius: 1.5px;
-        }
-        
         /* Smooth scroll behavior */
         html {
             scroll-behavior: smooth;
