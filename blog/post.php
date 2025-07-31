@@ -560,8 +560,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
 
     <!-- Newsletter CTA -->
     <div class="relative overflow-hidden py-16">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-lightest via-primary-light to-primary opacity-90"></div>
-        <div class="absolute inset-0 mesh-bg opacity-30"></div>
+        <div class="absolute inset-0 bg-gradient-to-tr from-primary-light via-primary-lightest to-white opacity-95"></div>
+        <div class="absolute inset-0 mesh-bg opacity-20"></div>
         <div class="relative mx-auto max-w-4xl px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-bold text-primary-darker mb-4">
                 Stay Updated with MorningNewsletter
@@ -571,6 +571,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             </p>
             <a href="/register" class="btn-primary">
                 Start Your Free Trial
+                <i class="fas fa-arrow-right ml-2"></i>
             </a>
         </div>
     </div>
