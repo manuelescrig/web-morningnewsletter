@@ -17,6 +17,36 @@
     --nav-underline: rgb(29, 155, 240);
 }
 
+/* Ensure all interactive elements show pointer cursor */
+a, 
+button,
+[role="button"],
+.clickable,
+.btn-primary,
+.btn-pill,
+.btn-transition,
+input[type="submit"],
+input[type="button"],
+select,
+label[for] {
+    cursor: pointer !important;
+}
+
+/* Make text links more obvious with underline */
+a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]):not(.no-underline) {
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    opacity: 0.9;
+    transition: opacity 0.2s ease, text-decoration-thickness 0.2s ease;
+}
+
+a:not(.btn-primary):not(.btn-pill):not(.btn):not([class*="btn-"]):not(.no-underline):hover {
+    opacity: 1;
+    text-decoration-thickness: 2px;
+}
+
 /* Background Color Utilities */
 .bg-primary { background-color: var(--primary-button) !important; }
 .bg-primary-dark { background-color: var(--cobalt-blue) !important; }
@@ -58,6 +88,14 @@
 .hover-text-primary-dark:hover { color: var(--cobalt-blue) !important; }
 .hover-text-primary-darker:hover { color: var(--cool-black) !important; }
 .hover-border-primary-light:hover { border-color: var(--jordy-blue) !important; }
+
+/* Utility class to disable link underlines */
+.no-underline,
+nav a,
+.nav a,
+.navigation a {
+    text-decoration: none !important;
+}
 
 /* Dashboard Title Styles */
 .dashboard-title, 
