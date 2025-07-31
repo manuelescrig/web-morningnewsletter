@@ -569,10 +569,8 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             <p class="text-xl text-primary-dark mb-8 max-w-2xl mx-auto">
                 Get personalized insights delivered to your inbox every morning. Join thousands of professionals who start their day informed.
             </p>
-            <a href="/register" 
-               class="btn-pill inline-flex items-center bg-gradient-to-r from-primary to-primary hover:from-primary-dark hover:to-primary-dark text-white font-semibold px-8 py-4 transition-all duration-200 hover:scale-105 shadow-lg">
+            <a href="/register" class="btn-primary">
                 Start Your Free Trial
-                <i class="fas fa-arrow-right ml-2"></i>
             </a>
         </div>
     </div>
