@@ -580,13 +580,9 @@ nav .btn-primary {
     padding: 0 2rem 1.5rem 2rem;
 }
 
-/* Popular pricing box - prevent double transform */
+/* Popular pricing box */
 .standard-box.popular-pricing {
-    transform: scale(1.05);
-}
-
-.standard-box.popular-pricing:hover {
-    transform: scale(1.05) translateY(-2px);
+    position: relative;
 }
 
 /* Feature Box with gradient blur effect */
