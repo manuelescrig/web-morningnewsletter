@@ -16,7 +16,7 @@ $subtitle = isset($heroSubtitle) ? $heroSubtitle : '';
 <div class="relative mesh-bg pt-36 sm:pt-44 pb-28 sm:pb-36">
     <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <div class="mx-auto max-w-4xl text-center">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h1 class="text-4xl font-bold tracking-tight text-primary-darker sm:text-5xl">
                 <?php echo htmlspecialchars($title); ?>
             </h1>
             <?php if ($subtitle): ?>
