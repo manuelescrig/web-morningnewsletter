@@ -102,11 +102,13 @@ body > * {
 }
 
 /* Navigation Hover Underline Override */
+.hover\:nav-underline {
+    border-bottom: 2px solid transparent !important;
+    transition: border-color 0.2s ease;
+}
+
 .hover\:nav-underline:hover {
-    border-bottom: 2px solid rgba(70, 139, 230, 0.4) !important;
-    border-radius: 1px !important;
-    padding-bottom: 8px !important;
-    margin-bottom: -2px !important;
+    border-bottom-color: rgba(70, 139, 230, 0.4) !important;
 }
 
 /* Primary Button Styles - Pill/Capsule Style */
@@ -125,9 +127,9 @@ body > * {
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(70, 139, 230, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
+    filter: brightness(1.05);
 }
 
 /* Ripple Effect */
@@ -540,7 +542,6 @@ nav .btn-primary {
 }
 
 .standard-box:hover {
-    transform: translateY(-2px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
