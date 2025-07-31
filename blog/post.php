@@ -274,6 +274,12 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             max-width: 240px;
             max-height: calc(100vh - 16rem); /* Ensures margin from top and bottom */
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #table-of-contents.visible {
+            opacity: 1;
         }
         
         .toc-nav {
@@ -619,10 +625,22 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         // Active section tracking
         const tocLinks = tocNav.querySelectorAll('.toc-link');
         let currentActiveIndex = -1;
+        const tocContainer = document.getElementById('table-of-contents');
+        
+        // Get the position of the first heading
+        const firstHeading = headings[0];
+        const firstHeadingOffset = firstHeading ? firstHeading.offsetTop : 0;
         
         function updateActiveSection() {
             const scrollPosition = window.scrollY + 150; // Offset for detection
             let newActiveIndex = -1;
+            
+            // Show/hide TOC based on scroll position
+            if (window.scrollY > firstHeadingOffset - 200) {
+                tocContainer.classList.add('visible');
+            } else {
+                tocContainer.classList.remove('visible');
+            }
             
             // Find the current section
             for (let i = headings.length - 1; i >= 0; i--) {
