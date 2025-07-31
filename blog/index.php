@@ -153,12 +153,20 @@ include __DIR__ . '/../includes/page-header.php';
                             Stay Updated
                         </h3>
                         <p class="text-gray-600 mb-4 text-sm">
-                            Get your personalized morning brief delivered daily. Never miss what matters.
+                            Get blog updates and productivity tips delivered to your inbox.
                         </p>
-                        <a href="/register" 
-                           class="btn-pill block w-full bg-primary text-white text-center py-2 px-4 hover:bg-primary-dark transition-colors font-medium">
-                            Start for Free
-                        </a>
+                        <form id="blog-newsletter-form" class="space-y-3">
+                            <input type="email" 
+                                   id="blog-newsletter-email" 
+                                   placeholder="Enter your email" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm" 
+                                   required>
+                            <button type="submit" 
+                                    class="btn-pill block w-full bg-primary text-white text-center py-2 px-4 hover:bg-primary-dark transition-colors font-medium">
+                                Subscribe to Blog
+                            </button>
+                        </form>
+                        <p class="text-xs text-gray-500 mt-3 text-center">No spam. Unsubscribe anytime.</p>
                     </div>
 
                     <!-- Recent Posts (if viewing by tag) -->
@@ -192,5 +200,36 @@ include __DIR__ . '/../includes/page-header.php';
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('blog-newsletter-form');
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('blog-newsletter-email').value;
+                const button = form.querySelector('button[type="submit"]');
+                const originalText = button.textContent;
+                
+                // Update button state
+                button.textContent = 'Subscribing...';
+                button.disabled = true;
+                
+                try {
+                    // For now, redirect to registration with email pre-filled
+                    // In the future, this could be a separate newsletter-only subscription
+                    window.location.href = '/auth/register.php?email=' + encodeURIComponent(email) + '&source=blog-newsletter';
+                } catch (error) {
+                    button.textContent = 'Error - Try Again';
+                    button.disabled = false;
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 3000);
+                }
+            });
+        }
+    });
+    </script>
 
 <?php include __DIR__ . '/../includes/page-footer.php'; ?>
