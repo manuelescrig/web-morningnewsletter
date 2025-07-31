@@ -183,6 +183,7 @@ class BlogPost {
             </div>', $html);
         
         // Headers
+        $html = preg_replace('/^#### (.+)$/m', '<h4>$1</h4>', $html);
         $html = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $html);
         $html = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $html);
         $html = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $html);
@@ -191,6 +192,13 @@ class BlogPost {
         $html = preg_replace('/^- (.+)$/m', '<li>$1</li>', $html);
         $html = preg_replace('/(<li>.*<\/li>)(?=\n(?!<li>))/s', '<ul>$1</ul>', $html);
         $html = preg_replace('/<\/li>\n<li>/s', '</li><li>', $html);
+        
+        // Lists (ordered)
+        $html = preg_replace('/^\d+\. (.+)$/m', '<oli>$1</oli>', $html);
+        $html = preg_replace('/(<oli>.*<\/oli>)(?=\n(?!<oli>))/s', '<ol>$1</ol>', $html);
+        $html = preg_replace('/<\/oli>\n<oli>/s', '</oli><oli>', $html);
+        $html = str_replace('<oli>', '<li>', $html);
+        $html = str_replace('</oli>', '</li>', $html);
         
         // Bold and italic
         $html = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $html);

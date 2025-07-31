@@ -9,17 +9,36 @@ seo_title: Welcome to MorningNewsletter - A Personal Journey by Manuel Escrig
 seo_description: Discover why software developer Manuel Escrig created MorningNewsletter, a personalized morning brief service powered by AI to transform how you start your day.
 ---
 
-Hi, I'm Manuel Escrig. I'm a software developer, and like many of you, I start every morning drowning in information.
+Hi, I'm **Manuel Escrig**. I'm a software developer, and like many of you, I start every morning drowning in information.
 
 [IMAGE PLACEHOLDER: Photo of Manuel working at his desk with multiple screens]
 
 ## Why I Built This
 
-Every morning, I found myself doing the same exhausting routine: checking my email, then Slack, then crypto prices, then the weather, then tech news, then my business metrics. By the time I'd gathered all the information I needed to start my day, I'd already spent 45 minutes jumping between apps, lost my focus, and felt overwhelmed before I'd even had my coffee.
+Every morning, I found myself trapped in the same exhausting routine:
 
-I kept thinking: there has to be a better way.
+1. Check email
+2. Open Slack
+3. Check crypto prices
+4. Look at the weather
+5. Browse tech news
+6. Review business metrics
+7. ...and on and on
 
-As a developer, I've always believed technology should make our lives simpler, not more complicated. Yet here I was, using dozens of "productivity" apps that were actually making me less productive. I wanted one place, one email, one moment of clarity each morning that would tell me everything I needed to know.
+By the time I'd gathered all the information I needed to start my day, I'd already spent **45 minutes** jumping between apps, lost my focus, and felt overwhelmed before I'd even had my coffee.
+
+### The Breaking Point
+
+I kept thinking: *there has to be a better way.*
+
+As a developer, I've always believed technology should make our lives simpler, not more complicated. Yet here I was, using dozens of "productivity" apps that were actually making me **less** productive. 
+
+### The Solution
+
+I wanted:
+- **One place** for all my morning information
+- **One email** that I could read in minutes
+- **One moment** of clarity to start my day
 
 So I built it.
 
@@ -41,15 +60,33 @@ Every feature in MorningNewsletter comes from a real need I experienced:
 
 ## The Power of AI in Your Morning
 
-What excites me most is how AI transforms this experience. We're not just aggregating data; we're using AI to:
+What excites me most is how AI transforms this experience. We're not just aggregating data; we're using AI to create something truly intelligent.
 
-**Summarize the noise**: Instead of reading 20 news articles, you get the essential insights that actually matter to your work and interests.
+### 🤖 AI-Powered Features
 
-**Make it listenable**: Sometimes you want to absorb your morning brief while making breakfast or during your commute. AI helps us convert your personalized brief into natural, listenable audio.
+#### **Summarize the Noise**
+Instead of reading 20 news articles, you get the essential insights that actually matter to your work and interests. Our AI:
+- Analyzes hundreds of sources
+- Extracts key information
+- Presents only what's relevant to you
 
-**Understand context**: The AI learns what's important to you, highlighting significant changes in your metrics or unusual patterns in your data.
+#### **Make it Listenable**
+Sometimes you want to absorb your morning brief while making breakfast or during your commute. AI helps us:
+- Convert your brief into natural speech
+- Optimize for easy listening
+- Let you start your day hands-free
 
-**Connect the dots**: When your crypto portfolio shifts and there's related news, or when weather might impact your business metrics, AI helps surface these connections.
+#### **Understand Context**
+The AI learns what's important to you:
+- Highlights significant changes in your metrics
+- Identifies unusual patterns in your data
+- Adapts to your interests over time
+
+#### **Connect the Dots**
+Our AI finds connections humans might miss:
+- Links crypto movements to relevant news
+- Correlates weather with business impact
+- Surfaces hidden insights across your data
 
 [IMAGE PLACEHOLDER: Visualization showing AI processing various data sources into a unified brief]
 

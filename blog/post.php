@@ -84,8 +84,9 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             max-width: none;
         }
         .prose h1 { @apply text-3xl font-bold text-gray-900 mt-8 mb-4; }
-        .prose h2 { @apply text-2xl font-bold text-gray-900 mt-6 mb-3; }
-        .prose h3 { @apply text-xl font-bold text-gray-900 mt-5 mb-2; }
+        .prose h2 { @apply text-2xl font-bold text-gray-900 mt-8 mb-4; }
+        .prose h3 { @apply text-xl font-bold text-gray-900 mt-6 mb-3; }
+        .prose h4 { @apply text-lg font-bold text-gray-900 mt-4 mb-2; }
         .prose p { @apply text-gray-700 leading-relaxed mb-4; }
         .prose a { @apply text-primary hover:text-primary-darker underline; }
         .prose strong { @apply font-semibold text-gray-900; }
