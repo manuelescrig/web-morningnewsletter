@@ -267,10 +267,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         
         /* Table of Contents Styles */
         #table-of-contents {
-            background: #f9fafb;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            border: 1px solid #e5e7eb;
+            padding: 0;
         }
         
         .toc-nav {
@@ -281,7 +278,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         }
         
         .toc-nav::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         
         .toc-nav::-webkit-scrollbar-track {
@@ -289,52 +286,61 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         }
         
         .toc-nav::-webkit-scrollbar-thumb {
-            background-color: #d1d5db;
-            border-radius: 3px;
+            background-color: #e5e7eb;
+            border-radius: 2px;
         }
         
         .toc-nav::-webkit-scrollbar-thumb:hover {
-            background-color: #9ca3af;
+            background-color: #d1d5db;
         }
         
         .toc-link {
             display: block;
-            padding: 0.5rem 0.75rem;
+            padding: 0.375rem 0;
             color: #6b7280;
             text-decoration: none;
             font-size: 0.875rem;
-            line-height: 1.25rem;
-            border-left: 3px solid transparent;
+            line-height: 1.5rem;
             transition: all 0.2s ease;
-            margin-left: 0;
+            position: relative;
         }
         
         .toc-link:hover {
             color: var(--tufts-blue);
-            background-color: rgba(70, 139, 230, 0.05);
             text-decoration: none;
         }
         
         .toc-link.toc-h2 {
             font-weight: 500;
+            color: #374151;
         }
         
         .toc-link.toc-h3 {
-            padding-left: 1.75rem;
+            padding-left: 1rem;
             font-size: 0.8125rem;
         }
         
         .toc-link.toc-h4 {
-            padding-left: 3rem;
-            font-size: 0.8125rem;
+            padding-left: 2rem;
+            font-size: 0.75rem;
             color: #9ca3af;
         }
         
         .toc-link.active {
             color: var(--tufts-blue);
             font-weight: 600;
-            border-left-color: var(--tufts-blue);
-            background-color: rgba(70, 139, 230, 0.1);
+        }
+        
+        .toc-link.active::before {
+            content: '';
+            position: absolute;
+            left: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 70%;
+            background-color: var(--tufts-blue);
+            border-radius: 1.5px;
         }
         
         /* Smooth scroll behavior */
@@ -349,16 +355,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             scroll-margin-top: 100px;
         }
         
-        /* Progress indicator */
-        .toc-progress {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 3px;
-            background-color: var(--tufts-blue);
-            transition: height 0.3s ease, top 0.3s ease;
-            border-radius: 1.5px;
-        }
         
         /* Mobile TOC button */
         .mobile-toc-button {
@@ -403,20 +399,19 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
 
     <!-- Article with Table of Contents -->
     <article class="bg-white">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Table of Contents Sidebar -->
-                <aside class="hidden lg:block lg:col-span-3">
-                    <div class="sticky top-24" id="table-of-contents">
-                        <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
-                        <nav class="toc-nav space-y-1">
-                            <!-- Will be populated by JavaScript -->
-                        </nav>
-                    </div>
-                </aside>
-                
-                <!-- Main Article Content -->
-                <div class="lg:col-span-9 lg:pl-8">
+        <div class="relative">
+            <!-- Table of Contents Sidebar -->
+            <aside class="hidden xl:block absolute left-0 top-0 w-64 px-8 py-12">
+                <div class="sticky top-24 xl:ml-auto xl:max-w-[200px]" id="table-of-contents">
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
+                    <nav class="toc-nav space-y-1">
+                        <!-- Will be populated by JavaScript -->
+                    </nav>
+                </div>
+            </aside>
+            
+            <!-- Main Article Content (centered) -->
+            <div class="mx-auto max-w-4xl px-6 lg:px-8 py-12">
             <!-- Article Header -->
             <header class="mb-8">
                 <div class="text-center mb-8">
@@ -501,7 +496,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                     </a>
                 </div>
             </footer>
-                </div>
             </div>
         </div>
     </article>
@@ -591,11 +585,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         
         if (headings.length === 0) return;
         
-        // Create TOC progress indicator
-        const progressBar = document.createElement('div');
-        progressBar.className = 'toc-progress';
-        tocNav.style.position = 'relative';
-        tocNav.appendChild(progressBar);
         
         // Generate unique IDs and TOC links
         headings.forEach((heading, index) => {
@@ -652,14 +641,9 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                 if (newActiveIndex >= 0 && tocLinks[newActiveIndex]) {
                     tocLinks[newActiveIndex].classList.add('active');
                     
-                    // Update progress bar position
+                    // Ensure active link is visible in scrollable TOC
                     const activeLink = tocLinks[newActiveIndex];
                     const linkRect = activeLink.getBoundingClientRect();
-                    const navRect = tocNav.getBoundingClientRect();
-                    progressBar.style.top = (linkRect.top - navRect.top) + 'px';
-                    progressBar.style.height = linkRect.height + 'px';
-                    
-                    // Ensure active link is visible in scrollable TOC
                     const tocNavRect = tocNav.getBoundingClientRect();
                     if (linkRect.top < tocNavRect.top || linkRect.bottom > tocNavRect.bottom) {
                         activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -742,9 +726,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         max-height: none;
     }
     
-    #mobile-toc-modal .toc-progress {
-        display: none;
-    }
     </style>
 
 <?php include __DIR__ . '/../includes/page-footer.php'; ?>
