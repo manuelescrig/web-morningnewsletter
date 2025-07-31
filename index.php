@@ -201,7 +201,7 @@ include __DIR__ . '/includes/page-header.php';
                     <!-- Timeline Item 1 -->
                     <div class="relative flex items-center">
                         <div class="flex items-center justify-center w-full md:w-1/2 md:pr-8">
-                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-blue-100">
+                            <div class="standard-box blue">
                                 <div class="flex items-center mb-4">
                                     <div class="bg-blue-50 rounded-full p-3 mr-4">
                                         <i class="fas fa-mobile-alt text-blue-500 text-xl"></i>
@@ -223,7 +223,7 @@ include __DIR__ . '/includes/page-header.php';
                         <div class="hidden md:block md:w-1/2"></div>
                         <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-indigo-400 rounded-full border-4 border-white"></div>
                         <div class="flex items-center justify-center w-full md:w-1/2 md:pl-8">
-                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-indigo-100">
+                            <div class="standard-box purple">
                                 <div class="flex items-center mb-4">
                                     <div class="bg-indigo-50 rounded-full p-3 mr-4">
                                         <i class="fas fa-clock text-indigo-500 text-xl"></i>
@@ -241,7 +241,7 @@ include __DIR__ . '/includes/page-header.php';
                     <!-- Timeline Item 3 -->
                     <div class="relative flex items-center">
                         <div class="flex items-center justify-center w-full md:w-1/2 md:pr-8">
-                            <div class="bg-white rounded-2xl shadow-lg p-6 w-full border border-purple-100">
+                            <div class="standard-box purple">
                                 <div class="flex items-center mb-4">
                                     <div class="bg-purple-50 rounded-full p-3 mr-4">
                                         <i class="fas fa-exclamation-circle text-purple-500 text-xl"></i>
@@ -293,7 +293,7 @@ include __DIR__ . '/includes/page-header.php';
                 </p>
             </div>
             <div class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-5xl mx-auto">
-                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div class="standard-box">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Before MorningNewsletter</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start">
@@ -328,7 +328,7 @@ include __DIR__ . '/includes/page-header.php';
                         </li>
                     </ul>
                 </div>
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg border border-blue-100">
+                <div class="standard-box gradient">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">After MorningNewsletter</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start">
@@ -433,9 +433,9 @@ include __DIR__ . '/includes/page-header.php';
             <div class="mt-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     <!-- Feature 1 -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div class="feature-box-wrapper group">
+                        <div class="feature-gradient-blur bg-gradient-to-r from-blue-500 to-purple-500 blur"></div>
+                        <div class="standard-box">
                             <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 inline-flex mb-6">
                                 <i class="fas fa-chart-line text-2xl text-primary"></i>
                             </div>
@@ -452,9 +452,9 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
 
                     <!-- Feature 2 -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div class="feature-box-wrapper group">
+                        <div class="feature-gradient-blur bg-gradient-to-r from-green-500 to-blue-500 blur"></div>
+                        <div class="standard-box">
                             <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 inline-flex mb-6">
                                 <i class="fas fa-coins text-2xl text-green-600"></i>
                             </div>
@@ -471,9 +471,9 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
 
                     <!-- Feature 3 -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div class="feature-box-wrapper group">
+                        <div class="feature-gradient-blur bg-gradient-to-r from-orange-500 to-yellow-500 blur"></div>
+                        <div class="standard-box">
                             <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 inline-flex mb-6">
                                 <i class="fas fa-cloud-sun text-2xl text-orange-600"></i>
                             </div>
@@ -490,9 +490,9 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
 
                     <!-- Feature 4 -->
-                    <div class="relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
-                        <div class="relative bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                    <div class="feature-box-wrapper group">
+                        <div class="feature-gradient-blur bg-gradient-to-r from-purple-500 to-pink-500 blur"></div>
+                        <div class="standard-box">
                             <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 inline-flex mb-6">
                                 <i class="fas fa-comments text-2xl text-purple-600"></i>
                             </div>
@@ -531,7 +531,7 @@ include __DIR__ . '/includes/page-header.php';
 
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-6 max-w-6xl mx-auto">
                 <!-- Starter Tier -->
-                <div class="relative bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                <div class="standard-box">
                     <div class="mb-8">
                         <h3 class="text-2xl font-bold text-gray-900">Starter</h3>
                         <p class="mt-2 text-gray-600">Perfect for trying out MorningNewsletter</p>
@@ -578,7 +578,7 @@ include __DIR__ . '/includes/page-header.php';
                 </div>
 
                 <!-- Pro Tier -->
-                <div class="relative bg-gradient-to-b from-blue-50 to-purple-50 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 ring-2 ring-blue-500 transform scale-105">
+                <div class="standard-box gradient ring-2 ring-blue-500 transform scale-105">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
                         <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                             MOST POPULAR
@@ -637,7 +637,7 @@ include __DIR__ . '/includes/page-header.php';
                 </div>
 
                 <!-- Unlimited Tier -->
-                <div class="relative bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300">
+                <div class="standard-box">
                     <div class="mb-8">
                         <h3 class="text-2xl font-bold text-gray-900">Unlimited</h3>
                         <p class="mt-2 text-gray-600">For power users and teams</p>
@@ -704,7 +704,7 @@ include __DIR__ . '/includes/page-header.php';
 
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-5xl mx-auto">
                 <!-- Testimonial 1 -->
-                <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="standard-box">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
                             SR
@@ -727,7 +727,7 @@ include __DIR__ . '/includes/page-header.php';
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="standard-box">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
                             MK
@@ -750,7 +750,7 @@ include __DIR__ . '/includes/page-header.php';
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="standard-box">
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
                             AJ
@@ -787,52 +787,52 @@ include __DIR__ . '/includes/page-header.php';
 
             <div class="max-w-3xl mx-auto">
                 <div class="space-y-4">
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
+                    <div class="standard-box faq">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">When do I get my newsletter?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer text-gray-600" style="display: none;">
                             Your personalized newsletter arrives at your chosen time (default is 6 AM) in your local timezone. You can adjust this anytime in your dashboard settings.
                         </div>
                     </div>
                     
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
+                    <div class="standard-box faq">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I customize my sources?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer text-gray-600" style="display: none;">
                             Absolutely! Add, remove, or reorder your data sources anytime. Choose from weather, stocks, crypto, news, business metrics, and more. Your newsletter, your way.
                         </div>
                     </div>
                     
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
+                    <div class="standard-box faq">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Is my data secure?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer text-gray-600" style="display: none;">
                             Your security is my priority. All data is encrypted, I never sell your information, and you can delete everything with one click. I'm GDPR compliant and transparent about my practices.
                         </div>
                     </div>
                     
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
+                    <div class="standard-box faq">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">How does billing work?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer text-gray-600" style="display: none;">
                             Start with a 7-day free trial, no credit card required. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. I use Stripe for secure payments.
                         </div>
                     </div>
                     
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-xl" onclick="toggleFAQ(this)">
+                    <div class="standard-box faq">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Do you have a mobile app?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
-                        <div class="faq-answer px-6 pb-5 text-gray-600" style="display: none;">
+                        <div class="faq-answer text-gray-600" style="display: none;">
                             Not yet, but our emails are perfectly optimized for mobile. You can read your morning brief on any device, and we're working on native apps for 2025.
                         </div>
                     </div>
@@ -841,7 +841,7 @@ include __DIR__ . '/includes/page-header.php';
                 <div class="mt-8 text-center">
                     <p class="text-gray-600">
                         Still have questions? 
-                        <a href="/support" class="text-primary hover:text-primary-dark font-medium">Contact our support team</a>
+                        <a href="/support" class="text-primary hover:text-primary-dark font-medium">Contact me</a>
                     </p>
                 </div>
             </div>

@@ -528,3 +528,76 @@ nav .btn-primary {
         radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
 }
+
+/* Standardized Box Styles for Landing Page */
+.standard-box {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.standard-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+/* Color variations for boxes */
+.standard-box.blue {
+    border: 1px solid rgba(70, 139, 230, 0.15);
+}
+
+.standard-box.green {
+    border: 1px solid rgba(34, 197, 94, 0.15);
+}
+
+.standard-box.purple {
+    border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.standard-box.orange {
+    border: 1px solid rgba(251, 146, 60, 0.15);
+}
+
+.standard-box.gradient {
+    background: linear-gradient(to bottom right, #f0f9ff, #e0e7ff);
+    border: 1px solid rgba(70, 139, 230, 0.15);
+}
+
+/* FAQ Box specific override */
+.standard-box.faq {
+    padding: 0;
+    overflow: hidden;
+}
+
+.standard-box.faq button {
+    padding: 1.5rem 2rem;
+}
+
+.standard-box.faq .faq-answer {
+    padding: 0 2rem 1.5rem 2rem;
+}
+
+/* Feature Box with gradient blur effect */
+.feature-box-wrapper {
+    position: relative;
+}
+
+.feature-box-wrapper .feature-gradient-blur {
+    position: absolute;
+    inset: -4px;
+    border-radius: 1rem;
+    opacity: 0.25;
+    transition: opacity 0.3s ease;
+}
+
+.feature-box-wrapper:hover .feature-gradient-blur {
+    opacity: 0.4;
+}
+
+.feature-box-wrapper .standard-box {
+    position: relative;
+    background: white;
+}
