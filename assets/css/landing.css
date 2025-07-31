@@ -585,6 +585,15 @@ nav .btn-primary {
     position: relative;
 }
 
+/* Keep ring border on hover for popular pricing */
+.standard-box.popular-pricing.ring-2 {
+    border: 2px solid rgb(59, 130, 246);
+}
+
+.standard-box.popular-pricing.ring-2:hover {
+    border: 2px solid rgb(59, 130, 246);
+}
+
 /* Feature Box with gradient blur effect */
 .feature-box-wrapper {
     position: relative;
