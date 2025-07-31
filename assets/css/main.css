@@ -147,13 +147,11 @@ nav a:not(.btn-primary):hover {
 }
 
 /* Navigation Hover Underline Styles (kept for other uses) */
-.hover\:nav-underline {
-    border-bottom: 4px solid transparent !important;
-    transition: border-color 0.2s ease;
-}
-
 .hover\:nav-underline:hover {
-    border-bottom-color: var(--nav-underline) !important;
+    border-bottom: 4px solid var(--nav-underline) !important;
+    border-radius: 2px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: -4px !important;
 }
 
 /* Auth Page White Background */
@@ -233,8 +231,8 @@ html {
 }
 
 .btn-transition:hover {
+    transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    filter: brightness(1.05);
 }
 
 /* Pill Button Styles - Comprehensive Override */
