@@ -267,7 +267,11 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         
         /* Table of Contents Styles */
         #table-of-contents {
-            padding: 0;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            max-width: 240px;
         }
         
         .toc-nav {
@@ -286,27 +290,30 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         }
         
         .toc-nav::-webkit-scrollbar-thumb {
-            background-color: #e5e7eb;
+            background-color: #d1d5db;
             border-radius: 2px;
         }
         
         .toc-nav::-webkit-scrollbar-thumb:hover {
-            background-color: #d1d5db;
+            background-color: #9ca3af;
         }
         
         .toc-link {
             display: block;
-            padding: 0.375rem 0;
+            padding: 0.25rem 0.5rem;
+            margin: 0.125rem 0;
             color: #6b7280;
             text-decoration: none;
             font-size: 0.875rem;
-            line-height: 1.5rem;
+            line-height: 1.25rem;
             transition: all 0.2s ease;
             position: relative;
+            border-radius: 0.25rem;
         }
         
         .toc-link:hover {
             color: var(--tufts-blue);
+            background-color: rgba(70, 139, 230, 0.05);
             text-decoration: none;
         }
         
@@ -316,12 +323,12 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         }
         
         .toc-link.toc-h3 {
-            padding-left: 1rem;
+            padding-left: 1.5rem;
             font-size: 0.8125rem;
         }
         
         .toc-link.toc-h4 {
-            padding-left: 2rem;
+            padding-left: 2.5rem;
             font-size: 0.75rem;
             color: #9ca3af;
         }
@@ -329,12 +336,13 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
         .toc-link.active {
             color: var(--tufts-blue);
             font-weight: 600;
+            background-color: rgba(70, 139, 230, 0.1);
         }
         
         .toc-link.active::before {
             content: '';
             position: absolute;
-            left: -1rem;
+            left: 0;
             top: 50%;
             transform: translateY(-50%);
             width: 3px;
@@ -401,10 +409,10 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     <article class="bg-white">
         <div class="relative">
             <!-- Table of Contents Sidebar -->
-            <aside class="hidden xl:block absolute left-0 top-0 w-64 px-8 py-12">
-                <div class="sticky top-24 xl:ml-auto xl:max-w-[200px]" id="table-of-contents">
+            <aside class="hidden xl:block absolute left-0 top-0 w-80 h-full">
+                <div class="sticky top-24 ml-auto mr-8" id="table-of-contents">
                     <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Table of Contents</h3>
-                    <nav class="toc-nav space-y-1">
+                    <nav class="toc-nav">
                         <!-- Will be populated by JavaScript -->
                     </nav>
                 </div>
