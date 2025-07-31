@@ -13,14 +13,14 @@ $subtitle = isset($heroSubtitle) ? $heroSubtitle : '';
 ?>
 
 <!-- Hero Section -->
-<div class="relative mesh-bg pt-24 sm:pt-32 pb-16">
+<div class="relative mesh-bg pt-32 sm:pt-40 pb-24 sm:pb-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
         <div class="mx-auto max-w-4xl text-center">
             <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                 <?php echo htmlspecialchars($title); ?>
             </h1>
             <?php if ($subtitle): ?>
-            <p class="mt-4 text-lg text-gray-600">
+            <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
                 <?php echo htmlspecialchars($subtitle); ?>
             </p>
             <?php endif; ?>

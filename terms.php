@@ -16,7 +16,7 @@ include __DIR__ . '/includes/page-header.php';
     <?php 
     // Hero section configuration
     $heroTitle = "Terms of Service";
-    $heroSubtitle = "Everything you need to know about using MorningNewsletter's services, your rights, and our commitments to you";
+    $heroSubtitle = "Read our terms and conditions for using MorningNewsletter";
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
