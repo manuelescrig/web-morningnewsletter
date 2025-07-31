@@ -404,8 +404,35 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
     $metaParts[] = $post->getReadingTime();
     $heroSubtitle = implode(' • ', $metaParts);
     
-    include __DIR__ . '/../includes/hero-section.php';
+    // Store tags for custom rendering in hero
+    $heroTags = $post->getTags();
+    
+    // Custom hero section for blog posts with tags
     ?>
+    <div class="relative mesh-bg pt-36 sm:pt-44 pb-28 sm:pb-36">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+            <div class="mx-auto max-w-4xl text-center">
+                <?php if (!empty($heroTags)): ?>
+                    <div class="flex justify-center flex-wrap gap-2 mb-4">
+                        <?php foreach ($heroTags as $tag): ?>
+                            <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
+                               class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-white/80 text-primary-dark hover:bg-white transition-colors border border-white/50">
+                                <?php echo htmlspecialchars($tag); ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                
+                <h1 class="text-4xl font-bold tracking-tight text-primary-darker sm:text-5xl">
+                    <?php echo htmlspecialchars($heroTitle); ?>
+                </h1>
+                
+                <p class="mt-6 text-lg text-primary-dark max-w-2xl mx-auto">
+                    <?php echo htmlspecialchars($heroSubtitle); ?>
+                </p>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Article with Table of Contents -->
@@ -424,25 +451,15 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             <!-- Main Article Content (centered) -->
             <div class="mx-auto max-w-4xl px-6 lg:px-8 py-12">
             <!-- Article Header -->
+            <?php if ($post->getExcerpt() || $post->getFeaturedImage()): ?>
             <header class="mb-8">
-                <div class="text-center mb-8">
-                    <?php if (!empty($post->getTags())): ?>
-                        <div class="flex justify-center flex-wrap gap-2 mb-4">
-                            <?php foreach ($post->getTags() as $tag): ?>
-                                <a href="/blog?tag=<?php echo urlencode($tag); ?>" 
-                                   class="btn-pill inline-flex items-center px-3 py-1 text-sm font-medium bg-primary-lightest text-primary-darker hover:bg-primary-light transition-colors">
-                                    <?php echo htmlspecialchars($tag); ?>
-                                </a>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if ($post->getExcerpt()): ?>
-                        <p class="text-xl text-gray-600 leading-relaxed mb-6 max-w-3xl mx-auto">
+                <?php if ($post->getExcerpt()): ?>
+                    <div class="text-center mb-8">
+                        <p class="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
                             <?php echo htmlspecialchars($post->getExcerpt()); ?>
                         </p>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
                 
                 <?php if ($post->getFeaturedImage()): ?>
                     <div class="mb-8">
@@ -452,6 +469,7 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                     </div>
                 <?php endif; ?>
             </header>
+            <?php endif; ?>
 
             <!-- Article Content -->
             <div class="prose max-w-none" id="article-content">
