@@ -126,10 +126,6 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                         </div>
                     <?php endif; ?>
                     
-                    <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight mb-6">
-                        <?php echo htmlspecialchars($post->getTitle()); ?>
-                    </h1>
-                    
                     <?php if ($post->getExcerpt()): ?>
                         <p class="text-xl text-gray-600 leading-relaxed mb-6 max-w-3xl mx-auto">
                             <?php echo htmlspecialchars($post->getExcerpt()); ?>
