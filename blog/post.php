@@ -480,13 +480,13 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
             <footer class="mt-12 pt-8 border-t border-gray-200">
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-500 text-sm">Share this post:</span>
-                    <div class="flex space-x-3">
+                    <div class="flex space-x-3 flex-wrap">
                         <a href="https://x.com/intent/tweet?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&text=<?php echo urlencode($post->getTitle()); ?>" 
                            target="_blank" 
                            rel="noopener noreferrer"
                            class="text-gray-400 hover:text-gray-900 transition-colors"
                            title="Share on X">
-                            <i class="fab fa-x-twitter text-lg"></i>
+                            <i class="fab fa-twitter text-lg"></i>
                         </a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
                            target="_blank" 
@@ -501,6 +501,32 @@ $pageDescription = $post->getSeoDescription() ?: $post->getExcerpt() ?: substr(s
                            class="text-gray-400 hover:text-blue-700 transition-colors"
                            title="Share on LinkedIn">
                             <i class="fab fa-linkedin text-lg"></i>
+                        </a>
+                        <a href="https://wa.me/?text=<?php echo urlencode($post->getTitle() . ' ' . 'https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-green-600 transition-colors"
+                           title="Share on WhatsApp">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </a>
+                        <a href="https://telegram.me/share/url?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&text=<?php echo urlencode($post->getTitle()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-blue-500 transition-colors"
+                           title="Share on Telegram">
+                            <i class="fab fa-telegram text-lg"></i>
+                        </a>
+                        <a href="https://reddit.com/submit?url=<?php echo urlencode('https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>&title=<?php echo urlencode($post->getTitle()); ?>" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="text-gray-400 hover:text-orange-600 transition-colors"
+                           title="Share on Reddit">
+                            <i class="fab fa-reddit text-lg"></i>
+                        </a>
+                        <a href="mailto:?subject=<?php echo urlencode($post->getTitle()); ?>&body=<?php echo urlencode('Check out this article: ' . 'https://' . $_SERVER['HTTP_HOST'] . $post->getUrl()); ?>" 
+                           class="text-gray-400 hover:text-gray-900 transition-colors"
+                           title="Share via Email">
+                            <i class="fas fa-envelope text-lg"></i>
                         </a>
                         <button onclick="copyPostLink()" 
                                 class="text-gray-400 hover:text-gray-900 transition-colors"
