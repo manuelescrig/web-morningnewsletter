@@ -457,7 +457,7 @@ include __DIR__ . '/includes/page-header.php';
                             </div>
                             <h3 class="text-xl font-bold text-gray-900 mb-3">Market Updates</h3>
                             <p class="text-gray-600 leading-relaxed">
-                                Bitcoin, stocks, forex—track all your investments. Know exactly where the markets stand before trading begins.
+                                Bitcoin and stocks—track all your investments. Know exactly where the markets stand before trading begins.
                             </p>
                             <div class="mt-4 flex flex-wrap gap-2">
                                 <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Crypto</span>
@@ -486,23 +486,6 @@ include __DIR__ . '/includes/page-header.php';
                         </div>
                     </div>
 
-                    <!-- Feature 4 -->
-                    <div class="feature-box-wrapper group">
-                        <div class="feature-gradient-blur bg-gradient-to-r from-purple-500 to-pink-500 blur"></div>
-                        <div class="standard-box">
-                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 inline-flex mb-6">
-                                <i class="fas fa-comments text-2xl text-purple-600"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-3">Important Messages</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                Never miss critical DMs from Twitter or Discord. I'll surface the messages that actually matter.
-                            </p>
-                            <div class="mt-4 flex flex-wrap gap-2">
-                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Twitter</span>
-                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Discord</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -619,12 +602,6 @@ include __DIR__ . '/includes/page-header.php';
                             </svg>
                             <span class="ml-3 text-gray-700">Priority support</span>
                         </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3 text-gray-700">API access</span>
-                        </li>
                     </ul>
                     
                     <a href="/auth/register.php" class="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg">
@@ -659,24 +636,6 @@ include __DIR__ . '/includes/page-header.php';
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             <span class="ml-3 text-gray-700">Everything in Pro</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3 text-gray-700">Team collaboration</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3 text-gray-700">White-label options</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-3 text-gray-700">24/7 phone support</span>
                         </li>
                     </ul>
                     
