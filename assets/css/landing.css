@@ -617,3 +617,19 @@ nav .btn-primary {
     position: relative;
     background: white;
 }
+
+/* Responsive styles for email input group */
+@media (max-width: 640px) {
+    .email-input-group {
+        flex-direction: column;
+        gap: 1.25rem; /* Increased gap from 0.75rem to 1.25rem for more space */
+    }
+    
+    .email-input {
+        width: 100%;
+    }
+    
+    .email-input-group .btn-primary {
+        width: 100%;
+    }
+}

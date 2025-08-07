@@ -57,7 +57,7 @@ include __DIR__ . '/includes/page-header.php';
                 
                 <!-- Subtitle -->
                 <p class="hero-subtitle mt-6 text-lg leading-8 text-gray-700 sm:text-xl max-w-3xl mx-auto">
-                    Wake up to everything that matters to you: your business metrics, crypto prices, weather, news, and important messages. All in one beautiful email that takes 2 minutes to read.
+                    Wake up to everything that matters to you: your business metrics, crypto prices, weather, and news. All in one beautiful email that takes 2 minutes to read.
                 </p>
                 
                 <!-- Email Input and CTA -->
@@ -394,7 +394,7 @@ include __DIR__ . '/includes/page-header.php';
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 items-center justify-items-center max-w-6xl mx-auto">
+            <div class="flex flex-wrap justify-center items-center gap-8 max-w-6xl mx-auto">
                 <div class="flex items-center justify-center p-4">
                     <img src="/assets/companies/Logo=google.svg" alt="Google" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
                 </div>
@@ -428,7 +428,7 @@ include __DIR__ . '/includes/page-header.php';
             </div>
 
             <div class="mt-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     <!-- Feature 1 -->
                     <div class="feature-box-wrapper group">
                         <div class="feature-gradient-blur bg-gradient-to-r from-blue-500 to-purple-500 blur"></div>
@@ -635,7 +635,19 @@ include __DIR__ . '/includes/page-header.php';
                             <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
-                            <span class="ml-3 text-gray-700">Everything in Pro</span>
+                            <span class="ml-3 text-gray-700">Advanced scheduling options</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-3 text-gray-700">Custom email templates</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="ml-3 text-gray-700">Priority support</span>
                         </li>
                     </ul>
                     
