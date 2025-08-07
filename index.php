@@ -211,7 +211,7 @@ include __DIR__ . '/includes/page-header.php';
                                         <p class="text-sm text-gray-500">The App Marathon Begins</p>
                                     </div>
                                 </div>
-                                <p class="text-gray-600">Check email, then Slack, then weather, then news, then crypto prices...</p>
+                                <p class="text-gray-600">Check email, then weather, then news, then crypto prices...</p>
                             </div>
                         </div>
                         <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-blue-400 rounded-full border-4 border-white"></div>
@@ -233,7 +233,7 @@ include __DIR__ . '/includes/page-header.php';
                                         <p class="text-sm text-gray-500">Lost in the Noise</p>
                                     </div>
                                 </div>
-                                <p class="text-gray-600">15 minutes gone. Still haven't found that important message from yesterday.</p>
+                                <p class="text-gray-600">30 minutes gone, and you're already feeling behind.</p>
                             </div>
                         </div>
                     </div>
@@ -268,7 +268,7 @@ include __DIR__ . '/includes/page-header.php';
                         <p class="text-gray-600">Wasted every morning</p>
                     </div>
                     <div>
-                        <div class="text-3xl font-bold text-indigo-600 mb-2">7+ apps</div>
+                        <div class="text-3xl font-bold text-indigo-600 mb-2">5+ apps</div>
                         <p class="text-gray-600">To check daily</p>
                     </div>
                     <div>
@@ -408,9 +408,6 @@ include __DIR__ . '/includes/page-header.php';
                     <img src="/assets/companies/Press logo=Bloomberg.svg" alt="Bloomberg" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
                 </div>
                 <div class="flex items-center justify-center p-4">
-                    <img src="/assets/companies/Press logo=Business Insider.svg" alt="Business Insider" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
-                </div>
-                <div class="flex items-center justify-center p-4">
                     <img src="/assets/companies/Press logo=The Guardian.svg" alt="The Guardian" class="h-8 opacity-50 hover:opacity-70 transition-opacity duration-200">
                 </div>
                 <div class="flex items-center justify-center p-4">
@@ -498,11 +495,10 @@ include __DIR__ . '/includes/page-header.php';
                             </div>
                             <h3 class="text-xl font-bold text-gray-900 mb-3">Important Messages</h3>
                             <p class="text-gray-600 leading-relaxed">
-                                Never miss critical DMs from Twitter, Slack, or Discord. I'll surface the messages that actually matter.
+                                Never miss critical DMs from Twitter or Discord. I'll surface the messages that actually matter.
                             </p>
                             <div class="mt-4 flex flex-wrap gap-2">
                                 <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Twitter</span>
-                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Slack</span>
                                 <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Discord</span>
                             </div>
                         </div>
