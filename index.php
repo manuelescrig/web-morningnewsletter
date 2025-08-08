@@ -559,7 +559,7 @@ include __DIR__ . '/includes/page-header.php';
                 <!-- Pro Tier -->
                 <div class="standard-box gradient popular-pricing ring-2 ring-blue-500">
                     <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
                             MOST POPULAR
                         </span>
                     </div>

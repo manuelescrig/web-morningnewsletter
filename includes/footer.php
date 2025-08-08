@@ -21,7 +21,6 @@
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">KPI Tracking</a></li>
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Finance & Crypto</a></li>
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Weather & News</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Social Media DMs</a></li>
                     <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Custom Integrations</a></li>
                 </ul>
             </div>
