@@ -659,85 +659,119 @@ include __DIR__ . '/includes/page-header.php';
         </div>
     </div>
 
-    <!-- Testimonials Section -->
-    <div id="testimonials" class="py-20 bg-gray-50">
+    <!-- Examples Section -->
+    <div id="examples" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">What Users Say</h2>
+                <h2 class="text-base text-primary font-semibold tracking-wide uppercase mb-4">Newsletter Examples</h2>
                 <h3 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Real People, Real Results
+                    Tailored for Every Professional
                 </h3>
+                <p class="mt-4 text-xl text-gray-600">
+                    See how MorningNewsletter adapts to different roles and industries
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-5xl mx-auto">
-                <!-- Testimonial 1 -->
-                <div class="standard-box">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                            SR
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
+                <!-- Example 1: Startup Founder -->
+                <div class="standard-box hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-t-lg -m-6 mb-4">
+                        <h4 class="font-bold text-lg">The Startup Founder</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">💰 Stripe Revenue</p>
+                            <p class="text-2xl font-bold text-gray-900">$47,892</p>
+                            <p class="text-xs text-green-600">↑ 23% from last month</p>
                         </div>
-                        <div class="ml-3">
-                            <h4 class="font-semibold text-gray-900">Sarah Robinson</h4>
-                            <p class="text-sm text-gray-600">CEO at TechFlow</p>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">👥 Active Users</p>
+                            <p class="text-2xl font-bold text-gray-900">2,341</p>
+                            <p class="text-xs text-green-600">↑ 142 new this week</p>
+                        </div>
+                        <div class="border-l-4 border-indigo-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">📱 App Store Reviews</p>
+                            <p class="text-2xl font-bold text-gray-900">4.8 ★</p>
+                            <p class="text-xs text-gray-600">12 new reviews</p>
+                        </div>
+                        <div class="border-l-4 border-gray-300 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">📰 Tech News</p>
+                            <p class="text-sm text-gray-700">• OpenAI releases new model<br>• Apple Vision Pro updates<br>• New startup funding rounds</p>
                         </div>
                     </div>
-                    <p class="text-gray-700">
-                        "I used to spend 45 minutes every morning checking different apps. Now? 5 minutes with my coffee and I'm good to go."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400 text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <!-- Testimonial 2 -->
-                <div class="standard-box">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
-                            MK
-                        </div>
-                        <div class="ml-3">
-                            <h4 class="font-semibold text-gray-900">Marcus Kim</h4>
-                            <p class="text-sm text-gray-600">Product Manager</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700">
-                        "My business metrics, crypto portfolio, and important messages all in one place? This is exactly what I needed."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400 text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="mt-6 text-center">
+                        <span class="text-xs text-gray-500">Perfect for: SaaS founders, product managers</span>
                     </div>
                 </div>
 
-                <!-- Testimonial 3 -->
-                <div class="standard-box">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
-                            AJ
+                <!-- Example 2: Crypto Investor -->
+                <div class="standard-box hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-4 py-2 rounded-t-lg -m-6 mb-4">
+                        <h4 class="font-bold text-lg">The Crypto Investor</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">₿ Bitcoin</p>
+                            <p class="text-2xl font-bold text-gray-900">$43,567</p>
+                            <p class="text-xs text-green-600">↑ 5.2% (24h)</p>
                         </div>
-                        <div class="ml-3">
-                            <h4 class="font-semibold text-gray-900">Alex Johnson</h4>
-                            <p class="text-sm text-gray-600">Crypto Trader</p>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">Ξ Ethereum</p>
+                            <p class="text-2xl font-bold text-gray-900">$2,234</p>
+                            <p class="text-xs text-green-600">↑ 3.8% (24h)</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">📈 S&P 500</p>
+                            <p class="text-2xl font-bold text-gray-900">4,783.45</p>
+                            <p class="text-xs text-red-600">↓ 0.3%</p>
+                        </div>
+                        <div class="border-l-4 border-gray-300 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">🔥 Trending</p>
+                            <p class="text-sm text-gray-700">• ETF approval rumors<br>• Fed interest rate decision<br>• Major whale movements</p>
                         </div>
                     </div>
-                    <p class="text-gray-700">
-                        "Caught the Bitcoin pump early thanks to my morning brief. This thing pays for itself."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400 text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="mt-6 text-center">
+                        <span class="text-xs text-gray-500">Perfect for: Traders, investors, DeFi enthusiasts</span>
                     </div>
                 </div>
+
+                <!-- Example 3: Digital Nomad -->
+                <div class="standard-box hover:shadow-xl transition-shadow duration-300">
+                    <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-t-lg -m-6 mb-4">
+                        <h4 class="font-bold text-lg">The Digital Nomad</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">☀️ Bali Weather</p>
+                            <p class="text-2xl font-bold text-gray-900">28°C Sunny</p>
+                            <p class="text-xs text-gray-600">Perfect beach day</p>
+                        </div>
+                        <div class="border-l-4 border-pink-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">💵 USD/EUR Rate</p>
+                            <p class="text-2xl font-bold text-gray-900">0.92</p>
+                            <p class="text-xs text-green-600">↑ Good time to convert</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">💼 Freelance Income</p>
+                            <p class="text-2xl font-bold text-gray-900">$8,450</p>
+                            <p class="text-xs text-gray-600">3 invoices pending</p>
+                        </div>
+                        <div class="border-l-4 border-gray-300 pl-4">
+                            <p class="text-sm font-semibold text-gray-600">🌍 Local News</p>
+                            <p class="text-sm text-gray-700">• New co-working space opens<br>• Visa policy updates<br>• Digital nomad meetup tonight</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <span class="text-xs text-gray-500">Perfect for: Remote workers, freelancers, travelers</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-gray-600 mb-4">Your newsletter adapts to your needs. Add the data sources that matter to you.</p>
+                <a href="/auth/register.php" class="btn-primary">
+                    Create Your Custom Newsletter <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </div>
