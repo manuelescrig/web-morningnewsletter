@@ -16,12 +16,12 @@
                 </div>
             </div>
             <div>
-                <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Solutions</h3>
+                <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Product</h3>
                 <ul class="mt-4 space-y-4">
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">KPI Tracking</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Finance & Crypto</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Weather & News</a></li>
-                    <li><a href="#" class="text-base text-gray-500 hover:text-gray-300">Custom Integrations</a></li>
+                    <li><a href="/#features" class="text-base text-gray-500 hover:text-gray-300">Features</a></li>
+                    <li><a href="/#pricing" class="text-base text-gray-500 hover:text-gray-300">Pricing</a></li>
+                    <li><a href="/#how-it-works" class="text-base text-gray-500 hover:text-gray-300">How it Works</a></li>
+                    <li><a href="/#testimonials" class="text-base text-gray-500 hover:text-gray-300">Examples</a></li>
                 </ul>
             </div>
             <div>
