@@ -755,7 +755,7 @@ include __DIR__ . '/includes/page-header.php';
             <div class="max-w-3xl mx-auto">
                 <div class="space-y-4">
                     <div class="standard-box faq">
-                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">When do I get my newsletter?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
@@ -765,7 +765,7 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
                     
                     <div class="standard-box faq">
-                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Can I customize my sources?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
@@ -775,7 +775,7 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
                     
                     <div class="standard-box faq">
-                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Is my data secure?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
@@ -785,7 +785,7 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
                     
                     <div class="standard-box faq">
-                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">How does billing work?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
@@ -795,7 +795,7 @@ include __DIR__ . '/includes/page-header.php';
                     </div>
                     
                     <div class="standard-box faq">
-                        <button class="w-full text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 rounded-t-xl" onclick="toggleFAQ(this)">
+                        <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
                             <span class="text-lg font-medium text-gray-900">Do you have a mobile app?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
