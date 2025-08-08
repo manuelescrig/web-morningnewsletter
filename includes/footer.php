@@ -20,7 +20,6 @@
                 <ul class="mt-4 space-y-4">
                     <li><a href="/#features" class="text-base text-gray-500 hover:text-gray-300">Features</a></li>
                     <li><a href="/#pricing" class="text-base text-gray-500 hover:text-gray-300">Pricing</a></li>
-                    <li><a href="/#examples" class="text-base text-gray-500 hover:text-gray-300">Examples</a></li>
                 </ul>
             </div>
             <div>
