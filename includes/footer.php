@@ -27,6 +27,7 @@
             <div>
                 <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
                 <ul class="mt-4 space-y-4">
+                    <li><a href="/blog/" class="text-base text-gray-500 hover:text-gray-300">Blog</a></li>
                     <li><a href="/about/" class="text-base text-gray-500 hover:text-gray-300">About</a></li>
                     <li><a href="/support/" class="text-base text-gray-500 hover:text-gray-300">Support</a></li>
                 </ul>
