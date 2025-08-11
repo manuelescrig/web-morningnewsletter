@@ -12,7 +12,6 @@ const MorningNewsletter = {
         this.initTimezone();
         this.initNewsletterSubscription();
         this.initSmoothScrolling();
-        this.initScrollAnimations();
     },
 
     // FAQ functionality
@@ -470,65 +469,6 @@ const MorningNewsletter = {
                 delete element.dataset.originalText;
             }
         }
-    },
-
-    // Scroll animations
-    initScrollAnimations() {
-        // Create an Intersection Observer to watch for elements coming into view
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Add animation classes when element comes into view
-                    entry.target.classList.add('animate-visible');
-                    
-                    // For feature boxes, add staggered animation
-                    if (entry.target.classList.contains('feature-box-wrapper')) {
-                        const index = Array.from(entry.target.parentElement.children).indexOf(entry.target);
-                        entry.target.style.animationDelay = `${index * 0.1}s`;
-                    }
-                    
-                    // Stop observing once animated
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe feature boxes
-        document.querySelectorAll('.feature-box-wrapper').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Observe other elements that should animate on scroll
-        document.querySelectorAll('[data-animate]').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add mouse tracking for feature boxes
-        this.initFeatureBoxMouseTracking();
-    },
-
-    // Mouse tracking for feature box glow effect
-    initFeatureBoxMouseTracking() {
-        document.querySelectorAll('.feature-box-wrapper').forEach(box => {
-            box.addEventListener('mousemove', (e) => {
-                const rect = box.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                
-                box.style.setProperty('--mouse-x', `${x}%`);
-                box.style.setProperty('--mouse-y', `${y}%`);
-            });
-
-            box.addEventListener('mouseleave', () => {
-                box.style.setProperty('--mouse-x', '50%');
-                box.style.setProperty('--mouse-y', '50%');
-            });
-        });
     }
 };
 
