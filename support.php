@@ -72,12 +72,10 @@ include __DIR__ . '/includes/page-header.php';
         <div class="max-w-3xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Send Me a Message</h2>
-                <p class="text-xl text-gray-600 mb-6">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
-                
-                <div class="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 px-5 py-3 rounded-lg">
-                    <i class="fas fa-info-circle mr-2"></i>
-                    Check the <a href="/#faq" class="text-blue-700 hover:text-blue-800 font-medium underline">FAQ section</a> for quick answers to common questions.
-                </div>
+                <p class="text-xl text-gray-600 mb-4">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+                <p class="text-gray-600">
+                    Check the <a href="/#faq" class="text-primary hover:text-primary-dark font-medium">FAQ section</a> for quick answers to common questions.
+                </p>
             </div>
             
             <div class="bg-white rounded-2xl p-8 shadow-lg">
