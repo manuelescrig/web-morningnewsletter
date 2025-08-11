@@ -678,7 +678,7 @@ include __DIR__ . '/includes/page-header.php';
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer text-gray-600" style="display: none;">
-                            Your personalized newsletter arrives at your chosen time (default is 6 AM) in your local timezone. You can adjust this anytime in your dashboard settings.
+                            You can set the exact time you want to receive your newsletter, and even schedule multiple delivery times throughout the day. Customize it perfectly to fit your routine in your dashboard settings.
                         </div>
                     </div>
                     
@@ -698,7 +698,7 @@ include __DIR__ . '/includes/page-header.php';
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer text-gray-600" style="display: none;">
-                            Your security is my priority. All data is encrypted, I never sell your information, and you can delete everything with one click. I'm GDPR compliant and transparent about my practices.
+                            Your security is my priority. All data is encrypted, I never sell your information. If you delete your account, all your data gets deleted immediately. I'm GDPR compliant and transparent about my practices.
                         </div>
                     </div>
                     
@@ -708,17 +708,17 @@ include __DIR__ . '/includes/page-header.php';
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer text-gray-600" style="display: none;">
-                            Start with a 7-day free trial, no credit card required. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. I use Stripe for secure payments.
+                            Start with a 7-day free trial. After that, choose a plan that fits your needs. Cancel anytime with no questions asked. I use Stripe for secure payments.
                         </div>
                     </div>
                     
                     <div class="standard-box faq">
                         <button class="w-full text-left flex justify-between items-center focus:outline-none rounded-t-xl" onclick="toggleFAQ(this)">
-                            <span class="text-lg font-medium text-gray-900">Do you have a mobile app?</span>
+                            <span class="text-lg font-medium text-gray-900">Do you accept feature requests?</span>
                             <i class="fas fa-plus text-gray-400 transition-transform duration-200"></i>
                         </button>
                         <div class="faq-answer text-gray-600" style="display: none;">
-                            Not yet, but our emails are perfectly optimized for mobile. You can read your morning brief on any device, and we're working on native apps for 2025.
+                            Absolutely! Any ideas for new sources or suggestions? I would love to hear from you. I'm planning to implement many more features and data sources based on user feedback.
                         </div>
                     </div>
                 </div>
