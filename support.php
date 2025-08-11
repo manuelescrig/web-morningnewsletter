@@ -67,41 +67,15 @@ include __DIR__ . '/includes/page-header.php';
     include __DIR__ . '/includes/hero-section.php';
     ?>
 
-    <!-- Contact Options Section -->
-    <div class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-question-circle text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Common Questions</h3>
-                    <p class="text-gray-600 mb-4">Check the FAQ section for quick answers to common questions.</p>
-                    <a href="/#faq" class="text-primary hover:text-primary-dark font-medium">
-                        View FAQ
-                    </a>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-comments text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Contact Form</h3>
-                    <p class="text-gray-600 mb-4">Fill out the form below and I'll get back to you quickly.</p>
-                    <a href="#contact-form" class="text-primary hover:text-primary-dark font-medium">
-                        Send Message
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Contact Form Section -->
-    <div id="contact-form" class="py-20 bg-gray-50">
+    <div id="contact-form" class="py-20 bg-white">
         <div class="max-w-3xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Send Me a Message</h2>
-                <p class="text-xl text-gray-600">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+                <p class="text-xl text-gray-600 mb-4">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+                <p class="text-gray-600">
+                    Check the <a href="/#faq" class="text-primary hover:text-primary-dark font-medium">FAQ section</a> for quick answers to common questions.
+                </p>
             </div>
             
             <div class="bg-white rounded-2xl p-8 shadow-lg">
@@ -169,8 +143,8 @@ include __DIR__ . '/includes/page-header.php';
                     
                     <div class="text-center">
                         <button type="submit" 
-                                class="btn-pill inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-600 hover:from-purple-700 hover:to-purple-700 transition-all duration-200 hover:scale-105 shadow-lg">
-                            <i class="fas fa-paper-plane mr-3"></i>
+                                class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-gray-900 hover:bg-gray-800 rounded-full transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>
                             Send Message
                         </button>
                     </div>
