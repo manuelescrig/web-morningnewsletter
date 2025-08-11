@@ -544,6 +544,17 @@ nav .btn-primary {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
+/* Override for feature boxes specifically - no shadows or animations */
+#features .standard-box {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+#features .standard-box:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 /* Color variations for boxes */
 .standard-box.blue {
     border: 1px solid rgba(70, 139, 230, 0.15);
@@ -596,26 +607,20 @@ nav .btn-primary {
     box-shadow: 0 0 0 1px rgb(59, 130, 246), 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
-/* Feature Box with gradient blur effect */
+/* Feature Box - clean, no effects */
 .feature-box-wrapper {
     position: relative;
 }
 
 .feature-box-wrapper .feature-gradient-blur {
-    position: absolute;
-    inset: -4px;
-    border-radius: 1rem;
-    opacity: 0.25;
-    transition: opacity 0.3s ease;
-}
-
-.feature-box-wrapper:hover .feature-gradient-blur {
-    opacity: 0.4;
+    display: none; /* Hide the blur effect */
 }
 
 .feature-box-wrapper .standard-box {
     position: relative;
     background: white;
+    box-shadow: none !important; /* Remove all shadows */
+    transform: none !important; /* No hover transform */
 }
 
 /* Responsive styles for email input group */
