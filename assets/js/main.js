@@ -507,6 +507,28 @@ const MorningNewsletter = {
         document.querySelectorAll('[data-animate]').forEach(el => {
             observer.observe(el);
         });
+
+        // Add mouse tracking for feature boxes
+        this.initFeatureBoxMouseTracking();
+    },
+
+    // Mouse tracking for feature box glow effect
+    initFeatureBoxMouseTracking() {
+        document.querySelectorAll('.feature-box-wrapper').forEach(box => {
+            box.addEventListener('mousemove', (e) => {
+                const rect = box.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                box.style.setProperty('--mouse-x', `${x}%`);
+                box.style.setProperty('--mouse-y', `${y}%`);
+            });
+
+            box.addEventListener('mouseleave', () => {
+                box.style.setProperty('--mouse-x', '50%');
+                box.style.setProperty('--mouse-y', '50%');
+            });
+        });
     }
 };
 
