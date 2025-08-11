@@ -544,15 +544,15 @@ nav .btn-primary {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
-/* Override for feature boxes specifically - no shadows or animations */
+/* Override for feature boxes specifically - use standard shadows */
 #features .standard-box {
-    box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 #features .standard-box:hover {
-    transform: none;
-    box-shadow: none;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
 /* Color variations for boxes */
@@ -607,7 +607,7 @@ nav .btn-primary {
     box-shadow: 0 0 0 1px rgb(59, 130, 246), 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
-/* Feature Box - clean, no effects */
+/* Feature Box - with standard effects */
 .feature-box-wrapper {
     position: relative;
 }
@@ -619,8 +619,6 @@ nav .btn-primary {
 .feature-box-wrapper .standard-box {
     position: relative;
     background: white;
-    box-shadow: none !important; /* Remove all shadows */
-    transform: none !important; /* No hover transform */
 }
 
 /* Responsive styles for email input group */
