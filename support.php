@@ -70,18 +70,7 @@ include __DIR__ . '/includes/page-header.php';
     <!-- Contact Options Section -->
     <div class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-primary-lightest text-primary rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-envelope text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Email Support</h3>
-                    <p class="text-gray-600 mb-4">Send me an email and I'll respond within 24 hours.</p>
-                    <a href="mailto:hello@morningnewsletter.com" class="text-primary hover:text-primary-dark font-medium">
-                        hello@morningnewsletter.com
-                    </a>
-                </div>
-                
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
                 <div class="text-center">
                     <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-question-circle text-2xl"></i>
@@ -190,33 +179,5 @@ include __DIR__ . '/includes/page-header.php';
         </div>
     </div>
 
-    <!-- Response Time Section -->
-    <div class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <div class="bg-primary-lightest rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">I'm Here to Help</h3>
-                <p class="text-lg text-gray-600 mb-6">
-                    I typically respond within 24 hours during business days. 
-                    For urgent issues, please email me directly at hello@morningnewsletter.com
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                    <div class="flex items-start">
-                        <i class="fas fa-clock text-primary mt-1 mr-3"></i>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Response Time</h4>
-                            <p class="text-gray-600">Within 24 hours on business days</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-globe text-primary mt-1 mr-3"></i>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Support Hours</h4>
-                            <p class="text-gray-600">Monday - Friday, 9 AM - 6 PM PST</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 <?php include __DIR__ . '/includes/page-footer.php'; ?>
