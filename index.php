@@ -551,7 +551,7 @@ include __DIR__ . '/includes/page-header.php';
                         </li>
                     </ul>
                     
-                    <a href="/auth/register.php" class="block w-full bg-gray-900 text-white text-center py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors">
+                    <a href="/auth/register.php" class="block w-full bg-gray-900 text-white text-center py-3 rounded-full font-medium hover:bg-gray-800 transition-colors">
                         Start Free Trial
                     </a>
                 </div>
@@ -604,7 +604,7 @@ include __DIR__ . '/includes/page-header.php';
                         </li>
                     </ul>
                     
-                    <a href="/auth/register.php" class="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg">
+                    <a href="/auth/register.php" class="block w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-center py-3 rounded-full font-medium hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg">
                         Start Free Trial
                     </a>
                 </div>
@@ -651,7 +651,7 @@ include __DIR__ . '/includes/page-header.php';
                         </li>
                     </ul>
                     
-                    <a href="/auth/register.php" class="block w-full bg-gray-900 text-white text-center py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors">
+                    <a href="/auth/register.php" class="block w-full bg-gray-900 text-white text-center py-3 rounded-full font-medium hover:bg-gray-800 transition-colors">
                         Start Free Trial
                     </a>
                 </div>
