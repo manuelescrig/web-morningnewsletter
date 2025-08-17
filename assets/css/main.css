@@ -103,6 +103,7 @@ h1.dashboard-title,
 /* Navigation Capsule Styles */
 .nav-container {
     padding: 1.5rem 1rem;
+    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-inner {
@@ -112,7 +113,7 @@ h1.dashboard-title,
     -webkit-backdrop-filter: blur(20px);
     border-radius: 9999px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -127,7 +128,10 @@ h1.dashboard-title,
     border-radius: 0;
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: none;
+    border-right: none;
 }
 
 .nav-scrolled.nav-container {
@@ -242,11 +246,7 @@ html {
     filter: grayscale(100%) brightness(0.5);
 }
 
-/* Navigation */
-.nav-scrolled {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
+/* Navigation - removed duplicate styles that conflicted with .nav-inner */
 
 /* FAQ Styles */
 .faq-answer {
