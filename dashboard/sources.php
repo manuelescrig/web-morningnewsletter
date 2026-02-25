@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/SourceModule.php';
+require_once __DIR__ . '/../config/source_registry.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
@@ -187,25 +188,7 @@ $csrfToken = $auth->generateCSRFToken();
                                         <div class="flex items-center space-x-3 mb-4">
                                             <div class="flex-shrink-0">
                                                 <div class="w-10 h-10 bg-primary-lightest rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-<?php 
-                                                        $icons = [
-                                                            'bitcoin' => 'bitcoin',
-                                                            'ethereum' => 'ethereum',
-                                                            'xrp' => 'coins',
-                                                            'binancecoin' => 'coins',
-                                                            'sp500' => 'chart-line',
-                                                            'stock' => 'chart-line',
-                                                            'weather' => 'cloud-sun',
-                                                            'news' => 'newspaper',
-                                                            'localnews' => 'city',
-                                                            'countrynews' => 'flag',
-                                                            'newspaper' => 'rss',
-                                                            'rss' => 'rss',
-                                                            'appstore' => 'mobile-alt',
-                                                            'stripe' => 'credit-card'
-                                                        ];
-                                                        echo $icons[$config['type']] ?? 'plug';
-                                                    ?> text-primary"></i>
+                                                    <i class="fas fa-<?php echo SourceRegistry::getAdminIconSuffix($config['type']); ?> text-primary"></i>
                                                 </div>
                                             </div>
                                             <div class="flex-1">

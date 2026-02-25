@@ -3,6 +3,7 @@ require_once __DIR__ . '/User.php';
 require_once __DIR__ . '/Newsletter.php';
 require_once __DIR__ . '/SourceModule.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/source_registry.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
@@ -118,7 +119,7 @@ class NewsletterBuilder {
                 error_log("Error loading source {$source['type']}: " . $e->getMessage());
                 
                 $sourceData[] = [
-                    'title' => (!empty($source['name']) ? $source['name'] : ucfirst($source['type'])) . ' (Error)',
+                    'title' => (!empty($source['name']) ? $source['name'] : SourceRegistry::getDisplayLabel($source['type'])) . ' (Error)',
                     'type' => $source['type'],
                     'data' => [
                         [
@@ -136,24 +137,7 @@ class NewsletterBuilder {
     }
     
     private function getModuleClass($type) {
-        $moduleMap = [
-            'bitcoin' => 'BitcoinModule',
-            'ethereum' => 'EthereumModule',
-            'xrp' => 'XrpModule',
-            'binancecoin' => 'BinancecoinModule',
-            'sp500' => 'SP500Module',
-            'stock' => 'StockModule',
-            'weather' => 'WeatherModule',
-            'news' => 'NewsModule',
-            'localnews' => 'LocalNewsModule',
-            'countrynews' => 'CountryNewsModule',
-            'newspaper' => 'NewspaperModule',
-            'rss' => 'RSSModule',
-            'appstore' => 'AppStoreModule',
-            'stripe' => 'StripeModule'
-        ];
-        
-        return $moduleMap[$type] ?? null;
+        return SourceRegistry::getModuleClass($type);
     }
     
     private function updateSourceResult($sourceId, $data) {

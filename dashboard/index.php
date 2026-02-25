@@ -8,6 +8,7 @@
 require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../core/Newsletter.php';
 require_once __DIR__ . '/../core/Scheduler.php';
+require_once __DIR__ . '/../config/source_registry.php';
 
 $auth = Auth::getInstance();
 $auth->requireAuth();
@@ -22,16 +23,7 @@ $currentPage = 'dashboard';
 
 // Helper function to properly format source type names
 function formatSourceType($type) {
-    $specialCases = [
-        'rss' => 'RSS',
-        'sp500' => 'S&P 500',
-        'appstore' => 'App Store',
-        'localnews' => 'City News',
-        'countrynews' => 'Country News',
-        'newspaper' => 'Newspaper RSS'
-    ];
-    
-    return $specialCases[$type] ?? ucfirst($type);
+    return SourceRegistry::getDisplayLabel($type);
 }
 
 // Common timezones for dropdown

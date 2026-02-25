@@ -11,6 +11,7 @@ require_once __DIR__ . '/../core/Scheduler.php';
 require_once __DIR__ . '/../config/constants.php';
 require_once __DIR__ . '/../core/SourceModule.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/source_registry.php';
 
 // Include all source modules
 require_once __DIR__ . '/../modules/bitcoin.php';
@@ -36,16 +37,7 @@ $newsletterId = (int)($_GET['id'] ?? 0);
 
 // Helper function to properly format source type names
 function formatSourceType($type) {
-    $specialCases = [
-        'rss' => 'RSS',
-        'sp500' => 'S&P 500',
-        'appstore' => 'App Store',
-        'localnews' => 'City News',
-        'countrynews' => 'Country News',
-        'newspaper' => 'Newspaper RSS'
-    ];
-    
-    return $specialCases[$type] ?? ucfirst($type);
+    return SourceRegistry::getDisplayLabel($type);
 }
 
 if (!$newsletterId) {
@@ -180,22 +172,7 @@ $enabledSourceConfigs = $stmt->fetchAll();
 
 // Create available modules array based on enabled sources
 $availableModules = [];
-$moduleClasses = [
-    'bitcoin' => 'BitcoinModule',
-    'ethereum' => 'EthereumModule', 
-    'xrp' => 'XrpModule',
-    'binancecoin' => 'BinancecoinModule',
-    'weather' => 'WeatherModule',
-    'news' => 'NewsModule',
-    'localnews' => 'LocalNewsModule',
-    'countrynews' => 'CountryNewsModule',
-    'newspaper' => 'NewspaperModule',
-    'rss' => 'RSSModule',
-    'sp500' => 'SP500Module',
-    'stock' => 'StockModule',
-    'stripe' => 'StripeModule',
-    'appstore' => 'AppStoreModule'
-];
+$moduleClasses = SourceRegistry::getModuleClassMap();
 
 foreach ($enabledSourceConfigs as $config) {
     $type = $config['type'];
@@ -290,6 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'update_source':
                 $sourceId = $_POST['source_id'] ?? '';
+                $sourceType = $_POST['source_type'] ?? '';
                 $sourceName = $_POST['source_name'] ?? '';
                 $config = [];
                 
@@ -306,12 +284,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 
-                if ($newsletter->updateSource($sourceId, $config, $sourceName)) {
-                    $success = 'Source updated successfully!';
-                    // Refresh sources
-                    $sources = $newsletter->getSources();
-                } else {
-                    $error = 'Failed to update source.';
+                try {
+                    $moduleClass = $moduleClasses[$sourceType] ?? (ucfirst($sourceType) . 'Module');
+                    if (empty($sourceType) || !class_exists($moduleClass)) {
+                        $error = 'Invalid source type.';
+                        break;
+                    }
+
+                    $module = new $moduleClass();
+                    if (!$module->validateConfig($config)) {
+                        $error = 'Invalid source configuration.';
+                        break;
+                    }
+
+                    if ($newsletter->updateSource($sourceId, $config, $sourceName)) {
+                        $success = 'Source updated successfully!';
+                        // Refresh sources
+                        $sources = $newsletter->getSources();
+                    } else {
+                        $error = 'Failed to update source.';
+                    }
+                } catch (Exception $e) {
+                    $error = 'Error updating source: ' . $e->getMessage();
                 }
                 break;
                 
@@ -2237,25 +2231,8 @@ $canAddSource = count($sources) < $maxSources;
                         }
                         
                         // Default icons for each source type
-                        $iconMap = [
-                            'bitcoin' => 'fab fa-bitcoin',
-                            'ethereum' => 'fab fa-ethereum',
-                            'xrp' => 'fas fa-coins',
-                            'binancecoin' => 'fas fa-coins',
-                            'weather' => 'fas fa-cloud-sun',
-                            'news' => 'fas fa-newspaper',
-                            'localnews' => 'fas fa-city',
-                            'countrynews' => 'fas fa-flag',
-                            'newspaper' => 'fas fa-rss',
-                            'rss' => 'fas fa-rss',
-                            'sp500' => 'fas fa-chart-line',
-                            'stock' => 'fas fa-chart-line',
-                            'stripe' => 'fab fa-stripe',
-                            'appstore' => 'fab fa-app-store'
-                        ];
-                        
                         $info = [
-                            'icon' => $iconMap[$type] ?? 'fas fa-cube',
+                            'icon' => SourceRegistry::getDashboardIconClass($type),
                             'category' => $sourceConfig ? $sourceConfig['category'] : 'general',
                             'description' => $sourceConfig ? $sourceConfig['description'] : 'Data source'
                         ];

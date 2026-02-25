@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/constants.php';
+require_once __DIR__ . '/source_registry.php';
 
 class Database {
     private static $instance = null;
@@ -383,134 +384,7 @@ class Database {
             if ($result['count'] == 0) {
                 error_log("Database migration: Populating source_configs table with default data");
                 
-                $defaultSources = [
-                    [
-                        'type' => 'bitcoin',
-                        'name' => 'Bitcoin Price',
-                        'description' => 'Track Bitcoin price and 24-hour changes',
-                        'category' => 'crypto',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'ethereum',
-                        'name' => 'Ethereum Price',
-                        'description' => 'Track Ethereum price and market performance',
-                        'category' => 'crypto',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'xrp',
-                        'name' => 'XRP Price',
-                        'description' => 'Track XRP (Ripple) price and market trends',
-                        'category' => 'crypto',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'binancecoin',
-                        'name' => 'Binance Coin Price',
-                        'description' => 'Track BNB (Binance Coin) price and performance',
-                        'category' => 'crypto',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'sp500',
-                        'name' => 'S&P 500 Index',
-                        'description' => 'Monitor S&P 500 index performance and trends',
-                        'category' => 'finance',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'stock',
-                        'name' => 'Stock Price',
-                        'description' => 'Track individual stock prices with real-time updates',
-                        'category' => 'finance',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['symbol' => '', 'display_name' => ''])
-                    ],
-                    [
-                        'type' => 'weather',
-                        'name' => 'Weather',
-                        'description' => 'Weather forecast using Norwegian Meteorological Institute',
-                        'category' => 'lifestyle',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['city' => 'New York'])
-                    ],
-                    [
-                        'type' => 'news',
-                        'name' => 'News Headlines (NewsAPI)',
-                        'description' => 'Top headlines from trusted news sources (NewsAPI, API key required)',
-                        'category' => 'news',
-                        'is_enabled' => 0,
-                        'api_required' => 1,
-                        'default_config' => json_encode([])
-                    ],
-                    [
-                        'type' => 'localnews',
-                        'name' => 'City News',
-                        'description' => 'Local news for a city using Google News search',
-                        'category' => 'news',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['city' => '', 'country' => '', 'language' => 'en', 'country_code' => '', 'item_limit' => '5'])
-                    ],
-                    [
-                        'type' => 'countrynews',
-                        'name' => 'Country News',
-                        'description' => 'Top country headlines using Google News RSS (no API key)',
-                        'category' => 'news',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['country_code' => 'US', 'language' => 'en', 'topic' => 'top', 'item_limit' => '5'])
-                    ],
-                    [
-                        'type' => 'newspaper',
-                        'name' => 'Newspaper RSS',
-                        'description' => 'Curated newspaper RSS presets (no API key)',
-                        'category' => 'news',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['preset' => 'bbc_world', 'item_limit' => '5'])
-                    ],
-                    [
-                        'type' => 'rss',
-                        'name' => 'RSS Feed',
-                        'description' => 'Subscribe to any RSS feed for custom news updates',
-                        'category' => 'news',
-                        'is_enabled' => 1,
-                        'api_required' => 0,
-                        'default_config' => json_encode(['feed_url' => '', 'item_limit' => '3', 'display_name' => ''])
-                    ],
-                    [
-                        'type' => 'appstore',
-                        'name' => 'App Store Sales',
-                        'description' => 'App Store Connect revenue and sales tracking',
-                        'category' => 'business',
-                        'is_enabled' => 1,
-                        'api_required' => 1,
-                        'default_config' => json_encode(['api_key' => '', 'app_id' => ''])
-                    ],
-                    [
-                        'type' => 'stripe',
-                        'name' => 'Stripe Revenue',
-                        'description' => 'Track your Stripe payments and revenue',
-                        'category' => 'business',
-                        'is_enabled' => 1,
-                        'api_required' => 1,
-                        'default_config' => json_encode(['api_key' => ''])
-                    ]
-                ];
+                $defaultSources = SourceRegistry::getDatabaseSourceConfigs();
                 
                 $stmt = $this->pdo->prepare("
                     INSERT INTO source_configs (type, name, description, category, is_enabled, api_required, default_config) 
@@ -557,134 +431,7 @@ class Database {
             }
             
             // Define all available source types with their details
-            $allSourceTypes = [
-                [
-                    'type' => 'bitcoin',
-                    'name' => 'Bitcoin Price',
-                    'description' => 'Track Bitcoin price and 24-hour changes',
-                    'category' => 'crypto',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'ethereum',
-                    'name' => 'Ethereum Price',
-                    'description' => 'Track Ethereum price and market performance',
-                    'category' => 'crypto',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'xrp',
-                    'name' => 'XRP Price',
-                    'description' => 'Track XRP (Ripple) price and market trends',
-                    'category' => 'crypto',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'binancecoin',
-                    'name' => 'Binance Coin Price',
-                    'description' => 'Track BNB (Binance Coin) price and performance',
-                    'category' => 'crypto',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'sp500',
-                    'name' => 'S&P 500 Index',
-                    'description' => 'Monitor S&P 500 index performance and trends',
-                    'category' => 'finance',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'stock',
-                    'name' => 'Stock Price',
-                    'description' => 'Track individual stock prices with real-time updates',
-                    'category' => 'finance',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['symbol' => '', 'display_name' => ''])
-                ],
-                [
-                    'type' => 'weather',
-                    'name' => 'Weather',
-                    'description' => 'Weather forecast using Norwegian Meteorological Institute',
-                    'category' => 'lifestyle',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['city' => 'New York'])
-                ],
-                [
-                    'type' => 'news',
-                    'name' => 'News Headlines (NewsAPI)',
-                    'description' => 'Top headlines from trusted news sources (NewsAPI, API key required)',
-                    'category' => 'news',
-                    'is_enabled' => 0,
-                    'api_required' => 1,
-                    'default_config' => json_encode([])
-                ],
-                [
-                    'type' => 'localnews',
-                    'name' => 'City News',
-                    'description' => 'Local news for a city using Google News search',
-                    'category' => 'news',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['city' => '', 'country' => '', 'language' => 'en', 'country_code' => '', 'item_limit' => '5'])
-                ],
-                [
-                    'type' => 'countrynews',
-                    'name' => 'Country News',
-                    'description' => 'Top country headlines using Google News RSS (no API key)',
-                    'category' => 'news',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['country_code' => 'US', 'language' => 'en', 'topic' => 'top', 'item_limit' => '5'])
-                ],
-                [
-                    'type' => 'newspaper',
-                    'name' => 'Newspaper RSS',
-                    'description' => 'Curated newspaper RSS presets (no API key)',
-                    'category' => 'news',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['preset' => 'bbc_world', 'item_limit' => '5'])
-                ],
-                [
-                    'type' => 'rss',
-                    'name' => 'RSS Feed',
-                    'description' => 'Subscribe to any RSS or Atom feed',
-                    'category' => 'news',
-                    'is_enabled' => 1,
-                    'api_required' => 0,
-                    'default_config' => json_encode(['feed_url' => '', 'item_limit' => '3'])
-                ],
-                [
-                    'type' => 'appstore',
-                    'name' => 'App Store Sales',
-                    'description' => 'App Store Connect revenue and sales tracking',
-                    'category' => 'business',
-                    'is_enabled' => 1,
-                    'api_required' => 1,
-                    'default_config' => json_encode(['api_key' => '', 'app_id' => ''])
-                ],
-                [
-                    'type' => 'stripe',
-                    'name' => 'Stripe Revenue',
-                    'description' => 'Track your Stripe payments and revenue',
-                    'category' => 'business',
-                    'is_enabled' => 1,
-                    'api_required' => 1,
-                    'default_config' => json_encode(['api_key' => ''])
-                ]
-            ];
+            $allSourceTypes = SourceRegistry::getDatabaseSourceConfigs();
             
             // Check which source types already exist
             $stmt = $this->pdo->query("SELECT type FROM source_configs");
@@ -724,15 +471,13 @@ class Database {
                 error_log("Database migration: Updated categories for existing source types");
             }
 
-            // Enforce product defaults for news sources:
-            // - hide legacy NewsAPI source (API key required)
-            // - rename localnews to City News for cleaner UX
-            $this->pdo->exec("UPDATE source_configs SET is_enabled = 0 WHERE type = 'news'");
-            $this->pdo->exec("UPDATE source_configs SET api_required = 1 WHERE type = 'news'");
-            $this->pdo->exec("UPDATE source_configs SET name = 'News Headlines (NewsAPI)' WHERE type = 'news'");
-            $this->pdo->exec("UPDATE source_configs SET description = 'Top headlines from trusted news sources (NewsAPI, API key required)' WHERE type = 'news'");
-            $this->pdo->exec("UPDATE source_configs SET name = 'City News' WHERE type = 'localnews'");
-            $this->pdo->exec("UPDATE source_configs SET description = 'Local news for a city using Google News search' WHERE type = 'localnews'");
+            // Do not force-update existing source_configs rows here.
+            // This migration runs on every app startup, so unconditional UPDATEs would
+            // overwrite admin changes (name/description/is_enabled) and cause avoidable
+            // SQLite writes on normal page loads. Product defaults are applied when rows
+            // are inserted above for new installations or newly added source types.
+            // Safely disable the unfinished App Store source for untouched default rows.
+            $this->pdo->exec("UPDATE source_configs SET is_enabled = 0 WHERE type = 'appstore' AND is_enabled = 1 AND (updated_at IS NULL OR updated_at = created_at)");
             
             if ($addedCount > 0) {
                 error_log("Database migration: Successfully added $addedCount missing source types");
