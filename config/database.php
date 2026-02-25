@@ -449,12 +449,39 @@ class Database {
                     ],
                     [
                         'type' => 'news',
-                        'name' => 'News Headlines',
-                        'description' => 'Top headlines from trusted news sources',
+                        'name' => 'News Headlines (NewsAPI)',
+                        'description' => 'Top headlines from trusted news sources (NewsAPI, API key required)',
+                        'category' => 'news',
+                        'is_enabled' => 0,
+                        'api_required' => 1,
+                        'default_config' => json_encode([])
+                    ],
+                    [
+                        'type' => 'localnews',
+                        'name' => 'City News',
+                        'description' => 'Local news for a city using Google News search',
                         'category' => 'news',
                         'is_enabled' => 1,
                         'api_required' => 0,
-                        'default_config' => json_encode([])
+                        'default_config' => json_encode(['city' => '', 'country' => '', 'language' => 'en', 'country_code' => '', 'item_limit' => '5'])
+                    ],
+                    [
+                        'type' => 'countrynews',
+                        'name' => 'Country News',
+                        'description' => 'Top country headlines using Google News RSS (no API key)',
+                        'category' => 'news',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode(['country_code' => 'US', 'language' => 'en', 'topic' => 'top', 'item_limit' => '5'])
+                    ],
+                    [
+                        'type' => 'newspaper',
+                        'name' => 'Newspaper RSS',
+                        'description' => 'Curated newspaper RSS presets (no API key)',
+                        'category' => 'news',
+                        'is_enabled' => 1,
+                        'api_required' => 0,
+                        'default_config' => json_encode(['preset' => 'bbc_world', 'item_limit' => '5'])
                     ],
                     [
                         'type' => 'rss',
@@ -596,12 +623,39 @@ class Database {
                 ],
                 [
                     'type' => 'news',
-                    'name' => 'News Headlines',
-                    'description' => 'Top headlines from trusted news sources',
+                    'name' => 'News Headlines (NewsAPI)',
+                    'description' => 'Top headlines from trusted news sources (NewsAPI, API key required)',
+                    'category' => 'news',
+                    'is_enabled' => 0,
+                    'api_required' => 1,
+                    'default_config' => json_encode([])
+                ],
+                [
+                    'type' => 'localnews',
+                    'name' => 'City News',
+                    'description' => 'Local news for a city using Google News search',
                     'category' => 'news',
                     'is_enabled' => 1,
                     'api_required' => 0,
-                    'default_config' => json_encode([])
+                    'default_config' => json_encode(['city' => '', 'country' => '', 'language' => 'en', 'country_code' => '', 'item_limit' => '5'])
+                ],
+                [
+                    'type' => 'countrynews',
+                    'name' => 'Country News',
+                    'description' => 'Top country headlines using Google News RSS (no API key)',
+                    'category' => 'news',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode(['country_code' => 'US', 'language' => 'en', 'topic' => 'top', 'item_limit' => '5'])
+                ],
+                [
+                    'type' => 'newspaper',
+                    'name' => 'Newspaper RSS',
+                    'description' => 'Curated newspaper RSS presets (no API key)',
+                    'category' => 'news',
+                    'is_enabled' => 1,
+                    'api_required' => 0,
+                    'default_config' => json_encode(['preset' => 'bbc_world', 'item_limit' => '5'])
                 ],
                 [
                     'type' => 'rss',
@@ -669,6 +723,16 @@ class Database {
                 }
                 error_log("Database migration: Updated categories for existing source types");
             }
+
+            // Enforce product defaults for news sources:
+            // - hide legacy NewsAPI source (API key required)
+            // - rename localnews to City News for cleaner UX
+            $this->pdo->exec("UPDATE source_configs SET is_enabled = 0 WHERE type = 'news'");
+            $this->pdo->exec("UPDATE source_configs SET api_required = 1 WHERE type = 'news'");
+            $this->pdo->exec("UPDATE source_configs SET name = 'News Headlines (NewsAPI)' WHERE type = 'news'");
+            $this->pdo->exec("UPDATE source_configs SET description = 'Top headlines from trusted news sources (NewsAPI, API key required)' WHERE type = 'news'");
+            $this->pdo->exec("UPDATE source_configs SET name = 'City News' WHERE type = 'localnews'");
+            $this->pdo->exec("UPDATE source_configs SET description = 'Local news for a city using Google News search' WHERE type = 'localnews'");
             
             if ($addedCount > 0) {
                 error_log("Database migration: Successfully added $addedCount missing source types");

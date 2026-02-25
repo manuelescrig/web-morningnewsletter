@@ -25,7 +25,10 @@ function formatSourceType($type) {
     $specialCases = [
         'rss' => 'RSS',
         'sp500' => 'S&P 500',
-        'appstore' => 'App Store'
+        'appstore' => 'App Store',
+        'localnews' => 'City News',
+        'countrynews' => 'Country News',
+        'newspaper' => 'Newspaper RSS'
     ];
     
     return $specialCases[$type] ?? ucfirst($type);

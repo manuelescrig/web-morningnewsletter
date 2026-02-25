@@ -21,6 +21,9 @@ require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/localnews.php';
+require_once __DIR__ . '/../modules/countrynews.php';
+require_once __DIR__ . '/../modules/newspaper.php';
 require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
@@ -36,7 +39,10 @@ function formatSourceType($type) {
     $specialCases = [
         'rss' => 'RSS',
         'sp500' => 'S&P 500',
-        'appstore' => 'App Store'
+        'appstore' => 'App Store',
+        'localnews' => 'City News',
+        'countrynews' => 'Country News',
+        'newspaper' => 'Newspaper RSS'
     ];
     
     return $specialCases[$type] ?? ucfirst($type);
@@ -181,6 +187,9 @@ $moduleClasses = [
     'binancecoin' => 'BinancecoinModule',
     'weather' => 'WeatherModule',
     'news' => 'NewsModule',
+    'localnews' => 'LocalNewsModule',
+    'countrynews' => 'CountryNewsModule',
+    'newspaper' => 'NewspaperModule',
     'rss' => 'RSSModule',
     'sp500' => 'SP500Module',
     'stock' => 'StockModule',
@@ -327,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user->canAddSource()) {
                     try {
                         // Get the source module class
-                        $moduleClass = ucfirst($sourceType) . 'Module';
+                        $moduleClass = $moduleClasses[$sourceType] ?? (ucfirst($sourceType) . 'Module');
                         if (class_exists($moduleClass)) {
                             $module = new $moduleClass();
                             
@@ -722,6 +731,20 @@ $canAddSource = count($sources) < $maxSources;
                         document.getElementById('edit_news_country').value = config.country || 'us';
                         document.getElementById('edit_news_category').value = config.category || 'general';
                         document.getElementById('edit_news_limit').value = config.limit || '5';
+                    } else if (source.type === 'localnews') {
+                        document.getElementById('edit_localnews_city').value = config.city || '';
+                        document.getElementById('edit_localnews_country').value = config.country || '';
+                        document.getElementById('edit_localnews_language').value = config.language || 'en';
+                        document.getElementById('edit_localnews_country_code').value = config.country_code || '';
+                        document.getElementById('edit_localnews_item_limit').value = config.item_limit || '5';
+                    } else if (source.type === 'countrynews') {
+                        document.getElementById('edit_countrynews_country_code').value = config.country_code || 'US';
+                        document.getElementById('edit_countrynews_language').value = config.language || 'en';
+                        document.getElementById('edit_countrynews_topic').value = config.topic || 'top';
+                        document.getElementById('edit_countrynews_item_limit').value = config.item_limit || '5';
+                    } else if (source.type === 'newspaper') {
+                        document.getElementById('edit_newspaper_preset').value = config.preset || 'bbc_world';
+                        document.getElementById('edit_newspaper_item_limit').value = config.item_limit || '5';
                     } else if (source.type === 'stripe') {
                         document.getElementById('edit_stripe_api_key').value = config.api_key || '';
                     } else if (source.type === 'sp500') {
@@ -1386,6 +1409,136 @@ $canAddSource = count($sources) < $maxSources;
                             <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
                             <input type="number" name="config[limit]" min="1" max="20" value="5"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                        </div>
+                    `;
+                    break;
+                case 'localnews':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                            <input type="text" name="config[city]" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="Castellón">
+                            <p class="text-xs text-gray-500 mt-1">City to track local news for</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country (Optional)</label>
+                            <input type="text" name="config[country]"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                   placeholder="Spain">
+                            <p class="text-xs text-gray-500 mt-1">Helps improve relevance for cities with the same name</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select name="config[language]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="it">Italian</option>
+                                <option value="pt">Portuguese</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Region Code (Optional)</label>
+                            <input type="text" name="config[country_code]" maxlength="2"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary uppercase"
+                                   placeholder="ES">
+                            <p class="text-xs text-gray-500 mt-1">2-letter code like ES, US, GB for more local results</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                            <select name="config[item_limit]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="3">Top 3</option>
+                                <option value="5" selected>Top 5</option>
+                                <option value="10">Top 10</option>
+                            </select>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                            <div class="flex">
+                                <i class="fas fa-info-circle text-blue-500 mr-2 mt-0.5"></i>
+                                <p class="text-sm text-blue-800">Uses Google News search results for your city. Coverage quality depends on local publishers and indexing.</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'countrynews':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                            <select name="config[country_code]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="US">United States</option>
+                                <option value="ES">Spain</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                                <option value="FR">France</option>
+                                <option value="DE">Germany</option>
+                                <option value="IT">Italy</option>
+                                <option value="PT">Portugal</option>
+                                <option value="MX">Mexico</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select name="config[language]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="it">Italian</option>
+                                <option value="pt">Portuguese</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Topic</label>
+                            <select name="config[topic]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="top">Top Headlines</option>
+                                <option value="business">Business</option>
+                                <option value="technology">Technology</option>
+                                <option value="world">World</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                            <select name="config[item_limit]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="3">Top 3</option>
+                                <option value="5" selected>Top 5</option>
+                                <option value="10">Top 10</option>
+                            </select>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                            <div class="flex">
+                                <i class="fas fa-info-circle text-blue-500 mr-2 mt-0.5"></i>
+                                <p class="text-sm text-blue-800">Uses Google News country feeds. No API key required.</p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'newspaper':
+                    fieldsHtml = `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Newspaper</label>
+                            <select name="config[preset]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="bbc_world">BBC News (World)</option>
+                                <option value="guardian_world">The Guardian (World)</option>
+                                <option value="nyt_home">The New York Times (Home Page)</option>
+                                <option value="elmundo_portada">El Mundo (Portada)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                            <select name="config[item_limit]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                <option value="3">Top 3</option>
+                                <option value="5" selected>Top 5</option>
+                                <option value="10">Top 10</option>
+                            </select>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                            <div class="flex">
+                                <i class="fas fa-info-circle text-blue-500 mr-2 mt-0.5"></i>
+                                <p class="text-sm text-blue-800">Curated newspaper RSS presets. No API key required.</p>
+                            </div>
                         </div>
                     `;
                     break;
@@ -2091,6 +2244,9 @@ $canAddSource = count($sources) < $maxSources;
                             'binancecoin' => 'fas fa-coins',
                             'weather' => 'fas fa-cloud-sun',
                             'news' => 'fas fa-newspaper',
+                            'localnews' => 'fas fa-city',
+                            'countrynews' => 'fas fa-flag',
+                            'newspaper' => 'fas fa-rss',
                             'rss' => 'fas fa-rss',
                             'sp500' => 'fas fa-chart-line',
                             'stock' => 'fas fa-chart-line',
@@ -2254,6 +2410,116 @@ $canAddSource = count($sources) < $maxSources;
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Article Limit</label>
                                 <input type="number" id="edit_news_limit" name="config_limit" min="1" max="20" value="5"
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                            </div>
+                        </div>
+
+                        <!-- Local News Config -->
+                        <div id="editConfigLocalnews" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                <input type="text" id="edit_localnews_city" name="config_city" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="Castellón">
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Country (Optional)</label>
+                                <input type="text" id="edit_localnews_country" name="config_country"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary"
+                                       placeholder="Spain">
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                                <select id="edit_localnews_language" name="config_language" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="it">Italian</option>
+                                    <option value="pt">Portuguese</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Region Code (Optional)</label>
+                                <input type="text" id="edit_localnews_country_code" name="config_country_code" maxlength="2"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary uppercase"
+                                       placeholder="ES">
+                                <p class="text-xs text-gray-500 mt-1">2-letter country code (e.g. ES, US, GB)</p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                                <select id="edit_localnews_item_limit" name="config_item_limit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="3">Top 3</option>
+                                    <option value="5">Top 5</option>
+                                    <option value="10">Top 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Country News Config -->
+                        <div id="editConfigCountrynews" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                                <select id="edit_countrynews_country_code" name="config_country_code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="US">United States</option>
+                                    <option value="ES">Spain</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="FR">France</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="PT">Portugal</option>
+                                    <option value="MX">Mexico</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                                <select id="edit_countrynews_language" name="config_language" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="it">Italian</option>
+                                    <option value="pt">Portuguese</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Topic</label>
+                                <select id="edit_countrynews_topic" name="config_topic" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="top">Top Headlines</option>
+                                    <option value="business">Business</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="world">World</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                                <select id="edit_countrynews_item_limit" name="config_item_limit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="3">Top 3</option>
+                                    <option value="5">Top 5</option>
+                                    <option value="10">Top 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Newspaper RSS Config -->
+                        <div id="editConfigNewspaper" class="hidden">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Newspaper</label>
+                                <select id="edit_newspaper_preset" name="config_preset" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="bbc_world">BBC News (World)</option>
+                                    <option value="guardian_world">The Guardian (World)</option>
+                                    <option value="nyt_home">The New York Times (Home Page)</option>
+                                    <option value="elmundo_portada">El Mundo (Portada)</option>
+                                </select>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Number of articles</label>
+                                <select id="edit_newspaper_item_limit" name="config_item_limit" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus-ring-primary">
+                                    <option value="3">Top 3</option>
+                                    <option value="5">Top 5</option>
+                                    <option value="10">Top 10</option>
+                                </select>
                             </div>
                         </div>
                         

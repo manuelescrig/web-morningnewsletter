@@ -13,6 +13,9 @@ require_once __DIR__ . '/../modules/sp500.php';
 require_once __DIR__ . '/../modules/stock.php';
 require_once __DIR__ . '/../modules/weather.php';
 require_once __DIR__ . '/../modules/news.php';
+require_once __DIR__ . '/../modules/localnews.php';
+require_once __DIR__ . '/../modules/countrynews.php';
+require_once __DIR__ . '/../modules/newspaper.php';
 require_once __DIR__ . '/../modules/rss.php';
 require_once __DIR__ . '/../modules/appstore.php';
 require_once __DIR__ . '/../modules/stripe.php';
@@ -142,6 +145,9 @@ class NewsletterBuilder {
             'stock' => 'StockModule',
             'weather' => 'WeatherModule',
             'news' => 'NewsModule',
+            'localnews' => 'LocalNewsModule',
+            'countrynews' => 'CountryNewsModule',
+            'newspaper' => 'NewspaperModule',
             'rss' => 'RSSModule',
             'appstore' => 'AppStoreModule',
             'stripe' => 'StripeModule'
@@ -236,7 +242,7 @@ class NewsletterBuilder {
         }
         
         // Check if this is RSS source for custom layout
-        if ($source['type'] === 'rss') {
+        if (in_array($source['type'], ['rss', 'localnews', 'countrynews', 'newspaper'], true)) {
             return $this->renderRSSSource($source);
         }
         
