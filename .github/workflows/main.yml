@@ -11,7 +11,7 @@ jobs:
     - name: 📂 Sync files to morningnewsletter.com
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4          
       with:
-        server: ftp.escrig.net
+        server: 199.193.6.149
         username: github@morningnewsletter.com
         password: ${{ secrets.FTP_PASSWORD }}
         protocol: ftp
